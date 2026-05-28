@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CityLinkGH — Business Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <a href="index.html" class="back">←</a>
+  <div class="htitle" id="htitle">Loading…</div>
+  <button class="hshr" onclick="shareBiz()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+  </button>
+</header>
+
+<div id="content"><div class="loading"><div class="spin"></div><br>Loading…</div></div>
+
+<div class="spacer"></div>
+
+<!--footer-->
+<footer class="footer">
+  <div class="footer-container">
+    <!--logo & about-->
+    <div class="footer-box">
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
+    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
+  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
+    </div>
+    <!-- Quick Links -->
+    <div class="footer-box">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Businesses</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <!-- Categories -->
+    <div class="footer-box">
+      <h3>Top Categories</h3>
+      <ul>
+        <li><a href="#">Churches</a></li>
+        <li><a href="#">Hotels</a></li>
+        <li><a href="#">Salons</a></li>
+        <li><a href="#">Mechanics</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-box">
+      <h3>Contact</h3>
+      <p>Email: agyemangernest650@gmail.com</p>
+      <p>Phone: +233 53 736 1543</p>
+
+      <div class="socials">
+        <a href="#">Facebook</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>
+      © 2026 CityLink Ghana. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+  </div>
+</footer>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=Function.prototype" async defer></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, arrayUnion,
+  collection, query, where, getDocs, limit, orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey:"YOUR_FIREBASE_API_KEY",
+  authDomain:"YOUR_PROJECT.firebaseapp.com",
+  projectId:"YOUR_PROJECT",
+  storageBucket:"YOUR_PROJECT.appspot.com",
+  messagingSenderId:"YOUR_SENDER_ID",
+  appId:"YOUR_APP_ID"
+};
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+
+const catEmoji = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function starsH(r){const n=Math.round(r||0);return '★'.repeat(n)+'☆'.repeat(5-n);}
+function fmt12(t){if(!t)return '';const[h,m]=t.split(':').map(Number);return`${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;}
+function isOpen(o,c){if(!o||!c)return null;const now=new Date(),cur=now.getHours()*60+now.getMinutes();const[oh,om]=o.split(':').map(Number),[ch,cm]=c.split(':').map(Number);return cur>=oh*60+om&&cur<=ch*60+cm;}
+function daysLeft(b){if(!b.expiresAt||b.plan==='basic')return null;const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return Math.ceil((exp-Date.now())/86400000);}
+
+let curBiz=null, revRating=0, currentImgIdx=0, currentUser=null;
+
+// Track logged-in user for save feature
+onAuthStateChanged(auth, u => { currentUser=u; });
+
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);};
+
+// ── IMAGE GALLERY ──
+window.showImg = idx => {
+  currentImgIdx=idx;
+  const images=curBiz?.images||(curBiz?.imageUrl?[curBiz.imageUrl]:[]);
+  const main=document.getElementById('galleryMain');
+  if(main&&images[idx]) main.src=images[idx];
+  document.querySelectorAll('.gdot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  document.querySelectorAll('.gthumb').forEach((t,i)=>t.classList.toggle('active',i===idx));
+};
+
+// ── SAVE BUSINESS ──
+window.saveBiz = async bizId => {
+  if(!currentUser){showToast('⚠️ Sign in to save businesses');window.location='profile.html';return;}
+  try{
+    const uRef=doc(db,'users',currentUser.uid);
+    const uSnap=await getDoc(uRef);
+    const saved=uSnap.data()?.savedBusinesses||[];
+    const isSaved=saved.includes(bizId);
+    if(isSaved){
+      await updateDoc(uRef,{savedBusinesses:saved.filter(id=>id!==bizId)});
+      document.getElementById('saveBtn').className='act-btn btn-save';
+      document.getElementById('saveBtn').innerHTML='🔖 Save Business';
+      showToast('🗑 Removed from saved');
+    }else{
+      await updateDoc(uRef,{savedBusinesses:arrayUnion(bizId)});
+      document.getElementById('saveBtn').className='act-btn btn-save saved';
+      document.getElementById('saveBtn').innerHTML='✅ Saved!';
+      showToast('✅ Business saved!');
+    }
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+// ── REVIEWS ──
+window.setRS=v=>{revRating=v;document.querySelectorAll('.rs').forEach(s=>s.classList.toggle('active',Number(s.dataset.v)<=v));};
+
+window.submitReview=async bizId=>{
+  const text=document.getElementById('revText').value.trim(),name=document.getElementById('revName').value.trim()||'Anonymous';
+  if(!revRating){showToast('⭐ Select a rating');return;}
+  if(!text){showToast('✍️ Write your review');return;}
+  const rev={name,text,rating:revRating,date:new Date().toISOString()};
+  try{
+    const revs=[...(curBiz.reviews||[]),rev];
+    const avg=revs.reduce((s,r)=>s+r.rating,0)/revs.length;
+    await updateDoc(doc(db,'businesses',bizId),{reviews:arrayUnion(rev),rating:Math.round(avg*10)/10});
+    curBiz.reviews=revs;curBiz.rating=Math.round(avg*10)/10;
+    renderRevs(bizId);
+    document.getElementById('revText').value='';document.getElementById('revName').value='';
+    revRating=0;document.querySelectorAll('.rs').forEach(s=>s.classList.remove('active'));
+    showToast('✅ Review submitted!');
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+function renderRevs(bizId){
+  const el=document.getElementById('revsList');
+  const revs=(curBiz.reviews||[]).slice().reverse();
+  el.innerHTML=revs.length?revs.slice(0,10).map(r=>`
+    <div class="rev-card">
+      <div class="rv-hdr"><div class="rv-name">${esc(r.name)}</div><div class="rv-stars">${starsH(r.rating)}</div></div>
+      <div class="rv-txt">${esc(r.text)}</div>
+      <div class="rv-date">${new Date(r.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</div>
+    </div>`).join(''):`<p style="color:var(--gray);font-size:13px;">No reviews yet — be the first!</p>`;
+}
+
+function initBizMap(b){
+  if(!b.lat||!b.lng||typeof google==='undefined')return;
+  const el=document.getElementById('bizMap');if(!el)return;
+  const colors={premium:var_purple,featured:var_gold,standard:var_green,basic:'#7A7265'};
+  const m=new google.maps.Map(el,{center:{lat:Number(b.lat),lng:Number(b.lng)},zoom:15,mapTypeControl:false,streetViewControl:false,fullscreenControl:false,styles:[{featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]}]});
+  const mk=new google.maps.Marker({position:{lat:Number(b.lat),lng:Number(b.lng)},map:m,title:b.name,icon:{path:google.maps.SymbolPath.CIRCLE,scale:12,fillColor:colors[b.plan||'basic'],fillOpacity:1,strokeColor:'#fff',strokeWeight:2}});
+  const iw=new google.maps.InfoWindow({content:`<div style="font-family:'Syne',sans-serif;font-weight:800;font-size:13px;">${esc(b.name)}</div><div style="font-size:11px;color:#7A7265;">📍 ${esc(b.location||b.city||'')}</div>`});
+  mk.addListener('click',()=>iw.open(m,mk));
+}
+const var_green='#1A6B3C',var_gold='#D4A017',var_purple='#9B59B6';
+
+window.shareBiz=()=>{if(navigator.share)navigator.share({title:document.title,url:window.location.href});else navigator.clipboard.writeText(window.location.href).then(()=>showToast('🔗 Link copied!'));};
+
+// ── GO TO CITY ──
+window.goToCity = city => {
+  window.location.href=`index.html?city=${encodeURIComponent(city)}`;
+};
+
+async function init(){
+  const id=new URLSearchParams(window.location.search).get('id');
+  if(!id){document.getElementById('content').innerHTML='<div class="loading">❌ No business ID.</div>';return;}
+  try{
+    const snap=await getDoc(doc(db,'businesses',id));
+    if(!snap.exists()){document.getElementById('content').innerHTML='<div class="loading">❌ Business not found.</div>';return;}
+    curBiz={id:snap.id,...snap.data()};
+    const b=curBiz;
+    document.title=`${b.name} — GhanaList`;
+    document.getElementById('htitle').textContent=b.name;
+
+    const plan=b.plan||'basic';
+    const emoji=catEmoji(b.category);
+    const openS=isOpen(b.openTime,b.closeTime);
+    const days=daysLeft(b);
+    const waNum=(b.whatsapp||b.phone||'').replace(/\D/g,'').slice(-9);
+
+    // Build image gallery
+    const images=b.images||(b.imageUrl?[b.imageUrl]:[]);
+    let galleryHtml='';
+    if(images.length){
+      const dotsHtml=images.length>1?`<div class="gallery-dots">${images.map((_,i)=>`<div class="gdot${i===0?' active':''}" onclick="showImg(${i})"></div>`).join('')}</div>`:'';
+      const thumbsHtml=images.length>1?`<div class="gallery-thumbs">${images.map((img,i)=>`<div class="gthumb${i===0?' active':''}" onclick="showImg(${i})"><img src="${esc(img)}" alt=""></div>`).join('')}</div>`:'';
+      galleryHtml=`
+        <div class="img-gallery">
+          <div class="gallery-main">
+            <img id="galleryMain" src="${esc(images[0])}" alt="${esc(b.name)}" onerror="this.style.display='none'">
+            <div class="hero-ov"></div>
+            ${plan!=='basic'?`<div class="plan-ribbon ${plan==='premium'?'rib-premium':plan==='featured'?'rib-featured':'rib-standard'}">${plan==='premium'?'👑 PREMIUM':plan==='featured'?'⭐ FEATURED':'✓ STANDARD'}</div>`:''}
+          </div>
+          ${dotsHtml}${thumbsHtml}
+        </div>`;
+    }else{
+      galleryHtml=`
+        <div class="img-gallery">
+          <div class="gallery-main">${emoji}
+            ${plan!=='basic'?`<div class="plan-ribbon ${plan==='premium'?'rib-premium':plan==='featured'?'rib-featured':'rib-standard'}">${plan==='premium'?'👑 PREMIUM':plan==='featured'?'⭐ FEATURED':'✓ STANDARD'}</div>`:''}
+          </div>
+        </div>`;
+    }
+
+    // Plan badges
+    const badgeHtml=[
+      plan==='premium'?'<span class="badge b-premium">👑 Premium</span>':'',
+      plan==='featured'?'<span class="badge b-featured">⭐ Featured</span>':'',
+      plan==='standard'?'<span class="badge b-standard">✓ Standard</span>':'',
+      b.verified?'<span class="badge b-verified">✓ Verified</span>':''
+    ].filter(Boolean).join('');
+
+    // Upgrade banner
+    const upgradeHtml=plan==='basic'?`<div class="upgrade-banner ub-featured" onclick="window.location='submit.html'"><div class="ub-title">⭐ Upgrade to Featured — GHS 100/mo</div><div class="ub-sub">Gold border, top placement & verified badge.</div></div>`:plan==='standard'?`<div class="upgrade-banner ub-premium" onclick="window.location='submit.html'"><div class="ub-title">👑 Upgrade to Premium — GHS 200/mo</div><div class="ub-sub">Premium spotlight & #1 placement.</div></div>`:'';
+
+    // Booking button — only for paid plans
+    const bookBtn=plan!=='basic'?`<a class="act-btn btn-book" href="booking.html?id=${b.id}">📅 Book Appointment</a>`:'';
+
+    // Similar in same city
+    let simHtml='';
+    try{
+      const sq=query(collection(db,'businesses'),where('category','==',b.category),where('approved','==',true),limit(8));
+      const ss=await getDocs(sq);
+      const sim=ss.docs.map(d=>({id:d.id,...d.data()})).filter(s=>s.id!==id).slice(0,6);
+      if(sim.length){
+        const sameCity=sim.filter(s=>s.city===b.city);
+        const others=sim.filter(s=>s.city!==b.city);
+        const ordered=[...sameCity,...others].slice(0,6);
+        simHtml=`
+          <div class="section">
+            <div class="same-city-bar">
+              <div class="sec-t">Similar Businesses</div>
+              ${b.city?`<span class="same-city-link" onclick="goToCity('${esc(b.city)}')">More in ${esc(b.city)} →</span>`:''}
+            </div>
+            <div class="sim-scroll">
+              ${ordered.map(s=>`
+                <a class="sim-card" href="business.html?id=${s.id}">
+                  <div class="sim-thumb">${(s.imageUrl||s.images?.[0])?`<img src="${esc(s.imageUrl||s.images[0])}" alt="">`:`${catEmoji(s.category)}`}</div>
+                  <div class="sim-body">
+                    <div class="sim-name">${esc(s.name)}</div>
+                    <div class="sim-city">📍 ${esc(s.city||s.location||'Ghana')}</div>
+                    ${s.city===b.city?'<div style="font-size:9px;background:#f0fff6;color:var(--green);padding:1px 5px;border-radius:4px;display:inline-block;font-weight:700;margin-top:2px;">Same City</div>':''}
+                  </div>
+                </a>`).join('')}
+            </div>
+          </div>`;
+      }
+    }catch(_){}
+
+    document.getElementById('content').innerHTML=`
+      <div class="plan-strip strip-${plan}"></div>
+      ${galleryHtml}
+
+      <div class="main-card">
+        <div class="biz-hdr">
+          <div class="biz-name">${esc(b.name)}</div>
+          <div class="badges">${badgeHtml}</div>
+        </div>
+        <div class="biz-cat">${esc(b.category)}</div>
+
+        ${b.city?`<div class="city-chip" onclick="goToCity('${esc(b.city)}')">📍 ${esc(b.city)} <span style="font-size:11px;opacity:.7;">· See all businesses</span> →</div>`:''}
+
+        ${b.rating?`<div class="rating-row"><span class="stars">${starsH(b.rating)}</span><span class="rnum">${Number(b.rating).toFixed(1)}</span><span class="rcnt">(${(b.reviews||[]).length} review${(b.reviews||[]).length!==1?'s':''})</span></div>`:''}
+        ${openS!==null?`<div class="open-row"><div class="${openS?'dot-o':'dot-c'}"></div><span class="${openS?'txt-o':'txt-c'}">${openS?'Open Now':'Closed'}</span>${b.openTime?`<span class="hrs">· ${fmt12(b.openTime)} – ${fmt12(b.closeTime)}</span>`:''}</div>`:''}
+        ${days!==null&&days<=7?`<div class="expiry-notice" style="display:block;">⚠️ This listing expires in ${days} day${days!==1?'s':''}. <a href="submit.html" style="color:var(--red);font-weight:700;">Renew →</a></div>`:''}
+
+        <div class="act-grid">
+          ${b.phone?`<a class="act-btn btn-call" href="tel:${esc(b.phone)}">📞 Call Now</a>`:''}
+          ${bookBtn}
+          ${waNum?`<a class="act-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank">💬 WhatsApp</a>`:''}
+          <a class="act-btn btn-dir" href="https://www.google.com/maps/search/${encodeURIComponent((b.name||'')+' '+(b.location||'')+(b.city||''))}" target="_blank">🗺️ Directions</a>
+          ${b.website?`<a class="act-btn btn-web" href="${esc(b.website)}" target="_blank">🌐 Website</a>`:''}
+          <button class="act-btn btn-save" id="saveBtn" onclick="saveBiz('${b.id}')">🔖 Save Business</button>
+          <button class="act-btn btn-shr" onclick="shareBiz()">🔗 Share</button>
+        </div>
+        ${upgradeHtml}
+      </div>
+
+      ${b.desc?`<div class="section"><div class="sec-t">About</div><div class="desc">${esc(b.desc)}</div></div>`:''}
+
+      <div class="section">
+        <div class="sec-t">Contact & Info</div>
+        <div class="info-list">
+          ${b.location||b.city?`<div class="ii"><div class="ii-ico">📍</div><div><div class="ii-lbl">Address</div><div class="ii-val">${esc(b.location||'')}${b.location&&b.city?', ':''}${b.city?`<span class="same-city-link" onclick="goToCity('${esc(b.city)}')" style="cursor:pointer;color:var(--green);">${esc(b.city)}</span>`:''}</div></div></div>`:''}
+          ${b.phone?`<div class="ii"><div class="ii-ico">📞</div><div><div class="ii-lbl">Phone</div><div class="ii-val"><a href="tel:${esc(b.phone)}">${esc(b.phone)}</a></div></div></div>`:''}
+          ${b.whatsapp?`<div class="ii"><div class="ii-ico">💬</div><div><div class="ii-lbl">WhatsApp</div><div class="ii-val"><a href="https://wa.me/233${(b.whatsapp).replace(/\D/g,'').slice(-9)}" target="_blank">${esc(b.whatsapp)}</a></div></div></div>`:''}
+          ${b.email?`<div class="ii"><div class="ii-ico">✉️</div><div><div class="ii-lbl">Email</div><div class="ii-val"><a href="mailto:${esc(b.email)}">${esc(b.email)}</a></div></div></div>`:''}
+          ${b.website?`<div class="ii"><div class="ii-ico">🌐</div><div><div class="ii-lbl">Website</div><div class="ii-val"><a href="${esc(b.website)}" target="_blank">${esc(b.website.replace('https://',''))}</a></div></div></div>`:''}
+          ${b.openTime?`<div class="ii"><div class="ii-ico">🕐</div><div><div class="ii-lbl">Hours</div><div class="ii-val">${fmt12(b.openTime)} – ${fmt12(b.closeTime)}</div></div></div>`:''}
+          ${b.expiresAt&&plan!=='basic'?`<div class="ii"><div class="ii-ico">📅</div><div><div class="ii-lbl">Listed Until</div><div class="ii-val">${(b.expiresAt?.toDate?b.expiresAt.toDate():new Date(b.expiresAt)).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div></div></div>`:''}
+        </div>
+      </div>
+
+      ${b.lat&&b.lng?`<div class="section" style="padding:0;"><div style="padding:14px 20px 10px;"><div class="sec-t">Location${b.city?` in ${esc(b.city)}`:''}</div></div><div id="bizMap"></div><a href="https://www.google.com/maps/search/${encodeURIComponent((b.name||'')+' '+(b.location||'')+(b.city||''))}" target="_blank" style="display:block;text-align:center;padding:11px;font-size:13px;font-weight:700;color:var(--green);text-decoration:none;border-top:1px solid var(--border);">Open in Google Maps →</a></div>`:''}
+
+      ${b.tags?`<div class="section"><div class="sec-t">Tags</div><div class="tag-cloud">${(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>`:''}
+
+      <div class="section">
+        <div class="sec-t">Reviews</div>
+        <div id="revsList"></div>
+        <div class="rev-form">
+          <div class="rf-title">Leave a Review</div>
+          <div class="rv-stars-sel">
+            <span class="rs" data-v="1" onclick="setRS(1)">★</span>
+            <span class="rs" data-v="2" onclick="setRS(2)">★</span>
+            <span class="rs" data-v="3" onclick="setRS(3)">★</span>
+            <span class="rs" data-v="4" onclick="setRS(4)">★</span>
+            <span class="rs" data-v="5" onclick="setRS(5)">★</span>
+          </div>
+          <input type="text" id="revName" placeholder="Your name (optional)">
+          <textarea id="revText" placeholder="Share your experience…"></textarea>
+          <button class="sub-rev" onclick="submitReview('${b.id}')">Submit Review</button>
+        </div>
+      </div>
+
+      ${simHtml}
+    `;
+
+    renderRevs(b.id);
+    setTimeout(()=>initBizMap(b),300);
+
+    // Check if already saved
+    if(currentUser){
+      const uSnap=await getDoc(doc(db,'users',currentUser.uid));
+      const saved=uSnap.data()?.savedBusinesses||[];
+      if(saved.includes(b.id)){
+        const sb=document.getElementById('saveBtn');
+        if(sb){sb.className='act-btn btn-save saved';sb.innerHTML='✅ Saved!';}
+      }
+    }
+
+  }catch(e){document.getElementById('content').innerHTML=`<div class="loading">❌ ${e.message}</div>`;}
+}
+
+// Handle city param from index.html
+const urlCity=new URLSearchParams(window.location.search).get('city');
+if(urlCity) sessionStorage.setItem('filterCity',urlCity);
+
+init();
+</script>
+</body>
+</html>

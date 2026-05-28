@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhanaList — My Bookings</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#D4A017;--green:#1A6B3C;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--purple:#9B59B6;--blue:#2980B9;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Epilogue',sans-serif;background:var(--cream);color:var(--ink);}
+
+  header{background:var(--ink);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;}
+  .logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;}
+  .logo span{color:var(--gold);}
+  .hbtns{display:flex;gap:8px;}
+  .hb{padding:7px 12px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;border:none;display:inline-flex;align-items:center;gap:4px;}
+  .hb.ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);}
+  .hb.ghost:hover{color:#fff;}
+
+  .body{max-width:780px;margin:0 auto;padding:16px 16px 80px;}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;}
+  .stat{background:#fff;border-radius:12px;padding:11px;text-align:center;border:1px solid var(--border);}
+  .stat-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+  .stat-l{font-size:10px;color:var(--gray);font-weight:600;margin-top:2px;}
+
+  /* TODAY BANNER */
+  .today-banner{background:linear-gradient(135deg,var(--green),#0d4a26);border-radius:16px;padding:16px;margin-bottom:18px;color:#fff;}
+  .tb-label{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:4px;}
+  .tb-count{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;}
+  .tb-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+  .tb-row{display:flex;justify-content:space-between;align-items:flex-end;}
+  .tb-date{font-size:12px;color:rgba(255,255,255,.6);}
+
+  /* TABS */
+  .tabs{display:flex;gap:3px;margin-bottom:13px;background:var(--mist);padding:4px;border-radius:11px;}
+  .tab{flex:1;padding:8px 4px;border-radius:8px;border:none;font-family:'Epilogue',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:var(--gray);text-align:center;}
+  .tab.active{background:#fff;color:var(--ink);box-shadow:0 1px 5px rgba(0,0,0,.1);}
+
+  /* SEARCH / FILTER */
+  .filter-row{display:flex;gap:8px;margin-bottom:13px;}
+  .filter-row input{flex:1;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;outline:none;background:#fff;}
+  .filter-row input:focus{border-color:var(--gold);}
+  .filter-row select{padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;outline:none;background:#fff;color:var(--ink);}
+
+  /* BOOKING CARDS */
+  .bookings-list{display:flex;flex-direction:column;gap:10px;}
+  .booking-card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;position:relative;overflow:hidden;animation:fi .3s ease;}
+  @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .booking-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+  .bc-confirmed::before{background:var(--green);}
+  .bc-pending::before{background:var(--gold);}
+  .bc-cancelled::before{background:var(--red);}
+  .bc-completed::before{background:var(--blue);}
+
+  .bc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+  .bc-ref{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--ink);}
+  .bc-status{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;}
+  .st-confirmed{background:#d4edda;color:#155724;}
+  .st-pending{background:#fff3cd;color:#856404;}
+  .st-cancelled{background:#fde8e8;color:var(--red);}
+  .st-completed{background:#cce5ff;color:#004085;}
+
+  .bc-service{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  .bc-datetime{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray);margin-bottom:8px;}
+  .bc-datetime .sep{color:var(--border);}
+
+  .bc-customer{background:var(--cream);border-radius:10px;padding:10px;margin-bottom:10px;}
+  .bc-cust-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+  .bc-cust-meta{display:flex;gap:12px;flex-wrap:wrap;}
+  .bc-cust-item{font-size:12px;color:var(--gray);display:flex;align-items:center;gap:4px;}
+
+  .bc-note{font-size:12px;color:var(--gray);background:var(--mist);border-radius:8px;padding:8px 10px;margin-bottom:10px;font-style:italic;}
+
+  .bc-actions{display:flex;gap:7px;}
+  .bc-btn{flex:1;padding:9px;border-radius:9px;border:none;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;transition:opacity .2s;}
+  .bc-btn:hover{opacity:.85;}
+  .bc-btn.confirm{background:var(--green);color:#fff;}
+  .bc-btn.cancel{background:#fde8e8;color:var(--red);border:1px solid #f5c6c6;}
+  .bc-btn.complete{background:var(--blue);color:#fff;}
+  .bc-btn.wa{background:#25D366;color:#fff;}
+  .bc-btn.call{background:var(--mist);color:var(--ink);border:1px solid var(--border);}
+
+  /* EMPTY */
+  .empty{text-align:center;padding:40px 20px;color:var(--gray);}
+  .empty .ei{font-size:40px;margin-bottom:10px;}
+  .empty h3{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  .empty p{font-size:13px;line-height:1.5;}
+
+  /* CALENDAR MINI */
+  .mini-cal{background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:16px;}
+  .mc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .mc-month{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--ink);}
+  .mc-nav{background:none;border:none;cursor:pointer;font-size:16px;color:var(--gray);padding:2px 6px;}
+  .mc-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+  .mc-dow{font-size:9px;font-weight:700;color:var(--gray);text-align:center;padding:3px 0;}
+  .mc-day{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;transition:all .2s;border:2px solid transparent;}
+  .mc-day:hover:not(.mc-past){background:var(--mist);}
+  .mc-day.mc-today{border-color:var(--gold);color:var(--gold);font-weight:700;}
+  .mc-day.mc-sel{background:var(--green);color:#fff;border-color:var(--green);}
+  .mc-day.mc-has{position:relative;}
+  .mc-day.mc-has::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:3px;height:3px;background:var(--red);border-radius:50%;}
+  .mc-day.mc-past{color:#ccc;cursor:default;}
+
+  /* SEC TITLE */
+  .sec-t{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px;margin-bottom:11px;color:var(--ink);}
+  .sec-t::before{content:'';width:4px;height:15px;background:var(--gold);border-radius:2px;display:block;}
+
+  .loading{display:flex;align-items:center;justify-content:center;padding:30px;gap:9px;color:var(--gray);font-size:13px;}
+  .spinner{width:20px;height:20px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="logo">CityLink<span>GH</span></div>
+  <div class="hbtns">
+    <a href="index.html" class="hb ghost">🏠 Home</a>
+  </div>
+</header>
+
+<div class="body">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="stTotal" style="color:var(--ink);">—</div><div class="stat-l">Total</div></div>
+    <div class="stat"><div class="stat-n" id="stToday" style="color:var(--green);">—</div><div class="stat-l">Today</div></div>
+    <div class="stat"><div class="stat-n" id="stPending" style="color:var(--gold);">—</div><div class="stat-l">Pending</div></div>
+    <div class="stat"><div class="stat-n" id="stCancelled" style="color:var(--red);">—</div><div class="stat-l">Cancelled</div></div>
+  </div>
+
+  <!-- TODAY BANNER -->
+  <div class="today-banner">
+    <div class="tb-label">Bookings Today</div>
+    <div class="tb-row">
+      <div>
+        <div class="tb-count" id="todayCount">—</div>
+        <div class="tb-sub" id="todaySub">Loading…</div>
+      </div>
+      <div class="tb-date" id="todayDate">—</div>
+    </div>
+  </div>
+
+  <!-- MINI CALENDAR -->
+  <div class="sec-t">Calendar</div>
+  <div class="mini-cal">
+    <div class="mc-hd">
+      <button class="mc-nav" onclick="mcPrev()">‹</button>
+      <div class="mc-month" id="mcMonth">—</div>
+      <button class="mc-nav" onclick="mcNext()">›</button>
+    </div>
+    <div class="mc-grid" id="mcGrid"></div>
+  </div>
+
+  <!-- BOOKINGS -->
+  <div class="sec-t" id="listLabel">All Bookings</div>
+
+  <div class="filter-row">
+    <input type="text" id="searchInput" placeholder="🔍  Search name, ref, service…" oninput="renderBookings()">
+    <select id="bizFilter" onchange="renderBookings()">
+      <option value="">All Businesses</option>
+    </select>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('all',this)">All</button>
+    <button class="tab" onclick="setTab('confirmed',this)">✅ Confirmed</button>
+    <button class="tab" onclick="setTab('pending',this)">⏳ Pending</button>
+    <button class="tab" onclick="setTab('today',this)">📅 Today</button>
+    <button class="tab" onclick="setTab('cancelled',this)">❌ Cancelled</button>
+  </div>
+
+  <div class="bookings-list" id="bookingsList">
+    <div class="loading"><div class="spinner"></div> Loading bookings…</div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, updateDoc, doc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey:"YOUR_FIREBASE_API_KEY",
+  authDomain:"YOUR_PROJECT.firebaseapp.com",
+  projectId:"YOUR_PROJECT",
+  storageBucket:"YOUR_PROJECT.appspot.com",
+  messagingSenderId:"YOUR_SENDER_ID",
+  appId:"YOUR_APP_ID"
+};
+
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+
+let allBookings = [], currentTab = 'all', selCalDate = null;
+let mcYear = new Date().getFullYear(), mcMonth = new Date().getMonth();
+
+const TODAY = new Date().toISOString().split('T')[0];
+
+// ── AUTH CHECK ──
+onAuthStateChanged(auth, user => {
+  if (user) fetchBookings();
+  else { window.location.href = 'profile.html'; }
+});
+
+// ── FETCH ──
+async function fetchBookings() {
+  try {
+    const q    = query(collection(db,'bookings'), orderBy('createdAt','desc'));
+    const snap = await getDocs(q);
+    allBookings = snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateStats();
+    renderMiniCal();
+    populateBizFilter();
+    renderBookings();
+  } catch(e) {
+    document.getElementById('bookingsList').innerHTML = `<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ── STATS ──
+function updateStats() {
+  const today = allBookings.filter(b=>b.date===TODAY);
+  const pending = allBookings.filter(b=>b.status==='pending'||b.status==='confirmed');
+
+  document.getElementById('stTotal').textContent     = allBookings.length;
+  document.getElementById('stToday').textContent     = today.length;
+  document.getElementById('stPending').textContent   = allBookings.filter(b=>b.status==='pending').length;
+  document.getElementById('stCancelled').textContent = allBookings.filter(b=>b.status==='cancelled').length;
+  document.getElementById('todayCount').textContent  = today.length;
+  document.getElementById('todaySub').textContent    = today.length ? `${today.map(b=>b.time).join(', ')}` : 'No bookings today';
+  document.getElementById('todayDate').textContent   = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+}
+
+// ── BIZ FILTER ──
+function populateBizFilter() {
+  const bizNames = [...new Set(allBookings.map(b=>b.businessName).filter(Boolean))];
+  const sel = document.getElementById('bizFilter');
+  bizNames.forEach(n=>{
+    const opt=document.createElement('option');
+    opt.value=n; opt.textContent=n; sel.appendChild(opt);
+  });
+}
+
+// ── MINI CALENDAR ──
+function renderMiniCal() {
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const days  =['Su','Mo','Tu','We','Th','Fr','Sa'];
+  document.getElementById('mcMonth').textContent = `${months[mcMonth]} ${mcYear}`;
+  const booked = new Set(allBookings.filter(b=>b.status!=='cancelled').map(b=>b.date));
+  const today  = new Date(); today.setHours(0,0,0,0);
+  const first  = new Date(mcYear,mcMonth,1).getDay();
+  const total  = new Date(mcYear,mcMonth+1,0).getDate();
+  let html = days.map(d=>`<div class="mc-dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) html+=`<div></div>`;
+  for(let d=1;d<=total;d++){
+    const date=new Date(mcYear,mcMonth,d);
+    const ds=`${mcYear}-${String(mcMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isPast=date<today;
+    const isTod=ds===TODAY;
+    const isSel=ds===selCalDate;
+    const hasB=booked.has(ds);
+    let cls='mc-day';
+    if(isPast) cls+=' mc-past';
+    if(isTod)  cls+=' mc-today';
+    if(isSel)  cls+=' mc-sel';
+    if(hasB)   cls+=' mc-has';
+    html+=`<div class="${cls}" onclick="calFilter('${ds}')">${d}</div>`;
+  }
+  document.getElementById('mcGrid').innerHTML=html;
+}
+
+window.mcPrev=()=>{mcMonth--;if(mcMonth<0){mcMonth=11;mcYear--;}renderMiniCal();};
+window.mcNext=()=>{mcMonth++;if(mcMonth>11){mcMonth=0;mcYear++;}renderMiniCal();};
+window.calFilter=date=>{selCalDate=selCalDate===date?null:date;renderMiniCal();renderBookings();};
+
+// ── TAB ──
+window.setTab=(tab,el)=>{
+  currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderBookings();
+};
+
+// ── RENDER ──
+window.renderBookings = () => {
+  const q   = (document.getElementById('searchInput').value||'').toLowerCase();
+  const biz = document.getElementById('bizFilter').value;
+  let list  = [...allBookings];
+
+  if (currentTab==='confirmed') list=list.filter(b=>b.status==='confirmed');
+  else if(currentTab==='pending') list=list.filter(b=>b.status==='pending');
+  else if(currentTab==='today') list=list.filter(b=>b.date===TODAY);
+  else if(currentTab==='cancelled') list=list.filter(b=>b.status==='cancelled');
+
+  if (selCalDate) list=list.filter(b=>b.date===selCalDate);
+  if (biz) list=list.filter(b=>b.businessName===biz);
+  if (q)   list=list.filter(b=>
+    (b.customerName||'').toLowerCase().includes(q)||
+    (b.bookingRef||'').toLowerCase().includes(q)||
+    (b.service||'').toLowerCase().includes(q)||
+    (b.businessName||'').toLowerCase().includes(q)
+  );
+
+  const label = selCalDate
+    ? `Bookings for ${new Date(selCalDate).toLocaleDateString('en-GB',{day:'numeric',month:'long'})}`
+    : currentTab==='today' ? "Today's Bookings" : 'All Bookings';
+  document.getElementById('listLabel').textContent = `${label} (${list.length})`;
+
+  const el = document.getElementById('bookingsList');
+  if (!list.length) {
+    el.innerHTML=`<div class="empty"><div class="ei">📭</div><h3>No bookings found</h3><p>Try a different filter or date.</p></div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(b=>{
+    const d  = new Date(b.date+'T00:00:00');
+    const dl = d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+    const isToday = b.date===TODAY;
+    const waNum   = (b.businessWhatsapp||b.businessPhone||'').replace(/\D/g,'').slice(-9);
+    const waMsg   = encodeURIComponent(`Hi ${b.customerName}, your booking at ${b.businessName} is confirmed!\nDate: ${dl}\nTime: ${b.time}\nRef: ${b.bookingRef}`);
+
+    return `
+    <div class="booking-card bc-${b.status}">
+      <div class="bc-top">
+        <div>
+          <div class="bc-ref">${b.bookingRef} ${isToday?'<span style="background:var(--gold);color:var(--ink);font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px;">TODAY</span>':''}</div>
+        </div>
+        <span class="bc-status st-${b.status}">${b.status}</span>
+      </div>
+      <div class="bc-service">${esc(b.service)} · <span style="font-size:12px;color:var(--gray);font-weight:400;">${esc(b.businessName)}</span></div>
+      <div class="bc-datetime">
+        <span>📅 ${dl}</span>
+        <span class="sep">·</span>
+        <span>🕐 ${b.time}</span>
+        <span class="sep">·</span>
+        <span>⏱ ${b.serviceDur||'1 hr'}</span>
+      </div>
+      <div class="bc-customer">
+        <div class="bc-cust-name">👤 ${esc(b.customerName)}</div>
+        <div class="bc-cust-meta">
+          <div class="bc-cust-item">📞 <a href="tel:${b.customerPhone}" style="color:var(--green);font-weight:600;">${esc(b.customerPhone)}</a></div>
+          ${b.customerEmail?`<div class="bc-cust-item">✉️ ${esc(b.customerEmail)}</div>`:''}
+        </div>
+      </div>
+      ${b.note?`<div class="bc-note">💬 "${esc(b.note)}"</div>`:''}
+      <div class="bc-actions">
+        ${b.status==='pending'?`<button class="bc-btn confirm" onclick="updateStatus('${b.id}','confirmed')">✅ Confirm</button>`:''}
+        ${b.status==='confirmed'?`<button class="bc-btn complete" onclick="updateStatus('${b.id}','completed')">✓ Complete</button>`:''}
+        ${b.status!=='cancelled'&&b.status!=='completed'?`<button class="bc-btn cancel" onclick="updateStatus('${b.id}','cancelled')">✕ Cancel</button>`:''}
+        <a class="bc-btn wa" href="https://wa.me/${waNum}?text=${waMsg}" target="_blank">💬 WhatsApp</a>
+        <a class="bc-btn call" href="tel:${b.customerPhone}">📞 Call</a>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+// ── UPDATE STATUS ──
+window.updateStatus = async (id, status) => {
+  try {
+    await updateDoc(doc(db,'bookings',id),{status});
+    const b = allBookings.find(x=>x.id===id);
+    if (b) b.status=status;
+    updateStats();
+    renderMiniCal();
+    renderBookings();
+    const msgs={confirmed:'✅ Booking confirmed!',cancelled:'❌ Booking cancelled',completed:'✓ Marked as completed'};
+    showToast(msgs[status]||'Updated');
+  } catch(e) { showToast('❌ '+e.message); }
+};
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+</script>
+</body>
+</html>

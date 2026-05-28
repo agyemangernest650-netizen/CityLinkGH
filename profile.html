@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhanaList — My Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="profile.css">
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="logo">CityLink<span>GH</span></div>
+  <a href="index.html" class="hbtn">← Home</a>
+</header>
+
+<!-- AUTH SCREEN -->
+<div class="auth-wrap" id="authWrap">
+  <div class="auth-hero">
+    <div class="aico">👤</div>
+    <h2>Welcome to CityLinkGH</h2>
+    <p>Sign in to manage your listings,<br>bookings, and saved businesses.</p>
+  </div>
+  <div class="auth-tabs">
+    <button class="atab active" id="tabLogin" onclick="swTab('login')">Sign In</button>
+    <button class="atab" id="tabReg" onclick="swTab('register')">Register</button>
+  </div>
+
+  <div id="loginForm">
+    <div class="acard">
+      <div class="field"><label>Email</label><input type="email" id="lemail" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="field"><label>Password</label><input type="password" id="lpwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Sign In →</button>
+      <div class="auth-err" id="lerr"></div>
+    </div>
+    <div class="divider">or</div>
+    <button class="gbtn" onclick="doGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="auth-sw">No account? <a onclick="swTab('register')">Create one</a></div>
+  </div>
+
+  <div id="regForm" style="display:none;">
+    <div class="acard">
+      <div class="field"><label>Full Name</label><input type="text" id="rname" placeholder="Your full name"></div>
+      <div class="field"><label>Email</label><input type="email" id="remail" placeholder="you@example.com"></div>
+      <div class="field"><label>Phone (for SMS)</label><input type="tel" id="rphone" placeholder="024 000 0000"></div>
+      <div class="field"><label>Password</label><input type="password" id="rpwd" placeholder="Min 6 characters"></div>
+      <div class="field">
+        <label>I am a…</label>
+        <div class="role-row">
+          <div class="rpill customer active" data-role="customer" onclick="pickRole(this)">🛍️ Customer</div>
+          <div class="rpill owner" data-role="owner" onclick="pickRole(this)">🏪 Business Owner</div>
+        </div>
+      </div>
+      <button class="auth-btn" onclick="doRegister()">Create Account →</button>
+      <div class="auth-err" id="rerr"></div>
+    </div>
+    <div class="auth-sw">Have account? <a onclick="swTab('login')">Sign in</a></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div class="profile-wrap" id="profileWrap">
+
+  <!-- HERO -->
+  <div class="phero">
+    <div class="pav-row">
+      <div class="pav" id="pavEl">?</div>
+      <div>
+        <div class="pname" id="pname">—</div>
+        <div class="pemail" id="pemail">—</div>
+        <div class="prole" id="prole">—</div>
+      </div>
+    </div>
+    <button class="edit-btn" onclick="showToast('✏️ Edit profile — coming soon!')">✏️ Edit Profile</button>
+  </div>
+
+  <!-- PLAN CARD (owner only) -->
+  <div id="planCardWrap" style="display:none;">
+    <div class="plan-card" id="planCard">
+      <div class="pc-top"><div class="pc-name" id="pcName">—</div><span class="pc-badge" id="pcBadge">—</span></div>
+      <div class="pc-exp" id="pcExp">—</div>
+      <div class="pc-bar"><div class="pc-fill" id="pcFill" style="width:100%;"></div></div>
+      <div class="pc-btns" id="pcBtns"></div>
+    </div>
+  </div>
+
+  <!-- STATS (owner) -->
+  <div id="ownerStats" style="display:none;">
+    <div class="stats-row">
+      <div class="sbox"><div class="sn" id="stListings">—</div><div class="sl">Listings</div></div>
+      <div class="sbox"><div class="sn" id="stBookings" style="color:var(--blue);">—</div><div class="sl">Bookings</div></div>
+      <div class="sbox"><div class="sn" id="stRevs" style="color:var(--gold);">—</div><div class="sl">Reviews</div></div>
+    </div>
+  </div>
+
+  <!-- IMAGE UPLOAD LIMITS (owner) -->
+  <div id="imgLimitSection" style="display:none;margin-top:16px;">
+    <div class="img-plan-box">
+      <div class="ipb-title">📸 Photo Upload Limit by Plan</div>
+      <div class="ipb-plans">
+        <div class="ipp basic" id="ipp-basic"><span class="ipp-count">1</span>Basic</div>
+        <div class="ipp standard" id="ipp-standard"><span class="ipp-count">3</span>Standard</div>
+        <div class="ipp featured" id="ipp-featured"><span class="ipp-count">5</span>Featured</div>
+        <div class="ipp premium" id="ipp-premium"><span class="ipp-count">10</span>Premium</div>
+      </div>
+      <div style="font-size:11px;color:var(--gray);">Your current plan allows <strong id="myImgLimit">1</strong> photo per listing. <a href="submit.html" style="color:var(--green);font-weight:700;">Upgrade →</a></div>
+    </div>
+  </div>
+
+  <!-- MY LISTINGS (owner) -->
+  <div id="listingsSection" style="display:none;">
+    <div class="sec-hd">
+      <div class="sec-t">My Listings</div>
+      <a href="submit.html" class="sec-lnk">+ Add New</a>
+    </div>
+    <div class="listing-list" id="myListings">
+      <div class="loading"><div class="spinner"></div> Loading…</div>
+    </div>
+  </div>
+
+  <!-- MY BOOKINGS (owner) -->
+  <div id="bookingsSection" style="display:none;">
+    <div class="sec-hd">
+      <div class="sec-t">Incoming Bookings</div>
+      <a href="bookings-dashboard.html" class="sec-lnk">View All →</a>
+    </div>
+    <div class="bk-list" id="myBookings">
+      <div class="loading"><div class="spinner"></div> Loading…</div>
+    </div>
+  </div>
+
+  <!-- SMS NOTIFICATIONS (owner) -->
+  <div id="smsSection" style="display:none;margin-top:8px;">
+    <div class="sec-hd" style="padding-bottom:8px;"><div class="sec-t">SMS Notifications</div></div>
+    <div class="sms-box">
+      <div class="sms-title">📱 Get SMS when someone books you</div>
+      <div class="sms-row">
+        <div><div class="sms-lbl">New Booking SMS</div><div class="sms-sub">Receive SMS when a customer books</div></div>
+        <button class="toggle on" id="togNewBk" onclick="this.classList.toggle('on');saveSMSPrefs()"></button>
+      </div>
+      <div class="sms-row">
+        <div><div class="sms-lbl">Cancellation SMS</div><div class="sms-sub">Receive SMS when booking is cancelled</div></div>
+        <button class="toggle on" id="togCancel" onclick="this.classList.toggle('on');saveSMSPrefs()"></button>
+      </div>
+      <div class="sms-row">
+        <div><div class="sms-lbl">Daily Summary SMS</div><div class="sms-sub">Morning summary of today's bookings</div></div>
+        <button class="toggle" id="togDaily" onclick="this.classList.toggle('on');saveSMSPrefs()"></button>
+      </div>
+      <div class="sms-phone-field" id="smsPhoneField">
+        <label style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:5px;">SMS Phone Number</label>
+        <input type="tel" id="smsPhone" placeholder="024 000 0000">
+        <button class="sms-save-btn" onclick="saveSMSPrefs()">💾 Save SMS Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVED BUSINESSES (customer) -->
+  <div id="savedSection" style="display:none;">
+    <div class="sec-hd">
+      <div class="sec-t">Saved Businesses</div>
+      <a href="index.html" class="sec-lnk">Browse →</a>
+    </div>
+    <div class="saved-list" id="savedList">
+      <div class="loading"><div class="spinner"></div> Loading…</div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="sec-hd" style="margin-top:8px;"><div class="sec-t">Settings</div></div>
+  <div class="settings-wrap">
+    <div class="setting-item" onclick="window.location='submit.html'">
+      <div class="si-left"><div class="si-ico" style="background:#f0fff6;">🏪</div><div><div class="si-lbl">List a Business</div><div class="si-sub">Add your business to GhanaList</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
+    <div class="setting-item" onclick="window.location='bookings-dashboard.html'">
+      <div class="si-left"><div class="si-ico" style="background:#e8f4ff;">📅</div><div><div class="si-lbl">All Bookings</div><div class="si-sub">Full bookings dashboard</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
+    <div class="setting-item" onclick="window.location='admin.html'">
+      <div class="si-left"><div class="si-ico" style="background:#fff3cd;">⚙️</div><div><div class="si-lbl">Admin Panel</div><div class="si-sub">Manage all listings</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
+    <div class="setting-item">
+      <div class="si-left"><div class="si-ico" style="background:var(--mist);">ℹ️</div><div><div class="si-lbl">About GhanaList</div><div class="si-sub">Version 3.0</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
+  </div>
+
+  <button class="signout-btn" onclick="doSignOut()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Sign Out
+  </button>
+  <div class="spacer"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item" onclick="window.location='index.html'">
+    <div class="ni"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div>
+    <div class="nl">Home</div>
+  </div>
+  <div class="nav-item" onclick="window.location='index.html'">
+    <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></div>
+    <div class="nl">Search</div>
+  </div>
+  <div class="nav-item" onclick="window.location='index.html'">
+    <div class="ni"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
+    <div class="nl">Map</div>
+  </div>
+  <div class="nav-item" style="position:relative;">
+    <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
+    <div class="nl">Saved</div>
+  </div>
+  <div class="nav-item active">
+    <div class="ni" style="position:relative;">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="bk-notif-dot" id="notifDot" style="display:none;"></div>
+    </div>
+    <div class="nl">Profile</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, collection, query, where, getDocs,
+  doc, getDoc, setDoc, updateDoc, deleteDoc,
+  arrayUnion, arrayRemove, serverTimestamp, orderBy, limit
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey:"YOUR_FIREBASE_API_KEY",
+  authDomain:"YOUR_PROJECT.firebaseapp.com",
+  projectId:"YOUR_PROJECT",
+  storageBucket:"YOUR_PROJECT.appspot.com",
+  messagingSenderId:"YOUR_SENDER_ID",
+  appId:"YOUR_APP_ID"
+};
+
+// Cloudinary
+const CLOUD_NAME    = "YOUR_CLOUD_NAME";
+const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
+
+// Hubtel SMS (Ghana)
+// Register at https://hubtel.com/messaging
+const HUBTEL_ID     = "YOUR_HUBTEL_CLIENT_ID";
+const HUBTEL_SECRET = "YOUR_HUBTEL_CLIENT_SECRET";
+const HUBTEL_FROM   = "GhanaList";
+
+// Plan image limits
+const IMG_LIMITS = { basic:1, standard:3, featured:5, premium:10 };
+
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+const gp   = new GoogleAuthProvider();
+
+let currentUser = null, userProfile = null, selRole = 'customer';
+
+const catEmoji = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
+
+// ── AUTH STATE ──
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('authWrap').style.display    = 'none';
+    document.getElementById('profileWrap').style.display = 'block';
+    await loadProfile(user);
+  } else {
+    currentUser = null;
+    document.getElementById('authWrap').style.display    = 'block';
+    document.getElementById('profileWrap').style.display = 'none';
+  }
+});
+
+// ── AUTH HELPERS ──
+window.swTab = t => {
+  document.getElementById('loginForm').style.display = t==='login'?'block':'none';
+  document.getElementById('regForm').style.display   = t==='register'?'block':'none';
+  document.getElementById('tabLogin').classList.toggle('active', t==='login');
+  document.getElementById('tabReg').classList.toggle('active',   t==='register');
+};
+window.pickRole = el => {
+  selRole = el.dataset.role;
+  document.querySelectorAll('.rpill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+};
+window.doLogin = async () => {
+  const e=document.getElementById('lemail').value.trim(), p=document.getElementById('lpwd').value;
+  const err=document.getElementById('lerr'); err.style.display='none';
+  try { await signInWithEmailAndPassword(auth,e,p); }
+  catch(ex) { err.textContent=ex.code==='auth/invalid-credential'?'Wrong email or password.':ex.message; err.style.display='block'; }
+};
+window.doRegister = async () => {
+  const name=document.getElementById('rname').value.trim();
+  const email=document.getElementById('remail').value.trim();
+  const phone=document.getElementById('rphone').value.trim();
+  const pwd=document.getElementById('rpwd').value;
+  const err=document.getElementById('rerr'); err.style.display='none';
+  if(!name||!email||pwd.length<6){showToast('⚠️ Fill all fields (min 6 char password)');return;}
+  try {
+    const cred=await createUserWithEmailAndPassword(auth,email,pwd);
+    await updateProfile(cred.user,{displayName:name});
+    await setDoc(doc(db,'users',cred.user.uid),{
+      name,email,phone,role:selRole,
+      savedBusinesses:[],
+      smsEnabled:true,
+      smsPhone:phone,
+      createdAt:serverTimestamp()
+    });
+  } catch(ex) { err.textContent=ex.message; err.style.display='block'; }
+};
+window.doGoogle = async () => {
+  try {
+    const r=await signInWithPopup(auth,gp);
+    const uRef=doc(db,'users',r.user.uid);
+    const uSnap=await getDoc(uRef);
+    if(!uSnap.exists()) await setDoc(uRef,{name:r.user.displayName||'User',email:r.user.email,role:'customer',savedBusinesses:[],smsEnabled:false,createdAt:serverTimestamp()});
+  } catch(ex){showToast('❌ '+ex.message);}
+};
+window.doSignOut = async () => { await signOut(auth); showToast('👋 Signed out'); };
+
+// ── LOAD PROFILE ──
+async function loadProfile(user) {
+  try {
+    const snap=await getDoc(doc(db,'users',user.uid));
+    userProfile=snap.exists()?snap.data():{name:user.displayName||'User',email:user.email,role:'customer',savedBusinesses:[]};
+  } catch { userProfile={name:user.displayName||'User',email:user.email,role:'customer',savedBusinesses:[]}; }
+
+  const name=userProfile.name||user.displayName||'User';
+  const role=userProfile.role||'customer';
+  const initials=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+
+  const pav=document.getElementById('pavEl');
+  pav.innerHTML=user.photoURL?`<img src="${user.photoURL}" alt="">`:'';
+  if(!user.photoURL) pav.textContent=initials;
+
+  document.getElementById('pname').textContent=name;
+  document.getElementById('pemail').textContent=user.email||'';
+  const rb=document.getElementById('prole');
+  rb.textContent=role==='owner'?'🏪 Business Owner':'🛍️ Customer';
+  rb.className='prole '+(role==='owner'?'role-o':'role-c');
+
+  if(role==='owner'){
+    document.getElementById('planCardWrap').style.display='block';
+    document.getElementById('ownerStats').style.display='block';
+    document.getElementById('imgLimitSection').style.display='block';
+    document.getElementById('listingsSection').style.display='block';
+    document.getElementById('bookingsSection').style.display='block';
+    document.getElementById('smsSection').style.display='block';
+    document.getElementById('savedSection').style.display='none';
+    await loadOwnerData(user.email);
+    loadSMSPrefs();
+  } else {
+    document.getElementById('planCardWrap').style.display='none';
+    document.getElementById('ownerStats').style.display='none';
+    document.getElementById('imgLimitSection').style.display='none';
+    document.getElementById('listingsSection').style.display='none';
+    document.getElementById('bookingsSection').style.display='none';
+    document.getElementById('smsSection').style.display='none';
+    document.getElementById('savedSection').style.display='block';
+    await loadSaved();
+  }
+}
+
+// ── OWNER DATA ──
+async function loadOwnerData(email) {
+  try {
+    const q=query(collection(db,'businesses'),where('email','==',email));
+    const snap=await getDocs(q);
+    const listings=snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    // Plan card
+    const planOrder={premium:0,featured:1,standard:2,basic:3};
+    const top=[...listings].sort((a,b)=>(planOrder[a.plan]||3)-(planOrder[b.plan]||3))[0];
+    renderPlanCard(top);
+
+    // Image limit indicator
+    const plan=(top?.plan)||'basic';
+    const limit=IMG_LIMITS[plan]||1;
+    document.getElementById('myImgLimit').textContent=limit;
+    ['basic','standard','featured','premium'].forEach(p=>{
+      const el=document.getElementById('ipp-'+p);
+      el.classList.toggle('active-plan',p===plan);
+    });
+
+    // Stats
+    const totalRevs=listings.reduce((s,b)=>s+(b.reviews||[]).length,0);
+    document.getElementById('stListings').textContent=listings.length;
+    document.getElementById('stRevs').textContent=totalRevs;
+
+    // Listings with images
+    renderMyListings(listings);
+
+    // Bookings
+    await loadMyBookings(listings.map(l=>l.id));
+
+  } catch(e){
+    document.getElementById('myListings').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Error</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ── PLAN CARD ──
+function renderPlanCard(listing) {
+  if(!listing){
+    document.getElementById('planCard').className='plan-card pc-basic';
+    document.getElementById('pcName').textContent='No Active Listing';
+    document.getElementById('pcBadge').textContent='Get Started';
+    document.getElementById('pcExp').textContent='You have no listings yet.';
+    document.getElementById('pcFill').style.width='0%';
+    document.getElementById('pcBtns').innerHTML=`<a href="submit.html" class="pc-btn renew">+ List Your Business</a>`;
+    return;
+  }
+  const plan=listing.plan||'basic';
+  const names={premium:'👑 Premium',featured:'⭐ Featured',standard:'✓ Standard',basic:'📋 Basic'};
+  const bclass={premium:'pcb-p',featured:'pcb-f',standard:'pcb-s',basic:'pcb-b'};
+  const fclass={premium:'fill-p',featured:'fill-gold',standard:'fill-g',basic:'fill-g'};
+  document.getElementById('planCard').className=`plan-card pc-${plan}`;
+  document.getElementById('pcName').textContent=names[plan];
+  const badge=document.getElementById('pcBadge');
+  badge.textContent=listing.approved?'● Live':'⏳ Pending';
+  badge.className=`pc-badge ${bclass[plan]}`;
+  const expEl=document.getElementById('pcExp');
+  if(listing.expiresAt&&plan!=='basic'){
+    const exp=listing.expiresAt.toDate?listing.expiresAt.toDate():new Date(listing.expiresAt);
+    const days=Math.ceil((exp.getTime()-Date.now())/86400000);
+    const pct=Math.max(0,Math.min(100,(days/30)*100));
+    expEl.innerHTML=`Expires <strong>${exp.toLocaleDateString('en-GB',{day:'numeric',month:'long'})}</strong> · ${days} day${days!==1?'s':''} left`;
+    expEl.className=`pc-exp${days<=7?' soon':''}`;
+    document.getElementById('pcFill').style.width=pct+'%';
+    document.getElementById('pcFill').className=`pc-fill ${days<=7?'fill-r':fclass[plan]}`;
+  } else {
+    expEl.textContent=plan==='basic'?'Free plan — no expiry':'No expiry set';
+    document.getElementById('pcFill').style.width='100%';
+    document.getElementById('pcFill').className=`pc-fill ${fclass[plan]}`;
+  }
+  const upgradeMap={basic:'Standard',standard:'Featured',featured:'Premium'};
+  const upgTo=upgradeMap[plan];
+  document.getElementById('pcBtns').innerHTML=`
+    <a href="submit.html" class="pc-btn renew">🔄 Renew</a>
+    ${upgTo?`<a href="submit.html" class="pc-btn upgrade">⬆️ ${upgTo}</a>`:''}`;
+}
+
+// ── MY LISTINGS WITH IMAGE GALLERY ──
+function renderMyListings(listings) {
+  const el=document.getElementById('myListings');
+  if(!listings.length){
+    el.innerHTML=`<div class="empty"><div class="ei">🏪</div><h3>No listings yet</h3><p>List your business and start getting customers.</p><a href="submit.html">+ List Now</a></div>`;
+    return;
+  }
+  el.innerHTML=listings.map(b=>{
+    const plan=b.plan||'basic';
+    const limit=IMG_LIMITS[plan]||1;
+    const images=b.images||( b.imageUrl?[b.imageUrl]:[] );
+    const used=images.length;
+    const maxed=used>=limit;
+    const exp=b.expiresAt?.toDate?b.expiresAt.toDate():b.expiresAt?new Date(b.expiresAt):null;
+    const days=exp?Math.ceil((exp.getTime()-Date.now())/86400000):null;
+
+    const planClass={premium:'lcp',featured:'lcf',standard:'lcs',basic:'lcb'};
+    const imgThumbsHtml=images.map((img,i)=>`
+      <div class="limg-item">
+        <img src="${esc(img)}" alt="" onerror="this.style.display='none'">
+        <button class="limg-del" onclick="delImage('${b.id}',${i})" title="Remove photo">×</button>
+      </div>`).join('');
+
+    const addBtnHtml=!maxed?`
+      <div class="limg-add" title="Add photo">
+        <input type="file" accept="image/*" onchange="uploadListingImg(this,'${b.id}','${plan}',${limit})">
+        <span>📷</span>
+        <span>Add</span>
+      </div>`:'' ;
+
+    return `
+    <div class="lcard ${planClass[plan]||'lcb'}">
+      <div class="limg-gallery">${imgThumbsHtml}${addBtnHtml}</div>
+      <div class="limg-limit ${maxed?'maxed':''}">
+        <span>Photos: ${used}/${limit}</span>
+        ${maxed?`<a href="submit.html" style="color:var(--green);font-size:10px;font-weight:700;">Upgrade for more ↗</a>`:''}
+      </div>
+      <div class="lbody">
+        <div class="lname">${esc(b.name)}</div>
+        <div class="lmeta">
+          <span class="lbadge lb-pl-${plan}">${plan}</span>
+          ${b.approved?'<span class="lbadge lb-live">● Live</span>':'<span class="lbadge lb-pend">⏳ Pending</span>'}
+          ${days!==null&&days<=7?`<span class="lbadge lb-exp">⚠️ ${days}d left</span>`:''}
+        </div>
+        <div class="lexp${days!==null&&days<=7?' soon':''}">
+          ${exp?`Expires ${exp.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})} ·`:''}
+          📍 ${esc(b.city||b.location||'Ghana')}
+        </div>
+        <div class="lacts">
+          <a class="libtn view" href="business.html?id=${b.id}">👁 View</a>
+          <a class="libtn renew" href="submit.html">🔄 Renew</a>
+          <button class="libtn del" onclick="deleteListing('${b.id}')">🗑 Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── UPLOAD IMAGE TO LISTING ──
+window.uploadListingImg = async (input, bizId, plan, limit) => {
+  const file=input.files[0]; if(!file) return;
+  if(file.size>5*1024*1024){showToast('❌ Max 5MB');return;}
+  showToast('⏳ Uploading…');
+  const fd=new FormData(); fd.append('file',file); fd.append('upload_preset',UPLOAD_PRESET); fd.append('folder','ghanaList');
+  try {
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();
+    if(data.secure_url){
+      const bRef=doc(db,'businesses',bizId);
+      const snap=await getDoc(bRef);
+      const existing=snap.data()?.images||(snap.data()?.imageUrl?[snap.data().imageUrl]:[]);
+      if(existing.length>=limit){showToast(`❌ Max ${limit} photos for your plan`);return;}
+      await updateDoc(bRef,{images:arrayUnion(data.secure_url),imageUrl:existing[0]||data.secure_url});
+      showToast('✅ Photo added!');
+      await loadOwnerData(currentUser.email);
+    } else throw new Error(data.error?.message||'Failed');
+  } catch(e){showToast('❌ Upload failed: '+e.message);}
+};
+
+// ── DELETE IMAGE ──
+window.delImage = async (bizId, idx) => {
+  if(!confirm('Remove this photo?')) return;
+  try {
+    const snap=await getDoc(doc(db,'businesses',bizId));
+    const images=[...(snap.data()?.images||(snap.data()?.imageUrl?[snap.data().imageUrl]:[])||[])];
+    images.splice(idx,1);
+    await updateDoc(doc(db,'businesses',bizId),{images,imageUrl:images[0]||''});
+    showToast('🗑 Photo removed');
+    await loadOwnerData(currentUser.email);
+  } catch(e){showToast('❌ '+e.message);}
+};
+
+// ── DELETE LISTING ──
+window.deleteListing = async bizId => {
+  if(!confirm('Delete this listing permanently?')) return;
+  try {
+    await deleteDoc(doc(db,'businesses',bizId));
+    showToast('🗑 Listing deleted');
+    await loadOwnerData(currentUser.email);
+  } catch(e){showToast('❌ '+e.message);}
+};
+
+// ── LOAD BOOKINGS IN PROFILE ──
+async function loadMyBookings(bizIds) {
+  if(!bizIds.length){
+    document.getElementById('myBookings').innerHTML=`<div class="empty"><div class="ei">📅</div><h3>No bookings yet</h3><p>Bookings will appear here when customers book your business.</p></div>`;
+    document.getElementById('stBookings').textContent='0';
+    return;
+  }
+  try {
+    const q=query(collection(db,'bookings'),where('businessId','in',bizIds.slice(0,10)),orderBy('createdAt','desc'),limit(20));
+    const snap=await getDocs(q);
+    const bookings=snap.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('stBookings').textContent=bookings.length;
+
+    // Show red dot if new pending bookings
+    const pending=bookings.filter(b=>b.status==='pending');
+    if(pending.length) document.getElementById('notifDot').style.display='block';
+
+    renderProfileBookings(bookings);
+  } catch(e){
+    document.getElementById('myBookings').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>${e.message}</h3></div>`;
+  }
+}
+
+function renderProfileBookings(bookings) {
+  const el=document.getElementById('myBookings');
+  if(!bookings.length){
+    el.innerHTML=`<div class="empty"><div class="ei">📅</div><h3>No bookings yet</h3><p>When customers book your business it will appear here.</p></div>`;
+    return;
+  }
+  const TODAY=new Date().toISOString().split('T')[0];
+  el.innerHTML=bookings.slice(0,10).map(b=>{
+    const isNew=b.status==='pending';
+    const isToday=b.date===TODAY;
+    const d=new Date(b.date+'T00:00:00');
+    const dl=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    const waNum=(b.businessWhatsapp||b.businessPhone||'').replace(/\D/g,'').slice(-9);
+    const waMsg=encodeURIComponent(`Hi ${b.customerName}, your booking at ${b.businessName} is confirmed!\nRef: ${b.bookingRef}\nDate: ${dl} at ${b.time}`);
+    return `
+    <div class="bk-card bk-${b.status}">
+      ${isNew?'<div class="bk-new-badge">NEW</div>':''}
+      <div class="bk-top">
+        <div class="bk-ref">${b.bookingRef} ${isToday?'<span style="background:var(--gold);color:var(--ink);font-size:9px;padding:2px 6px;border-radius:4px;margin-left:4px;">TODAY</span>':''}</div>
+        <span class="bk-st st-${b.status}">${b.status}</span>
+      </div>
+      <div class="bk-service">${esc(b.service)} · <span style="color:var(--gray);font-size:11px;font-weight:400;">${esc(b.businessName)}</span></div>
+      <div class="bk-dt">📅 ${dl} · 🕐 ${b.time}</div>
+      <div class="bk-cust">
+        <div class="bk-cname">👤 ${esc(b.customerName)}</div>
+        <div class="bk-cmeta">📞 <a href="tel:${b.customerPhone}" style="color:var(--green);font-weight:600;">${esc(b.customerPhone)}</a>${b.customerEmail?' · '+esc(b.customerEmail):''}</div>
+      </div>
+      ${b.note?`<div class="bk-note">💬 "${esc(b.note)}"</div>`:''}
+      <div class="bk-acts">
+        ${b.status==='pending'?`<button class="bkbtn confirm" onclick="updateBooking('${b.id}','confirmed')">✅ Confirm</button>`:''}
+        ${b.status==='confirmed'?`<button class="bkbtn confirm" onclick="updateBooking('${b.id}','completed')" style="background:var(--blue);">✓ Done</button>`:''}
+        ${b.status!=='cancelled'&&b.status!=='completed'?`<button class="bkbtn cancel" onclick="updateBooking('${b.id}','cancelled')">✕ Cancel</button>`:''}
+        <a class="bkbtn wa" href="https://wa.me/233${waNum}?text=${waMsg}" target="_blank">💬 WA</a>
+        <a class="bkbtn call" href="tel:${b.customerPhone}">📞 Call</a>
+        <button class="bkbtn del" onclick="deleteBooking('${b.id}')" title="Delete">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── UPDATE BOOKING ──
+window.updateBooking = async (id, status) => {
+  try {
+    await updateDoc(doc(db,'bookings',id),{status});
+    showToast(status==='confirmed'?'✅ Confirmed!':status==='cancelled'?'❌ Cancelled':'✓ Completed');
+    // Send SMS if enabled
+    if(userProfile?.smsEnabled && userProfile?.smsPhone){
+      const snap=await getDoc(doc(db,'bookings',id));
+      const bk=snap.data();
+      await sendSMS(userProfile.smsPhone,`GhanaList: Booking ${bk?.bookingRef} ${status}. Customer: ${bk?.customerName}, ${bk?.date} at ${bk?.time}.`);
+    }
+    const bizIds=Object.values(await getDoc(doc(db,'users',currentUser.uid))).savedBusinesses||[];
+    await loadMyBookings(bizIds);
+    await loadOwnerData(currentUser.email);
+  } catch(e){showToast('❌ '+e.message);}
+};
+
+// ── DELETE BOOKING (clear message) ──
+window.deleteBooking = async id => {
+  if(!confirm('Remove this booking from your view?')) return;
+  try {
+    await deleteDoc(doc(db,'bookings',id));
+    showToast('🗑 Booking removed');
+    await loadOwnerData(currentUser.email);
+  } catch(e){showToast('❌ '+e.message);}
+};
+
+// ── SMS PREFERENCES ──
+function loadSMSPrefs() {
+  if(!userProfile) return;
+  if(userProfile.smsEnabled!==false) document.getElementById('togNewBk').classList.add('on');
+  else document.getElementById('togNewBk').classList.remove('on');
+  if(userProfile.smsCancelEnabled!==false) document.getElementById('togCancel').classList.add('on');
+  if(userProfile.smsDailyEnabled) document.getElementById('togDaily').classList.add('on');
+  if(userProfile.smsPhone) document.getElementById('smsPhone').value=userProfile.smsPhone;
+  document.getElementById('smsPhoneField').style.display='block';
+}
+
+window.saveSMSPrefs = async () => {
+  if(!currentUser) return;
+  const phone=document.getElementById('smsPhone').value.trim();
+  const prefs={
+    smsEnabled:document.getElementById('togNewBk').classList.contains('on'),
+    smsCancelEnabled:document.getElementById('togCancel').classList.contains('on'),
+    smsDailyEnabled:document.getElementById('togDaily').classList.contains('on'),
+    smsPhone:phone
+  };
+  try {
+    await updateDoc(doc(db,'users',currentUser.uid),prefs);
+    userProfile={...userProfile,...prefs};
+    showToast('✅ SMS settings saved!');
+  } catch(e){showToast('❌ '+e.message);}
+};
+
+// ── SEND SMS via Hubtel ──
+async function sendSMS(to, message) {
+  // Hubtel Ghana SMS API
+  // Full docs: https://developers.hubtel.com/docs/send-message
+  const num='233'+to.replace(/\D/g,'').slice(-9);
+  try {
+    await fetch(`https://smsc.hubtel.com/v1/messages/send?clientsecret=${HUBTEL_SECRET}&clientid=${HUBTEL_ID}&from=${HUBTEL_FROM}&to=${num}&content=${encodeURIComponent(message)}`);
+  } catch(e){ console.log('SMS failed:',e.message); }
+}
+
+// ── SAVED BUSINESSES (customer) ──
+async function loadSaved() {
+  const saved=userProfile?.savedBusinesses||[];
+  const el=document.getElementById('savedList');
+  if(!saved.length){
+    el.innerHTML=`<div class="empty"><div class="ei">🔖</div><h3>No saved businesses</h3><p>Tap bookmark on any business to save it here.</p><a href="index.html">Browse Businesses</a></div>`;
+    return;
+  }
+  try {
+    const items=await Promise.all(saved.map(async id=>{
+      const s=await getDoc(doc(db,'businesses',id));
+      return s.exists()?{id:s.id,...s.data()}:null;
+    }));
+    const valid=items.filter(Boolean);
+    el.innerHTML=valid.map(b=>`
+      <a class="sv-card" href="business.html?id=${b.id}">
+        <div class="sv-thumb">${b.imageUrl||b.images?.[0]?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:`${catEmoji(b.category)}`}</div>
+        <div class="sv-body">
+          <div class="sv-name">${esc(b.name)}</div>
+          <div class="sv-cat">${esc(b.category)}</div>
+          <div class="sv-loc">📍 ${esc(b.location||b.city||'Ghana')}</div>
+        </div>
+        <div class="sv-del" onclick="event.preventDefault();unsave('${b.id}')">×</div>
+      </a>`).join('');
+  } catch(e){ el.innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3></div>`; }
+}
+
+window.unsave = async bizId => {
+  if(!currentUser) return;
+  await updateDoc(doc(db,'users',currentUser.uid),{savedBusinesses:arrayRemove(bizId)});
+  userProfile.savedBusinesses=(userProfile.savedBusinesses||[]).filter(id=>id!==bizId);
+  await loadSaved();
+  showToast('🗑 Removed from saved');
+};
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+</script>
+</body>
+</html>

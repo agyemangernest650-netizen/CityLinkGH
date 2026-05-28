@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhanaList — List Your Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="submit.css">
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <a href="index.html" class="back">←</a>
+  <div class="logo">CityLink<span>GH</span></div>
+</header>
+
+<div class="steps">
+  <div class="step active" id="s1"><div class="sc">1</div><div class="sl">Plan</div></div>
+  <div class="sline" id="l1"></div>
+  <div class="step" id="s2"><div class="sc">2</div><div class="sl">Details</div></div>
+  <div class="sline" id="l2"></div>
+  <div class="step" id="s3"><div class="sc">3</div><div class="sl">Pay</div></div>
+  <div class="sline" id="l3"></div>
+  <div class="step" id="s4"><div class="sc">✓</div><div class="sl">Live!</div></div>
+</div>
+
+<div class="hero">
+  <h1>List Your Business 🏪</h1>
+  <p>Reach thousands of Ghanaians every day.<br>Choose a plan and get found on CityLinkGH.</p>
+</div>
+
+<div id="formView">
+  <!-- PLAN -->
+  <div class="plans">
+    <div class="sec-t">Choose Your Plan</div>
+    <div class="plan-grid">
+      <div class="plan-card basic selected" data-plan="basic" data-price="0" onclick="pickPlan(this)">
+        <div class="plan-icon">📋</div>
+        <div class="plan-name">Basic</div>
+        <div class="plan-price pp-basic">Free</div>
+        <div class="plan-period">Forever · 1 photo</div>
+        <div class="plan-feats basic"><span>Listed in directory</span><span>Call & WhatsApp</span><span>Standard placement</span></div>
+      </div>
+      <div class="plan-card standard" data-plan="standard" data-price="50" onclick="pickPlan(this)">
+        <div class="plan-icon">✅</div>
+        <div class="plan-name">Standard</div>
+        <div class="plan-price pp-standard">GHS 50</div>
+        <div class="plan-period">per month · 3 photos</div>
+        <div class="plan-feats standard"><span>Higher placement</span><span>✓ Verified badge</span><span>Green border</span></div>
+      </div>
+      <div class="plan-card featured" data-plan="featured" data-price="100" onclick="pickPlan(this)">
+        <div class="plan-popular">⭐ POPULAR</div>
+        <div class="plan-icon">⭐</div>
+        <div class="plan-name">Featured</div>
+        <div class="plan-price pp-featured">GHS 100</div>
+        <div class="plan-period">per month · 5 photos</div>
+        <div class="plan-feats featured"><span>Top of results</span><span>Gold border + badge</span><span>Booking enabled</span></div>
+      </div>
+      <div class="plan-card premium" data-plan="premium" data-price="200" onclick="pickPlan(this)">
+        <div class="plan-icon">👑</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-price pp-premium">GHS 200</div>
+        <div class="plan-period">per month · 10 photos</div>
+        <div class="plan-feats premium"><span>👑 Spotlight section</span><span>Purple border + ribbon</span><span>#1 placement</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-perks basic" id="planPerks" style="display:block;">
+    <div class="pp-title">📋 Basic — What you get</div>
+    <div class="perk"><span>📋</span>Listed in directory</div>
+    <div class="perk"><span>📞</span>Call & WhatsApp buttons</div>
+    <div class="perk"><span>🔄</span>No expiry — stays listed forever</div>
+    <div class="perk"><span>📷</span>1 photo allowed</div>
+  </div>
+
+  <div class="body">
+    <!-- DETAILS -->
+    <div class="sec-t" style="margin-top:18px;">Business Details</div>
+    <div class="fcard">
+      <div class="field"><label>Business Name *</label><input type="text" id="bName" placeholder="e.g. Mama Akua's Kitchen"></div>
+      <div class="field"><label>Description</label><textarea id="bDesc" placeholder="Tell customers what makes you special…"></textarea></div>
+      <div class="r2">
+        <div class="field"><label>Category *</label>
+          <select id="bCat">
+            <option value="">Select…</option>
+            <option>Restaurant</option><option>Hospital</option><option>Hotel</option><option>Salon</option>
+            <option>Pharmacy</option><option>School</option><option>Church</option><option>Mechanic</option>
+            <option>Lawyer</option><option>Event Planner</option><option>Supermarket</option>
+            <option>Photographer</option><option>Electrician</option><option>Plumber</option><option>Tailor</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>City *</label>
+          <select id="bCity">
+            <option value="">Select…</option>
+            <option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option>
+            <option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option><option>Wa</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Street / Area</label><input type="text" id="bLoc" placeholder="e.g. Osu, near Total Filling Station"></div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="sec-t">Contact Info</div>
+    <div class="fcard">
+      <div class="r2">
+        <div class="field"><label>Phone *</label><input type="tel" id="bPhone" placeholder="024 000 0000"></div>
+        <div class="field"><label>WhatsApp</label><input type="tel" id="bWa" placeholder="024 000 0000"></div>
+      </div>
+      <div class="r2">
+        <div class="field"><label>Email</label><input type="email" id="bEmail"></div>
+        <div class="field"><label>Website</label><input type="url" id="bWeb" placeholder="https://…"></div>
+      </div>
+    </div>
+
+    <!-- HOURS & TAGS -->
+    <div class="sec-t">Hours & Tags</div>
+    <div class="fcard">
+      <div class="r2">
+        <div class="field"><label>Opens At</label><input type="time" id="bOpen"></div>
+        <div class="field"><label>Closes At</label><input type="time" id="bClose"></div>
+      </div>
+      <div class="field"><label>Tags</label><input type="text" id="bTags" placeholder="delivery, takeaway, local food"></div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="sec-t">Business Photos — <span id="photoLimitLabel" style="color:var(--green);font-size:12px;">1 photo (Basic plan)</span></div>
+    <div class="fcard">
+      <div class="img-section">
+        <div class="img-grid" id="imgGrid"></div>
+        <div class="img-limit" id="imgLimit"><span id="imgCount">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div>
+      </div>
+      <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
+      <div class="ustat" id="ustat"></div>
+      <div style="margin-top:9px;"><label>Or paste image URL</label><input type="url" id="bImgUrl" placeholder="https://…" oninput="addUrlImg(this.value)"></div>
+    </div>
+
+    <!-- MOMO -->
+    <div class="momo-box" id="momoBox">
+      <div class="momo-hdr">
+        <div class="momo-logo">M</div>
+        <div><div class="momo-title">Pay with MTN MoMo</div><div class="momo-sub">Secure mobile money payment</div></div>
+      </div>
+      <div class="summary">
+        <div class="sum-row"><span class="sum-lbl">Plan</span><span class="sum-val" id="sumPlan">—</span></div>
+        <div class="sum-row"><span class="sum-lbl">Duration</span><span class="sum-val">30 days</span></div>
+        <div class="sum-row"><span class="sum-lbl">Photos allowed</span><span class="sum-val" id="sumPhotos">—</span></div>
+        <div class="sum-row"><span class="sum-lbl">Total</span><span class="sum-total" id="sumTotal">GHS 0</span></div>
+      </div>
+      <div class="field"><label>Network</label>
+        <div class="net-pills">
+          <div class="net-pill active" data-net="MTN" onclick="pickNet(this)">📱 MTN</div>
+          <div class="net-pill" data-net="Vodafone" onclick="pickNet(this)">📱 Vodafone</div>
+          <div class="net-pill" data-net="AirtelTigo" onclick="pickNet(this)">📱 AirtelTigo</div>
+        </div>
+      </div>
+      <div class="field"><label>MoMo Number *</label>
+        <div class="momo-num-wrap"><div class="momo-pre">+233</div><input type="tel" id="momoNum" placeholder="24 000 0000" maxlength="10"></div>
+      </div>
+      <div class="field"><label>Account Name</label><input type="text" id="momoName" placeholder="Name on MoMo account"></div>
+      <button class="pay-btn" id="payBtn" onclick="doMomoPay()">💳 Pay Now</button>
+      <div class="momo-stat" id="momoStat"></div>
+      <div class="momo-note">🔒 Secure via MTN MoMo API.<br>You will get a prompt on your phone to approve.<br>Listing activates after confirmation.</div>
+    </div>
+
+    <div class="agree">
+      <input type="checkbox" id="agreeCheck">
+      <label for="agreeCheck">I confirm this information is accurate and I have authority to list this business. I agree to GhanaList's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</label>
+    </div>
+
+    <button class="sub-btn" id="subBtn" onclick="doSubmit()">
+      🚀 <span id="subTxt">Submit My Business</span>
+    </button>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success" id="successView">
+  <div class="sico" id="sico">🎉</div>
+  <h2 id="sTitle">You're Listed!</h2>
+  <div class="ref-box"><div class="ref-lbl">Reference Number</div><div class="ref-num" id="refNum">—</div></div>
+  <div class="perks-box" id="perksBox"></div>
+  <p id="sMsg"></p>
+  <a href="index.html">← Browse GhanaList</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"YOUR_FIREBASE_API_KEY",
+  authDomain:"YOUR_PROJECT.firebaseapp.com",
+  projectId:"YOUR_PROJECT",
+  storageBucket:"YOUR_PROJECT.appspot.com",
+  messagingSenderId:"YOUR_SENDER_ID",
+  appId:"YOUR_APP_ID"
+};
+const CLOUD_NAME    = "YOUR_CLOUD_NAME";
+const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
+
+const PLAN_FLAGS = {
+  basic:   {verified:false,featured:false,approved:true, autoApprove:true},
+  standard:{verified:true, featured:false,approved:false,autoApprove:false},
+  featured:{verified:true, featured:true, approved:false,autoApprove:false},
+  premium: {verified:true, featured:true, approved:false,autoApprove:false}
+};
+const IMG_LIMITS = {basic:1,standard:3,featured:5,premium:10};
+const PLAN_PERKS_DATA = {
+  basic:   {icon:'🎉',title:'Basic Listing Submitted!',msg:'Free listing under review. Approved within 24 hours.',perks:['Listed in directory','Call & WhatsApp','No expiry','1 photo']},
+  standard:{icon:'✅',title:'Standard Listing Submitted!',msg:'Payment confirmed! Activated within 2 hours.',perks:['✓ Verified badge auto-set','Higher placement','Green card border','3 photos · 30 days']},
+  featured:{icon:'⭐',title:'Featured Listing Activated!',msg:'Payment confirmed! Featured listing active within 1 hour.',perks:['⭐ Featured badge auto-set','✓ Verified badge','Gold border · Top results','5 photos · 30 days','📅 Booking enabled']},
+  premium: {icon:'👑',title:'Premium Listing Live!',msg:'Payment confirmed! Premium spotlight active now.',perks:['👑 Premium Spotlight section','Purple ribbon + border','#1 placement in all searches','✓ Verified + ⭐ Featured','10 photos · 30 days','📅 Booking enabled']}
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+let selPlan='basic', selPrice=0, selNet='MTN', uploadedImages=[], payRef='', payDone=false;
+
+// ── PLAN ──
+window.pickPlan = el => {
+  selPlan  = el.dataset.plan;
+  selPrice = Number(el.dataset.price);
+  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const perks=document.getElementById('planPerks');
+  const pd=PLAN_PERKS_DATA[selPlan];
+  perks.className=`plan-perks ${selPlan}`;
+  perks.style.display='block';
+  perks.innerHTML=`<div class="pp-title">${pd.icon} ${el.querySelector('.plan-name').textContent} — What you get</div>${pd.perks.map(p=>`<div class="perk"><span>✓</span>${p}</div>`).join('')}`;
+
+  const limit=IMG_LIMITS[selPlan];
+  document.getElementById('photoLimitLabel').textContent=`${limit} photo${limit!==1?'s':''} (${selPlan} plan)`;
+  renderImgGrid();
+
+  document.getElementById('momoBox').style.display=selPrice>0?'block':'none';
+  if(selPrice>0){
+    document.getElementById('sumPlan').textContent=`${el.querySelector('.plan-name').textContent} — GHS ${selPrice}`;
+    document.getElementById('sumPhotos').textContent=`${limit} photo${limit!==1?'s':''}`;
+    document.getElementById('sumTotal').textContent=`GHS ${selPrice}`;
+  }
+  document.getElementById('subTxt').textContent=selPrice>0?'Pay & Submit':'Submit My Business';
+
+  document.getElementById('s1').classList.add('done');
+  document.getElementById('l1').classList.add('done');
+  document.getElementById('s2').classList.add('active');
+};
+
+window.pickNet=el=>{selNet=el.dataset.net;document.querySelectorAll('.net-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');};
+
+// ── IMAGE GRID ──
+function renderImgGrid(){
+  const limit=IMG_LIMITS[selPlan]||1;
+  const grid=document.getElementById('imgGrid');
+  let html=uploadedImages.map((img,i)=>`
+    <div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeImg(${i})">×</button></div>`).join('');
+  if(uploadedImages.length<limit) html+=`<div class="img-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
+  grid.innerHTML=html;
+  const bar=document.getElementById('imgLimit');
+  bar.className='img-limit'+(uploadedImages.length>=limit?' maxed':'');
+  document.getElementById('imgCount').textContent=`${uploadedImages.length} / ${limit} photo${limit!==1?'s':''}`;
+}
+
+window.removeImg=idx=>{uploadedImages.splice(idx,1);renderImgGrid();};
+
+window.addUrlImg=url=>{
+  if(!url) return;
+  const limit=IMG_LIMITS[selPlan]||1;
+  if(uploadedImages.length>=limit){showToast(`❌ Max ${limit} photos for ${selPlan}`);return;}
+  if(!uploadedImages.includes(url)){uploadedImages.push(url);renderImgGrid();}
+};
+
+window.uploadImg=async input=>{
+  const f=input.files[0];if(!f)return;
+  if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
+  const limit=IMG_LIMITS[selPlan]||1;
+  if(uploadedImages.length>=limit){showToast(`❌ Max ${limit} photos for ${selPlan} plan`);return;}
+  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
+  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','ghanaList_public');
+  try{
+    let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();clearInterval(iv);
+    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedImages.push(data.secure_url);renderImgGrid();setTimeout(()=>bar.style.display='none',1000);}
+    else throw new Error(data.error?.message||'Failed');
+  }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';}
+};
+
+// ── MOMO ──
+window.doMomoPay=async()=>{
+  const num=document.getElementById('momoNum').value.replace(/\D/g,'');
+  if(num.length<9){showToast('⚠️ Enter valid MoMo number');return;}
+  const btn=document.getElementById('payBtn'),stat=document.getElementById('momoStat');
+  btn.disabled=true;btn.innerHTML='⏳ Processing…';
+  stat.className='momo-stat ms-pending';stat.style.display='block';
+  stat.textContent='⏳ Sending request to your phone…';
+  payRef='GHL-'+Date.now();
+  try{
+    // Production: call your backend which calls MTN MoMo API
+    // await fetch('https://your-backend.com/momo-pay', {method:'POST', body:JSON.stringify({amount:selPrice,phone:'233'+num.slice(-9),ref:payRef})});
+    await new Promise(r=>setTimeout(r,3000)); // sandbox simulation
+    stat.className='momo-stat ms-success';
+    stat.textContent=`✅ Payment confirmed! Ref: ${payRef}`;
+    payDone=true;
+    document.getElementById('s3').classList.add('done');
+    document.getElementById('l3').classList.add('done');
+    showToast('✅ Payment confirmed!');
+    setTimeout(()=>finalSubmit(true),1500);
+  }catch(e){
+    stat.className='momo-stat ms-failed';
+    stat.textContent='❌ Payment failed: '+e.message;
+    btn.disabled=false;btn.innerHTML='💳 Try Again';
+  }
+};
+
+// ── SUBMIT ──
+window.doSubmit=async()=>{
+  if(selPrice>0&&!payDone){showToast('💳 Complete MoMo payment first');document.getElementById('momoBox').scrollIntoView({behavior:'smooth'});return;}
+  finalSubmit(payDone);
+};
+
+async function finalSubmit(paid){
+  const name=document.getElementById('bName').value.trim();
+  const cat=document.getElementById('bCat').value;
+  const city=document.getElementById('bCity').value;
+  const phone=document.getElementById('bPhone').value.trim();
+  if(!name){showToast('⚠️ Business name required');return;}
+  if(!cat){showToast('⚠️ Category required');return;}
+  if(!city){showToast('⚠️ City required');return;}
+  if(!phone){showToast('⚠️ Phone required');return;}
+  if(!document.getElementById('agreeCheck').checked){showToast('⚠️ Please accept the terms');return;}
+
+  const btn=document.getElementById('subBtn');btn.disabled=true;
+  document.getElementById('subTxt').textContent='Submitting…';
+
+  const flags=PLAN_FLAGS[selPlan];
+  const ref=payRef||'GHL-FREE-'+Date.now();
+  const urlImages=[...uploadedImages];
+  const directUrl=document.getElementById('bImgUrl').value.trim();
+  if(directUrl&&!urlImages.includes(directUrl)) urlImages.push(directUrl);
+  const expiry=selPlan!=='basic'?new Date(Date.now()+30*86400000):null;
+
+  try{
+    await addDoc(collection(db,'businesses'),{
+      name,category:cat,city,
+      desc:document.getElementById('bDesc').value.trim(),
+      location:document.getElementById('bLoc').value.trim(),
+      phone,
+      whatsapp:document.getElementById('bWa').value.trim(),
+      email:document.getElementById('bEmail').value.trim(),
+      website:document.getElementById('bWeb').value.trim(),
+      tags:document.getElementById('bTags').value.trim(),
+      openTime:document.getElementById('bOpen').value,
+      closeTime:document.getElementById('bClose').value,
+      images:urlImages,
+      imageUrl:urlImages[0]||'',
+      plan:selPlan,
+      verified:flags.verified,
+      featured:flags.featured,
+      approved:flags.autoApprove,
+      paid,
+      paymentRef:ref,
+      paymentAmount:selPrice,
+      expiresAt:expiry?Timestamp.fromDate(expiry):null,
+      source:'public',
+      createdAt:serverTimestamp()
+    });
+
+    const pd=PLAN_PERKS_DATA[selPlan];
+    document.getElementById('formView').style.display='none';
+    document.getElementById('successView').style.display='block';
+    document.getElementById('sico').textContent=pd.icon;
+    document.getElementById('sTitle').textContent=pd.title;
+    document.getElementById('refNum').textContent=ref;
+    document.getElementById('sMsg').textContent=pd.msg;
+    document.getElementById('perksBox').innerHTML=`<h3>✅ Your plan includes:</h3>${pd.perks.map(p=>`<div class="pa-item"><span>✓</span>${p}</div>`).join('')}`;
+    ['s1','s2','s3','s4'].forEach(s=>{document.getElementById(s).classList.add('done');document.getElementById(s).classList.remove('active');});
+    ['l1','l2','l3'].forEach(l=>document.getElementById(l).classList.add('done'));
+  }catch(e){
+    showToast('❌ Failed: '+e.message);
+    btn.disabled=false;
+    document.getElementById('subTxt').textContent='Try Again';
+  }
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);};
+
+// Init
+pickPlan(document.querySelector('.plan-card.basic'));
+renderImgGrid();
+</script>
+</body>
+</html>

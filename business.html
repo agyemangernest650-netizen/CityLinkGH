@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CityLinkGH — Business Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="business.css">
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -76,7 +76,7 @@
   </div>
 </footer>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=Function.prototype" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -87,13 +87,15 @@ import {
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",
-  authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",
-  storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
+
+
 const app  = initializeApp(firebaseConfig);
 const db   = getFirestore(app);
 const auth = getAuth(app);

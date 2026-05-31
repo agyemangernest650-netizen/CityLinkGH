@@ -5,137 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CityLinkGH — Book Appointment</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{--gold:#D4A017;--green:#1A6B3C;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--purple:#9B59B6;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Epilogue',sans-serif;background:var(--cream);color:var(--ink);}
-
-  header{background:var(--ink);padding:13px 20px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;}
-  .back{background:rgba(255,255,255,.1);border:none;color:#fff;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;flex-shrink:0;}
-  .htitle{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-  /* STEPS */
-  .steps{display:flex;align-items:center;padding:13px 20px;background:#fff;border-bottom:1px solid var(--border);}
-  .step{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
-  .sc{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--mist);color:var(--gray);transition:all .3s;}
-  .step.done .sc{background:var(--green);color:#fff;}
-  .step.active .sc{background:var(--gold);color:var(--ink);}
-  .sl{font-size:9px;font-weight:600;color:var(--gray);}
-  .step.active .sl{color:var(--gold);font-weight:700;}
-  .step.done .sl{color:var(--green);}
-  .sline{flex:1;height:2px;background:var(--border);margin-bottom:12px;transition:background .3s;}
-  .sline.done{background:var(--green);}
-
-  /* BIZ SUMMARY */
-  .biz-summary{background:#fff;padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center;}
-  .bs-thumb{width:52px;height:52px;border-radius:10px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;}
-  .bs-thumb img{width:100%;height:100%;object-fit:cover;}
-  .bs-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--ink);}
-  .bs-cat{font-size:12px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
-  .bs-loc{font-size:11px;color:var(--gray);margin-top:2px;}
-
-  /* PLAN NOTICE */
-  .plan-notice{margin:14px 20px 0;border-radius:12px;padding:12px 14px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;}
-  .pn-basic{background:#fde8e8;color:var(--red);border:1px solid #f5c6c6;display:none;}
-  .pn-paid{background:#f0fff6;color:var(--green);border:1px solid #b8f0d0;}
-
-  .body{padding:0 20px 20px;}
-
-  /* SERVICE SELECTOR */
-  .sec-t{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px;margin-bottom:11px;margin-top:18px;color:var(--ink);}
-  .sec-t::before{content:'';width:4px;height:15px;background:var(--gold);border-radius:2px;display:block;}
-
-  .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
-  .service-card{background:#fff;border-radius:12px;padding:12px;border:2px solid var(--border);cursor:pointer;transition:all .2s;text-align:center;}
-  .service-card:hover{border-color:var(--gold);}
-  .service-card.selected{border-color:var(--green);background:#f0fff6;}
-  .sv-ico{font-size:22px;margin-bottom:5px;}
-  .sv-name{font-size:12px;font-weight:700;color:var(--ink);}
-  .sv-dur{font-size:10px;color:var(--gray);margin-top:2px;}
-
-  /* CALENDAR */
-  .calendar{background:#fff;border-radius:16px;border:1px solid var(--border);padding:16px;margin-bottom:4px;}
-  .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-  .cal-month{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--ink);}
-  .cal-nav{background:var(--mist);border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
-  .cal-nav:hover{background:var(--border);}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-  .cal-dow{font-size:10px;font-weight:700;color:var(--gray);text-align:center;padding:4px 0;}
-  .cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;border:2px solid transparent;}
-  .cal-day:hover:not(.disabled):not(.past){background:var(--mist);}
-  .cal-day.today{border-color:var(--gold);color:var(--gold);font-weight:700;}
-  .cal-day.selected{background:var(--green);color:#fff;border-color:var(--green);font-weight:700;}
-  .cal-day.disabled,.cal-day.past{color:#ccc;cursor:not-allowed;background:transparent;}
-  .cal-day.has-slots{position:relative;}
-  .cal-day.has-slots::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;background:var(--green);border-radius:50%;}
-  .cal-day.selected.has-slots::after{background:rgba(255,255,255,.7);}
-
-  /* TIME SLOTS */
-  .slots-wrap{background:#fff;border-radius:16px;border:1px solid var(--border);padding:16px;margin-bottom:4px;display:none;}
-  .slots-date{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--ink);margin-bottom:12px;}
-  .slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-  .slot{padding:10px 6px;border-radius:10px;border:2px solid var(--border);background:#fff;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:var(--ink);}
-  .slot:hover:not(.taken){border-color:var(--green);}
-  .slot.selected{background:var(--green);color:#fff;border-color:var(--green);}
-  .slot.taken{background:var(--mist);color:#ccc;cursor:not-allowed;text-decoration:line-through;}
-  .slots-empty{text-align:center;padding:20px;color:var(--gray);font-size:13px;}
-
-  /* BOOKING FORM */
-  .bform{background:#fff;border-radius:16px;border:1px solid var(--border);padding:16px;margin-bottom:4px;}
-  .field{margin-bottom:11px;}
-  .field label{display:block;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
-  .field input,.field textarea,.field select{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;color:var(--ink);background:var(--cream);outline:none;transition:border-color .2s;}
-  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);background:#fff;}
-  .field textarea{resize:none;min-height:70px;}
-  .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-
-  /* BOOKING SUMMARY BOX */
-  .booking-summary{background:var(--mist);border-radius:12px;padding:14px;margin-bottom:14px;display:none;}
-  .bs-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:13px;}
-  .bs-row:last-child{margin-bottom:0;padding-top:8px;border-top:1px solid var(--border);}
-  .bs-lbl{color:var(--gray);}
-  .bs-val{font-weight:700;color:var(--ink);}
-  .bs-free{color:var(--green);font-family:'Syne',sans-serif;font-size:15px;font-weight:800;}
-
-  /* SUBMIT */
-  .book-btn{width:100%;background:var(--green);color:#fff;border:none;padding:15px;border-radius:14px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;margin-top:14px;}
-  .book-btn:hover{opacity:.88;}
-  .book-btn:disabled{opacity:.45;cursor:not-allowed;}
-
-  /* SUCCESS */
-  .success-screen{display:none;padding:40px 24px;text-align:center;}
-  .sico{font-size:64px;margin-bottom:16px;}
-  .success-screen h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--ink);margin-bottom:10px;}
-  .ref-box{background:var(--mist);border-radius:12px;padding:14px;margin:16px 0;}
-  .ref-lbl{font-size:12px;color:var(--gray);}
-  .ref-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--green);margin-top:4px;}
-  .booking-details{background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:16px;text-align:left;}
-  .bd-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
-  .bd-row:last-child{border-bottom:none;}
-  .bd-ico{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
-  .bd-lbl{color:var(--gray);font-size:11px;}
-  .bd-val{font-weight:600;color:var(--ink);}
-  .success-btns{display:flex;flex-direction:column;gap:9px;}
-  .sbtn{padding:13px;border-radius:12px;font-family:'Epilogue',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:opacity .2s;}
-  .sbtn:hover{opacity:.88;}
-  .sbtn.wa{background:#25D366;color:#fff;}
-  .sbtn.home{background:var(--gold);color:var(--ink);}
-  .sbtn.view{background:var(--mist);color:var(--ink);border:1px solid var(--border);}
-
-  /* LOADING */
-  .loading{text-align:center;padding:50px 20px;color:var(--gray);}
-  .spinner{display:inline-block;width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px;}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .spacer{height:30px;}
-  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;}
-  .toast.show{transform:translateX(-50%) translateY(0);}
-</style>
+<link rel="stylesheet" href="booking.css">
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
 <header>
-  <a class="back" id="backBtn" href="#">←</a>
+  <a class="back" id="backBtn" href="index.html">←</a>
   <div class="htitle" id="htitle">Book Appointment</div>
 </header>
 
@@ -225,7 +101,8 @@
 <!-- SUCCESS SCREEN -->
 <div class="success-screen" id="successScreen">
   <div class="sico">🎉</div>
-  <h2>Booking Confirmed!</h2>
+  <h2>Booking Received!</h2>
+  <p style="color:var(--gray);font-size:13px;margin-bottom:8px;">The business will confirm your appointment shortly.</p>
   <div class="ref-box">
     <div class="ref-lbl">Booking Reference</div>
     <div class="ref-num" id="refNum">—</div>
@@ -244,20 +121,18 @@ import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/fire
 import { getFirestore, doc, getDoc, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",
-  authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",
-  storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
 
-// Hubtel SMS config (Ghana SMS API)
-// Register at https://hubtel.com/messaging
-// For WhatsApp notification — free, no API needed
-const HUBTEL_CLIENT_ID     = "YOUR_HUBTEL_CLIENT_ID";     // optional
-const HUBTEL_CLIENT_SECRET = "YOUR_HUBTEL_CLIENT_SECRET"; // optional
-const HUBTEL_FROM          = "GhanaList";
+
+// Arkesel SMS config (Ghana SMS API)
+// Register at https://arkesel.com
+const ARKESEL_API_KEY = "YOUR_ARKESEL_API_KEY"; // optional
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
@@ -435,7 +310,7 @@ function generateSlots(openTime, closeTime) {
   let [oh, om] = openTime.split(':').map(Number);
   const [ch, cm] = closeTime.split(':').map(Number);
   const closeMin = ch*60+cm;
-  while (oh*60+om < closeMin - 30) {
+  while (oh*60+om <= closeMin - 60) {
     const ampm = oh>=12?'PM':'AM';
     const h12  = oh%12||12;
     slots.push(`${h12}:${String(om).padStart(2,'0')} ${ampm}`);
@@ -502,7 +377,7 @@ window.confirmBooking = async () => {
     customerPhone: phone,
     customerEmail: email,
     note,
-    status:       'confirmed',
+    status:       'pending',
     createdAt:    serverTimestamp()
   };
 
@@ -511,9 +386,10 @@ window.confirmBooking = async () => {
 
     // ── WHATSAPP NOTIFICATION TO BUSINESS ──
     // This sends business owner a WhatsApp message
-    const bizWa = (biz.whatsapp||biz.phone||'').replace(/\D/g,'').slice(-9);
+    const rawBizWa = (biz.whatsapp||biz.phone||'').replace(/\D/g,'');
+    const bizWa = rawBizWa.startsWith('233')?rawBizWa.slice(3):rawBizWa.startsWith('0')?rawBizWa.slice(1):rawBizWa;
     const waMsg = encodeURIComponent(
-      `📅 *New Booking — GhanaList*\n\n`+
+      `📅 *New Booking — CityLinkGH*\n\n`+
       `Ref: *${refId}*\n`+
       `Service: ${selService.name}\n`+
       `Date: ${dateLabel}\n`+
@@ -525,8 +401,10 @@ window.confirmBooking = async () => {
     );
     const waLink = bizWa ? `https://wa.me/233${bizWa}?text=${waMsg}` : '#';
 
-    // ── HUBTEL SMS (optional — uncomment when you have credentials) ──
-    // await sendHubtelSMS(phone, `GhanaList: Your booking at ${biz.name} is confirmed!\nRef: ${refId}\nDate: ${dateLabel} at ${selTime}\nQuestions? Call ${biz.phone||''}`);
+    // ── ARKESEL SMS (activates when key is set) ──
+    await sendSMS(phone, `CityLinkGH: Your booking at ${biz.name} is received!\nRef: ${refId}\nDate: ${dateLabel} at ${selTime}\nQuestions? Call ${biz.phone||''}`);
+    const ownerPhone = biz.phone||biz.whatsapp||'';
+    if(ownerPhone) await sendSMS(ownerPhone, `CityLinkGH: New booking!\nRef: ${refId}\nService: ${selService.name}\nDate: ${dateLabel} at ${selTime}\nCustomer: ${name} · ${phone}`);
 
     // Show success
     document.getElementById('bookingForm').style.display   = 'none';
@@ -554,11 +432,18 @@ window.confirmBooking = async () => {
   }
 };
 
-// ── HUBTEL SMS ──
-async function sendHubtelSMS(to, msg) {
-  // Uncomment when you have Hubtel credentials
-  // const num = '233'+to.replace(/\D/g,'').slice(-9);
-  // await fetch('https://smsc.hubtel.com/v1/messages/send?clientsecret='+HUBTEL_CLIENT_SECRET+'&clientid='+HUBTEL_CLIENT_ID+'&from='+HUBTEL_FROM+'&to='+num+'&content='+encodeURIComponent(msg));
+// ── ARKESEL SMS ──
+async function sendSMS(to, message) {
+  if (!ARKESEL_API_KEY || ARKESEL_API_KEY === 'YOUR_ARKESEL_API_KEY') { console.warn('SMS skipped: Arkesel key not configured'); return; }
+  const raw = to.replace(/\D/g,'');
+  const num = raw.startsWith('233') ? raw : raw.startsWith('0') ? '233'+raw.slice(1) : '233'+raw;
+  try {
+    await fetch('https://sms.arkesel.com/api/v2/sms/send', {
+      method: 'POST',
+      headers: { 'api-key': ARKESEL_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sender: 'CityLinkGH', message, recipients: [num] })
+    });
+  } catch(e) { console.log('SMS failed:', e.message); }
 }
 
 // ── HELPERS ──

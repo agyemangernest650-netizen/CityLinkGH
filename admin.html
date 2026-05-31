@@ -3,27 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GhanaList — Admin Panel</title>
+<title>CityLinkGH — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{--gold:#D4A017;--green:#1A6B3C;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--purple:#9B59B6;--blue:#2980B9;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Epilogue',sans-serif;background:var(--cream);color:var(--ink);}
-
-  /* LOGIN */
   .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
   .login-card{background:#fff;border-radius:20px;padding:28px 22px;width:100%;max-width:360px;border:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,.1);}
-  .login-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;text-align:center;color:var(--ink);margin-bottom:4px;}
+  .login-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;text-align:center;margin-bottom:4px;}
   .login-logo span{color:var(--gold);}
   .login-sub{text-align:center;font-size:12px;color:var(--gray);margin-bottom:22px;}
   .lf{margin-bottom:12px;}
   .lf label{display:block;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
-  .lf input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:14px;outline:none;background:var(--cream);transition:border-color .2s;}
+  .lf input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:14px;outline:none;background:var(--cream);}
   .lf input:focus{border-color:var(--gold);background:#fff;}
   .login-btn{width:100%;background:var(--green);color:#fff;border:none;padding:13px;border-radius:12px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer;}
   .login-err{background:#fde8e8;color:var(--red);font-size:12px;padding:9px 13px;border-radius:8px;margin-top:9px;display:none;}
-
-  /* MAIN */
   .admin-wrap{display:none;}
   header{background:var(--ink);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--gold);}
   .logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;}
@@ -35,17 +31,17 @@
   .hb.gold{background:var(--gold);color:var(--ink);}
   .hb.ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);}
   .hb.ghost:hover{color:#fff;}
-
-  .body{max-width:780px;margin:0 auto;padding:16px 16px 60px;}
-
-  /* STATS */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;}
+  .sec-tabs{display:flex;background:var(--ink);border-bottom:3px solid var(--gold);}
+  .sec-tab{flex:1;padding:11px 4px;border:none;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:rgba(255,255,255,.4);letter-spacing:.05em;text-transform:uppercase;border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .2s;}
+  .sec-tab.active{color:#fff;border-bottom-color:var(--gold);}
+  .body{max-width:820px;margin:0 auto;padding:16px 16px 60px;}
+  .section-panel{display:none;}
+  .section-panel.active{display:block;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;}
   .stat{background:#fff;border-radius:12px;padding:11px;text-align:center;border:1px solid var(--border);}
   .stat-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
   .stat-l{font-size:10px;color:var(--gray);font-weight:600;margin-top:2px;}
-
-  /* PLAN STATS */
-  .plan-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;}
+  .plan-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;}
   .ps{border-radius:12px;padding:11px;text-align:center;border:2px solid;}
   .ps.premium{border-color:var(--purple);background:#f9f0ff;}
   .ps.featured{border-color:var(--gold);background:#fffbf0;}
@@ -57,18 +53,15 @@
   .ps.standard .ps-n{color:var(--green);}
   .ps.basic .ps-n{color:var(--gray);}
   .ps-l{font-size:10px;font-weight:600;color:var(--gray);margin-top:2px;}
-
-  /* REVENUE */
-  .revenue-card{background:linear-gradient(135deg,var(--green),#0d4a26);border-radius:14px;padding:15px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+  .revenue-card{border-radius:14px;padding:15px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+  .revenue-card.biz{background:linear-gradient(135deg,var(--green),#0d4a26);}
+  .revenue-card.jobs{background:linear-gradient(135deg,var(--blue),#1a5276);}
+  .revenue-card.rooms{background:linear-gradient(135deg,#6c3483,#4a235a);}
   .rev-lbl{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:3px;}
   .rev-amt{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;}
   .rev-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;}
-
-  /* SEC TITLE */
-  .sec-t{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px;margin-bottom:11px;color:var(--ink);}
+  .sec-t{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px;margin-bottom:11px;}
   .sec-t::before{content:'';width:4px;height:15px;background:var(--gold);border-radius:2px;display:block;}
-
-  /* FORM */
   .fcard{background:#fff;border-radius:16px;border:1px solid var(--border);padding:16px;margin-bottom:18px;}
   .field{margin-bottom:11px;}
   label{display:block;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
@@ -77,74 +70,65 @@
   textarea{resize:vertical;min-height:70px;}
   .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-
-  /* PLAN SELECTOR */
   .plan-sel{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
   .plan-opt{border-radius:10px;padding:10px 5px;text-align:center;cursor:pointer;border:2px solid var(--border);background:#fff;transition:all .2s;}
   .plan-opt.selected.premium{border-color:var(--purple);background:#f9f0ff;}
   .plan-opt.selected.featured{border-color:var(--gold);background:#fffbf0;}
   .plan-opt.selected.standard{border-color:var(--green);background:#f0fff6;}
-  .plan-opt.selected.basic{border-color:var(--ink);background:var(--mist);}
+  .plan-opt.selected.basic,.plan-opt.selected.free{border-color:var(--ink);background:var(--mist);}
+  .plan-opt.selected.urgent{border-color:var(--red);background:#fde8e8;}
   .po-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--ink);}
   .po-price{font-size:10px;color:var(--gray);margin-top:2px;}
   .plan-note{font-size:11px;color:var(--gray);margin-top:8px;padding:8px;background:var(--mist);border-radius:8px;display:none;}
-
-  /* CLOUDINARY MULTI-IMAGE UPLOAD */
-  .img-upload-section{border:2px dashed var(--border);border-radius:12px;padding:14px;background:var(--cream);transition:border-color .2s;}
-  .img-upload-section:hover{border-color:var(--gold);}
+  .img-upload-section{border:2px dashed var(--border);border-radius:12px;padding:14px;background:var(--cream);}
   .img-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
-  .img-slot{width:72px;height:64px;border-radius:8px;overflow:hidden;position:relative;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .img-slot{width:72px;height:64px;border-radius:8px;overflow:hidden;position:relative;background:var(--mist);display:flex;align-items:center;justify-content:center;}
   .img-slot img{width:100%;height:100%;object-fit:cover;}
   .img-slot-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .img-add-btn{width:72px;height:64px;border-radius:8px;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--gray);gap:3px;position:relative;background:#fff;}
-  .img-add-btn:hover{border-color:var(--gold);}
   .img-add-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;}
   .img-limit-bar{font-size:11px;color:var(--gray);display:flex;align-items:center;justify-content:space-between;}
   .img-limit-bar.maxed{color:var(--red);}
   .ubar{display:none;margin-top:8px;background:var(--mist);border-radius:6px;height:6px;overflow:hidden;}
   .ufill{height:100%;background:var(--green);width:0%;transition:width .3s;}
   .ustat{font-size:11px;color:var(--gray);margin-top:5px;text-align:center;}
-
-  /* TOGGLES */
   .tog-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-top:1px solid var(--border);}
   .tog-lbl{font-size:13px;font-weight:500;}
   .toggle{width:42px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;border:none;outline:none;transition:background .3s;flex-shrink:0;}
   .toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .3s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
   .toggle.on{background:var(--green);}
   .toggle.on::after{transform:translateX(20px);}
-
-  /* STARS */
   .star-row{display:flex;gap:5px;}
   .star{font-size:22px;cursor:pointer;color:#ddd;transition:color .15s;}
   .star.active{color:var(--gold);}
-
-  /* BUTTONS */
   .btn-row{display:flex;gap:8px;margin-top:12px;}
   .btn-p{flex:1;background:var(--green);color:#fff;border:none;padding:12px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+  .btn-p.blue{background:var(--blue);}
+  .btn-p.purple{background:var(--purple);}
   .btn-p:hover{opacity:.88;}
   .btn-p:disabled{opacity:.45;cursor:not-allowed;}
   .btn-s{background:var(--cream);color:var(--ink);border:1.5px solid var(--border);padding:12px 15px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
-
-  /* BIZ LIST */
   .biz-list{display:flex;flex-direction:column;gap:9px;}
   .biz-row{background:#fff;border-radius:12px;border:1px solid var(--border);padding:11px;display:flex;gap:9px;align-items:flex-start;animation:fi .3s ease;position:relative;overflow:hidden;}
   .biz-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
   .biz-row.plan-premium::before{background:var(--purple);}
-  .biz-row.plan-featured::before{background:var(--gold);}
+  .biz-row.plan-featured::before,.biz-row.plan-featured-r::before{background:var(--gold);}
   .biz-row.plan-standard::before{background:var(--green);}
-  .biz-row.plan-basic::before{background:var(--border);}
+  .biz-row.plan-basic::before,.biz-row.plan-free::before{background:var(--border);}
+  .biz-row.plan-urgent::before{background:var(--red);}
   @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .biz-row-thumb{width:58px;height:52px;border-radius:8px;flex-shrink:0;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;margin-left:6px;}
   .biz-row-thumb img{width:100%;height:100%;object-fit:cover;}
   .biz-row-body{flex:1;min-width:0;}
-  .biz-row-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .biz-row-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .biz-row-meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:3px;}
   .badge{font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px;text-transform:uppercase;}
   .bc{background:var(--mist);color:var(--gray);}
   .bpremium{background:var(--purple);color:#fff;}
   .bfeatured{background:var(--gold);color:var(--ink);}
   .bstandard{background:var(--green);color:#fff;}
-  .bbasic{background:var(--mist);color:var(--gray);}
+  .bbasic,.bfree{background:var(--mist);color:var(--gray);}
+  .burgent{background:var(--red);color:#fff;}
   .bverified{background:var(--green);color:#fff;}
   .blive{background:#d4edda;color:#155724;}
   .bpend{background:#fff3cd;color:#856404;}
@@ -154,20 +138,14 @@
   .ibtn{background:var(--cream);border:1px solid var(--border);border-radius:7px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:background .2s;}
   .ibtn:hover{background:var(--mist);}
   .ibtn.del:hover{background:#fde8e8;border-color:var(--red);}
-
-  /* PENDING BANNER */
   .pend-banner{background:linear-gradient(135deg,#fff3cd,#ffeaa7);border:1px solid #ffd700;border-radius:12px;padding:12px;margin-bottom:13px;display:flex;align-items:center;gap:9px;}
   .pend-banner p{font-size:13px;font-weight:600;color:#856404;}
-
-  /* TABS */
   .tabs{display:flex;gap:3px;margin-bottom:12px;background:var(--mist);padding:4px;border-radius:11px;}
   .tab{flex:1;padding:8px 3px;border-radius:8px;border:none;font-family:'Epilogue',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:var(--gray);text-align:center;}
   .tab.active{background:#fff;color:var(--ink);box-shadow:0 1px 5px rgba(0,0,0,.1);}
-
   .asearch{margin-bottom:12px;}
   .asearch input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;outline:none;background:#fff;}
   .asearch input:focus{border-color:var(--gold);}
-
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;}
   .toast.show{transform:translateX(-50%) translateY(0);}
   .loading{display:flex;align-items:center;justify-content:center;padding:28px;gap:9px;color:var(--gray);font-size:13px;}
@@ -182,9 +160,9 @@
 <!-- LOGIN -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
-    <div class="login-logo">Ghana<span>List</span></div>
+    <div class="login-logo">CityLink<span>GH</span></div>
     <div class="login-sub">Admin Portal — Sign in to continue</div>
-    <div class="lf"><label>Email</label><input type="email" id="lemail" placeholder="admin@ghanaList.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="lf"><label>Email</label><input type="email" id="lemail" placeholder="admin@citylinkgh.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <div class="lf"><label>Password</label><input type="password" id="lpwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="login-btn" onclick="doLogin()">Sign In →</button>
     <div class="login-err" id="lerr"></div>
@@ -195,204 +173,323 @@
 <div class="admin-wrap" id="adminWrap">
   <header>
     <div style="display:flex;align-items:center;">
-      <div class="logo">Ghana<span>List</span></div>
+      <div class="logo">CityLink<span>GH</span></div>
       <span class="atag">ADMIN</span>
     </div>
     <div class="hbtns">
       <a href="index.html" class="hb gold" target="_blank">👁 View Site</a>
-      <a href="bookings-dashboard.html" class="hb ghost">📅 Bookings</a>
+      <a href="jobs.html" class="hb ghost" target="_blank">💼 Jobs</a>
+      <a href="rooms.html" class="hb ghost" target="_blank">🏠 Rooms</a>
       <button class="hb ghost" onclick="doLogout()">Sign Out</button>
     </div>
   </header>
 
+  <div class="sec-tabs">
+    <button class="sec-tab active" onclick="switchSection('businesses',this)">🏪 Businesses</button>
+    <button class="sec-tab" onclick="switchSection('jobs',this)">💼 Jobs</button>
+    <button class="sec-tab" onclick="switchSection('rooms',this)">🏠 Rooms</button>
+  </div>
+
   <div class="body">
 
-    <!-- STATS -->
-    <div class="stats">
-      <div class="stat"><div class="stat-n" id="sTotal" style="color:var(--ink);">—</div><div class="stat-l">Total</div></div>
-      <div class="stat"><div class="stat-n" id="sLive" style="color:var(--green);">—</div><div class="stat-l">Live</div></div>
-      <div class="stat"><div class="stat-n" id="sPend" style="color:var(--gold);">—</div><div class="stat-l">Pending</div></div>
-      <div class="stat"><div class="stat-n" id="sExp" style="color:var(--red);">—</div><div class="stat-l">Expiring</div></div>
-    </div>
-
-    <!-- PLAN STATS -->
-    <div class="plan-stats">
-      <div class="ps premium"><div class="ps-n" id="psPremium">—</div><div class="ps-l">👑 Premium</div></div>
-      <div class="ps featured"><div class="ps-n" id="psFeatured">—</div><div class="ps-l">⭐ Featured</div></div>
-      <div class="ps standard"><div class="ps-n" id="psStandard">—</div><div class="ps-l">✓ Standard</div></div>
-      <div class="ps basic"><div class="ps-n" id="psBasic">—</div><div class="ps-l">Basic</div></div>
-    </div>
-
-    <!-- REVENUE -->
-    <div class="revenue-card">
-      <div>
-        <div class="rev-lbl">Monthly Revenue (Active Paid Plans)</div>
-        <div class="rev-amt" id="revAmt">GHS 0</div>
-        <div class="rev-sub" id="revSub">0 paid listings</div>
+    <!-- BUSINESSES -->
+    <div class="section-panel active" id="panel-businesses">
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="sTotal" style="color:var(--ink);">—</div><div class="stat-l">Total</div></div>
+        <div class="stat"><div class="stat-n" id="sLive" style="color:var(--green);">—</div><div class="stat-l">Live</div></div>
+        <div class="stat"><div class="stat-n" id="sPend" style="color:var(--gold);">—</div><div class="stat-l">Pending</div></div>
+        <div class="stat"><div class="stat-n" id="sExp" style="color:var(--red);">—</div><div class="stat-l">Expiring</div></div>
       </div>
-      <div style="font-size:40px;opacity:.6;">💰</div>
-    </div>
-
-    <!-- ADD / EDIT FORM -->
-    <div class="sec-t">Add / Edit Business</div>
-    <div class="fcard">
-      <input type="hidden" id="editId">
-
-      <div class="field">
-        <label>Plan (auto-sets all flags)</label>
-        <div class="plan-sel" id="planSel">
-          <div class="plan-opt basic selected" data-plan="basic" onclick="selPlan('basic',this)"><div class="po-name">📋 Basic</div><div class="po-price">Free</div></div>
-          <div class="plan-opt standard" data-plan="standard" onclick="selPlan('standard',this)"><div class="po-name">✓ Standard</div><div class="po-price">GHS 50</div></div>
-          <div class="plan-opt featured" data-plan="featured" onclick="selPlan('featured',this)"><div class="po-name">⭐ Featured</div><div class="po-price">GHS 100</div></div>
-          <div class="plan-opt premium" data-plan="premium" onclick="selPlan('premium',this)"><div class="po-name">👑 Premium</div><div class="po-price">GHS 200</div></div>
+      <div class="plan-stats">
+        <div class="ps premium"><div class="ps-n" id="psPremium">—</div><div class="ps-l">👑 Premium</div></div>
+        <div class="ps featured"><div class="ps-n" id="psFeatured">—</div><div class="ps-l">⭐ Featured</div></div>
+        <div class="ps standard"><div class="ps-n" id="psStandard">—</div><div class="ps-l">✓ Standard</div></div>
+        <div class="ps basic"><div class="ps-n" id="psBasic">—</div><div class="ps-l">Basic</div></div>
+      </div>
+      <div class="revenue-card biz">
+        <div><div class="rev-lbl">Monthly Revenue</div><div class="rev-amt" id="revAmt">GHS 0</div><div class="rev-sub" id="revSub">0 paid listings</div></div>
+        <div style="font-size:40px;opacity:.6;">💰</div>
+      </div>
+      <div class="sec-t">Add / Edit Business</div>
+      <div class="fcard">
+        <input type="hidden" id="editId">
+        <div class="field">
+          <label>Plan</label>
+          <div class="plan-sel">
+            <div class="plan-opt basic selected" data-plan="basic" onclick="selBizPlan('basic',this)"><div class="po-name">📋 Basic</div><div class="po-price">Free</div></div>
+            <div class="plan-opt standard" data-plan="standard" onclick="selBizPlan('standard',this)"><div class="po-name">✓ Standard</div><div class="po-price">GHS 50</div></div>
+            <div class="plan-opt featured" data-plan="featured" onclick="selBizPlan('featured',this)"><div class="po-name">⭐ Featured</div><div class="po-price">GHS 100</div></div>
+            <div class="plan-opt premium" data-plan="premium" onclick="selBizPlan('premium',this)"><div class="po-name">👑 Premium</div><div class="po-price">GHS 200</div></div>
+          </div>
+          <div class="plan-note" id="planNote"></div>
         </div>
-        <div class="plan-note" id="planNote"></div>
-      </div>
-
-      <div class="field"><label>Business Name *</label><input type="text" id="bName" placeholder="e.g. Kofi's Kitchen"></div>
-      <div class="field"><label>Description</label><textarea id="bDesc" placeholder="What makes this business special?"></textarea></div>
-
-      <div class="r2">
-        <div class="field"><label>Category *</label>
-          <select id="bCat">
-            <option value="">Select…</option>
-            <option>Restaurant</option><option>Hospital</option><option>Hotel</option><option>Salon</option>
-            <option>Pharmacy</option><option>School</option><option>Church</option><option>Mechanic</option>
-            <option>Lawyer</option><option>Event Planner</option><option>Supermarket</option>
-            <option>Photographer</option><option>Electrician</option><option>Plumber</option><option>Tailor</option><option>Other</option>
-          </select>
-        </div>
-        <div class="field"><label>City *</label>
-          <select id="bCity">
-            <option value="">Select…</option>
-            <option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option>
-            <option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option><option>Wa</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field"><label>Street / Area</label><input type="text" id="bLoc" placeholder="e.g. Osu, near Frankies"></div>
-
-      <div class="r3">
-        <div class="field"><label>Latitude</label><input type="number" id="bLat" placeholder="5.6037" step="any"></div>
-        <div class="field"><label>Longitude</label><input type="number" id="bLng" placeholder="-0.1870" step="any"></div>
-        <div class="field"><label><a href="https://www.latlong.net/" target="_blank" style="color:var(--green);">Get Coords</a></label>
-          <button onclick="getCoords()" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;background:var(--cream);cursor:pointer;font-size:11px;font-weight:600;">📍 Detect</button>
-        </div>
-      </div>
-
-      <div class="r2">
-        <div class="field"><label>Phone</label><input type="tel" id="bPhone" placeholder="024 000 0000"></div>
-        <div class="field"><label>WhatsApp</label><input type="tel" id="bWa" placeholder="024 000 0000"></div>
-      </div>
-      <div class="r2">
-        <div class="field"><label>Email</label><input type="email" id="bEmail"></div>
-        <div class="field"><label>Website</label><input type="url" id="bWeb" placeholder="https://…"></div>
-      </div>
-      <div class="field"><label>Tags (comma separated)</label><input type="text" id="bTags" placeholder="delivery, local food, takeaway"></div>
-      <div class="r2">
-        <div class="field"><label>Opens At</label><input type="time" id="bOpen"></div>
-        <div class="field"><label>Closes At</label><input type="time" id="bClose"></div>
-      </div>
-      <div class="r2">
-        <div class="field"><label>Expiry Date</label><input type="date" id="bExpiry"></div>
-        <div class="field"><label>Rating</label>
-          <div class="star-row" id="starRow">
-            <span class="star" data-v="1" onclick="setRating(1)">★</span>
-            <span class="star" data-v="2" onclick="setRating(2)">★</span>
-            <span class="star" data-v="3" onclick="setRating(3)">★</span>
-            <span class="star" data-v="4" onclick="setRating(4)">★</span>
-            <span class="star" data-v="5" onclick="setRating(5)">★</span>
+        <div class="field"><label>Business Name *</label><input type="text" id="bName" placeholder="e.g. Kofi's Kitchen"></div>
+        <div class="field"><label>Description</label><textarea id="bDesc"></textarea></div>
+        <div class="r2">
+          <div class="field"><label>Category *</label>
+            <select id="bCat"><option value="">Select…</option><option>Restaurant</option><option>Hospital</option><option>Hotel</option><option>Salon</option><option>Pharmacy</option><option>School</option><option>Church</option><option>Mechanic</option><option>Lawyer</option><option>Event Planner</option><option>Supermarket</option><option>Photographer</option><option>Electrician</option><option>Plumber</option><option>Tailor</option><option>Other</option></select>
+          </div>
+          <div class="field"><label>City *</label>
+            <select id="bCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option><option>Wa</option></select>
           </div>
         </div>
-      </div>
-
-      <!-- MULTI-IMAGE UPLOAD -->
-      <div class="field">
-        <label>Business Photos (Cloudinary) — <span id="imgLimitLabel">max 1 for Basic</span></label>
-        <div class="img-upload-section">
-          <div class="img-grid" id="imgGrid"></div>
-          <div class="img-limit-bar" id="imgLimitBar">
-            <span id="imgCountLabel">0 / 1 photos</span>
-            <span style="font-size:10px;">Cloudinary CDN</span>
+        <div class="field"><label>Street / Area</label><input type="text" id="bLoc" placeholder="e.g. Osu, near Frankies"></div>
+        <div class="r3">
+          <div class="field"><label>Latitude</label><input type="number" id="bLat" placeholder="5.6037" step="any"></div>
+          <div class="field"><label>Longitude</label><input type="number" id="bLng" placeholder="-0.1870" step="any"></div>
+          <div class="field"><label><a href="https://www.latlong.net/" target="_blank" style="color:var(--green);">Get Coords</a></label>
+            <button onclick="getCoords()" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;background:var(--cream);cursor:pointer;font-size:11px;font-weight:600;">📍 Detect</button>
           </div>
         </div>
-        <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
-        <div class="ustat" id="ustat"></div>
-        <div style="margin-top:8px;"><label>Or paste URL directly</label><input type="url" id="bImgDirect" placeholder="https://…" oninput="addUrlImg(this.value)"></div>
+        <div class="r2">
+          <div class="field"><label>Phone</label><input type="tel" id="bPhone" placeholder="024 000 0000"></div>
+          <div class="field"><label>WhatsApp</label><input type="tel" id="bWa" placeholder="024 000 0000"></div>
+        </div>
+        <div class="r2">
+          <div class="field"><label>Email</label><input type="email" id="bEmail"></div>
+          <div class="field"><label>Website</label><input type="url" id="bWeb" placeholder="https://…"></div>
+        </div>
+        <div class="field"><label>Tags</label><input type="text" id="bTags" placeholder="delivery, local food, takeaway"></div>
+        <div class="r2">
+          <div class="field"><label>Opens At</label><input type="time" id="bOpen"></div>
+          <div class="field"><label>Closes At</label><input type="time" id="bClose"></div>
+        </div>
+        <div class="r2">
+          <div class="field"><label>Expiry Date</label><input type="date" id="bExpiry"></div>
+          <div class="field"><label>Rating</label>
+            <div class="star-row"><span class="star" data-v="1" onclick="setRating(1)">★</span><span class="star" data-v="2" onclick="setRating(2)">★</span><span class="star" data-v="3" onclick="setRating(3)">★</span><span class="star" data-v="4" onclick="setRating(4)">★</span><span class="star" data-v="5" onclick="setRating(5)">★</span></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Photos — <span id="imgLimitLabel">max 1 for basic</span></label>
+          <div class="img-upload-section">
+            <div class="img-grid" id="imgGrid"></div>
+            <div class="img-limit-bar" id="imgLimitBar"><span id="imgCountLabel">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div>
+          </div>
+          <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
+          <div class="ustat" id="ustat"></div>
+          <div style="margin-top:8px;"><label>Or paste URL</label><input type="url" id="bImgDirect" placeholder="https://…" onchange="addBizUrlImg(this.value)"></div>
+        </div>
+        <div class="tog-row"><span class="tog-lbl">🌐 Approved & Live</span><button class="toggle on" id="togApp" onclick="this.classList.toggle('on')"></button></div>
+        <div class="btn-row">
+          <button class="btn-s" onclick="clearBizForm()">✕ Clear</button>
+          <button class="btn-p" id="subBtn" onclick="saveBiz()">📤 Save Business</button>
+        </div>
       </div>
-
-      <div class="tog-row"><span class="tog-lbl">🌐 Approved & Live</span><button class="toggle on" id="togApp" onclick="this.classList.toggle('on')"></button></div>
-
-      <div class="btn-row">
-        <button class="btn-s" onclick="clearForm()">✕ Clear</button>
-        <button class="btn-p" id="subBtn" onclick="saveBiz()">📤 Save Business</button>
+      <div class="sec-t">Manage Businesses</div>
+      <div id="pendBanner" style="display:none;" class="pend-banner"><span style="font-size:20px;">⏳</span><p><span id="pendCount">0</span> pending submissions waiting for review.</p><button onclick="bulkApprovePending()" style="margin-left:auto;background:var(--green);color:#fff;border:none;padding:7px 13px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">✅ Approve All</button></div>
+      <div class="asearch"><input type="text" id="asearch" placeholder="🔍  Search businesses…" oninput="renderBizList()"></div>
+      <div class="tabs">
+        <button class="tab active" onclick="setBizTab('all',this)">All</button>
+        <button class="tab" onclick="setBizTab('live',this)">Live</button>
+        <button class="tab" onclick="setBizTab('pending',this)">Pending</button>
+        <button class="tab" onclick="setBizTab('premium',this)">👑 Premium</button>
+        <button class="tab" onclick="setBizTab('expiring',this)">⚠️ Expiring</button>
       </div>
+      <div class="biz-list" id="bizList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
-    <!-- MANAGE -->
-    <div class="sec-t">Manage Businesses</div>
-    <div id="pendBanner" style="display:none;" class="pend-banner">
-      <span style="font-size:20px;">⏳</span>
-      <p><span id="pendCount">0</span> pending submissions waiting for your review.</p>
+    <!-- JOBS -->
+    <div class="section-panel" id="panel-jobs">
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="jTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Jobs</div></div>
+        <div class="stat"><div class="stat-n" id="jActive" style="color:var(--green);">—</div><div class="stat-l">Active</div></div>
+        <div class="stat"><div class="stat-n" id="jFeatured" style="color:var(--blue);">—</div><div class="stat-l">Featured</div></div>
+        <div class="stat"><div class="stat-n" id="jUrgent" style="color:var(--red);">—</div><div class="stat-l">Urgent</div></div>
+      </div>
+      <div class="revenue-card jobs">
+        <div><div class="rev-lbl">Jobs Revenue</div><div class="rev-amt" id="jRevAmt">GHS 0</div><div class="rev-sub" id="jRevSub">0 paid job listings</div></div>
+        <div style="font-size:40px;opacity:.6;">💼</div>
+      </div>
+      <div class="sec-t">Add / Edit Job</div>
+      <div class="fcard">
+        <input type="hidden" id="jEditId">
+        <div class="field">
+          <label>Plan</label>
+          <div class="plan-sel">
+            <div class="plan-opt free selected" data-plan="free" data-price="0" onclick="selJobPlan(this)"><div class="po-name">📋 Free</div><div class="po-price">30 days</div></div>
+            <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selJobPlan(this)"><div class="po-name">⭐ Standard</div><div class="po-price">GHS 30</div></div>
+            <div class="plan-opt featured" data-plan="featured" data-price="60" onclick="selJobPlan(this)"><div class="po-name">🌟 Featured</div><div class="po-price">GHS 60</div></div>
+            <div class="plan-opt urgent" data-plan="urgent" data-price="100" onclick="selJobPlan(this)"><div class="po-name">🔴 Urgent</div><div class="po-price">GHS 100</div></div>
+          </div>
+        </div>
+        <div class="field"><label>Job Title *</label><input type="text" id="jTitle" placeholder="e.g. Marketing Manager"></div>
+        <div class="field"><label>Company Name *</label><input type="text" id="jCompany" placeholder="e.g. Stanbic Bank Ghana"></div>
+        <div class="r2">
+          <div class="field"><label>Job Type *</label>
+            <select id="jType"><option value="">Select…</option><option>Full Time</option><option>Part Time</option><option>Remote</option><option>Contract</option><option>Internship</option><option>Attachment</option></select>
+          </div>
+          <div class="field"><label>Industry</label>
+            <select id="jIndustry"><option value="">Select…</option><option>Technology</option><option>Finance</option><option>Health</option><option>Education</option><option>Sales</option><option>Engineering</option><option>Media</option><option>NGO</option><option>Agriculture</option><option>Hospitality</option><option>Legal</option><option>Other</option></select>
+          </div>
+        </div>
+        <div class="r2">
+          <div class="field"><label>City *</label>
+            <select id="jCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Remote</option><option>Nationwide</option></select>
+          </div>
+          <div class="field"><label>Experience</label>
+            <select id="jExp"><option>No experience</option><option>1 year</option><option>2–3 years</option><option>3–5 years</option><option>5+ years</option></select>
+          </div>
+        </div>
+        <div class="r2">
+          <div class="field"><label>Salary Range</label><input type="text" id="jSalary" placeholder="e.g. GHS 2,000–3,500"></div>
+          <div class="field"><label>Application Deadline</label><input type="date" id="jDeadline"></div>
+        </div>
+        <div class="field"><label>Job Description</label><textarea id="jDesc" placeholder="Role and responsibilities…"></textarea></div>
+        <div class="field"><label>Requirements</label><textarea id="jReqs" placeholder="Education, skills required…" style="min-height:60px;"></textarea></div>
+        <div class="field"><label>How to Apply</label><textarea id="jApply" placeholder="Email CV to… / WhatsApp…" style="min-height:55px;"></textarea></div>
+        <div class="field"><label>Skills / Tags</label><input type="text" id="jTags" placeholder="Excel, Python, Driving…"></div>
+        <div class="r2">
+          <div class="field"><label>Contact Phone *</label><input type="tel" id="jPhone" placeholder="024 000 0000"></div>
+          <div class="field"><label>WhatsApp</label><input type="tel" id="jWa" placeholder="024 000 0000"></div>
+        </div>
+        <div class="r2">
+          <div class="field"><label>Contact Email</label><input type="email" id="jEmail"></div>
+          <div class="field"><label>Company Logo URL</label><input type="url" id="jLogoUrl" placeholder="https://…"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-s" onclick="clearJobForm()">✕ Clear</button>
+          <button class="btn-p blue" id="jSubBtn" onclick="saveJob()">📤 Save Job</button>
+        </div>
+      </div>
+      <div class="sec-t">Manage Jobs</div>
+      <div class="asearch"><input type="text" id="jsearch" placeholder="🔍  Search jobs…" oninput="renderJobList()"></div>
+      <div class="tabs">
+        <button class="tab active" onclick="setJobTab('all',this)">All</button>
+        <button class="tab" onclick="setJobTab('urgent',this)">🔴 Urgent</button>
+        <button class="tab" onclick="setJobTab('featured',this)">🌟 Featured</button>
+        <button class="tab" onclick="setJobTab('free',this)">Free</button>
+        <button class="tab" onclick="setJobTab('expiring',this)">⚠️ Expiring</button>
+      </div>
+      <div class="biz-list" id="jobList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
-    <div class="asearch"><input type="text" id="asearch" placeholder="🔍  Search businesses…" oninput="renderList()"></div>
-    <div class="tabs">
-      <button class="tab active" onclick="setTab('all',this)">All</button>
-      <button class="tab" onclick="setTab('live',this)">Live</button>
-      <button class="tab" onclick="setTab('pending',this)">Pending</button>
-      <button class="tab" onclick="setTab('premium',this)">👑 Premium</button>
-      <button class="tab" onclick="setTab('expiring',this)">⚠️ Expiring</button>
+
+    <!-- ROOMS -->
+    <div class="section-panel" id="panel-rooms">
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="rTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Rooms</div></div>
+        <div class="stat"><div class="stat-n" id="rAvail" style="color:var(--green);">—</div><div class="stat-l">Available</div></div>
+        <div class="stat"><div class="stat-n" id="rFeatured" style="color:var(--gold);">—</div><div class="stat-l">Featured</div></div>
+        <div class="stat"><div class="stat-n" id="rCities" style="color:var(--blue);">—</div><div class="stat-l">Cities</div></div>
+      </div>
+      <div class="revenue-card rooms">
+        <div><div class="rev-lbl">Rooms Revenue</div><div class="rev-amt" id="rRevAmt">GHS 0</div><div class="rev-sub" id="rRevSub">0 paid room listings</div></div>
+        <div style="font-size:40px;opacity:.6;">🏠</div>
+      </div>
+      <div class="sec-t">Add / Edit Room / House</div>
+      <div class="fcard">
+        <input type="hidden" id="rEditId">
+        <div class="field">
+          <label>Plan</label>
+          <div class="plan-sel">
+            <div class="plan-opt free selected" data-plan="free" data-price="0" onclick="selRoomPlan(this)"><div class="po-name">📋 Free</div><div class="po-price">1 photo</div></div>
+            <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selRoomPlan(this)"><div class="po-name">⭐ Standard</div><div class="po-price">GHS 30</div></div>
+            <div class="plan-opt featured" data-plan="featured" data-price="60" onclick="selRoomPlan(this)"><div class="po-name">🌟 Featured</div><div class="po-price">GHS 60</div></div>
+            <div class="plan-opt urgent" data-plan="urgent" data-price="100" onclick="selRoomPlan(this)"><div class="po-name">🔴 Urgent</div><div class="po-price">GHS 100</div></div>
+          </div>
+        </div>
+        <div class="field"><label>Title *</label><input type="text" id="rTitle" placeholder="e.g. Self Contained in Osu, Accra"></div>
+        <div class="r2">
+          <div class="field"><label>Type *</label>
+            <select id="rType"><option value="">Select…</option><option>Single Room</option><option>Chamber &amp; Hall</option><option>Self Contained</option><option>1 Bedroom</option><option>2 Bedroom</option><option>3 Bedroom</option><option>Apartment</option><option>House</option><option>Office Space</option><option>Shop</option></select>
+          </div>
+          <div class="field"><label>City *</label>
+            <select id="rCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option></select>
+          </div>
+        </div>
+        <div class="field"><label>District / Area *</label><input type="text" id="rDistrict" placeholder="e.g. Osu, East Legon, Spintex"></div>
+        <div class="r2">
+          <div class="field"><label>Rent (GHS) *</label><input type="number" id="rPrice" placeholder="e.g. 1500"></div>
+          <div class="field"><label>Payment Period</label>
+            <select id="rPeriod"><option>per year</option><option>per month</option><option>2 years advance</option><option>negotiable</option></select>
+          </div>
+        </div>
+        <div class="r2">
+          <div class="field"><label>Bedrooms</label><select id="rBeds"><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
+          <div class="field"><label>Bathrooms</label><select id="rBaths"><option>1</option><option>2</option><option>3</option><option>Shared</option></select></div>
+        </div>
+        <div class="field"><label>Description</label><textarea id="rDesc" placeholder="Describe the property…"></textarea></div>
+        <div class="r2">
+          <div class="field"><label>Contact Phone *</label><input type="tel" id="rPhone" placeholder="024 000 0000"></div>
+          <div class="field"><label>WhatsApp</label><input type="tel" id="rWa" placeholder="024 000 0000"></div>
+        </div>
+        <div class="field"><label>Landlord / Agent Name</label><input type="text" id="rPoster" placeholder="Your name"></div>
+        <div class="field">
+          <label>Photos — <span id="rImgLimitLabel">max 1 (free)</span></label>
+          <div class="img-upload-section">
+            <div class="img-grid" id="rImgGrid"></div>
+            <div class="img-limit-bar" id="rImgLimitBar"><span id="rImgCountLabel">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div>
+          </div>
+          <div class="ubar" id="rUbar"><div class="ufill" id="rUfill"></div></div>
+          <div class="ustat" id="rUstat"></div>
+          <div style="margin-top:8px;"><label>Or paste URL</label><input type="url" id="rImgDirect" placeholder="https://…" onchange="addRoomUrlImg(this.value)"></div>
+        </div>
+        <div class="tog-row"><span class="tog-lbl">✅ Mark as Available</span><button class="toggle on" id="togAvail" onclick="this.classList.toggle('on')"></button></div>
+        <div class="btn-row">
+          <button class="btn-s" onclick="clearRoomForm()">✕ Clear</button>
+          <button class="btn-p purple" id="rSubBtn" onclick="saveRoom()">📤 Save Room</button>
+        </div>
+      </div>
+      <div class="sec-t">Manage Rooms</div>
+      <div class="asearch"><input type="text" id="rsearch" placeholder="🔍  Search rooms…" oninput="renderRoomList()"></div>
+      <div class="tabs">
+        <button class="tab active" onclick="setRoomTab('all',this)">All</button>
+        <button class="tab" onclick="setRoomTab('available',this)">Available</button>
+        <button class="tab" onclick="setRoomTab('featured',this)">🌟 Featured</button>
+        <button class="tab" onclick="setRoomTab('urgent',this)">🔴 Urgent</button>
+        <button class="tab" onclick="setRoomTab('free',this)">Free</button>
+      </div>
+      <div class="biz-list" id="roomList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
-    <div class="biz-list" id="bizList">
-      <div class="loading"><div class="spinner"></div> Loading…</div>
-    </div>
+
   </div>
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,query,orderBy,serverTimestamp,Timestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",
-  authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",
-  storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
-};
-const CLOUD_NAME    = "YOUR_CLOUD_NAME";
-const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
-
-// Plan flags — single source of truth
-const PLAN_FLAGS = {
-  basic:    {verified:false,featured:false,approved:true,  autoApprove:true},
-  standard: {verified:true, featured:false,approved:false, autoApprove:false},
-  featured: {verified:true, featured:true, approved:false, autoApprove:false},
-  premium:  {verified:true, featured:true, approved:false, autoApprove:false}
-};
-const PLAN_PRICE  = {basic:0,standard:50,featured:100,premium:200};
-const IMG_LIMITS  = {basic:1,standard:3,featured:5,premium:10};
-const PLAN_NOTES  = {
-  basic:    '📋 Auto-approved. No payment needed. Standard placement only.',
-  standard: '✅ Verified badge auto-set. Higher placement. Admin approves after payment.',
-  featured: '⭐ Featured + Verified auto-set. Gold border. Top of results. Admin approves.',
-  premium:  '👑 Premium Spotlight + Featured + Verified. Purple border. #1 placement.'
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
 
-const app  = initializeApp(firebaseConfig);
-const db   = getFirestore(app);
-const auth = getAuth(app);
+// Cloudinary
+const CLOUD_NAME    = "dulnujvm7";
+const UPLOAD_PRESET = "ernest";
 
-let allBiz=[], currentTab='all', selRating=0, currentPlan='basic', uploadedImages=[];
+const BIZ_PLAN_FLAGS={basic:{verified:false,featured:false,approved:true},standard:{verified:true,featured:false,approved:false},featured:{verified:true,featured:true,approved:false},premium:{verified:true,featured:true,approved:false}};
+const BIZ_IMG_LIMITS={basic:1,standard:3,featured:5,premium:10};
+const BIZ_PLAN_NOTES={basic:'📋 Auto-approved. Free. Standard placement.',standard:'✅ Verified badge. Higher placement. GHS 50/mo.',featured:'⭐ Featured + Verified. Gold border. Top results. GHS 100/mo.',premium:'👑 Spotlight + Featured + Verified. #1 placement. GHS 200/mo.'};
+const JOB_PLAN_DAYS={free:30,standard:60,featured:90,urgent:90};
+const ROOM_IMG_LIMITS={free:1,standard:5,featured:8,urgent:10};
 
-const catEmoji = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const auth=getAuth(app);
+
+let allBiz=[],bizTab='all',selRating=0,currentBizPlan='basic',uploadedBizImgs=[];
+let allJobs=[],jobTab='all',currentJobPlan='free',currentJobPrice=0;
+let allRooms=[],roomTab='all',currentRoomPlan='free',currentRoomPrice=0,uploadedRoomImgs=[];
+
+// ── SECTION SWITCH ──
+window.switchSection=(name,el)=>{
+  document.querySelectorAll('.section-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='jobs'&&!allJobs.length)fetchJobs();
+  if(name==='rooms'&&!allRooms.length)fetchRooms();
+};
 
 // ── AUTH ──
-onAuthStateChanged(auth, u=>{
-  if(u){document.getElementById('loginWrap').style.display='none';document.getElementById('adminWrap').style.display='block';fetchAll();}
+onAuthStateChanged(auth,u=>{
+  if(u){document.getElementById('loginWrap').style.display='none';document.getElementById('adminWrap').style.display='block';fetchAll();renderBizImgGrid();renderRoomImgGrid();}
   else{document.getElementById('loginWrap').style.display='flex';document.getElementById('adminWrap').style.display='none';}
 });
 window.doLogin=async()=>{
@@ -403,264 +500,295 @@ window.doLogin=async()=>{
 };
 window.doLogout=async()=>await signOut(auth);
 
-// ── PLAN SELECTION ──
-window.selPlan=(plan,el)=>{
-  currentPlan=plan;
-  document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('selected'));
+// ════════════════════════════════════
+// BUSINESSES
+// ════════════════════════════════════
+window.selBizPlan=(plan,el)=>{
+  currentBizPlan=plan;
+  document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');
-  const note=document.getElementById('planNote');
-  note.textContent=PLAN_NOTES[plan]; note.style.display='block';
-  const limit=IMG_LIMITS[plan];
-  document.getElementById('imgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} for ${plan}`;
-  // Set expiry 30 days for paid
+  const note=document.getElementById('planNote');note.textContent=BIZ_PLAN_NOTES[plan];note.style.display='block';
+  const limit=BIZ_IMG_LIMITS[plan];document.getElementById('imgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} for ${plan}`;
   if(plan!=='basic'){const exp=new Date();exp.setDate(exp.getDate()+30);document.getElementById('bExpiry').value=exp.toISOString().split('T')[0];}
   else document.getElementById('bExpiry').value='';
-  renderImgGrid();
+  renderBizImgGrid();
 };
-
-// ── IMAGE GRID ──
-function renderImgGrid(){
-  const limit=IMG_LIMITS[currentPlan]||1;
-  const grid=document.getElementById('imgGrid');
-  const count=uploadedImages.length;
-  let html=uploadedImages.map((img,i)=>`
-    <div class="img-slot">
-      <img src="${esc(img)}" alt="">
-      <button class="img-slot-del" onclick="removeImg(${i})">×</button>
-    </div>`).join('');
-  if(count<limit) html+=`
-    <div class="img-add-btn">
-      <input type="file" accept="image/*" onchange="uploadImg(this)">
-      <span>📷</span><span>Add</span>
-    </div>`;
+function renderBizImgGrid(){
+  const limit=BIZ_IMG_LIMITS[currentBizPlan]||1,grid=document.getElementById('imgGrid');
+  let html=uploadedBizImgs.map((img,i)=>`<div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeBizImg(${i})">×</button></div>`).join('');
+  if(uploadedBizImgs.length<limit)html+=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadBizImg(this)"><span>📷</span><span>Add</span></div>`;
   grid.innerHTML=html;
-  const bar=document.getElementById('imgLimitBar');
-  bar.className='img-limit-bar'+(count>=limit?' maxed':'');
-  document.getElementById('imgCountLabel').textContent=`${count} / ${limit} photo${limit!==1?'s':''}`;
+  const bar=document.getElementById('imgLimitBar');bar.className='img-limit-bar'+(uploadedBizImgs.length>=limit?' maxed':'');
+  document.getElementById('imgCountLabel').textContent=`${uploadedBizImgs.length} / ${limit} photo${limit!==1?'s':''}`;
 }
-
-window.removeImg=idx=>{uploadedImages.splice(idx,1);renderImgGrid();};
-
-window.addUrlImg=url=>{
-  if(!url) return;
-  const limit=IMG_LIMITS[currentPlan]||1;
-  if(uploadedImages.length>=limit){showToast(`❌ Max ${limit} photos for ${currentPlan} plan`);return;}
-  if(!uploadedImages.includes(url)){uploadedImages.push(url);renderImgGrid();}
+window.removeBizImg=idx=>{uploadedBizImgs.splice(idx,1);renderBizImgGrid();};
+window.addBizUrlImg=url=>{
+  if(!url||!url.startsWith('http'))return;
+  const limit=BIZ_IMG_LIMITS[currentBizPlan]||1;
+  if(uploadedBizImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
+  if(!uploadedBizImgs.includes(url)){uploadedBizImgs.push(url);renderBizImgGrid();document.getElementById('bImgDirect').value='';}
 };
-
-// ── CLOUDINARY UPLOAD ──
-window.uploadImg=async input=>{
-  const f=input.files[0]; if(!f) return;
+window.uploadBizImg=async input=>{
+  const f=input.files[0];if(!f)return;
   if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
-  const limit=IMG_LIMITS[currentPlan]||1;
-  if(uploadedImages.length>=limit){showToast(`❌ Max ${limit} photos for ${currentPlan} plan`);return;}
+  const limit=BIZ_IMG_LIMITS[currentBizPlan]||1;
+  if(uploadedBizImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
   const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
-  bar.style.display='block'; stat.textContent='⏳ Uploading…'; fill.style.width='10%';
-  const fd=new FormData(); fd.append('file',f); fd.append('upload_preset',UPLOAD_PRESET); fd.append('folder','ghanaList');
-  try{
-    let p=10; const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
+  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_biz');
+  try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
     const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
-    const data=await res.json(); clearInterval(iv);
-    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedImages.push(data.secure_url);renderImgGrid();setTimeout(()=>bar.style.display='none',1000);}
+    const data=await res.json();clearInterval(iv);
+    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedBizImgs.push(data.secure_url);renderBizImgGrid();setTimeout(()=>bar.style.display='none',1000);}
     else throw new Error(data.error?.message||'Failed');
   }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}
 };
-
-// ── COORDS ──
 window.getCoords=()=>{if(!navigator.geolocation){showToast('⚠️ Not available');return;}navigator.geolocation.getCurrentPosition(p=>{document.getElementById('bLat').value=p.coords.latitude.toFixed(6);document.getElementById('bLng').value=p.coords.longitude.toFixed(6);showToast('📍 Location detected!');},()=>showToast('❌ Could not detect location'));};
-
-// ── RATING ──
 window.setRating=v=>{selRating=v;document.querySelectorAll('.star').forEach(s=>s.classList.toggle('active',Number(s.dataset.v)<=v));};
-
-// ── FETCH ──
 async function fetchAll(){
-  try{
-    const snap=await getDocs(query(collection(db,'businesses'),orderBy('createdAt','desc')));
-    allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));
-    updateStats(); renderList();
-  }catch(e){document.getElementById('bizList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
+  try{const snap=await getDocs(query(collection(db,'businesses'),orderBy('createdAt','desc')));allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));updateBizStats();renderBizList();}
+  catch(e){document.getElementById('bizList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
 }
-
-// ── SAVE ──
 window.saveBiz=async()=>{
   const name=document.getElementById('bName').value.trim(),cat=document.getElementById('bCat').value,city=document.getElementById('bCity').value;
-  if(!name){showToast('⚠️ Name required');return;}
-  if(!cat){showToast('⚠️ Category required');return;}
-  if(!city){showToast('⚠️ City required');return;}
+  if(!name){showToast('⚠️ Name required');return;}if(!cat){showToast('⚠️ Category required');return;}if(!city){showToast('⚠️ City required');return;}
   const btn=document.getElementById('subBtn');btn.disabled=true;btn.textContent='Saving…';
   const editId=document.getElementById('editId').value;
-  const flags=PLAN_FLAGS[currentPlan];
+  const flags=BIZ_PLAN_FLAGS[currentBizPlan];
   const expiry=document.getElementById('bExpiry').value;
-  const data={
-    name,category:cat,city,
-    desc:document.getElementById('bDesc').value.trim(),
-    location:document.getElementById('bLoc').value.trim(),
-    lat:parseFloat(document.getElementById('bLat').value)||null,
-    lng:parseFloat(document.getElementById('bLng').value)||null,
-    phone:document.getElementById('bPhone').value.trim(),
-    whatsapp:document.getElementById('bWa').value.trim(),
-    email:document.getElementById('bEmail').value.trim(),
-    website:document.getElementById('bWeb').value.trim(),
-    tags:document.getElementById('bTags').value.trim(),
-    openTime:document.getElementById('bOpen').value,
-    closeTime:document.getElementById('bClose').value,
-    rating:selRating||null,
-    images:uploadedImages,
-    imageUrl:uploadedImages[0]||'',
-    plan:currentPlan,
-    verified:flags.verified,
-    featured:flags.featured,
-    approved:document.getElementById('togApp').classList.contains('on'),
-    expiresAt:expiry?Timestamp.fromDate(new Date(expiry)):null,
-  };
-  try{
-    if(editId){await updateDoc(doc(db,'businesses',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Updated!');}
+  const data={name,category:cat,city,desc:document.getElementById('bDesc').value.trim(),location:document.getElementById('bLoc').value.trim(),lat:parseFloat(document.getElementById('bLat').value)||null,lng:parseFloat(document.getElementById('bLng').value)||null,phone:document.getElementById('bPhone').value.trim(),whatsapp:document.getElementById('bWa').value.trim(),email:document.getElementById('bEmail').value.trim(),website:document.getElementById('bWeb').value.trim(),tags:document.getElementById('bTags').value.trim(),openTime:document.getElementById('bOpen').value,closeTime:document.getElementById('bClose').value,rating:selRating||null,images:uploadedBizImgs,imageUrl:uploadedBizImgs[0]||'',plan:currentBizPlan,verified:flags.verified,featured:flags.featured,approved:document.getElementById('togApp').classList.contains('on'),expiresAt:expiry?Timestamp.fromDate(new Date(expiry)):null};
+  try{if(editId){await updateDoc(doc(db,'businesses',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Updated!');}
     else{data.createdAt=serverTimestamp();data.source='admin';await addDoc(collection(db,'businesses'),data);showToast('✅ Business added!');}
-    clearForm();await fetchAll();
+    clearBizForm();await fetchAll();
+  }catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Business';}
+};
+window.deleteBiz=async id=>{if(!confirm('Delete this business permanently?'))return;try{await deleteDoc(doc(db,'businesses',id));showToast('🗑 Deleted');await fetchAll();}catch(e){showToast('❌ '+e.message);}};
+window.toggleApprove=async id=>{const b=allBiz.find(x=>x.id===id);if(!b)return;await updateDoc(doc(db,'businesses',id),{approved:!b.approved});showToast(b.approved?'⏸ Unpublished':'✅ Now Live!');await fetchAll();};
+
+// ── FEATURE 11: BULK APPROVE ALL PENDING ──
+window.bulkApprovePending=async()=>{
+  const pending=allBiz.filter(b=>!b.approved);
+  if(!pending.length){showToast('No pending listings');return;}
+  if(!confirm(`Approve all ${pending.length} pending listings?`))return;
+  try{
+    await Promise.all(pending.map(b=>updateDoc(doc(db,'businesses',b.id),{approved:true})));
+    showToast(`✅ ${pending.length} listings approved!`);
+    await fetchAll();
   }catch(e){showToast('❌ '+e.message);}
-  finally{btn.disabled=false;btn.textContent='📤 Save Business';}
 };
 
-// ── DELETE ──
-window.deleteBiz=async id=>{
-  if(!confirm('Delete this business permanently?'))return;
-  try{await deleteDoc(doc(db,'businesses',id));showToast('🗑 Deleted');await fetchAll();}
-  catch(e){showToast('❌ '+e.message);}
+// ── FEATURE 10: DAILY SMS SUMMARY (trigger manually or via cron) ──
+window.sendDailySummary=async()=>{
+  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='YOUR_ARKESEL_API_KEY'){showToast('⚠️ Arkesel key not set');return;}
+  const today=new Date().toISOString().split('T')[0];
+  // Get today's bookings from Firestore
+  try{
+    const {getDocs:gd,query:q,collection:col,where:wh}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    // Group by business owner phone and send summary
+    showToast('📱 Daily summaries would be sent via Cloud Function/cron. See docs.');
+  }catch(e){showToast('❌ '+e.message);}
 };
 
-// ── APPROVE TOGGLE ──
-window.toggleApprove=async id=>{
-  const b=allBiz.find(x=>x.id===id);if(!b)return;
-  await updateDoc(doc(db,'businesses',id),{approved:!b.approved});
-  showToast(b.approved?'⏸ Unpublished':'✅ Now Live!');
-  await fetchAll();
+// ── FEATURE 14: RECORD MOMO PAYMENT REF ON BOOKING ──
+window.recordMomoRef=async(bookingId)=>{
+  const ref=prompt('Enter MoMo transaction reference:');
+  if(!ref)return;
+  try{
+    await updateDoc(doc(db,'bookings',bookingId),{momoRef:ref,paidAt:new Date().toISOString(),paymentMethod:'MoMo'});
+    showToast('✅ MoMo ref recorded: '+ref);
+  }catch(e){showToast('❌ '+e.message);}
 };
-
-// ── EDIT ──
 window.editBiz=id=>{
   const b=allBiz.find(x=>x.id===id);if(!b)return;
-  document.getElementById('editId').value=id;
-  document.getElementById('bName').value=b.name||'';
-  document.getElementById('bDesc').value=b.desc||'';
-  document.getElementById('bCat').value=b.category||'';
-  document.getElementById('bCity').value=b.city||'';
-  document.getElementById('bLoc').value=b.location||'';
-  document.getElementById('bLat').value=b.lat||'';
-  document.getElementById('bLng').value=b.lng||'';
-  document.getElementById('bPhone').value=b.phone||'';
-  document.getElementById('bWa').value=b.whatsapp||'';
-  document.getElementById('bEmail').value=b.email||'';
-  document.getElementById('bWeb').value=b.website||'';
-  document.getElementById('bTags').value=b.tags||'';
-  document.getElementById('bOpen').value=b.openTime||'';
-  document.getElementById('bClose').value=b.closeTime||'';
+  document.getElementById('editId').value=id;document.getElementById('bName').value=b.name||'';document.getElementById('bDesc').value=b.desc||'';document.getElementById('bCat').value=b.category||'';document.getElementById('bCity').value=b.city||'';document.getElementById('bLoc').value=b.location||'';document.getElementById('bLat').value=b.lat||'';document.getElementById('bLng').value=b.lng||'';document.getElementById('bPhone').value=b.phone||'';document.getElementById('bWa').value=b.whatsapp||'';document.getElementById('bEmail').value=b.email||'';document.getElementById('bWeb').value=b.website||'';document.getElementById('bTags').value=b.tags||'';document.getElementById('bOpen').value=b.openTime||'';document.getElementById('bClose').value=b.closeTime||'';
   if(b.expiresAt){const d=b.expiresAt.toDate?b.expiresAt.toDate():new Date(b.expiresAt);document.getElementById('bExpiry').value=d.toISOString().split('T')[0];}
-  uploadedImages=b.images||(b.imageUrl?[b.imageUrl]:[]);
+  uploadedBizImgs=b.images||(b.imageUrl?[b.imageUrl]:[]);
   if(b.rating)setRating(b.rating);
-  if(b.approved)document.getElementById('togApp').classList.add('on');
-  else document.getElementById('togApp').classList.remove('on');
-  const plan=b.plan||'basic';
-  currentPlan=plan;
-  document.querySelectorAll('.plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===plan)o.classList.add('selected');});
-  document.getElementById('planNote').textContent=PLAN_NOTES[plan];
-  document.getElementById('planNote').style.display='block';
-  renderImgGrid();
-  document.getElementById('subBtn').textContent='💾 Update Business';
-  window.scrollTo({top:0,behavior:'smooth'});
-  showToast('✏️ Editing: '+b.name);
+  document.getElementById('togApp').classList.toggle('on',!!b.approved);
+  const plan=b.plan||'basic';currentBizPlan=plan;
+  document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===plan)o.classList.add('selected');});
+  document.getElementById('planNote').textContent=BIZ_PLAN_NOTES[plan];document.getElementById('planNote').style.display='block';
+  renderBizImgGrid();document.getElementById('subBtn').textContent='💾 Update Business';
+  document.querySelectorAll('.sec-tab')[0].click();window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+b.name);
 };
-
-// ── CLEAR ──
-window.clearForm=()=>{
+window.clearBizForm=()=>{
   ['editId','bName','bDesc','bLoc','bPhone','bWa','bEmail','bWeb','bTags','bLat','bLng','bExpiry'].forEach(i=>document.getElementById(i).value='');
   ['bCat','bCity'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('bOpen').value='';document.getElementById('bClose').value='';
-  document.getElementById('togApp').classList.add('on');
-  selRating=0;currentPlan='basic';uploadedImages=[];
+  document.getElementById('togApp').classList.add('on');selRating=0;currentBizPlan='basic';uploadedBizImgs=[];
   document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='basic')o.classList.add('selected');});
-  document.getElementById('planNote').style.display='none';
-  document.getElementById('bImgDirect').value='';
-  renderImgGrid();
-  document.getElementById('subBtn').textContent='📤 Save Business';
+  document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='basic')o.classList.add('selected');});
+  document.getElementById('planNote').style.display='none';document.getElementById('bImgDirect').value='';
+  renderBizImgGrid();document.getElementById('subBtn').textContent='📤 Save Business';
 };
-
-// ── TAB ──
-window.setTab=(tab,el)=>{currentTab=tab;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderList();};
-
-// ── RENDER LIST ──
-window.renderList=()=>{
-  const q=(document.getElementById('asearch').value||'').toLowerCase();
-  const now=Date.now();
+window.setBizTab=(tab,el)=>{bizTab=tab;document.querySelectorAll('#panel-businesses .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderBizList();};
+window.renderBizList=()=>{
+  const q=(document.getElementById('asearch').value||'').toLowerCase(),now=Date.now();
   let list=[...allBiz].filter(b=>!q||(b.name||'').toLowerCase().includes(q)||(b.category||'').toLowerCase().includes(q)||(b.city||'').toLowerCase().includes(q));
-  if(currentTab==='live') list=list.filter(b=>b.approved);
-  else if(currentTab==='pending') list=list.filter(b=>!b.approved);
-  else if(currentTab==='premium') list=list.filter(b=>b.plan==='premium');
-  else if(currentTab==='expiring') list=list.filter(b=>{
-    if(!b.expiresAt||b.plan==='basic')return false;
-    const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();
-    return exp>now&&(exp-now)<7*86400000;
-  });
-
+  if(bizTab==='live')list=list.filter(b=>b.approved);else if(bizTab==='pending')list=list.filter(b=>!b.approved);else if(bizTab==='premium')list=list.filter(b=>b.plan==='premium');
+  else if(bizTab==='expiring')list=list.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return exp>now&&(exp-now)<7*86400000;});
   const el=document.getElementById('bizList');
   if(!list.length){el.innerHTML='<div class="empty">📭 No businesses found</div>';return;}
   el.innerHTML=list.map(b=>{
-    const plan=b.plan||'basic';
-    const exp=b.expiresAt?.toDate?b.expiresAt.toDate():b.expiresAt?new Date(b.expiresAt):null;
-    const days=exp?Math.ceil((exp.getTime()-now)/86400000):null;
-    const imgCount=(b.images||[]).length||(b.imageUrl?1:0);
-    return `
-    <div class="biz-row plan-${plan}">
-      <div class="biz-row-thumb">${b.imageUrl||b.images?.[0]?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:`${catEmoji(b.category)}`}</div>
-      <div class="biz-row-body">
-        <div class="biz-row-name">${esc(b.name)}</div>
-        <div class="biz-row-meta">
-          <span class="badge bc">${esc(b.city||'—')}</span>
-          <span class="badge b${plan}">${plan==='premium'?'👑':plan==='featured'?'⭐':plan==='standard'?'✓':''} ${plan}</span>
-          ${b.verified?'<span class="badge bverified">✓ Ver</span>':''}
-          ${b.approved?'<span class="badge blive">● Live</span>':'<span class="badge bpend">⏳ Pending</span>'}
-          ${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d</span>`:''}
-          <span class="badge bc">📷 ${imgCount}</span>
-        </div>
-        <div class="biz-row-loc">📍 ${esc(b.location||'')} ${esc(b.city||'')}${exp?` · Exp ${exp.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`:''}</div>
-      </div>
-      <div class="row-acts">
-        <button class="ibtn" title="Edit" onclick="editBiz('${b.id}')">✏️</button>
-        <button class="ibtn" title="${b.approved?'Unpublish':'Approve'}" onclick="toggleApprove('${b.id}')">${b.approved?'⏸':'✅'}</button>
-        <button class="ibtn del" title="Delete" onclick="deleteBiz('${b.id}')">🗑</button>
-      </div>
-    </div>`;
+    const plan=b.plan||'basic',exp=b.expiresAt?.toDate?b.expiresAt.toDate():b.expiresAt?new Date(b.expiresAt):null,days=exp?Math.ceil((exp.getTime()-now)/86400000):null,imgCount=(b.images||[]).length||(b.imageUrl?1:0);
+    return `<div class="biz-row plan-${plan}"><div class="biz-row-thumb">${b.imageUrl||b.images?.[0]?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:catEmoji(b.category)}</div><div class="biz-row-body"><div class="biz-row-name">${esc(b.name)}</div><div class="biz-row-meta"><span class="badge bc">${esc(b.city||'—')}</span><span class="badge b${plan}">${plan==='premium'?'👑':plan==='featured'?'⭐':plan==='standard'?'✓':''} ${plan}</span>${b.verified?'<span class="badge bverified">✓ Ver</span>':''}${b.approved?'<span class="badge blive">● Live</span>':'<span class="badge bpend">⏳ Pending</span>'}${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d</span>`:''}<span class="badge bc">📷 ${imgCount}</span></div><div class="biz-row-loc">📍 ${esc(b.location||'')} ${esc(b.city||'')}${exp?` · Exp ${exp.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`:''}</div></div><div class="row-acts"><button class="ibtn" onclick="editBiz('${b.id}')">✏️</button><button class="ibtn" onclick="toggleApprove('${b.id}')">${b.approved?'⏸':'✅'}</button><button class="ibtn del" onclick="deleteBiz('${b.id}')">🗑</button></div></div>`;
   }).join('');
 };
-
-// ── STATS ──
-function updateStats(){
+function updateBizStats(){
   const now=Date.now();
-  document.getElementById('sTotal').textContent=allBiz.length;
-  document.getElementById('sLive').textContent=allBiz.filter(b=>b.approved).length;
-  const pend=allBiz.filter(b=>!b.approved).length;
-  document.getElementById('sPend').textContent=pend;
-  const exp=allBiz.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const t=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return t>now&&(t-now)<7*86400000;}).length;
-  document.getElementById('sExp').textContent=exp;
-  document.getElementById('psPremium').textContent=allBiz.filter(b=>b.plan==='premium').length;
-  document.getElementById('psFeatured').textContent=allBiz.filter(b=>b.plan==='featured').length;
-  document.getElementById('psStandard').textContent=allBiz.filter(b=>b.plan==='standard').length;
-  document.getElementById('psBasic').textContent=allBiz.filter(b=>!b.plan||b.plan==='basic').length;
-  const paid=allBiz.filter(b=>b.approved&&b.plan&&b.plan!=='basic');
-  const rev=paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);
-  document.getElementById('revAmt').textContent=`GHS ${rev.toLocaleString()}`;
-  document.getElementById('revSub').textContent=`${paid.length} active paid listing${paid.length!==1?'s':''}`;
-  const pb=document.getElementById('pendBanner');
-  pb.style.display=pend?'flex':'none';
-  document.getElementById('pendCount').textContent=pend;
+  document.getElementById('sTotal').textContent=allBiz.length;document.getElementById('sLive').textContent=allBiz.filter(b=>b.approved).length;
+  const pend=allBiz.filter(b=>!b.approved).length;document.getElementById('sPend').textContent=pend;
+  document.getElementById('sExp').textContent=allBiz.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const t=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return t>now&&(t-now)<7*86400000;}).length;
+  document.getElementById('psPremium').textContent=allBiz.filter(b=>b.plan==='premium').length;document.getElementById('psFeatured').textContent=allBiz.filter(b=>b.plan==='featured').length;document.getElementById('psStandard').textContent=allBiz.filter(b=>b.plan==='standard').length;document.getElementById('psBasic').textContent=allBiz.filter(b=>!b.plan||b.plan==='basic').length;
+  const paid=allBiz.filter(b=>b.approved&&b.plan&&b.plan!=='basic');const rev=paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);
+  document.getElementById('revAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('revSub').textContent=`${paid.length} active paid listing${paid.length!==1?'s':''}`;
+  const pb=document.getElementById('pendBanner');pb.style.display=pend?'flex':'none';document.getElementById('pendCount').textContent=pend;
 }
 
+// ════════════════════════════════════
+// JOBS
+// ════════════════════════════════════
+window.selJobPlan=el=>{currentJobPlan=el.dataset.plan;currentJobPrice=Number(el.dataset.price);document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
+async function fetchJobs(){
+  try{const snap=await getDocs(query(collection(db,'jobs'),orderBy('createdAt','desc')));allJobs=snap.docs.map(d=>({id:d.id,...d.data()}));updateJobStats();renderJobList();}
+  catch(e){document.getElementById('jobList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
+}
+window.saveJob=async()=>{
+  const title=document.getElementById('jTitle').value.trim(),company=document.getElementById('jCompany').value.trim(),city=document.getElementById('jCity').value,type=document.getElementById('jType').value,phone=document.getElementById('jPhone').value.trim();
+  if(!title){showToast('⚠️ Job title required');return;}if(!company){showToast('⚠️ Company required');return;}if(!city){showToast('⚠️ City required');return;}if(!type){showToast('⚠️ Job type required');return;}if(!phone){showToast('⚠️ Phone required');return;}
+  const btn=document.getElementById('jSubBtn');btn.disabled=true;btn.textContent='Saving…';
+  const editId=document.getElementById('jEditId').value;
+  const expiry=new Date(Date.now()+(JOB_PLAN_DAYS[currentJobPlan]||30)*86400000);
+  const data={jobTitle:title,company,city,jobType:type,industry:document.getElementById('jIndustry').value,salary:document.getElementById('jSalary').value.trim(),experience:document.getElementById('jExp').value,desc:document.getElementById('jDesc').value.trim(),requirements:document.getElementById('jReqs').value.trim(),howToApply:document.getElementById('jApply').value.trim(),tags:document.getElementById('jTags').value.trim(),phone,whatsapp:document.getElementById('jWa').value.trim(),email:document.getElementById('jEmail').value.trim(),deadline:document.getElementById('jDeadline').value,logoUrl:document.getElementById('jLogoUrl').value.trim(),plan:currentJobPlan,paid:currentJobPrice>0,views:0,expiresAt:Timestamp.fromDate(expiry),source:'admin'};
+  try{if(editId){await updateDoc(doc(db,'jobs',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Job updated!');}
+    else{data.createdAt=serverTimestamp();await addDoc(collection(db,'jobs'),data);showToast('✅ Job posted!');}
+    clearJobForm();await fetchJobs();
+  }catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Job';}
+};
+window.deleteJob=async id=>{if(!confirm('Delete this job permanently?'))return;try{await deleteDoc(doc(db,'jobs',id));showToast('🗑 Deleted');await fetchJobs();}catch(e){showToast('❌ '+e.message);}};
+window.editJob=id=>{
+  const j=allJobs.find(x=>x.id===id);if(!j)return;
+  document.getElementById('jEditId').value=id;document.getElementById('jTitle').value=j.jobTitle||'';document.getElementById('jCompany').value=j.company||'';document.getElementById('jCity').value=j.city||'';document.getElementById('jType').value=j.jobType||'';document.getElementById('jIndustry').value=j.industry||'';document.getElementById('jSalary').value=j.salary||'';document.getElementById('jExp').value=j.experience||'No experience';document.getElementById('jDeadline').value=j.deadline||'';document.getElementById('jDesc').value=j.desc||'';document.getElementById('jReqs').value=j.requirements||'';document.getElementById('jApply').value=j.howToApply||'';document.getElementById('jTags').value=j.tags||'';document.getElementById('jPhone').value=j.phone||'';document.getElementById('jWa').value=j.whatsapp||'';document.getElementById('jEmail').value=j.email||'';document.getElementById('jLogoUrl').value=j.logoUrl||'';
+  currentJobPlan=j.plan||'free';document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===currentJobPlan)o.classList.add('selected');});
+  document.getElementById('jSubBtn').textContent='💾 Update Job';window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+j.jobTitle);
+};
+window.clearJobForm=()=>{
+  ['jEditId','jTitle','jCompany','jSalary','jDeadline','jDesc','jReqs','jApply','jTags','jPhone','jWa','jEmail','jLogoUrl'].forEach(i=>document.getElementById(i).value='');
+  ['jCity','jType','jIndustry'].forEach(i=>document.getElementById(i).value='');document.getElementById('jExp').value='No experience';
+  currentJobPlan='free';currentJobPrice=0;document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='free')o.classList.add('selected');});
+  document.getElementById('jSubBtn').textContent='📤 Save Job';
+};
+window.setJobTab=(tab,el)=>{jobTab=tab;document.querySelectorAll('#panel-jobs .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderJobList();};
+window.renderJobList=()=>{
+  const q=(document.getElementById('jsearch').value||'').toLowerCase(),now=Date.now();
+  let list=[...allJobs].filter(j=>!q||(j.jobTitle||'').toLowerCase().includes(q)||(j.company||'').toLowerCase().includes(q)||(j.city||'').toLowerCase().includes(q));
+  if(jobTab==='urgent')list=list.filter(j=>j.plan==='urgent');else if(jobTab==='featured')list=list.filter(j=>j.plan==='featured');else if(jobTab==='free')list=list.filter(j=>!j.plan||j.plan==='free');
+  else if(jobTab==='expiring')list=list.filter(j=>{if(!j.expiresAt)return false;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now&&(exp-now)<7*86400000;});
+  const el=document.getElementById('jobList');
+  if(!list.length){el.innerHTML='<div class="empty">📭 No jobs found</div>';return;}
+  el.innerHTML=list.map(j=>{
+    const plan=j.plan||'free',exp=j.expiresAt?.toDate?j.expiresAt.toDate():j.expiresAt?new Date(j.expiresAt):null,days=exp?Math.ceil((exp.getTime()-now)/86400000):null;
+    return `<div class="biz-row plan-${plan}"><div class="biz-row-thumb">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'💼'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(j.jobTitle||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(j.company||'—')}</span><span class="badge bc">${esc(j.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${j.jobType?`<span class="badge bc">${esc(j.jobType)}</span>`:''}${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d left</span>`:''}${days!==null&&days<=0?'<span class="badge burgent">Expired</span>':''}</div><div class="biz-row-loc">💰 ${esc(j.salary||'Not stated')} · 👁 ${j.views||0} views${exp?` · Exp ${exp.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`:''}</div></div><div class="row-acts"><button class="ibtn" onclick="editJob('${j.id}')">✏️</button><button class="ibtn del" onclick="deleteJob('${j.id}')">🗑</button></div></div>`;
+  }).join('');
+};
+function updateJobStats(){
+  const now=Date.now(),active=allJobs.filter(j=>{if(!j.expiresAt)return true;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now;});
+  document.getElementById('jTotal').textContent=allJobs.length;document.getElementById('jActive').textContent=active.length;document.getElementById('jFeatured').textContent=allJobs.filter(j=>j.plan==='featured').length;document.getElementById('jUrgent').textContent=allJobs.filter(j=>j.plan==='urgent').length;
+  const paid=allJobs.filter(j=>j.paid),rev=paid.reduce((s,j)=>s+(j.plan==='urgent'?100:j.plan==='featured'?60:30),0);
+  document.getElementById('jRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('jRevSub').textContent=`${paid.length} paid job listing${paid.length!==1?'s':''}`;
+}
+
+// ════════════════════════════════════
+// ROOMS
+// ════════════════════════════════════
+window.selRoomPlan=el=>{
+  currentRoomPlan=el.dataset.plan;currentRoomPrice=Number(el.dataset.price);
+  document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
+  const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;document.getElementById('rImgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} (${currentRoomPlan})`;
+  renderRoomImgGrid();
+};
+function renderRoomImgGrid(){
+  const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1,grid=document.getElementById('rImgGrid');
+  let html=uploadedRoomImgs.map((img,i)=>`<div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeRoomImg(${i})">×</button></div>`).join('');
+  if(uploadedRoomImgs.length<limit)html+=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadRoomImg(this)"><span>📷</span><span>Add</span></div>`;
+  grid.innerHTML=html;
+  const bar=document.getElementById('rImgLimitBar');bar.className='img-limit-bar'+(uploadedRoomImgs.length>=limit?' maxed':'');
+  document.getElementById('rImgCountLabel').textContent=`${uploadedRoomImgs.length} / ${limit} photo${limit!==1?'s':''}`;
+}
+window.removeRoomImg=idx=>{uploadedRoomImgs.splice(idx,1);renderRoomImgGrid();};
+window.addRoomUrlImg=url=>{
+  if(!url||!url.startsWith('http'))return;const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;
+  if(uploadedRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
+  if(!uploadedRoomImgs.includes(url)){uploadedRoomImgs.push(url);renderRoomImgGrid();document.getElementById('rImgDirect').value='';}
+};
+window.uploadRoomImg=async input=>{
+  const f=input.files[0];if(!f)return;if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
+  const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;if(uploadedRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
+  const bar=document.getElementById('rUbar'),fill=document.getElementById('rUfill'),stat=document.getElementById('rUstat');
+  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_rooms');
+  try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();clearInterval(iv);
+    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedRoomImgs.push(data.secure_url);renderRoomImgGrid();setTimeout(()=>bar.style.display='none',1000);}
+    else throw new Error(data.error?.message||'Failed');
+  }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}
+};
+async function fetchRooms(){
+  try{const snap=await getDocs(query(collection(db,'rooms'),orderBy('createdAt','desc')));allRooms=snap.docs.map(d=>({id:d.id,...d.data()}));updateRoomStats();renderRoomList();}
+  catch(e){document.getElementById('roomList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
+}
+window.saveRoom=async()=>{
+  const title=document.getElementById('rTitle').value.trim(),city=document.getElementById('rCity').value,type=document.getElementById('rType').value,price=document.getElementById('rPrice').value,phone=document.getElementById('rPhone').value.trim();
+  if(!title){showToast('⚠️ Title required');return;}if(!city){showToast('⚠️ City required');return;}if(!type){showToast('⚠️ Type required');return;}if(!price){showToast('⚠️ Price required');return;}if(!phone){showToast('⚠️ Phone required');return;}
+  const btn=document.getElementById('rSubBtn');btn.disabled=true;btn.textContent='Saving…';
+  const editId=document.getElementById('rEditId').value;
+  const data={title,city,type,price:Number(price),period:document.getElementById('rPeriod').value,district:document.getElementById('rDistrict').value.trim(),beds:document.getElementById('rBeds').value,baths:document.getElementById('rBaths').value,desc:document.getElementById('rDesc').value.trim(),phone,whatsapp:document.getElementById('rWa').value.trim(),poster:document.getElementById('rPoster').value.trim(),images:uploadedRoomImgs,imageUrl:uploadedRoomImgs[0]||'',plan:currentRoomPlan,paid:currentRoomPrice>0,available:document.getElementById('togAvail').classList.contains('on'),views:0,source:'admin'};
+  try{if(editId){await updateDoc(doc(db,'rooms',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Room updated!');}
+    else{data.createdAt=serverTimestamp();await addDoc(collection(db,'rooms'),data);showToast('✅ Room posted!');}
+    clearRoomForm();await fetchRooms();
+  }catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Room';}
+};
+window.deleteRoom=async id=>{if(!confirm('Delete this room permanently?'))return;try{await deleteDoc(doc(db,'rooms',id));showToast('🗑 Deleted');await fetchRooms();}catch(e){showToast('❌ '+e.message);}};
+window.toggleRoomAvail=async id=>{const r=allRooms.find(x=>x.id===id);if(!r)return;await updateDoc(doc(db,'rooms',id),{available:!r.available});showToast(r.available?'🔴 Marked Unavailable':'✅ Marked Available');await fetchRooms();};
+window.editRoom=id=>{
+  const r=allRooms.find(x=>x.id===id);if(!r)return;
+  document.getElementById('rEditId').value=id;document.getElementById('rTitle').value=r.title||'';document.getElementById('rCity').value=r.city||'';document.getElementById('rType').value=r.type||'';document.getElementById('rPrice').value=r.price||'';document.getElementById('rPeriod').value=r.period||'per year';document.getElementById('rDistrict').value=r.district||'';document.getElementById('rBeds').value=r.beds||'1';document.getElementById('rBaths').value=r.baths||'1';document.getElementById('rDesc').value=r.desc||'';document.getElementById('rPhone').value=r.phone||'';document.getElementById('rWa').value=r.whatsapp||'';document.getElementById('rPoster').value=r.poster||'';
+  uploadedRoomImgs=r.images||(r.imageUrl?[r.imageUrl]:[]);
+  document.getElementById('togAvail').classList.toggle('on',r.available!==false);
+  currentRoomPlan=r.plan||'free';document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===currentRoomPlan)o.classList.add('selected');});
+  renderRoomImgGrid();document.getElementById('rSubBtn').textContent='💾 Update Room';window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+r.title);
+};
+window.clearRoomForm=()=>{
+  ['rEditId','rTitle','rDistrict','rPrice','rDesc','rPhone','rWa','rPoster','rImgDirect'].forEach(i=>document.getElementById(i).value='');
+  ['rCity','rType'].forEach(i=>document.getElementById(i).value='');document.getElementById('rPeriod').value='per year';document.getElementById('rBeds').value='1';document.getElementById('rBaths').value='1';
+  document.getElementById('togAvail').classList.add('on');currentRoomPlan='free';currentRoomPrice=0;uploadedRoomImgs=[];
+  document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='free')o.classList.add('selected');});
+  renderRoomImgGrid();document.getElementById('rSubBtn').textContent='📤 Save Room';
+};
+window.setRoomTab=(tab,el)=>{roomTab=tab;document.querySelectorAll('#panel-rooms .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderRoomList();};
+window.renderRoomList=()=>{
+  const q=(document.getElementById('rsearch').value||'').toLowerCase();
+  let list=[...allRooms].filter(r=>!q||(r.title||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q));
+  if(roomTab==='available')list=list.filter(r=>r.available!==false);else if(roomTab==='featured')list=list.filter(r=>r.plan==='featured');else if(roomTab==='urgent')list=list.filter(r=>r.plan==='urgent');else if(roomTab==='free')list=list.filter(r=>!r.plan||r.plan==='free');
+  const el=document.getElementById('roomList');
+  if(!list.length){el.innerHTML='<div class="empty">📭 No rooms found</div>';return;}
+  el.innerHTML=list.map(r=>{
+    const plan=r.plan||'free',avail=r.available!==false;
+    return `<div class="biz-row plan-${plan==='featured'?'featured-r':plan}"><div class="biz-row-thumb">${r.imageUrl||r.images?.[0]?`<img src="${esc(r.imageUrl||r.images[0])}" alt="">`:'🏠'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(r.title||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(r.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${avail?'<span class="badge blive">● Available</span>':'<span class="badge bpend">Unavailable</span>'}${r.type?`<span class="badge bc">${esc(r.type)}</span>`:''}<span class="badge bc">📷 ${(r.images||[]).length||(r.imageUrl?1:0)}</span></div><div class="biz-row-loc">💰 GHS ${Number(r.price||0).toLocaleString()} ${r.period||''} · 📍 ${esc(r.district||'')} ${esc(r.city||'')} · 👁 ${r.views||0}</div></div><div class="row-acts"><button class="ibtn" onclick="editRoom('${r.id}')">✏️</button><button class="ibtn" onclick="toggleRoomAvail('${r.id}')">${avail?'🔴':'✅'}</button><button class="ibtn del" onclick="deleteRoom('${r.id}')">🗑</button></div></div>`;
+  }).join('');
+};
+function updateRoomStats(){
+  document.getElementById('rTotal').textContent=allRooms.length;document.getElementById('rAvail').textContent=allRooms.filter(r=>r.available!==false).length;document.getElementById('rFeatured').textContent=allRooms.filter(r=>r.plan==='featured'||r.plan==='urgent').length;document.getElementById('rCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
+  const paid=allRooms.filter(r=>r.paid),rev=paid.reduce((s,r)=>s+(r.plan==='urgent'?100:r.plan==='featured'?60:30),0);
+  document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;
+}
+
+// ── HELPERS ──
+const catEmoji=c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);};
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-// Init image grid
-renderImgGrid();
 </script>
 </body>
 </html>

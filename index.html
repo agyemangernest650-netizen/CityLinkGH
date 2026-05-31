@@ -5,19 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CityLinkGH — Find Local Businesses in Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="index.css"></link>
+<link rel="stylesheet" href="index.css">
 </head>
 <body>
 <div class="toast" id="toast"></div>
-
-<header>
-  <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
+  
+  <header>
+  <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
   <div class="hdr-right">
-    <a href="submit.html" class="hbtn gold">＋ List</a>
-    <div class="hbtn ghost" id="profile"><div class="ni">👤</div><div class="nl">Profile</div></div>
-    <a href="about.html" class="hbtn gold">About us</a>
+    <a href="submit.html" class="hbtn gold">＋ List a Business</a>
     <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+  <div class="drawer-section">Navigate</div>
+  <a href="index.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+  <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
+  <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+  <div class="drawer-section">List Something</div>
+  <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
+  <a href="jobs.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">📋</span> Post a Job</a>
+  <a href="room.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</a>
+  <div class="drawer-section">Account</div>
+  <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
+  <a href="bookings-dashboard.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+</nav>
 </header>
 
 <!-- HERO -->
@@ -50,7 +66,7 @@
 <div class="deals-section" id="dealsSection" style="display:none;">
   <div class="deals-hd">
     <div class="deals-title">🔥 Flash Deals</div>
-    <span class="see-all" onclick="window.location='deals.html'">See all →</span>
+    <span class="see-all" onclick="filterSort('featured',document.querySelector('.chip[onclick*=\'featured\']'))">See all →</span>
   </div>
   <div class="deals-scroll" id="dealsScroll"></div>
 </div>
@@ -78,7 +94,7 @@
     <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-ico">🏯</div><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
     <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-ico">⚓</div><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
     <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-ico">🌾</div><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
-    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-ico">🏰</div><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape Coast">—</div></div>
+    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-ico">🏰</div><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
     <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-ico">🌳</div><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
     <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-ico">🌄</div><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
     <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-ico">🌺</div><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
@@ -179,8 +195,8 @@
       <h3>Quick Links</h3>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="#">Businesses</a></li>
-        <li><a href="#">Categories</a></li>
+        <li><a href="room.html">Apartment/House for rent</a></li>
+        <li><a href="jobs.html">Jobs</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
     </div>
@@ -219,17 +235,22 @@
   </div>
 </footer>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=Function.prototype" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, query, where, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",appId:"YOUR_APP_ID"
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
+
+
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
@@ -245,11 +266,11 @@ window.toggleDark = () => {
   const html = document.documentElement;
   const isDark = html.getAttribute('data-theme')==='dark';
   html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'🌙':'☀️';
-  localStorage.setItem('ghTheme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
 };
 // Restore theme
-const saved = localStorage.getItem('ghTheme');
+const saved = localStorage.getItem('clTheme');
 if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
 
 // ── RECENTLY VIEWED ──
@@ -337,7 +358,7 @@ async function fetchBiz(){
 function updateCityCounts(){
   ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga'].forEach(c=>{
     const count=allBiz.filter(b=>b.city===c).length;
-    const el=document.getElementById('cc-'+c);
+    const el=document.getElementById('cc-'+c.replace(' ','-'));
     if(el) el.textContent=count+'';
   });
 }
@@ -486,7 +507,8 @@ function renderGrid(list){
     const plan=b.plan||'basic';
     const openS=isOpen(b.openTime,b.closeTime);
     const imgUrl=b.imageUrl||(b.images?.[0])||'';
-    const waNum=(b.whatsapp||b.phone||'').replace(/\D/g,'');
+    const rawWa=(b.whatsapp||b.phone||'').replace(/\D/g,'');
+    const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
     const tags=(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,2).map(t=>`<span class="biz-tag">${esc(t)}</span>`).join('');
     const stripHtml=plan!=='basic'?`<div class="pstrip ${plan==='standard'?'standard':plan}"></div>`:'';
     const badgeHtml=plan==='premium'?`<div class="plan-badge pb-premium">👑</div>`:plan==='featured'?`<div class="plan-badge pb-featured">⭐</div>`:plan==='standard'?`<div class="plan-badge pb-standard">✓</div>`:'';
@@ -513,8 +535,9 @@ function renderGrid(list){
           ${tags?`<div class="biz-tags">${tags}</div>`:''}
           <div class="biz-acts" onclick="event.preventDefault()">
             ${b.phone?`<a class="biz-btn btn-call" href="tel:${esc(b.phone)}">📞 Call</a>`:''}
-            ${waNum?`<a class="biz-btn btn-wa" href="https://wa.me/233${waNum.slice(-9)}" target="_blank">💬 Chat</a>`:''}
+            ${waNum?`<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank">💬 Chat</a>`:''}
             <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
+            <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n\n👉 '+location.origin+'/business.html?id='+b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share on WhatsApp">📤</a>
           </div>
         </div>
       </a>`;
@@ -589,6 +612,30 @@ let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
 
 fetchBiz();
+
+// ── FEATURE 7: URL PARAM DEEP LINKS ──
+// Supports ?city=Accra&category=Restaurant&search=pizza&sort=open
+(function applyURLParams(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('city'))    { activeCity=p.get('city'); document.querySelectorAll('.city-card').forEach(c=>{if(c.dataset.city===activeCity)c.classList.add('active');}); document.getElementById('cityClear').style.display='block'; document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`; }
+  if(p.get('category')){ activeCat=p.get('category'); document.querySelectorAll('.cat-tile').forEach(t=>{if(t.dataset.cat===activeCat)t.classList.add('active');}); }
+  if(p.get('search'))  { searchQ=p.get('search'); const si=document.getElementById('searchInput'); if(si)si.value=searchQ; }
+  if(p.get('sort'))    { activeSort=p.get('sort'); }
+})();
+// ── HAMBURGER MENU ──
+window.toggleDrawer = () => {
+  const h = document.getElementById('hamburger');
+  const d = document.getElementById('navDrawer');
+  const o = document.getElementById('navOverlay');
+  h.classList.toggle('open');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+};
+// Mark active link
+document.querySelectorAll('.drawer-link').forEach(a => {
+  if(a.href === window.location.href) a.classList.add('active');
+});
 </script>
 </body>
 </html>

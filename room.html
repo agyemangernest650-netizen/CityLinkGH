@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CityLinkGH — Rooms & Houses for Rent</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<link rel="stylesheet" href="room.css"></link>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
+  <div class="hbtns">
+    <button class="hbtn gold" onclick="openPostModal()">+ 🏡Post Room</button>
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+  <div class="drawer-section">Navigate</div>
+  <a href="index.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+  <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
+  <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+  <div class="drawer-section">List Something</div>
+  <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
+  <a href="jobs.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">📋</span> Post a Job</a>
+  <li  class="drawer-link" onclick="openPostModal();setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</li>
+  <div class="drawer-section">Account</div>
+  <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
+  <a href="bookings-dashboard.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Find <em>Rooms & Houses</em><br>for Rent in Ghana</h1>
+  <p>Self-contained, chambers, apartments, houses — across all cities. No agent fees on basic listings.</p>
+  <div class="search-wrap">
+    <span>🔍</span>
+    <input type="text" id="searchInput" placeholder="Search area, district, city…" oninput="applyFilters()">
+    <button class="search-go" onclick="applyFilters()">Search</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">LISTINGS</div></div>
+  <div><div class="stat-n" id="statAvail">—</div><div class="stat-l">AVAILABLE</div></div>
+  <div><div class="stat-n" id="statCities">—</div><div class="stat-l">CITIES</div></div>
+</div>
+
+<!-- TYPE FILTERS -->
+<div class="filter-section">
+  <div class="filter-row" id="typeFilters">
+    <div class="filter-chip active" data-type="all" onclick="filterType(this)">🏠 All Types</div>
+    <div class="filter-chip" data-type="Single Room" onclick="filterType(this)">🛏 Single Room</div>
+    <div class="filter-chip" data-type="Chamber & Hall" onclick="filterType(this)">🛋 Chamber & Hall</div>
+    <div class="filter-chip" data-type="Self Contained" onclick="filterType(this)">🚿 Self Contained</div>
+    <div class="filter-chip" data-type="1 Bedroom" onclick="filterType(this)">🏡 1 Bedroom</div>
+    <div class="filter-chip" data-type="2 Bedroom" onclick="filterType(this)">🏠 2 Bedroom</div>
+    <div class="filter-chip" data-type="3 Bedroom" onclick="filterType(this)">🏘 3 Bedroom</div>
+    <div class="filter-chip" data-type="Apartment" onclick="filterType(this)">🏢 Apartment</div>
+    <div class="filter-chip" data-type="House" onclick="filterType(this)">🏗 Full House</div>
+    <div class="filter-chip" data-type="Office Space" onclick="filterType(this)">💼 Office Space</div>
+    <div class="filter-chip" data-type="Shop" onclick="filterType(this)">🏪 Shop/Store</div>
+  </div>
+
+  <!-- PRICE RANGE -->
+  <div style="margin-top:10px;">
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Price Range (GHS / year)</div>
+    <div class="price-row">
+      <input class="price-input" type="number" id="priceMin" placeholder="Min e.g. 500" oninput="applyFilters()">
+      <span class="price-sep">—</span>
+      <input class="price-input" type="number" id="priceMax" placeholder="Max e.g. 5000" oninput="applyFilters()">
+    </div>
+  </div>
+</div>
+
+<!-- CITY FILTER -->
+<div class="city-scroll" id="cityScroll">
+  <div class="city-pill active" data-city="all" onclick="filterCity(this)">📍 All Cities</div>
+  <div class="city-pill" data-city="Accra" onclick="filterCity(this)">Accra</div>
+  <div class="city-pill" data-city="Kumasi" onclick="filterCity(this)">Kumasi</div>
+  <div class="city-pill" data-city="Takoradi" onclick="filterCity(this)">Takoradi</div>
+  <div class="city-pill" data-city="Tamale" onclick="filterCity(this)">Tamale</div>
+  <div class="city-pill" data-city="Cape Coast" onclick="filterCity(this)">Cape Coast</div>
+  <div class="city-pill" data-city="Sunyani" onclick="filterCity(this)">Sunyani</div>
+  <div class="city-pill" data-city="Ho" onclick="filterCity(this)">Ho</div>
+  <div class="city-pill" data-city="Koforidua" onclick="filterCity(this)">Koforidua</div>
+</div>
+
+<!-- SORT -->
+<div class="sort-row">
+  <div class="sort-label" id="listLabel">All Listings</div>
+  <select class="sort-sel" id="sortSel" onchange="applyFilters()">
+    <option value="newest">Newest First</option>
+    <option value="price_low">Price: Low to High</option>
+    <option value="price_high">Price: High to Low</option>
+    <option value="featured">Featured First</option>
+  </select>
+</div>
+
+<!-- POST BUTTON -->
+<div class="post-btn-wrap">
+  <button class="post-room-btn" onclick="openPostModal()">
+    🏠 Post Your Room / House for Rent
+  </button>
+</div>
+
+<!-- LISTINGS -->
+<div class="rooms-grid" id="roomsGrid">
+  <div style="background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;">
+    <div class="skeleton" style="height:200px;border-radius:0;"></div>
+    <div style="padding:14px;display:flex;flex-direction:column;gap:8px;">
+      <div class="skeleton" style="height:22px;width:50%;"></div>
+      <div class="skeleton" style="height:16px;width:70%;"></div>
+      <div class="skeleton" style="height:13px;width:60%;"></div>
+      <div style="display:flex;gap:8px;"><div class="skeleton" style="height:38px;flex:1;border-radius:9px;"></div><div class="skeleton" style="height:38px;flex:1;border-radius:9px;"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+
+<!--footer-->
+<footer class="footer">
+  <div class="footer-container">
+    <!--logo & about-->
+    <div class="footer-box">
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
+    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
+  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
+    </div>
+    <!-- Quick Links -->
+    <div class="footer-box">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="room.html">Apartment/House for rent</a></li>
+        <li><a href="jobs.html">Jobs</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <!-- Categories -->
+    <div class="footer-box">
+      <h3>Top Categories</h3>
+      <ul>
+        <li><a href="#">Churches</a></li>
+        <li><a href="#">Hotels</a></li>
+        <li><a href="#">Salons</a></li>
+        <li><a href="#">Mechanics</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-box">
+      <h3>Contact</h3>
+      <p>Email: agyemangernest650@gmail.com</p>
+      <p>Phone: +233 53 736 1543</p>
+
+      <div class="socials">
+        <a href="#">Facebook</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>
+      © 2026 CityLink Ghana. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+  </div>
+</footer>
+
+<!-- POST ROOM MODAL -->
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title">🏠 Post Room / House</div>
+      <button class="modal-close" onclick="closePostModal()">✕</button>
+    </div>
+
+    <!-- PLAN -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Choose Listing Plan</div>
+      <div class="plan-opts">
+        <div class="plan-opt sel" data-plan="free" data-price="0" onclick="selectPlan(this)">
+          <div class="po-ico">📋</div>
+          <div class="po-name">Free</div>
+          <div class="po-price">Basic listing · 1 photo</div>
+        </div>
+        <div class="plan-opt" data-plan="standard" data-price="30" onclick="selectPlan(this)">
+          <div class="po-ico">⭐</div>
+          <div class="po-name">Standard</div>
+          <div class="po-price">GHS 30 · 5 photos</div>
+        </div>
+        <div class="plan-opt" data-plan="featured" data-price="60" onclick="selectPlan(this)">
+          <div class="po-ico">🌟</div>
+          <div class="po-name">Featured</div>
+          <div class="po-price">GHS 60 · Top listing</div>
+        </div>
+        <div class="plan-opt" data-plan="urgent" data-price="100" onclick="selectPlan(this)">
+          <div class="po-ico">🔴</div>
+          <div class="po-name">Urgent</div>
+          <div class="po-price">GHS 100 · #1 + urgent badge</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field"><label>Title *</label><input type="text" id="rTitle" placeholder="e.g. Self Contained in Osu, Accra"></div>
+    <div class="r2">
+      <div class="field"><label>Type *</label>
+        <select id="rType">
+          <option value="">Select…</option>
+          <option>Single Room</option><option>Chamber & Hall</option>
+          <option>Self Contained</option><option>1 Bedroom</option>
+          <option>2 Bedroom</option><option>3 Bedroom</option>
+          <option>Apartment</option><option>House</option>
+          <option>Office Space</option><option>Shop</option>
+        </select>
+      </div>
+      <div class="field"><label>City *</label>
+        <select id="rCity">
+          <option value="">Select…</option>
+          <option>Accra</option><option>Kumasi</option><option>Takoradi</option>
+          <option>Tamale</option><option>Cape Coast</option><option>Sunyani</option>
+          <option>Ho</option><option>Koforidua</option><option>Bolgatanga</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>District / Area *</label><input type="text" id="rDistrict" placeholder="e.g. Osu, East Legon, Spintex" list="ghDistricts" autocomplete="off">
+      <datalist id="ghDistricts">
+        <option value="Osu, Accra"><option value="Labone, Accra"><option value="Cantonments, Accra"><option value="Airport Residential, Accra"><option value="East Legon, Accra"><option value="Spintex, Accra"><option value="Tema, Greater Accra"><option value="Dansoman, Accra"><option value="Achimota, Accra"><option value="Adabraka, Accra"><option value="Madina, Accra"><option value="Lapaz, Accra"><option value="Nungua, Accra"><option value="Teshie, Accra"><option value="Dome, Accra"><option value="Adentan, Accra"><option value="Ashiaman, Greater Accra"><option value="Adum, Kumasi"><option value="Bantama, Kumasi"><option value="Asokwa, Kumasi"><option value="Nhyiaeso, Kumasi"><option value="Suame, Kumasi"><option value="Oforikrom, Kumasi"><option value="Sekondi, Takoradi"><option value="Effia, Takoradi"><option value="Kojokrom, Takoradi"><option value="Tamale Central"><option value="Sagnarigu, Tamale"><option value="Cape Coast Central"><option value="Sunyani, Bono Region"><option value="Ho, Volta Region"><option value="Koforidua, Eastern Region"><option value="Bolgatanga, Upper East"><option value="Wa, Upper West"><option value="Techiman, Bono East"><option value="Keta, Volta Region"><option value="Hohoe, Volta Region">
+      </datalist>
+    </div>
+    <div class="r2">
+      <div class="field"><label>Rent (GHS) *</label><input type="number" id="rPrice" placeholder="e.g. 1500"></div>
+      <div class="field"><label>Payment Period</label>
+        <select id="rPeriod">
+          <option>per year</option><option>per month</option>
+          <option>2 years advance</option><option>negotiable</option>
+        </select>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="field"><label>Bedrooms</label>
+        <select id="rBeds">
+          <option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5+</option>
+        </select>
+      </div>
+      <div class="field"><label>Bathrooms</label>
+        <select id="rBaths">
+          <option>1</option><option>2</option><option>3</option><option>Shared</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- AMENITIES -->
+    <div class="field">
+      <label>Amenities (select all that apply)</label>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;" id="amenitiesGrid">
+        <div class="filter-chip" onclick="toggleAmenity(this)">💧 Water</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">⚡ Electricity</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">📶 WiFi</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🅿️ Parking</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🔒 Security</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">❄️ AC</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🛁 Ensuite</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🏊 Pool</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🚗 Garage</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🌿 Garden</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🍳 Kitchen</div>
+        <div class="filter-chip" onclick="toggleAmenity(this)">🛋 Furnished</div>
+      </div>
+    </div>
+
+    <div class="field"><label>Description</label><textarea id="rDesc" placeholder="Describe the property — size, condition, landlord info, access road…"></textarea></div>
+    <div class="r2">
+      <div class="field"><label>Contact Phone *</label><input type="tel" id="rPhone" placeholder="024 000 0000"></div>
+      <div class="field"><label>WhatsApp</label><input type="tel" id="rWa" placeholder="024 000 0000"></div>
+    </div>
+    <div class="field"><label>Landlord / Agent Name</label><input type="text" id="rPoster" placeholder="Your name"></div>
+    <div class="field">
+      <label>Are you the…</label>
+      <div style="display:flex;gap:8px;">
+        <div class="filter-chip active" id="ownerPill" onclick="setListerType('owner')">🏠 Owner</div>
+        <div class="filter-chip" id="agentPill" onclick="setListerType('agent')">🤝 Agent</div>
+        <div class="filter-chip" id="caretakerPill" onclick="setListerType('caretaker')">👷 Caretaker</div>
+      </div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="field">
+      <label>Photos — <span id="photoLimitTxt">max 1 (free plan)</span></label>
+      <div class="img-upload-grid" id="imgUpGrid"></div>
+      <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px;" id="ustat"></div>
+    </div>
+
+    <!-- PAYSTACK (for paid plans) -->
+    <div id="paySection" style="display:none;background:var(--mist);border-radius:12px;padding:13px;margin-bottom:4px;">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:8px;">💳 Pay to Boost Listing</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:10px;">Your listing will appear at the top and get more views.</div>
+      <div class="field"><label>Email for Receipt</label><input type="email" id="payEmail" placeholder="you@example.com"></div>
+    </div>
+
+    <button class="submit-btn" id="submitRoomBtn" onclick="submitRoom()">
+      🏠 <span id="submitRoomTxt">Post Listing</span>
+    </button>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" id="detailContent" style="padding:0;border-radius:20px 20px 0 0;overflow:hidden;">
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
+};
+
+// Cloudinary
+const CLOUD_NAME    = "dulnujvm7";
+const UPLOAD_PRESET = "ernest";
+const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
+const ARKESEL_KEY   = "YOUR_ARKESEL_API_KEY";
+
+const IMG_LIMITS = {free:1, standard:5, featured:8, urgent:10};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+let allRooms=[], activeType='all', activeCity='all', selPlan='free', selPrice=0, uploadedImgs=[], listerType='owner';
+
+// ── FETCH ──
+async function fetchRooms(){
+  try{
+    const snap = await getDocs(query(collection(db,'rooms'), orderBy('createdAt','desc')));
+    allRooms   = snap.docs.map(d=>({id:d.id,...d.data()}));
+    // Filter expired (listings older than 60 days auto-expire)
+    const cutoff = Date.now() - 60*24*60*60*1000;
+    allRooms = allRooms.filter(r=>r.createdAt?.toDate?r.createdAt.toDate().getTime()>cutoff:true);
+    document.getElementById('statTotal').textContent  = allRooms.length;
+    document.getElementById('statAvail').textContent  = allRooms.filter(r=>r.available!==false).length;
+    document.getElementById('statCities').textContent = [...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
+    applyFilters();
+  }catch(e){
+    document.getElementById('roomsGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
+
+// ── FILTERS ──
+window.filterType = el => {
+  activeType = el.dataset.type;
+  document.querySelectorAll('#typeFilters .filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+};
+window.filterCity = el => {
+  activeCity = el.dataset.city;
+  document.querySelectorAll('#cityScroll .city-pill').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+};
+
+window.applyFilters = () => {
+  const q       = (document.getElementById('searchInput').value||'').toLowerCase();
+  const minP    = Number(document.getElementById('priceMin').value)||0;
+  const maxP    = Number(document.getElementById('priceMax').value)||Infinity;
+  const sort    = document.getElementById('sortSel').value;
+  let list      = [...allRooms];
+
+  if(activeType!=='all') list=list.filter(r=>r.type===activeType);
+  if(activeCity!=='all') list=list.filter(r=>r.city===activeCity);
+  if(q) list=list.filter(r=>(r.title||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));
+  if(minP) list=list.filter(r=>Number(r.price)>=minP);
+  if(maxP!==Infinity) list=list.filter(r=>Number(r.price)<=maxP);
+
+  if(sort==='price_low') list=[...list].sort((a,b)=>Number(a.price)-Number(b.price));
+  else if(sort==='price_high') list=[...list].sort((a,b)=>Number(b.price)-Number(a.price));
+  else if(sort==='featured') list=[...list].sort((a,b)=>(a.plan==='urgent'?-2:a.plan==='featured'?-1:0)-(b.plan==='urgent'?-2:b.plan==='featured'?-1:0));
+  else list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
+
+  document.getElementById('listLabel').textContent=`${list.length} listing${list.length!==1?'s':''}`;
+  renderRooms(list);
+};
+
+// ── RENDER ──
+function renderRooms(list){
+  const grid = document.getElementById('roomsGrid');
+  if(!list.length){
+    grid.innerHTML=`<div class="empty"><div class="ei">🏠</div><h3>No listings found</h3><p>Try different filters or <button onclick="openPostModal()" style="color:var(--green);font-weight:700;border:none;background:none;cursor:pointer;font-size:13px;">post your room</button>.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(r=>{
+    const imgs   = r.images||(r.imageUrl?[r.imageUrl]:[]);
+    const imgHtml= imgs.length?`<img src="${esc(imgs[0])}" alt="" onerror="this.style.display='none'">`:'🏠';
+    const ams    = (r.amenities||[]).slice(0,4).join(' · ');
+    const isNew  = r.createdAt&&(Date.now()-new Date(r.createdAt?.toDate?.()??r.createdAt).getTime())<3*24*60*60*1000;
+    const rawWa  = (r.whatsapp||r.phone||'').replace(/\D/g,'');
+    const waNum  = rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+    const timeAgo= r.createdAt?fmtAgo(r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt)):'Recently';
+    return `
+    <div class="room-card ${r.plan==='featured'||r.plan==='urgent'?'featured':''} ${r.plan==='urgent'?'urgent':''}"
+         onclick="viewRoom('${r.id}')">
+      <div class="room-imgs">
+        ${imgHtml}
+        ${imgs.length>1?`<div class="room-imgs-count">📷 ${imgs.length}</div>`:''}
+        ${r.plan==='urgent'?'<div class="room-badge badge-urgent">🔴 URGENT</div>':''}
+        ${r.plan==='featured'?'<div class="room-badge badge-featured">⭐ FEATURED</div>':''}
+        ${isNew?'<div class="room-badge badge-new" style="top:10px;right:10px;left:auto;">NEW</div>':''}
+        ${r.listerType==='agent'?'<div class="room-badge badge-agent" style="bottom:10px;left:10px;top:auto;">🤝 Agent</div>':''}
+      </div>
+      <div class="room-body">
+        <div class="room-price">GHS ${Number(r.price).toLocaleString()} <span>${r.period||'per year'}</span></div>
+        <div class="room-title">${esc(r.title)}</div>
+        <div class="room-loc">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
+        <div class="room-features">
+          ${r.type?`<div class="room-feat">🏠 ${esc(r.type)}</div>`:''}
+          ${r.beds?`<div class="room-feat">🛏 ${r.beds} bed${r.beds!=='1'?'s':''}</div>`:''}
+          ${r.baths?`<div class="room-feat">🚿 ${r.baths} bath</div>`:''}
+          ${ams?`<div class="room-feat">${ams}</div>`:''}
+        </div>
+        ${r.desc?`<div class="room-desc">${esc(r.desc)}</div>`:''}
+        <div class="room-acts" onclick="event.stopPropagation()">
+          ${r.phone?`<a class="room-btn rbtn-call" href="tel:${esc(r.phone)}">📞 Call</a>`:''}
+          ${waNum?`<a class="room-btn rbtn-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank">💬 Chat</a>`:''}
+          <button class="room-btn rbtn-view" onclick="event.stopPropagation();viewRoom('${r.id}')">View →</button>
+          <button class="room-btn" style="flex:0 0 auto;background:${r.available!==false?'#fde8e8':'#f0fff6'};color:${r.available!==false?'var(--red)':'var(--green)'};border:1.5px solid ${r.available!==false?'#f5c6c6':'#b8f0d0'};" onclick="event.stopPropagation();toggleRoomAvail('${r.id}',${r.available!==false})" title="${r.available!==false?'Mark as Rented':'Mark as Available'}">${r.available!==false?'🔴 Rented':'✅ Free'}</button>
+        </div>
+      </div>
+      <div class="room-footer">
+        <span class="room-poster">👤 ${esc(r.poster||'Owner')}</span>
+        <span class="room-date">${timeAgo}</span>
+        <span class="room-views">👁 ${r.views||0}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── VIEW ROOM DETAIL ──
+window.viewRoom = async id => {
+  const r = allRooms.find(x=>x.id===id);
+  if(!r) return;
+  // Increment views
+  try{ await updateDoc(doc(db,'rooms',id),{views:increment(1)}); }catch(_){}
+  const imgs=(r.images||(r.imageUrl?[r.imageUrl]:[]));
+  const ams=(r.amenities||[]).map(a=>`<span style="background:var(--mist);padding:4px 10px;border-radius:8px;font-size:12px;">${a}</span>`).join('');
+  const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');
+  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+  const dotsHtml=imgs.length>1?`<div class="gallery-nav">${imgs.map((_,i)=>`<div class="gn-dot${i===0?' active':''}" onclick="detailShowImg(${i})"></div>`).join('')}</div>`:'';
+  document.getElementById('detailContent').innerHTML=`
+    <div style="position:relative;">
+      <div class="detail-gallery" id="detailGallery">
+        ${imgs.length?`<img id="detailMainImg" src="${esc(imgs[0])}" alt="">`:'🏠'}
+      </div>
+      ${dotsHtml}
+      <button onclick="closeDetailModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;">✕</button>
+    </div>
+    <div style="padding:16px 16px 80px;">
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px;">GHS ${Number(r.price).toLocaleString()} <span style="font-size:14px;font-weight:400;color:var(--gray);">${r.period||'per year'}</span></div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;">${esc(r.title)}</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+        ${r.type?`<span style="background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🏠 ${r.type}</span>`:''}
+        ${r.beds?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🛏 ${r.beds} Bed</span>`:''}
+        ${r.baths?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🚿 ${r.baths} Bath</span>`:''}
+        ${r.listerType==='agent'?`<span style="background:var(--purple);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🤝 Agent</span>`:`<span style="background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🏠 Owner</span>`}
+      </div>
+      ${ams?`<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">Amenities</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${ams}</div></div>`:''}
+      ${r.desc?`<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Description</div><div style="font-size:14px;color:var(--gray);line-height:1.7;">${esc(r.desc)}</div></div>`:''}
+      <div style="display:flex;gap:8px;position:sticky;bottom:18px;">
+        ${r.phone?`<a href="tel:${esc(r.phone)}" style="flex:1;background:var(--green);color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">📞 Call</a>`:''}
+        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank" style="flex:1;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp</a>`:''}
+      </div>
+    </div>`;
+
+  // Store images for gallery navigation
+  window._detailImgs = imgs;
+  window._detailIdx  = 0;
+  document.getElementById('detailModal').classList.add('show');
+};
+
+window.detailShowImg = idx => {
+  window._detailIdx = idx;
+  const imgs = window._detailImgs||[];
+  const el   = document.getElementById('detailMainImg');
+  if(el&&imgs[idx]) el.src=imgs[idx];
+  document.querySelectorAll('.gn-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+};
+
+window.closeDetailModal=()=>document.getElementById('detailModal').classList.remove('show');
+
+// ── POST MODAL ──
+window.openPostModal=()=>{ document.getElementById('postModal').classList.add('show'); renderImgGrid(); };
+window.closePostModal=()=>document.getElementById('postModal').classList.remove('show');
+
+window.selectPlan=el=>{
+  selPlan=el.dataset.plan; selPrice=Number(el.dataset.price);
+  document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel');
+  document.getElementById('photoLimitTxt').textContent=`max ${IMG_LIMITS[selPlan]} photo${IMG_LIMITS[selPlan]!==1?'s':''} (${selPlan} plan)`;
+  document.getElementById('paySection').style.display=selPrice>0?'block':'none';
+  document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';
+  renderImgGrid();
+};
+
+window.toggleAmenity=el=>el.classList.toggle('active');
+
+window.setListerType=type=>{
+  listerType=type;
+  ['owner','agent','caretaker'].forEach(t=>document.getElementById(t+'Pill').classList.remove('active'));
+  document.getElementById(type+'Pill').classList.add('active');
+};
+
+// ── IMG GRID ──
+function renderImgGrid(){
+  const limit=IMG_LIMITS[selPlan]||1;
+  const grid=document.getElementById('imgUpGrid');
+  let html=uploadedImgs.map((img,i)=>`<div class="img-up-slot"><img src="${esc(img)}" alt=""><button class="img-up-del" onclick="removeImg(${i})">×</button></div>`).join('');
+  if(uploadedImgs.length<limit) html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
+  grid.innerHTML=html;
+}
+window.removeImg=idx=>{uploadedImgs.splice(idx,1);renderImgGrid();};
+
+// ── CLOUDINARY UPLOAD ──
+window.uploadImg=async input=>{
+  const f=input.files[0];if(!f)return;
+  if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
+  const limit=IMG_LIMITS[selPlan]||1;
+  if(uploadedImgs.length>=limit){showToast(`❌ Max ${limit} photos for ${selPlan}`);return;}
+  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
+  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','ghanaList_rooms');
+  try{
+    let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();clearInterval(iv);
+    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedImgs.push(data.secure_url);renderImgGrid();setTimeout(()=>bar.style.display='none',800);}
+    else throw new Error(data.error?.message||'Failed');
+  }catch(e){stat.textContent='❌ Failed';fill.style.width='0%';}
+};
+
+// ── SUBMIT ROOM ──
+window.submitRoom=async()=>{
+  const title=document.getElementById('rTitle').value.trim();
+  const city=document.getElementById('rCity').value;
+  const type=document.getElementById('rType').value;
+  const price=document.getElementById('rPrice').value;
+  const phone=document.getElementById('rPhone').value.trim();
+  if(!title){showToast('⚠️ Title required');return;}
+  if(!city){showToast('⚠️ City required');return;}
+  if(!type){showToast('⚠️ Type required');return;}
+  if(!price){showToast('⚠️ Price required');return;}
+  if(!phone){showToast('⚠️ Phone required');return;}
+
+  const amenities=[...document.querySelectorAll('#amenitiesGrid .filter-chip.active')].map(el=>el.textContent.trim());
+
+  const roomData={
+    title,city,type,price:Number(price),
+    period:document.getElementById('rPeriod').value,
+    district:document.getElementById('rDistrict').value.trim(),
+    beds:document.getElementById('rBeds').value,
+    baths:document.getElementById('rBaths').value,
+    desc:document.getElementById('rDesc').value.trim(),
+    phone,
+    whatsapp:document.getElementById('rWa').value.trim(),
+    poster:document.getElementById('rPoster').value.trim(),
+    listerType,amenities,
+    images:uploadedImgs,
+    imageUrl:uploadedImgs[0]||'',
+    plan:selPlan,
+    available:true,
+    views:0,
+    createdAt:serverTimestamp()
+  };
+
+  if(selPrice>0){
+    const email=document.getElementById('payEmail').value.trim();
+    if(!email){showToast('⚠️ Email required for payment');return;}
+    // Paystack payment
+    const handler=PaystackPop.setup({
+      key:PAYSTACK_KEY,email,
+      amount:selPrice*100,currency:'GHS',
+      ref:'ROOM-'+Date.now(),
+      onSuccess:async response=>{
+        roomData.paid=true; roomData.payRef=response.reference;
+        await saveRoom(roomData);
+        // SMS to poster
+        await sendSMS(phone,`CityLinkGH: Your ${type} listing in ${city} is now live! Ref: ${response.reference}`);
+      },
+      onClose:()=>showToast('⚠️ Payment cancelled')
+    });
+    handler.openIframe();
+  } else {
+    await saveRoom(roomData);
+  }
+};
+
+async function saveRoom(data){
+  const btn=document.getElementById('submitRoomBtn');
+  btn.disabled=true;
+  document.getElementById('submitRoomTxt').textContent='Posting…';
+  try{
+    await addDoc(collection(db,'rooms'),data);
+    showToast('✅ Room posted successfully!');
+    closePostModal();
+    uploadedImgs=[];
+    await fetchRooms();
+  }catch(e){showToast('❌ '+e.message);}
+  finally{btn.disabled=false;document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';}
+}
+
+// ── ARKESEL SMS ──
+async function sendSMS(to,message){
+  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY'){console.warn('SMS skipped: Arkesel key not configured');return;}
+  let num=to.replace(/\D/g,'');
+  if(num.startsWith('0'))num='233'+num.slice(1);
+  if(!num.startsWith('233'))num='233'+num;
+  try{await fetch('https://sms.arkesel.com/api/v2/sms/send',{method:'POST',headers:{'api-key':ARKESEL_KEY,'Content-Type':'application/json'},body:JSON.stringify({sender:'CityLinkGH',message,recipients:[num]})});}
+  catch(e){console.log('SMS:',e.message);}
+}
+
+// ── HELPERS ──
+function fmtAgo(date){
+  if(!date) return 'Recently';
+  const diff=Date.now()-new Date(date).getTime();
+  if(isNaN(diff)) return 'Recently';
+  const m=Math.floor(diff/60000);
+  if(m<60)return `${m}m ago`;
+  const h=Math.floor(m/60);
+  if(h<24)return `${h}h ago`;
+  return `${Math.floor(h/24)}d ago`;
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+// ── FEATURE 8: MARK ROOM AS RENTED / AVAILABLE ──
+window.toggleRoomAvail=async(id,currentlyAvail)=>{
+  try{
+    await updateDoc(doc(db,'rooms',id),{available:!currentlyAvail});
+    showToast(currentlyAvail?'🔴 Marked as Rented':'✅ Marked as Available');
+    await fetchRooms();
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+// Close modals on overlay click
+document.getElementById('postModal').addEventListener('click',e=>{if(e.target===document.getElementById('postModal'))closePostModal();});
+document.getElementById('detailModal').addEventListener('click',e=>{if(e.target===document.getElementById('detailModal'))closeDetailModal();});
+
+fetchRooms();
+renderImgGrid();
+
+// ── HAMBURGER MENU ──
+window.toggleDrawer = () => {
+  const h = document.getElementById('hamburger');
+  const d = document.getElementById('navDrawer');
+  const o = document.getElementById('navOverlay');
+  h.classList.toggle('open');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+};
+// Mark active link
+document.querySelectorAll('.drawer-link').forEach(a => {
+  if(a.href === window.location.href) a.classList.add('active');
+});
+</script>
+</body>
+</html>

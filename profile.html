@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GhanaList — My Profile</title>
+<title>CityLinkGH — My Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="profile.css">
 </head>
@@ -21,6 +21,7 @@
     <div class="aico">👤</div>
     <h2>Welcome to CityLinkGH</h2>
     <p>Sign in to manage your listings,<br>bookings, and saved businesses.</p>
+    <h3>Register if you are a business owner</h3>
   </div>
   <div class="auth-tabs">
     <button class="atab active" id="tabLogin" onclick="swTab('login')">Sign In</button>
@@ -173,20 +174,28 @@
   <!-- SETTINGS -->
   <div class="sec-hd" style="margin-top:8px;"><div class="sec-t">Settings</div></div>
   <div class="settings-wrap">
+
+    <div class="sec-hd" style="padding:10px 16px 4px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);">List Something</div></div>
     <div class="setting-item" onclick="window.location='submit.html'">
-      <div class="si-left"><div class="si-ico" style="background:#f0fff6;">🏪</div><div><div class="si-lbl">List a Business</div><div class="si-sub">Add your business to GhanaList</div></div></div>
+      <div class="si-left"><div class="si-ico" style="background:#f0fff6;">🏪</div><div><div class="si-lbl">List a Business</div><div class="si-sub">Add your business to CityLinkGH</div></div></div>
       <span class="si-arr">›</span>
     </div>
+    <div class="setting-item" onclick="window.location='jobs.html'">
+      <div class="si-left"><div class="si-ico" style="background:#e8f4ff;">💼</div><div><div class="si-lbl">Post a Job</div><div class="si-sub">Hire someone — post a vacancy</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
+    <div class="setting-item" onclick="window.location='rooms.html'">
+      <div class="si-left"><div class="si-ico" style="background:#fff8e8;">🏠</div><div><div class="si-lbl">Post a Room / House</div><div class="si-sub">List your property for rent</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
+
+    <div class="sec-hd" style="padding:10px 16px 4px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);">Account</div></div>
     <div class="setting-item" onclick="window.location='bookings-dashboard.html'">
       <div class="si-left"><div class="si-ico" style="background:#e8f4ff;">📅</div><div><div class="si-lbl">All Bookings</div><div class="si-sub">Full bookings dashboard</div></div></div>
       <span class="si-arr">›</span>
     </div>
-    <div class="setting-item" onclick="window.location='admin.html'">
-      <div class="si-left"><div class="si-ico" style="background:#fff3cd;">⚙️</div><div><div class="si-lbl">Admin Panel</div><div class="si-sub">Manage all listings</div></div></div>
-      <span class="si-arr">›</span>
-    </div>
-    <div class="setting-item">
-      <div class="si-left"><div class="si-ico" style="background:var(--mist);">ℹ️</div><div><div class="si-lbl">About GhanaList</div><div class="si-sub">Version 3.0</div></div></div>
+    <div class="setting-item" onclick="window.location='about.html'">
+      <div class="si-left"><div class="si-ico" style="background:var(--mist);">ℹ️</div><div><div class="si-lbl">About CityLinkGH</div><div class="si-sub">Version 3.0</div></div></div>
       <span class="si-arr">›</span>
     </div>
   </div>
@@ -198,32 +207,54 @@
   <div class="spacer"></div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div class="nav-item" onclick="window.location='index.html'">
-    <div class="ni"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div>
-    <div class="nl">Home</div>
-  </div>
-  <div class="nav-item" onclick="window.location='index.html'">
-    <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></div>
-    <div class="nl">Search</div>
-  </div>
-  <div class="nav-item" onclick="window.location='index.html'">
-    <div class="ni"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
-    <div class="nl">Map</div>
-  </div>
-  <div class="nav-item" style="position:relative;">
-    <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
-    <div class="nl">Saved</div>
-  </div>
-  <div class="nav-item active">
-    <div class="ni" style="position:relative;">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <div class="bk-notif-dot" id="notifDot" style="display:none;"></div>
+<!--footer-->
+<footer class="footer">
+  <div class="footer-container">
+    <!--logo & about-->
+    <div class="footer-box">
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
+    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
+  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
     </div>
-    <div class="nl">Profile</div>
+    <!-- Quick Links -->
+    <div class="footer-box">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Businesses</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <!-- Categories -->
+    <div class="footer-box">
+      <h3>Top Categories</h3>
+      <ul>
+        <li><a href="#">Churches</a></li>
+        <li><a href="#">Hotels</a></li>
+        <li><a href="#">Salons</a></li>
+        <li><a href="#">Mechanics</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-box">
+      <h3>Contact</h3>
+      <p>Email: agyemangernest650@gmail.com</p>
+      <p>Phone: +233 53 736 1543</p>
+
+      <div class="socials">
+        <a href="#">Facebook</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+
   </div>
-</div>
+  <div class="footer-bottom">
+    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
+  </div>
+</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -238,23 +269,21 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",
-  authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",
-  storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
 
 // Cloudinary
-const CLOUD_NAME    = "YOUR_CLOUD_NAME";
-const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
+const CLOUD_NAME    = "dulnujvm7";
+const UPLOAD_PRESET = "ernest";
 
-// Hubtel SMS (Ghana)
-// Register at https://hubtel.com/messaging
-const HUBTEL_ID     = "YOUR_HUBTEL_CLIENT_ID";
-const HUBTEL_SECRET = "YOUR_HUBTEL_CLIENT_SECRET";
-const HUBTEL_FROM   = "GhanaList";
+// Arkesel SMS (Ghana) — Register at https://arkesel.com
+const ARKESEL_API_KEY = "your-arkesel-api-key"; // ← replace with your key
+const ARKESEL_SENDER  = "CityLinkGH";
 
 // Plan image limits
 const IMG_LIMITS = { basic:1, standard:3, featured:5, premium:10 };
@@ -513,7 +542,7 @@ window.uploadListingImg = async (input, bizId, plan, limit) => {
   const file=input.files[0]; if(!file) return;
   if(file.size>5*1024*1024){showToast('❌ Max 5MB');return;}
   showToast('⏳ Uploading…');
-  const fd=new FormData(); fd.append('file',file); fd.append('upload_preset',UPLOAD_PRESET); fd.append('folder','ghanaList');
+  const fd=new FormData(); fd.append('file',file); fd.append('upload_preset',UPLOAD_PRESET); fd.append('folder','citylinkgh_biz');
   try {
     const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
     const data=await res.json();
@@ -587,7 +616,8 @@ function renderProfileBookings(bookings) {
     const isToday=b.date===TODAY;
     const d=new Date(b.date+'T00:00:00');
     const dl=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-    const waNum=(b.businessWhatsapp||b.businessPhone||'').replace(/\D/g,'').slice(-9);
+    const rawWa=(b.businessWhatsapp||b.businessPhone||'').replace(/\D/g,'');
+    const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
     const waMsg=encodeURIComponent(`Hi ${b.customerName}, your booking at ${b.businessName} is confirmed!\nRef: ${b.bookingRef}\nDate: ${dl} at ${b.time}`);
     return `
     <div class="bk-card bk-${b.status}">
@@ -624,10 +654,11 @@ window.updateBooking = async (id, status) => {
     if(userProfile?.smsEnabled && userProfile?.smsPhone){
       const snap=await getDoc(doc(db,'bookings',id));
       const bk=snap.data();
-      await sendSMS(userProfile.smsPhone,`GhanaList: Booking ${bk?.bookingRef} ${status}. Customer: ${bk?.customerName}, ${bk?.date} at ${bk?.time}.`);
+      await sendSMS(userProfile.smsPhone,`CityLinkGH: Booking ${bk?.bookingRef} ${status}. Customer: ${bk?.customerName}, ${bk?.date} at ${bk?.time}.`);
     }
-    const bizIds=Object.values(await getDoc(doc(db,'users',currentUser.uid))).savedBusinesses||[];
-    await loadMyBookings(bizIds);
+    const userSnap=await getDoc(doc(db,'users',currentUser.uid));
+    const bizIds2=(userSnap.data()?.savedBusinesses)||[];
+    await loadMyBookings(bizIds2);
     await loadOwnerData(currentUser.email);
   } catch(e){showToast('❌ '+e.message);}
 };
@@ -669,14 +700,27 @@ window.saveSMSPrefs = async () => {
   } catch(e){showToast('❌ '+e.message);}
 };
 
-// ── SEND SMS via Hubtel ──
+// ── SEND SMS via Arkesel ──
 async function sendSMS(to, message) {
-  // Hubtel Ghana SMS API
-  // Full docs: https://developers.hubtel.com/docs/send-message
-  const num='233'+to.replace(/\D/g,'').slice(-9);
+  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='your-arkesel-api-key'){console.warn('SMS skipped: Arkesel key not configured');return;}
+  let num = to.replace(/\D/g,'');
+  if (num.startsWith('0')) num = '233' + num.slice(1);
+  if (!num.startsWith('233')) num = '233' + num;
+
   try {
-    await fetch(`https://smsc.hubtel.com/v1/messages/send?clientsecret=${HUBTEL_SECRET}&clientid=${HUBTEL_ID}&from=${HUBTEL_FROM}&to=${num}&content=${encodeURIComponent(message)}`);
-  } catch(e){ console.log('SMS failed:',e.message); }
+    await fetch('https://sms.arkesel.com/api/v2/sms/send', {
+      method: 'POST',
+      headers: {
+        'api-key': ARKESEL_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender:     ARKESEL_SENDER,
+        message:    message,
+        recipients: [num]
+      })
+    });
+  } catch(e) { console.log('SMS failed:', e.message); }
 }
 
 // ── SAVED BUSINESSES (customer) ──

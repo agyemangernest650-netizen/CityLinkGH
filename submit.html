@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GhanaList — List Your Business</title>
+<title>CityLinkGH — List Your Business</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <link rel="stylesheet" href="submit.css">
 </head>
 <body>
@@ -99,7 +100,22 @@
           </select>
         </div>
       </div>
-      <div class="field"><label>Street / Area</label><input type="text" id="bLoc" placeholder="e.g. Osu, near Total Filling Station"></div>
+      <div class="field"><label>Street / Area</label><input type="text" id="bLoc" placeholder="e.g. Osu, near Total Filling Station" list="ghDistricts" autocomplete="off">
+        <datalist id="ghDistricts">
+          <!-- Accra / Greater Accra -->
+          <option value="Osu, Accra"><option value="Labone, Accra"><option value="Cantonments, Accra"><option value="Airport Residential, Accra"><option value="East Legon, Accra"><option value="Spintex, Accra"><option value="Tema, Greater Accra"><option value="Dansoman, Accra"><option value="Achimota, Accra"><option value="Adabraka, Accra"><option value="Madina, Accra"><option value="Lapaz, Accra"><option value="Nungua, Accra"><option value="Teshie, Accra"><option value="Dome, Accra"><option value="Abokobi, Accra"><option value="Ga East, Accra"><option value="Ga West, Accra"><option value="Ga South, Accra"><option value="Adentan, Accra"><option value="Ashiaman, Greater Accra">
+          <!-- Kumasi / Ashanti -->
+          <option value="Adum, Kumasi"><option value="Bantama, Kumasi"><option value="Asokwa, Kumasi"><option value="Nhyiaeso, Kumasi"><option value="Suame, Kumasi"><option value="Asawase, Kumasi"><option value="Oforikrom, Kumasi"><option value="Kwadaso, Kumasi"><option value="Manhyia, Kumasi"><option value="Tafo, Kumasi">
+          <!-- Takoradi / Western -->
+          <option value="Sekondi, Takoradi"><option value="Effia, Takoradi"><option value="Kojokrom, Takoradi"><option value="Essikado, Takoradi"><option value="Ahanta West, Takoradi">
+          <!-- Tamale / Northern -->
+          <option value="Tamale Central"><option value="Sagnarigu, Tamale"><option value="Tolon, Tamale"><option value="Kumbungu, Tamale">
+          <!-- Cape Coast / Central -->
+          <option value="Cape Coast Central"><option value="Abura Asebu, Cape Coast"><option value="Komenda, Cape Coast"><option value="Mfantsiman, Cape Coast">
+          <!-- Other Regions -->
+          <option value="Sunyani, Bono Region"><option value="Ho, Volta Region"><option value="Koforidua, Eastern Region"><option value="Bolgatanga, Upper East"><option value="Wa, Upper West"><option value="Techiman, Bono East"><option value="Berekum, Bono Region"><option value="Nkawkaw, Eastern Region"><option value="Keta, Volta Region"><option value="Hohoe, Volta Region">
+        </datalist>
+      </div>
     </div>
 
     <!-- CONTACT -->
@@ -130,44 +146,69 @@
     <div class="fcard">
       <div class="img-section">
         <div class="img-grid" id="imgGrid"></div>
-        <div class="img-limit" id="imgLimit"><span id="imgCount">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div>
+        <div class="img-limit" id="imgLimit"><span id="imgCount">0 / 1 photos</span></div>
       </div>
       <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
       <div class="ustat" id="ustat"></div>
-      <div style="margin-top:9px;"><label>Or paste image URL</label><input type="url" id="bImgUrl" placeholder="https://…" oninput="addUrlImg(this.value)"></div>
+      <div style="margin-top:9px;"><label>Or paste image URL</label><input type="url" id="bImgUrl" placeholder="https://…" onchange="addUrlImg(this.value)"></div>
     </div>
 
-    <!-- MOMO -->
-    <div class="momo-box" id="momoBox">
-      <div class="momo-hdr">
-        <div class="momo-logo">M</div>
-        <div><div class="momo-title">Pay with MTN MoMo</div><div class="momo-sub">Secure mobile money payment</div></div>
-      </div>
-      <div class="summary">
-        <div class="sum-row"><span class="sum-lbl">Plan</span><span class="sum-val" id="sumPlan">—</span></div>
-        <div class="sum-row"><span class="sum-lbl">Duration</span><span class="sum-val">30 days</span></div>
-        <div class="sum-row"><span class="sum-lbl">Photos allowed</span><span class="sum-val" id="sumPhotos">—</span></div>
-        <div class="sum-row"><span class="sum-lbl">Total</span><span class="sum-total" id="sumTotal">GHS 0</span></div>
-      </div>
-      <div class="field"><label>Network</label>
-        <div class="net-pills">
-          <div class="net-pill active" data-net="MTN" onclick="pickNet(this)">📱 MTN</div>
-          <div class="net-pill" data-net="Vodafone" onclick="pickNet(this)">📱 Vodafone</div>
-          <div class="net-pill" data-net="AirtelTigo" onclick="pickNet(this)">📱 AirtelTigo</div>
-        </div>
-      </div>
-      <div class="field"><label>MoMo Number *</label>
-        <div class="momo-num-wrap"><div class="momo-pre">+233</div><input type="tel" id="momoNum" placeholder="24 000 0000" maxlength="10"></div>
-      </div>
-      <div class="field"><label>Account Name</label><input type="text" id="momoName" placeholder="Name on MoMo account"></div>
-      <button class="pay-btn" id="payBtn" onclick="doMomoPay()">💳 Pay Now</button>
-      <div class="momo-stat" id="momoStat"></div>
-      <div class="momo-note">🔒 Secure via MTN MoMo API.<br>You will get a prompt on your phone to approve.<br>Listing activates after confirmation.</div>
+   <!-- PAYSTACK PAYMENT -->
+<div class="momo-box" id="momoBox">
+  <div class="momo-hdr">
+    <div class="momo-logo" style="background:#00C3F7;">💳</div>
+    <div>
+      <div class="momo-title">Pay with Paystack</div>
+      <div class="momo-sub">Card, Mobile Money, Bank Transfer</div>
     </div>
+  </div>
+
+  <div class="summary">
+    <div class="sum-row">
+      <span class="sum-lbl">Plan</span>
+      <span class="sum-val" id="sumPlan">—</span>
+    </div>
+    <div class="sum-row">
+      <span class="sum-lbl">Duration</span>
+      <span class="sum-val">30 days</span>
+    </div>
+    <div class="sum-row">
+      <span class="sum-lbl">Photos allowed</span>
+      <span class="sum-val" id="sumPhotos">—</span>
+    </div>
+    <div class="sum-row">
+      <span class="sum-lbl">Total</span>
+      <span class="sum-total" id="sumTotal">GHS 0</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Your Email (for receipt)</label>
+    <input type="email" id="payEmail" placeholder="you@example.com">
+  </div>
+
+  <div class="field">
+    <label>Your Phone Number</label>
+    <input type="tel" id="payPhone" placeholder="024 000 0000">
+  </div>
+
+  <button class="pay-btn" id="payBtn" onclick="doPaystackPay()"
+    style="background:#00C3F7;color:#fff;">
+    💳 Pay Now with Paystack
+  </button>
+
+  <div class="momo-stat" id="momoStat"></div>
+
+  <div class="momo-note">
+    🔒 Secured by Paystack.<br>
+    Pay with MoMo, Visa, Mastercard or bank transfer.<br>
+    Listing activates immediately after payment.
+  </div>
+</div>
 
     <div class="agree">
       <input type="checkbox" id="agreeCheck">
-      <label for="agreeCheck">I confirm this information is accurate and I have authority to list this business. I agree to GhanaList's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</label>
+      <label for="agreeCheck">I confirm this information is accurate and I have authority to list this business. I agree to CityLinkGH's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</label>
     </div>
 
     <button class="sub-btn" id="subBtn" onclick="doSubmit()">
@@ -184,7 +225,7 @@
   <div class="ref-box"><div class="ref-lbl">Reference Number</div><div class="ref-num" id="refNum">—</div></div>
   <div class="perks-box" id="perksBox"></div>
   <p id="sMsg"></p>
-  <a href="index.html">← Browse GhanaList</a>
+  <a href="index.html">← Browse CityLinkGH</a>
 </div>
 
 <script type="module">
@@ -192,15 +233,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, collection, addDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",
-  authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",
-  storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
-const CLOUD_NAME    = "YOUR_CLOUD_NAME";
-const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
+
+// Cloudinary
+const CLOUD_NAME    = "dulnujvm7";
+const UPLOAD_PRESET = "ernest";
 
 const PLAN_FLAGS = {
   basic:   {verified:false,featured:false,approved:true, autoApprove:true},
@@ -219,7 +262,7 @@ const PLAN_PERKS_DATA = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-let selPlan='basic', selPrice=0, selNet='MTN', uploadedImages=[], payRef='', payDone=false;
+let selPlan='basic', selPrice=0, uploadedImages=[], payRef='', payDone=false;
 
 // ── PLAN ──
 window.pickPlan = el => {
@@ -251,8 +294,6 @@ window.pickPlan = el => {
   document.getElementById('s2').classList.add('active');
 };
 
-window.pickNet=el=>{selNet=el.dataset.net;document.querySelectorAll('.net-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');};
-
 // ── IMAGE GRID ──
 function renderImgGrid(){
   const limit=IMG_LIMITS[selPlan]||1;
@@ -269,10 +310,10 @@ function renderImgGrid(){
 window.removeImg=idx=>{uploadedImages.splice(idx,1);renderImgGrid();};
 
 window.addUrlImg=url=>{
-  if(!url) return;
+  if(!url||!url.startsWith('http')) return;
   const limit=IMG_LIMITS[selPlan]||1;
   if(uploadedImages.length>=limit){showToast(`❌ Max ${limit} photos for ${selPlan}`);return;}
-  if(!uploadedImages.includes(url)){uploadedImages.push(url);renderImgGrid();}
+  if(!uploadedImages.includes(url)){uploadedImages.push(url);renderImgGrid();document.getElementById('bImgUrl').value='';}
 };
 
 window.uploadImg=async input=>{
@@ -292,36 +333,117 @@ window.uploadImg=async input=>{
   }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';}
 };
 
-// ── MOMO ──
-window.doMomoPay=async()=>{
-  const num=document.getElementById('momoNum').value.replace(/\D/g,'');
-  if(num.length<9){showToast('⚠️ Enter valid MoMo number');return;}
-  const btn=document.getElementById('payBtn'),stat=document.getElementById('momoStat');
-  btn.disabled=true;btn.innerHTML='⏳ Processing…';
-  stat.className='momo-stat ms-pending';stat.style.display='block';
-  stat.textContent='⏳ Sending request to your phone…';
-  payRef='GHL-'+Date.now();
-  try{
-    // Production: call your backend which calls MTN MoMo API
-    // await fetch('https://your-backend.com/momo-pay', {method:'POST', body:JSON.stringify({amount:selPrice,phone:'233'+num.slice(-9),ref:payRef})});
-    await new Promise(r=>setTimeout(r,3000)); // sandbox simulation
-    stat.className='momo-stat ms-success';
-    stat.textContent=`✅ Payment confirmed! Ref: ${payRef}`;
-    payDone=true;
-    document.getElementById('s3').classList.add('done');
-    document.getElementById('l3').classList.add('done');
-    showToast('✅ Payment confirmed!');
-    setTimeout(()=>finalSubmit(true),1500);
-  }catch(e){
-    stat.className='momo-stat ms-failed';
-    stat.textContent='❌ Payment failed: '+e.message;
-    btn.disabled=false;btn.innerHTML='💳 Try Again';
-  }
+// ── PAYSTACK CONFIG ──
+const PAYSTACK_PUBLIC_KEY = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8"; // your key
+// For testing use: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"
+
+// ── ARKESEL CONFIG ──
+const ARKESEL_API_KEY  = "your-arkesel-api-key";
+const ARKESEL_SENDER   = "CityLinkGH"; // max 11 chars, no spaces
+
+// ── PAYSTACK PAYMENT ──
+window.doPaystackPay = () => {
+  const email = document.getElementById('payEmail').value.trim();
+  const phone = document.getElementById('payPhone').value.trim();
+
+  if (!email) { showToast('⚠️ Enter your email for receipt'); return; }
+  if (!phone)  { showToast('⚠️ Enter your phone number'); return; }
+
+  const btn  = document.getElementById('payBtn');
+  const stat = document.getElementById('momoStat');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Opening payment…';
+
+  payRef = 'GHL-' + Date.now();
+
+  const handler = PaystackPop.setup({
+    key:       PAYSTACK_PUBLIC_KEY,
+    email:     email,
+    amount:    selPrice * 100,  // Paystack uses pesewas (kobo) — multiply by 100
+    currency:  'GHS',
+    ref:       payRef,
+    metadata: {
+      custom_fields: [
+        { display_name: 'Business Plan',   variable_name: 'plan',  value: selPlan  },
+        { display_name: 'Phone Number',    variable_name: 'phone', value: phone    },
+        { display_name: 'Business Name',   variable_name: 'biz',   value: document.getElementById('bName').value.trim() }
+      ]
+    },
+
+    // ── PAYMENT SUCCESS ──
+    onSuccess: async response => {
+      stat.className = 'momo-stat ms-success';
+      stat.style.display = 'block';
+      stat.textContent   = `✅ Payment confirmed! Ref: ${response.reference}`;
+      payRef  = response.reference;
+      payDone = true;
+
+      // Send SMS to business owner via Arkesel
+      await sendArkeselSMS(
+        phone,
+        `CityLinkGH: Payment of GHS ${selPrice} received for your ${selPlan} listing. Ref: ${payRef}. Your listing will be live within 1 hour.`
+      );
+
+      showToast('✅ Payment successful!');
+
+      // Update steps
+      document.getElementById('s3').classList.add('done');
+      document.getElementById('l3').classList.add('done');
+
+      // Auto proceed to submit
+      setTimeout(() => finalSubmit(true), 1500);
+    },
+
+    // ── PAYMENT CLOSED WITHOUT PAYING ──
+    onClose: () => {
+      btn.disabled = false;
+      btn.innerHTML = '💳 Pay Now with Paystack';
+      stat.textContent = '';
+      stat.style.display = 'none';
+      showToast('⚠️ Payment cancelled. Try again when ready.');
+    }
+  });
+
+  handler.openIframe();
 };
+
+// ── ARKESEL SMS ──
+// Docs: https://developers.arkesel.com
+// Supports Ghana numbers — GHS 0.04 per SMS
+async function sendArkeselSMS(to, message) {
+  if (!ARKESEL_API_KEY || ARKESEL_API_KEY === 'your-arkesel-api-key') {
+    console.warn('SMS skipped: Arkesel API key not configured');
+    return;
+  }
+  // Format number — remove spaces, add 233 prefix
+  let num = to.replace(/\D/g, '');
+  if (num.startsWith('0')) num = '233' + num.slice(1);
+  if (!num.startsWith('233')) num = '233' + num;
+
+  try {
+    const res = await fetch('https://sms.arkesel.com/api/v2/sms/send', {
+      method: 'POST',
+      headers: {
+        'api-key':     ARKESEL_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender:    ARKESEL_SENDER,
+        message:   message,
+        recipients: [num]
+      })
+    });
+    const data = await res.json();
+    console.log('SMS sent:', data);
+    return data;
+  } catch(e) {
+    console.log('SMS failed:', e.message);
+  }
+}
 
 // ── SUBMIT ──
 window.doSubmit=async()=>{
-  if(selPrice>0&&!payDone){showToast('💳 Complete MoMo payment first');document.getElementById('momoBox').scrollIntoView({behavior:'smooth'});return;}
+  if(selPrice>0&&!payDone){showToast('💳 Complete payment first');document.getElementById('momoBox').scrollIntoView({behavior:'smooth'});return;}
   finalSubmit(payDone);
 };
 

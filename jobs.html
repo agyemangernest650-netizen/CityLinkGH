@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CityLinkGH — Jobs in Ghana</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<link rel="stylesheet" href="jobs.css">
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+ <header>
+  <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
+  <div class="hbtns">
+    <button class="hbtn blue" onclick="openPostModal()">+ 📋Post Job</button>
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+  <div class="drawer-section">Navigate</div>
+  <a href="index.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+  <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
+  <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+  <div class="drawer-section">List Something</div>
+  <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
+  <li class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">📋</span> Post a Job</li>
+  <a href="room.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</a>
+  <div class="drawer-section">Account</div>
+  <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
+  <a href="bookings-dashboard.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Find <em>Jobs</em> in Ghana</h1>
+  <p>Full time, part time, remote, internships & attachments across all cities.</p>
+  <div class="search-wrap">
+    <span>🔍</span>
+    <input type="text" id="searchInput" placeholder="Search job title, company, skills…" oninput="applyFilters()">
+    <button class="search-go" onclick="applyFilters()">Search</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">TOTAL JOBS</div></div>
+  <div><div class="stat-n" id="statFull">—</div><div class="stat-l">FULL TIME</div></div>
+  <div><div class="stat-n" id="statRemote">—</div><div class="stat-l">REMOTE</div></div>
+  <div><div class="stat-n" id="statNew">—</div><div class="stat-l">THIS WEEK</div></div>
+</div>
+
+<!-- TYPE FILTERS -->
+<div class="filter-section">
+  <div class="filter-scroll">
+    <div class="fchip active" data-type="all" onclick="filterType(this)">💼 All Jobs</div>
+    <div class="fchip" data-type="Full Time" onclick="filterType(this)">👔 Full Time</div>
+    <div class="fchip" data-type="Part Time" onclick="filterType(this)">⏰ Part Time</div>
+    <div class="fchip" data-type="Remote" onclick="filterType(this)">🌐 Remote</div>
+    <div class="fchip" data-type="Contract" onclick="filterType(this)">📋 Contract</div>
+    <div class="fchip" data-type="Internship" onclick="filterType(this)">🎓 Internship</div>
+    <div class="fchip" data-type="Attachment" onclick="filterType(this)">📎 Attachment</div>
+  </div>
+  <!-- INDUSTRY FILTER -->
+  <div class="filter-scroll">
+    <div class="fchip active" data-industry="all" onclick="filterIndustry(this)">🏢 All Industries</div>
+    <div class="fchip" data-industry="Technology" onclick="filterIndustry(this)">💻 Tech</div>
+    <div class="fchip" data-industry="Finance" onclick="filterIndustry(this)">💰 Finance</div>
+    <div class="fchip" data-industry="Health" onclick="filterIndustry(this)">🏥 Health</div>
+    <div class="fchip" data-industry="Education" onclick="filterIndustry(this)">🎓 Education</div>
+    <div class="fchip" data-industry="Sales" onclick="filterIndustry(this)">📈 Sales</div>
+    <div class="fchip" data-industry="Engineering" onclick="filterIndustry(this)">⚙️ Engineering</div>
+    <div class="fchip" data-industry="Media" onclick="filterIndustry(this)">📱 Media</div>
+    <div class="fchip" data-industry="NGO" onclick="filterIndustry(this)">🤝 NGO</div>
+    <div class="fchip" data-industry="Agriculture" onclick="filterIndustry(this)">🌾 Agriculture</div>
+  </div>
+</div>
+
+<!-- CITY FILTER -->
+<div class="city-scroll">
+  <div class="city-pill active" data-city="all" onclick="filterCity(this)">📍 All Cities</div>
+  <div class="city-pill" data-city="Accra" onclick="filterCity(this)">Accra</div>
+  <div class="city-pill" data-city="Kumasi" onclick="filterCity(this)">Kumasi</div>
+  <div class="city-pill" data-city="Takoradi" onclick="filterCity(this)">Takoradi</div>
+  <div class="city-pill" data-city="Tamale" onclick="filterCity(this)">Tamale</div>
+  <div class="city-pill" data-city="Cape Coast" onclick="filterCity(this)">Cape Coast</div>
+  <div class="city-pill" data-city="Remote" onclick="filterCity(this)">🌐 Remote</div>
+</div>
+
+<!-- SORT -->
+<div class="sort-row">
+  <div class="sort-lbl" id="jobsLabel">All Jobs</div>
+  <select class="sort-sel" id="sortSel" onchange="applyFilters()">
+    <option value="newest">Newest First</option>
+    <option value="deadline">Deadline Soon</option>
+    <option value="salary_high">Highest Salary</option>
+    <option value="featured">Featured First</option>
+  </select>
+</div>
+
+<!-- POST JOB BUTTON -->
+<div class="post-btn-wrap">
+  <button class="post-job-btn" onclick="openPostModal()">💼 Post a Job — Free or Boost</button>
+</div>
+
+<!-- JOBS LIST -->
+<div class="jobs-grid" id="jobsGrid">
+  <div style="background:var(--card);border-radius:15px;border:1px solid var(--border);padding:14px;">
+    <div style="display:flex;gap:12px;margin-bottom:10px;">
+      <div class="skeleton" style="width:48px;height:48px;border-radius:10px;flex-shrink:0;"></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:40%;"></div><div class="skeleton" style="height:15px;width:70%;"></div></div>
+    </div>
+    <div class="skeleton" style="height:11px;width:55%;margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:18px;width:45%;margin-bottom:9px;"></div>
+    <div style="display:flex;gap:7px;"><div class="skeleton" style="height:36px;flex:1;border-radius:9px;"></div><div class="skeleton" style="height:36px;flex:1;border-radius:9px;"></div></div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!--footer-->
+<footer class="footer">
+  <div class="footer-container">
+    <!--logo & about-->
+    <div class="footer-box">
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
+    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
+  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
+    </div>
+    <!-- Quick Links -->
+    <div class="footer-box">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="room.html">Apartment/House for rent</a></li>
+        <li><a href="jobs.html">Jobs</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <!-- Categories -->
+    <div class="footer-box">
+      <h3>Top Categories</h3>
+      <ul>
+        <li><a href="#">Churches</a></li>
+        <li><a href="#">Hotels</a></li>
+        <li><a href="#">Salons</a></li>
+        <li><a href="#">Mechanics</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-box">
+      <h3>Contact</h3>
+      <p>Email: agyemangernest650@gmail.com</p>
+      <p>Phone: +233 53 736 1543</p>
+
+      <div class="socials">
+        <a href="#">Facebook</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>
+      © 2026 CityLink Ghana. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+  </div>
+</footer>
+
+<!-- POST JOB MODAL -->
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title">💼 Post a Job</div>
+      <button class="modal-close" onclick="closePostModal()">✕</button>
+    </div>
+
+    <!-- PLAN -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Choose Plan</div>
+      <div class="plan-opts">
+        <div class="plan-opt sel free" data-plan="free" data-price="0" onclick="selectPlan(this)">
+          <div class="po-ico">📋</div><div class="po-name">Free</div><div class="po-price">Basic · 30 days</div>
+        </div>
+        <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selectPlan(this)">
+          <div class="po-ico">⭐</div><div class="po-name">Standard</div><div class="po-price">GHS 30 · 60 days</div>
+        </div>
+        <div class="plan-opt featured" data-plan="featured" data-price="60" onclick="selectPlan(this)">
+          <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 60 · Top listing</div>
+        </div>
+        <div class="plan-opt urgent" data-plan="urgent" data-price="100" onclick="selectPlan(this)">
+          <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 100 · #1 + urgent</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGO -->
+    <div class="field">
+      <label>Company Logo</label>
+      <div class="logo-upload">
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+        <img class="logo-preview" id="logoPreview">
+        <div style="font-size:22px;margin-bottom:5px;">🏢</div>
+        <div style="font-size:12px;color:var(--gray);">Tap to upload company logo</div>
+        <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
+      </div>
+      <input type="hidden" id="logoUrl">
+    </div>
+
+    <div class="field"><label>Job Title *</label><input type="text" id="jTitle" placeholder="e.g. Marketing Manager"></div>
+    <div class="field"><label>Company Name *</label><input type="text" id="jCompany" placeholder="e.g. Stanbic Bank Ghana"></div>
+    <div class="field"><label>Job Description *</label><textarea id="jDesc" placeholder="Describe the role, responsibilities, and what makes your company great…"></textarea></div>
+    <div class="field"><label>Requirements</label><textarea id="jReqs" placeholder="Education, experience, skills required…" style="min-height:70px;"></textarea></div>
+
+    <div class="r2">
+      <div class="field"><label>Job Type *</label>
+        <select id="jType">
+          <option value="">Select…</option>
+          <option>Full Time</option><option>Part Time</option><option>Remote</option>
+          <option>Contract</option><option>Internship</option><option>Attachment</option>
+        </select>
+      </div>
+      <div class="field"><label>Industry</label>
+        <select id="jIndustry">
+          <option value="">Select…</option>
+          <option>Technology</option><option>Finance</option><option>Health</option>
+          <option>Education</option><option>Sales</option><option>Engineering</option>
+          <option>Media</option><option>NGO</option><option>Agriculture</option>
+          <option>Hospitality</option><option>Legal</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="field"><label>Salary Range</label><input type="text" id="jSalary" placeholder="e.g. GHS 2,000–3,500"></div>
+      <div class="field"><label>Experience</label>
+        <select id="jExp">
+          <option>No experience</option><option>1 year</option><option>2–3 years</option>
+          <option>3–5 years</option><option>5+ years</option>
+        </select>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="field"><label>City *</label>
+        <select id="jCity">
+          <option value="">Select…</option>
+          <option>Accra</option><option>Kumasi</option><option>Takoradi</option>
+          <option>Tamale</option><option>Cape Coast</option><option>Remote</option><option>Nationwide</option>
+        </select>
+      </div>
+      <div class="field"><label>Application Deadline</label><input type="date" id="jDeadline"></div>
+    </div>
+    <div class="field"><label>How to Apply</label><textarea id="jApply" placeholder="Email CV to… / WhatsApp… / Walk in to our office at…" style="min-height:60px;"></textarea></div>
+    <div class="field"><label>Skills / Tags</label><input type="text" id="jTags" placeholder="Excel, Driving, Python, Customer Service…"></div>
+    <div class="r2">
+      <div class="field"><label>Contact Phone *</label><input type="tel" id="jPhone" placeholder="024 000 0000"></div>
+      <div class="field"><label>Contact WhatsApp</label><input type="tel" id="jWa" placeholder="024 000 0000"></div>
+    </div>
+    <div class="field"><label>Contact Email</label><input type="email" id="jEmail" placeholder="hr@company.com"></div>
+
+    <!-- PAYSTACK -->
+    <div class="pay-section" id="paySection">
+      <div class="pay-title">💳 Pay to Boost Job Listing</div>
+      <div class="pay-summary">
+        <span class="ps-lbl" id="paySummaryLbl">Featured — 60 days</span>
+        <span class="ps-val" id="paySummaryAmt">GHS 0</span>
+      </div>
+      <div class="field"><label>Email for Receipt</label><input type="email" id="payEmail" placeholder="you@example.com"></div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitJob()">
+      💼 <span id="submitTxt">Post Job Free</span>
+    </button>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+
+<!-- JOB DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="detail-modal" id="detailContent"></div>
+</div>
+
+<script type="module">
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
+};
+
+// Cloudinary
+const CLOUD_NAME    = "dulnujvm7";
+const UPLOAD_PRESET = "ernest";
+const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
+const ARKESEL_KEY   = "YOUR_ARKESEL_API_KEY";
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+let allJobs=[], activeType='all', activeIndustry='all', activeCity='all';
+let selPlan='free', selPrice=0, logoUrl='';
+
+// ── FETCH ──
+async function fetchJobs(){
+  try{
+    const snap=await getDocs(query(collection(db,'jobs'),orderBy('createdAt','desc')));
+    allJobs=snap.docs.map(d=>({id:d.id,...d.data()}));
+    // Filter expired
+    const now=Date.now();
+    allJobs=allJobs.filter(j=>{
+      if(!j.expiresAt)return true;
+      const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();
+      return exp>now;
+    });
+    const week=now-7*24*60*60*1000;
+    document.getElementById('statTotal').textContent=allJobs.length;
+    document.getElementById('statFull').textContent=allJobs.filter(j=>j.jobType==='Full Time').length;
+    document.getElementById('statRemote').textContent=allJobs.filter(j=>j.jobType==='Remote'||j.city==='Remote').length;
+    document.getElementById('statNew').textContent=allJobs.filter(j=>j.createdAt&&new Date(j.createdAt?.toDate?.()??j.createdAt).getTime()>week).length;
+    applyFilters();
+  }catch(e){
+    document.getElementById('jobsGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
+
+// ── FILTERS ──
+window.filterType=el=>{activeType=el.dataset.type;document.querySelectorAll('[data-type]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
+window.filterIndustry=el=>{activeIndustry=el.dataset.industry;document.querySelectorAll('[data-industry]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
+window.filterCity=el=>{activeCity=el.dataset.city;document.querySelectorAll('.city-pill').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
+
+window.applyFilters=()=>{
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const sort=document.getElementById('sortSel').value;
+  let list=[...allJobs];
+  if(activeType!=='all')list=list.filter(j=>j.jobType===activeType);
+  if(activeIndustry!=='all')list=list.filter(j=>j.industry===activeIndustry);
+  if(activeCity!=='all')list=list.filter(j=>j.city===activeCity);
+  if(q)list=list.filter(j=>(j.jobTitle||'').toLowerCase().includes(q)||(j.company||'').toLowerCase().includes(q)||(j.tags||'').toLowerCase().includes(q)||(j.desc||'').toLowerCase().includes(q)||(j.city||'').toLowerCase().includes(q));
+  // Sort
+  if(sort==='deadline')list=[...list].sort((a,b)=>new Date(a.deadline||'9999')-new Date(b.deadline||'9999'));
+  else if(sort==='featured')list=[...list].sort((a,b)=>{const o={urgent:0,featured:1,standard:2,free:3};return(o[a.plan]||3)-(o[b.plan]||3);});
+  else if(sort==='salary_high')list=[...list].sort((a,b)=>{const getNum=s=>parseInt((s||'0').replace(/[^\d]/g,''))||0;return getNum(b.salary)-getNum(a.salary);});
+  else list=[...list].sort((a,b)=>{const o={urgent:0,featured:1,standard:2,free:3};const pd=(o[a.plan]||3)-(o[b.plan]||3);if(pd!==0)return pd;return new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt);});
+  document.getElementById('jobsLabel').textContent=`${list.length} Job${list.length!==1?'s':''}${activeCity!=='all'?' in '+activeCity:''}`;
+  renderJobs(list);
+};
+
+// ── RENDER ──
+function renderJobs(list){
+  const grid=document.getElementById('jobsGrid');
+  if(!list.length){grid.innerHTML=`<div class="empty"><div class="ei">💼</div><h3>No jobs found</h3><p>Try different filters or <button onclick="openPostModal()" style="color:var(--blue);font-weight:700;border:none;background:none;cursor:pointer;font-size:13px;">post a job</button>.</p></div>`;return;}
+  const now=new Date();
+  grid.innerHTML=list.map(j=>{
+    const rawWa=(j.whatsapp||j.phone||'').replace(/\D/g,'');
+    const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+    const dl=j.deadline?new Date(j.deadline):null;
+    const daysLeft=dl?Math.ceil((dl-now)/86400000):null;
+    const isUrgent=j.plan==='urgent';
+    const isFeatured=j.plan==='featured'||j.plan==='urgent';
+    const isNew=j.createdAt&&(now-new Date(j.createdAt?.toDate?.()??j.createdAt).getTime())<3*24*60*60*1000;
+    const stripClass=isUrgent?'urgent':isFeatured?'featured':'basic';
+    return `
+    <a class="job-card ${isFeatured?'featured':''} ${isUrgent?'urgent':''}" href="#" onclick="viewJob('${j.id}');return false;">
+      <div class="job-top-strip strip-${stripClass}"></div>
+      <div class="job-body">
+        <div class="job-header">
+          <div class="job-logo">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'🏢'}</div>
+          <div>
+            <div class="job-company">${esc(j.company||'Company')}</div>
+            <div class="job-title">${esc(j.jobTitle)}</div>
+          </div>
+        </div>
+        <div class="job-badges">
+          ${isUrgent?'<span class="jbadge jb-urgent">🔴 URGENT</span>':''}
+          ${isFeatured&&!isUrgent?'<span class="jbadge jb-featured">🌟 FEATURED</span>':''}
+          ${j.jobType?`<span class="jbadge jb-type">${esc(j.jobType)}</span>`:''}
+          ${j.jobType==='Remote'?'<span class="jbadge jb-remote">🌐 Remote</span>':''}
+          ${j.experience?`<span class="jbadge jb-exp">${esc(j.experience)}</span>`:''}
+          ${isNew?'<span class="jbadge" style="background:var(--green);color:#fff;">NEW</span>':''}
+        </div>
+        ${j.salary?`<div class="job-salary">${esc(j.salary)}</div>`:''}
+        <div class="job-loc">📍 ${esc(j.city||'Ghana')} ${j.industry?`· ${esc(j.industry)}`:''}</div>
+        ${j.desc?`<div class="job-desc">${esc(j.desc)}</div>`:''}
+        ${daysLeft!==null?`<div class="job-deadline">⏰ ${daysLeft<=0?'Deadline passed':daysLeft===1?'Closes tomorrow':`Closes in ${daysLeft} days`}</div>`:''}
+        ${j.tags?`<div class="job-tags">${(j.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,4).map(t=>`<span class="job-tag">${esc(t)}</span>`).join('')}</div>`:''}
+        <div class="job-acts" onclick="event.preventDefault()">
+          ${j.phone?`<a class="job-btn jbtn-call" href="tel:${esc(j.phone)}">📞 Call</a>`:''}
+          ${waNum?`<a class="job-btn jbtn-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' on CityLinkGH.')}" target="_blank">💬 Apply</a>`:''}
+          <button class="job-btn jbtn-view" onclick="event.stopPropagation();viewJob('${j.id}')">View →</button>
+          <button class="job-btn" style="flex:0 0 auto;background:${j.filled?'#f0fff6':'#fde8e8'};color:${j.filled?'var(--green)':'var(--red)'};border:1.5px solid ${j.filled?'#b8f0d0':'#f5c6c6'};" onclick="event.stopPropagation();toggleJobFilled('${j.id}',${!!j.filled})" title="${j.filled?'Re-open Job':'Mark as Filled'}">${j.filled?'✅ Filled':'🔴 Open'}</button>
+        </div>
+      </div>
+      <div class="job-footer">
+        <span class="jf-poster">🏢 ${esc(j.company||'Company')}</span>
+        <span class="jf-date">${fmtAgo(j.createdAt?.toDate?j.createdAt.toDate():new Date(j.createdAt))}</span>
+        <span class="jf-views">👁 ${j.views||0}</span>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+// ── VIEW JOB ──
+window.viewJob=async id=>{
+  const j=allJobs.find(x=>x.id===id);if(!j)return;
+  try{await updateDoc(doc(db,'jobs',id),{views:increment(1)});}catch(_){}
+  const rawWa=(j.whatsapp||j.phone||'').replace(/\D/g,'');
+  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+  const dl=j.deadline?new Date(j.deadline):null;
+  const daysLeft=dl?Math.ceil((dl-new Date())/86400000):null;
+  document.getElementById('detailContent').innerHTML=`
+    <div style="padding:18px 18px 80px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);">Job Details</div>
+        <button onclick="closeDetailModal()" style="background:var(--mist);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--gray);">✕</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:13px;margin-bottom:14px;">
+        <div style="width:56px;height:56px;border-radius:12px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;">${j.logoUrl?`<img src="${esc(j.logoUrl)}" style="width:100%;height:100%;object-fit:cover;">`:'🏢'}</div>
+        <div><div style="font-size:12px;font-weight:700;color:var(--gray);">${esc(j.company||'')}</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text);">${esc(j.jobTitle)}</div></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+        ${j.jobType?`<span style="background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">${esc(j.jobType)}</span>`:''}
+        ${j.industry?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">${esc(j.industry)}</span>`:''}
+        ${j.experience?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🎓 ${esc(j.experience)}</span>`:''}
+      </div>
+      ${j.salary?`<div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green);margin-bottom:8px;">${esc(j.salary)}</div>`:''}
+      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">📍 ${esc(j.city||'Ghana')} ${daysLeft!==null?`· ⏰ ${daysLeft<=0?'Deadline passed':`${daysLeft} days left`}`:''}</div>
+      ${j.desc?`<div style="margin-bottom:13px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">About the Role</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.desc)}</div></div>`:''}
+      ${j.requirements?`<div style="margin-bottom:13px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Requirements</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.requirements)}</div></div>`:''}
+      ${j.howToApply?`<div style="margin-bottom:13px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">How to Apply</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.howToApply)}</div></div>`:''}
+      ${j.tags?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">${(j.tags||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span style="background:var(--mist);font-size:12px;font-weight:500;padding:4px 10px;border-radius:8px;">${esc(t)}</span>`).join('')}</div>`:''}
+      <div style="display:flex;flex-direction:column;gap:8px;position:sticky;bottom:18px;">
+        ${j.phone?`<a href="tel:${esc(j.phone)}" style="background:var(--green);color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">📞 Call to Apply</a>`:''}
+        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' listed on GhanaList.')}" target="_blank" style="background:#25D366;color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp to Apply</a>`:''}
+        ${j.email?`<a href="mailto:${esc(j.email)}?subject=Application for ${encodeURIComponent(j.jobTitle)}" style="background:var(--blue);color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">✉️ Email Application</a>`:''}
+      </div>
+    </div>`;
+  document.getElementById('detailModal').classList.add('show');
+};
+window.closeDetailModal=()=>document.getElementById('detailModal').classList.remove('show');
+
+// ── POST MODAL ──
+window.openPostModal=()=>document.getElementById('postModal').classList.add('show');
+window.closePostModal=()=>document.getElementById('postModal').classList.remove('show');
+
+window.selectPlan=el=>{
+  selPlan=el.dataset.plan;selPrice=Number(el.dataset.price);
+  document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');
+  document.getElementById('paySection').style.display=selPrice>0?'block':'none';
+  document.getElementById('paySummaryLbl').textContent=`${el.querySelector('.po-name').textContent} — ${el.querySelector('.po-price').textContent}`;
+  document.getElementById('paySummaryAmt').textContent=`GHS ${selPrice}`;
+  document.getElementById('submitTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Job Free';
+};
+
+// ── LOGO UPLOAD ──
+window.uploadLogo=async input=>{
+  const f=input.files[0];if(!f)return;
+  if(f.size>2*1024*1024){showToast('❌ Max 2MB');return;}
+  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill');
+  bar.style.display='block';fill.style.width='10%';
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','ghanaList_logos');
+  try{
+    let p=10;const iv=setInterval(()=>{p=Math.min(p+15,85);fill.style.width=p+'%';},200);
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();clearInterval(iv);
+    if(data.secure_url){fill.style.width='100%';logoUrl=data.secure_url;document.getElementById('logoUrl').value=logoUrl;const prev=document.getElementById('logoPreview');prev.src=logoUrl;prev.style.display='block';setTimeout(()=>bar.style.display='none',800);}
+    else throw new Error(data.error?.message||'Failed');
+  }catch(e){showToast('❌ Upload failed');fill.style.width='0%';}
+};
+
+// ── SUBMIT JOB ──
+window.submitJob=async()=>{
+  const title=document.getElementById('jTitle').value.trim();
+  const company=document.getElementById('jCompany').value.trim();
+  const city=document.getElementById('jCity').value;
+  const type=document.getElementById('jType').value;
+  const phone=document.getElementById('jPhone').value.trim();
+  if(!title){showToast('⚠️ Job title required');return;}
+  if(!company){showToast('⚠️ Company name required');return;}
+  if(!city){showToast('⚠️ City required');return;}
+  if(!type){showToast('⚠️ Job type required');return;}
+  if(!phone){showToast('⚠️ Contact phone required');return;}
+
+  // Days based on plan
+  const planDays={free:30,standard:60,featured:90,urgent:90};
+  const expiry=new Date(Date.now()+(planDays[selPlan]||30)*24*60*60*1000);
+
+  const jobData={
+    jobTitle:title,company,city,jobType:type,
+    industry:document.getElementById('jIndustry').value,
+    salary:document.getElementById('jSalary').value.trim(),
+    experience:document.getElementById('jExp').value,
+    desc:document.getElementById('jDesc').value.trim(),
+    requirements:document.getElementById('jReqs').value.trim(),
+    howToApply:document.getElementById('jApply').value.trim(),
+    tags:document.getElementById('jTags').value.trim(),
+    phone,
+    whatsapp:document.getElementById('jWa').value.trim(),
+    email:document.getElementById('jEmail').value.trim(),
+    deadline:document.getElementById('jDeadline').value,
+    logoUrl:logoUrl||'',
+    plan:selPlan,views:0,
+    expiresAt:expiry,
+    createdAt:serverTimestamp(),
+    source:'public'
+  };
+
+  if(selPrice>0){
+    const email=document.getElementById('payEmail').value.trim();
+    if(!email){showToast('⚠️ Email required for payment');return;}
+    const handler=PaystackPop.setup({
+      key:PAYSTACK_KEY,email,amount:selPrice*100,currency:'GHS',
+      ref:'JOB-'+Date.now(),
+      metadata:{custom_fields:[{display_name:'Job Title',variable_name:'job',value:title}]},
+      onSuccess:async response=>{
+        jobData.paid=true;jobData.payRef=response.reference;
+        await saveJob(jobData);
+        await sendSMS(phone,`CityLinkGH: Your job posting "${title}" at ${company} is now live! Ref: ${response.reference}`);
+      },
+      onClose:()=>showToast('⚠️ Payment cancelled')
+    });
+    handler.openIframe();
+  }else{
+    await saveJob(jobData);
+  }
+};
+
+async function saveJob(data){
+  const btn=document.getElementById('submitBtn');btn.disabled=true;
+  document.getElementById('submitTxt').textContent='Posting…';
+  try{
+    await addDoc(collection(db,'jobs'),data);
+    showToast('✅ Job posted successfully!');
+    closePostModal();logoUrl='';
+    document.getElementById('logoPreview').style.display='none';
+    await fetchJobs();
+  }catch(e){showToast('❌ '+e.message);}
+  finally{btn.disabled=false;document.getElementById('submitTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Job Free';}
+}
+
+// ── ARKESEL SMS ──
+async function sendSMS(to,message){
+  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY'){console.warn('SMS skipped: Arkesel key not configured');return;}
+  let num=to.replace(/\D/g,'');if(num.startsWith('0'))num='233'+num.slice(1);if(!num.startsWith('233'))num='233'+num;
+  try{await fetch('https://sms.arkesel.com/api/v2/sms/send',{method:'POST',headers:{'api-key':ARKESEL_KEY,'Content-Type':'application/json'},body:JSON.stringify({sender:'CityLinkGH',message,recipients:[num]})});}
+  catch(e){console.log('SMS:',e.message);}
+}
+
+function fmtAgo(date){if(!date)return'Recently';const d=Date.now()-new Date(date).getTime();if(isNaN(d))return'Recently';const m=Math.floor(d/60000);if(m<60)return`${m}m ago`;const h=Math.floor(m/60);if(h<24)return`${h}h ago`;return`${Math.floor(h/24)}d ago`;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+// ── FEATURE 8: MARK JOB AS FILLED / OPEN ──
+window.toggleJobFilled=async(id,currentlyFilled)=>{
+  try{
+    await updateDoc(doc(db,'jobs',id),{filled:!currentlyFilled});
+    showToast(currentlyFilled?'✅ Job re-opened':'🔴 Job marked as filled');
+    await fetchJobs();
+  }catch(e){showToast('❌ '+e.message);}
+};
+document.getElementById('postModal').addEventListener('click',e=>{if(e.target===document.getElementById('postModal'))closePostModal();});
+document.getElementById('detailModal').addEventListener('click',e=>{if(e.target===document.getElementById('detailModal'))closeDetailModal();});
+fetchJobs();
+
+// ── HAMBURGER MENU ──
+window.toggleDrawer = () => {
+  const h = document.getElementById('hamburger');
+  const d = document.getElementById('navDrawer');
+  const o = document.getElementById('navOverlay');
+  h.classList.toggle('open');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+};
+// Mark active link
+document.querySelectorAll('.drawer-link').forEach(a => {
+  if(a.href === window.location.href) a.classList.add('active');
+});
+</script>
+</body>
+</html>

@@ -26,14 +26,14 @@
   .sec-tabs{display:flex;background:var(--ink);border-bottom:3px solid var(--gold);}
   .sec-tab{flex:1;padding:11px 4px;border:none;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:rgba(255,255,255,.4);letter-spacing:.05em;text-transform:uppercase;border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .2s;}
   .sec-tab.active{color:#fff;border-bottom-color:var(--gold);}
-  .body{max-width:820px;margin:0 auto;padding:16px 16px 60px;}
+  .body{max-width:820px;margin:0 auto;padding:12px 12px 60px;}
   .section-panel{display:none;}
   .section-panel.active{display:block;}
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:12px;}
   .stat{background:#fff;border-radius:12px;padding:11px;text-align:center;border:1px solid var(--border);}
   .stat-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
   .stat-l{font-size:10px;color:var(--gray);font-weight:600;margin-top:2px;}
-  .plan-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;}
+  .plan-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:12px;}
   .ps{border-radius:12px;padding:11px;text-align:center;border:2px solid;}
   .ps.premium{border-color:var(--purple);background:#f9f0ff;}
   .ps.featured{border-color:var(--gold);background:#fffbf0;}
@@ -54,15 +54,15 @@
   .rev-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;}
   .sec-t{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px;margin-bottom:11px;}
   .sec-t::before{content:'';width:4px;height:15px;background:var(--gold);border-radius:2px;display:block;}
-  .fcard{background:#fff;border-radius:16px;border:1px solid var(--border);padding:16px;margin-bottom:18px;}
+  .fcard{background:#fff;border-radius:16px;border:1px solid var(--border);padding:13px 12px;margin-bottom:14px;}
   .field{margin-bottom:11px;}
   label{display:block;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
   input[type=text],input[type=tel],input[type=url],input[type=time],input[type=number],input[type=email],input[type=date],textarea,select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;color:var(--ink);background:var(--cream);outline:none;transition:border-color .2s;}
   input:focus,textarea:focus,select:focus{border-color:var(--gold);background:#fff;}
   textarea{resize:vertical;min-height:70px;}
-  .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-  .plan-sel{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+  .r2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+  .plan-sel{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;}
   .plan-opt{border-radius:10px;padding:10px 5px;text-align:center;cursor:pointer;border:2px solid var(--border);background:#fff;transition:all .2s;}
   .plan-opt.selected.premium{border-color:var(--purple);background:#f9f0ff;}
   .plan-opt.selected.featured{border-color:var(--gold);background:#fffbf0;}
@@ -144,3 +144,15 @@
   .spinner{width:20px;height:20px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg)}}
   .empty{text-align:center;padding:26px;color:var(--gray);font-size:13px;}
+
+  @media(max-width:430px){
+    .sec-tabs .sec-tab{font-size:10px;padding:9px 2px;}
+    .r2{grid-template-columns:1fr !important;}
+    .r3{grid-template-columns:1fr 1fr !important;}
+    .plan-sel{grid-template-columns:1fr 1fr !important;}
+    .biz-row-thumb{width:46px;height:42px;font-size:16px;}
+    .biz-row-name{font-size:12px;}
+    .rev-amt{font-size:20px;}
+    .login-card{padding:22px 16px;}
+    .btn-row{flex-direction:column;}
+  }

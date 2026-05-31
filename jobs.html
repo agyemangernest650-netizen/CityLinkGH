@@ -11,7 +11,7 @@
 <body>
 <div class="toast" id="toast"></div>
 
- <header>
+<header>
   <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
   <div class="hbtns">
     <button class="hbtn blue" onclick="openPostModal()">+ 📋Post Job</button>
@@ -129,7 +129,7 @@
   <div class="footer-container">
     <!--logo & about-->
     <div class="footer-box">
-      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"></div>
     <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
   <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
     </div>
@@ -148,10 +148,10 @@
     <div class="footer-box">
       <h3>Top Categories</h3>
       <ul>
-        <li><a href="#">Churches</a></li>
-        <li><a href="#">Hotels</a></li>
-        <li><a href="#">Salons</a></li>
-        <li><a href="#">Mechanics</a></li>
+        <li><a href="index.html">Churches</a></li>
+        <li><a href="index.html">Hotels</a></li>
+        <li><a href="index.html">Salons</a></li>
+        <li><a href="index.html">Mechanics</a></li>
       </ul>
     </div>
 
@@ -293,6 +293,7 @@
 <script type="module">
 import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
@@ -311,6 +312,14 @@ const ARKESEL_KEY   = "YOUR_ARKESEL_API_KEY";
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+const auth = getAuth(app);
+
+let isAdmin = false;
+onAuthStateChanged(auth, user => {
+  isAdmin = !!(user && user.email === ADMIN_EMAIL);
+  // Show/hide admin controls after auth resolves
+  document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? '' : 'none');
+});
 
 let allJobs=[], activeType='all', activeIndustry='all', activeCity='all';
 let selPlan='free', selPrice=0, logoUrl='';
@@ -338,19 +347,6 @@ async function fetchJobs(){
   }
 }
 
-// ── DARK MODE ──
-window.toggleDark = () => {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme', isDark?'light':'dark');
-};
-// Restore theme
-const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
-
-
 // ── FILTERS ──
 window.filterType=el=>{activeType=el.dataset.type;document.querySelectorAll('[data-type]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
 window.filterIndustry=el=>{activeIndustry=el.dataset.industry;document.querySelectorAll('[data-industry]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
@@ -372,6 +368,19 @@ window.applyFilters=()=>{
   document.getElementById('jobsLabel').textContent=`${list.length} Job${list.length!==1?'s':''}${activeCity!=='all'?' in '+activeCity:''}`;
   renderJobs(list);
 };
+
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
 
 // ── RENDER ──
 function renderJobs(list){
@@ -485,7 +494,7 @@ window.uploadLogo=async input=>{
   if(f.size>2*1024*1024){showToast('❌ Max 2MB');return;}
   const bar=document.getElementById('ubar'),fill=document.getElementById('ufill');
   bar.style.display='block';fill.style.width='10%';
-  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','ghanaList_logos');
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_logos');
   try{
     let p=10;const iv=setInterval(()=>{p=Math.min(p+15,85);fill.style.width=p+'%';},200);
     const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
@@ -497,6 +506,7 @@ window.uploadLogo=async input=>{
 
 // ── SUBMIT JOB ──
 window.submitJob=async()=>{
+  if(!isAdmin){showToast('⛔ Admin only — please sign in');return;}
   const title=document.getElementById('jTitle').value.trim();
   const company=document.getElementById('jCompany').value.trim();
   const city=document.getElementById('jCity').value;
@@ -580,6 +590,7 @@ window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.
 
 // ── FEATURE 8: MARK JOB AS FILLED / OPEN ──
 window.toggleJobFilled=async(id,currentlyFilled)=>{
+  if(!isAdmin){showToast('⛔ Admin only');return;}
   try{
     await updateDoc(doc(db,'jobs',id),{filled:!currentlyFilled});
     showToast(currentlyFilled?'✅ Job re-opened':'🔴 Job marked as filled');

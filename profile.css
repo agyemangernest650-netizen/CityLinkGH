@@ -39,6 +39,21 @@
   /* PROFILE */
   .profile-wrap{display:none;}
 
+  /* ── PROFILE MOBILE POLISH ── */
+@media(max-width:430px){
+  header { padding: 10px 14px !important; }
+  .logo  { font-size: 16px !important; }
+  .prof-card { padding: 14px 12px !important; }
+  .prof-avatar { width: 72px !important; height: 72px !important; font-size:28px !important; }
+  .prof-name { font-size: 18px !important; }
+  .setting-item { padding: 11px 12px !important; }
+  .bk-card { padding: 10px !important; }
+  .bk-acts { flex-wrap: wrap !important; }
+  .bk-btn  { font-size: 10px !important; padding: 7px 5px !important; }
+  .bottom-nav { padding: 6px 0 env(safe-area-inset-bottom,14px) !important; }
+  .si-ico { width: 34px !important; height: 34px !important; }
+}
+
   /* HERO */
   .phero{background:linear-gradient(135deg,var(--ink),#2c2c3a);padding:22px 20px 28px;position:relative;overflow:hidden;}
   .phero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(212,160,23,.18) 0%,transparent 70%);border-radius:50%;}

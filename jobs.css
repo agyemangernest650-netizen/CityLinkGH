@@ -2,18 +2,18 @@
   [data-theme="dark"]{--card:#1E1E2E;--bg:#12121C;--text:#F0EBE0;--mist:#2A2A3E;--border:#3A3A5E;--gray:#9A9AB0;--cream:#1E1E2E;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);}
-
-  header{background:var(--ink);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--blue);}
+   
+   header{background:var(--ink);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--gold);}
   [data-theme="dark"] header{background:#0A0A14;}
-  .logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;white-space:nowrap;}
-  .logo span{color:var(--blue);}
-  .hbtns{display:flex;gap:6px;align-items:center;flex-shrink:0;}
-  .hbtn{padding:7px 10px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:11px;font-weight:700;cursor:pointer;text-decoration:none;border:none;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
+  .logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;}
+  .logo span{color:var(--gold);}
+  .hbtns{display:flex;gap:8px;align-items:center;}
+  .hbtn{padding:7px 12px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;border:none;display:inline-flex;align-items:center;gap:4px;}
   .hbtn.blue{background:var(--blue);color:#fff;}
   .hbtn.ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.12);}
   .hbtn.ghost:hover{color:#fff;}
+  .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
   @media(max-width:360px){.logo{font-size:15px;}.hbtn{padding:6px 8px;font-size:10px;}}
-   .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
 
   /* HERO */
   .hero{background:linear-gradient(135deg,#0d2044,#1a3a6e);padding:22px 20px 28px;position:relative;overflow:hidden;}

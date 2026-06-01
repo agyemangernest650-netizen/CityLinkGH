@@ -11,19 +11,16 @@
   *{margin:0;padding:0;box-sizing:border-box;transition:background-color .3s,color .3s,border-color .3s;}
   body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
 
-  /* HEADER */
-  header{background:var(--ink);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:3px solid var(--gold);}
+  header{background:var(--ink);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--gold);}
   [data-theme="dark"] header{background:#0A0A14;}
-  .logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;white-space:nowrap;}
+  .logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;}
   .logo span{color:var(--gold);}
-  .hdr-right{display:flex;gap:14px;align-items:center;}
-  .hbtn{padding:7px 13px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:none;transition:opacity .2s;}
+  .hbtns{display:flex;gap:8px;align-items:center;}
+  .hbtn{padding:7px 12px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;border:none;display:inline-flex;align-items:center;gap:4px;}
   .hbtn.gold{background:var(--gold);color:var(--ink);}
   .hbtn.ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.12);}
   .hbtn.ghost:hover{color:#fff;}
-  .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:6px 8px;}
-  .hamburger{background:none;border:none;cursor:pointer;padding:6px 8px;display:flex;flex-direction:column;gap:5px;justify-content:center;margin-left:4px;}
-
+  .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
   /* HERO */
   .hero{background:var(--ink);padding:16px 14px 22px;position:relative;overflow:hidden;}
   [data-theme="dark"] .hero{background:#0A0A14;}

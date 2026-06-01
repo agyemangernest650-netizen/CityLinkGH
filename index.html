@@ -13,7 +13,6 @@
   <header>
   <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
   <div class="hdr-right">
-    <a href="submit.html" class="hbtn gold">＋ List a Business</a>
     <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
     <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
       <span></span><span></span><span></span>
@@ -23,7 +22,8 @@
 <nav class="nav-drawer" id="navDrawer">
   <button class="drawer-close" onclick="toggleDrawer()">✕</button>
   <div class="drawer-section">Navigate</div>
-  <a href="index.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+  <a href="index.html" class="drawer-link"> Back to home</a>
+  <a href="business.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
   <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
   <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
   <div class="drawer-section">List Something</div>
@@ -32,7 +32,8 @@
   <a href="room.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</a>
   <div class="drawer-section">Account</div>
   <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
-  <a href="bookings-dashboard.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+  <a href="bookingdash.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+  <a href="about.html" class="drawer-link"><span class="di"> ℹ️</span> About</a>
 </nav>
 </header>
 
@@ -90,15 +91,15 @@
     <span class="city-clear" id="cityClear" onclick="clearCity()">✕ Clear</span>
   </div>
   <div class="city-grid" id="cityGrid">
-    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-ico">🏙️</div><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
-    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-ico">🏯</div><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
-    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-ico">⚓</div><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
-    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-ico">🌾</div><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
-    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-ico">🏰</div><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
-    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-ico">🌳</div><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
-    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-ico">🌄</div><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
-    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-ico">🌺</div><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
-    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-ico">🦅</div><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
+    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
+    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
+    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
+    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
+    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
+    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
+    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
+    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
+    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
   </div>
 </div>
 
@@ -205,10 +206,10 @@
     <div class="footer-box">
       <h3>Top Categories</h3>
       <ul>
-        <li><a href="#">Churches</a></li>
-        <li><a href="#">Hotels</a></li>
-        <li><a href="#">Salons</a></li>
-        <li><a href="#">Mechanics</a></li>
+        <li><a href="index.html">Churches</a></li>
+        <li><a href="index.html">Hotels</a></li>
+        <li><a href="index.html">Salons</a></li>
+        <li><a href="index.html">Mechanics</a></li>
       </ul>
     </div>
 
@@ -220,7 +221,7 @@
 
       <div class="socials">
         <a href="#">Facebook</a>
-        <a href="#">WhatsApp</a>
+        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
       </div>
     </div>
 
@@ -234,6 +235,7 @@
 </footer>
   </div>
 </footer>
+
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
 

@@ -14,7 +14,6 @@
 <header>
   <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
   <div class="hbtns">
-    <button class="hbtn blue" onclick="openPostModal()">+ 📋Post Job</button>
     <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
     <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
       <span></span><span></span><span></span>
@@ -24,7 +23,8 @@
 <nav class="nav-drawer" id="navDrawer">
   <button class="drawer-close" onclick="toggleDrawer()">✕</button>
   <div class="drawer-section">Navigate</div>
-  <a href="index.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+  <a href="index.html" class="drawer-link"> Back to home</a>
+  <a href="business.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
   <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
   <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
   <div class="drawer-section">List Something</div>
@@ -34,6 +34,7 @@
   <div class="drawer-section">Account</div>
   <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
   <a href="bookings-dashboard.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+  <a href="about.html" class="drawer-link"><span class="di"> ℹ️</span> About</a>
 </nav>
 </header>
 
@@ -129,7 +130,7 @@
   <div class="footer-container">
     <!--logo & about-->
     <div class="footer-box">
-      <div class="logo"><img src="City link.jpeg" width="150" height="60"></div>
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
     <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
   <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
     </div>
@@ -163,7 +164,7 @@
 
       <div class="socials">
         <a href="#">Facebook</a>
-        <a href="#">WhatsApp</a>
+        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
       </div>
     </div>
 
@@ -196,8 +197,8 @@
         <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selectPlan(this)">
           <div class="po-ico">⭐</div><div class="po-name">Standard</div><div class="po-price">GHS 30 · 60 days</div>
         </div>
-        <div class="plan-opt featured" data-plan="featured" data-price="60" onclick="selectPlan(this)">
-          <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 60 · Top listing</div>
+        <div class="plan-opt featured" data-plan="featured" data-price="50" onclick="selectPlan(this)">
+          <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 50 · Top listing</div>
         </div>
         <div class="plan-opt urgent" data-plan="urgent" data-price="100" onclick="selectPlan(this)">
           <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 100 · #1 + urgent</div>

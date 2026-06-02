@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Book an appointment with a local business on CityLinkGH.">
+<meta name="keywords" content="Ghana business directory, booking Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
+<meta name="author" content="CityLinkGH">
+<meta name="theme-color" content="#0D0D0D">
+<!-- Open Graph / WhatsApp / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://citylinkgh.vercel.app/booking.html">
+<meta property="og:title" content="Book Appointment — CityLinkGH">
+<meta property="og:description" content="Book an appointment with a local business on CityLinkGH.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:site_name" content="CityLinkGH">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Book Appointment — CityLinkGH">
+<meta name="twitter:description" content="Book an appointment with a local business on CityLinkGH.">
+<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Book Appointment</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="booking.css">
@@ -11,7 +30,7 @@
 <div class="toast" id="toast"></div>
 
 <header>
-  <a class="back" id="backBtn" href="#">←</a>
+  <a class="back" id="backBtn" href="index.html">←</a>
   <div class="htitle" id="htitle">Book Appointment</div>
 </header>
 
@@ -131,8 +150,7 @@ const firebaseConfig = {
 
 // Arkesel SMS config (Ghana SMS API)
 // Register at https://arkesel.com
-const ARKESEL_API_KEY = "YOUR_ARKESEL_API_KEY"; // optional
-
+const ARKESEL_API_KEY = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4"; // optional
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
@@ -434,7 +452,7 @@ window.confirmBooking = async () => {
 
 // ── ARKESEL SMS ──
 async function sendSMS(to, message) {
-  if (!ARKESEL_API_KEY || ARKESEL_API_KEY === 'YOUR_ARKESEL_API_KEY') { console.warn('SMS skipped: Arkesel key not configured'); return; }
+  if (!ARKESEL_API_KEY || ARKESEL_API_KEY === 'VWZXc3VHaGh4aHlrRHhMcEl6Zm4') { console.warn('SMS skipped: Arkesel key not configured'); return; }
   const raw = to.replace(/\D/g,'');
   const num = raw.startsWith('233') ? raw : raw.startsWith('0') ? '233'+raw.slice(1) : '233'+raw;
   try {
@@ -470,3 +488,11 @@ init();
 </script>
 </body>
 </html>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-XXXXXXXXXX');
+</script>

@@ -3,9 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Manage your listings, bookings and profile on CityLinkGH.">
+<meta name="keywords" content="Ghana business directory, profile Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
+<meta name="author" content="CityLinkGH">
+<meta name="theme-color" content="#0D0D0D">
+<!-- Open Graph / WhatsApp / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://citylinkgh.vercel.app/profile.html">
+<meta property="og:title" content="My Profile — CityLinkGH">
+<meta property="og:description" content="Manage your listings, bookings and profile on CityLinkGH.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:site_name" content="CityLinkGH">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Profile — CityLinkGH">
+<meta name="twitter:description" content="Manage your listings, bookings and profile on CityLinkGH.">
+<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — My Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="profile.css">
+<style>
+/* ── PROFILE MOBILE POLISH ── */
+@media(max-width:430px){
+  header { padding: 10px 14px !important; }
+  .logo  { font-size: 16px !important; }
+  .prof-card { padding: 14px 12px !important; }
+  .prof-avatar { width: 72px !important; height: 72px !important; font-size:28px !important; }
+  .prof-name { font-size: 18px !important; }
+  .setting-item { padding: 11px 12px !important; }
+  .bk-card { padding: 10px !important; }
+  .bk-acts { flex-wrap: wrap !important; }
+  .bk-btn  { font-size: 10px !important; padding: 7px 5px !important; }
+  .bottom-nav { padding: 6px 0 env(safe-area-inset-bottom,14px) !important; }
+  .si-ico { width: 34px !important; height: 34px !important; }
+}
+</style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -128,7 +163,7 @@
   <div id="bookingsSection" style="display:none;">
     <div class="sec-hd">
       <div class="sec-t">Incoming Bookings</div>
-      <a href="bookingdash.html" class="sec-lnk">View All →</a>
+      <a href="bookingdashb.html" class="sec-lnk">View All →</a>
     </div>
     <div class="bk-list" id="myBookings">
       <div class="loading"><div class="spinner"></div> Loading…</div>
@@ -190,7 +225,7 @@
     </div>
 
     <div class="sec-hd" style="padding:10px 16px 4px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);">Account</div></div>
-    <div class="setting-item" onclick="window.location='bookingdash.html'">
+    <div class="setting-item" onclick="window.location='bookingdashb.html'">
       <div class="si-left"><div class="si-ico" style="background:#e8f4ff;">📅</div><div><div class="si-lbl">All Bookings</div><div class="si-sub">Full bookings dashboard</div></div></div>
       <span class="si-arr">›</span>
     </div>
@@ -213,8 +248,6 @@
     <!--logo & about-->
     <div class="footer-box">
       <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
-    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
-  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
     </div>
     <!-- Quick Links -->
     <div class="footer-box">
@@ -246,18 +279,13 @@
 
       <div class="socials">
         <a href="#">Facebook</a>
-        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
+        <a href="#">WhatsApp</a>
       </div>
     </div>
 
   </div>
-
   <div class="footer-bottom">
-    <p>
-      © 2026 CityLink Ghana. All Rights Reserved.
-    </p>
-  </div>
-</footer>
+    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
   </div>
 </footer>
 
@@ -287,7 +315,7 @@ const CLOUD_NAME    = "dulnujvm7";
 const UPLOAD_PRESET = "ernest";
 
 // Arkesel SMS (Ghana) — Register at https://arkesel.com
-const ARKESEL_API_KEY = "your-arkesel-api-key"; // ← replace with your key
+const ARKESEL_API_KEY = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4"; // ← replace with your key
 const ARKESEL_SENDER  = "CityLinkGH";
 
 // Plan image limits
@@ -361,7 +389,11 @@ window.doGoogle = async () => {
     if(!uSnap.exists()) await setDoc(uRef,{name:r.user.displayName||'User',email:r.user.email,role:'customer',savedBusinesses:[],smsEnabled:false,createdAt:serverTimestamp()});
   } catch(ex){showToast('❌ '+ex.message);}
 };
-window.doSignOut = async () => { await signOut(auth); showToast('👋 Signed out'); };
+window.doSignOut = async () => {
+  await signOut(auth);
+  showToast('👋 Signed out');
+  setTimeout(()=>window.location.reload(), 800);
+};
 
 // ── LOAD PROFILE ──
 async function loadProfile(user) {
@@ -769,3 +801,11 @@ window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.
 </script>
 </body>
 </html>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-XXXXXXXXXX');
+</script>

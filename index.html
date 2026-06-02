@@ -3,17 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta name="keywords" content="Ghana business directory, index Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
+<meta name="author" content="CityLinkGH">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="CityLinkGH">
+<meta name="theme-color" content="#0D0D0D">
+<!-- Open Graph / WhatsApp / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://citylinkgh.vercel.app/">
+<meta property="og:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
+<meta property="og:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:site_name" content="CityLinkGH">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
+<meta name="twitter:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta name="google-site-verification" content="NFnDZi6CZHUm7JzbcQvQ14SoRjBQUqwsZEyAktLb16U" />
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Find Local Businesses in Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <div class="toast" id="toast"></div>
-  
-  <header>
+
+<header>
   <div class="logo"><img src="City link.jpeg" width="200" height="70"> CityLink<span>GH</span></div>
   <div class="hdr-right">
-    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">☀️</button>
     <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
       <span></span><span></span><span></span>
     </button>
@@ -44,7 +68,7 @@
   <p>Restaurants, salons, hospitals & more — verified & reviewed.</p>
   <div class="search-wrap">
     <span>🔍</span>
-    <input type="text" id="searchInput" placeholder="Search businesses, services…" oninput="doSearch(this.value)">
+    <div class="autocomplete-wrap"><input type="text" id="searchInput" autocomplete="off" placeholder="Search businesses, services…" oninput="doSearch(this.value)">
     <button class="near-me-btn" onclick="findNearMe()">📍 Near Me</button>
     <button class="search-go" onclick="doSearch(document.getElementById('searchInput').value)">Go</button>
   </div>
@@ -85,21 +109,33 @@
 </div>
 
 <!-- CITY SELECTOR -->
+
+<!-- ONBOARDING BANNER (first visit only) -->
+<div id="onboardBanner" style="display:none;margin:12px 14px;background:linear-gradient(135deg,#1A6B3C,#0d4a26);border-radius:16px;padding:16px;position:relative;">
+  <button onclick="dismissOnboard()" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.15);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:12px;">✕</button>
+  <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">👋 Welcome to CityLinkGH!</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.8);margin-bottom:12px;line-height:1.5;">Ghana's #1 directory for local businesses, jobs and housing. Browse by city or category below.</div>
+  <div style="display:flex;gap:7px;">
+    <a href="submit.html" style="flex:1;background:var(--gold);color:var(--ink);padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">＋ List Business</a>
+    <a href="jobs.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">💼 Find Jobs</a>
+    <a href="room.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🏠 Rooms</a>
+  </div>
+</div>
 <div class="city-section">
   <div class="city-hd">
     <div class="city-title">Browse by City</div>
     <span class="city-clear" id="cityClear" onclick="clearCity()">✕ Clear</span>
   </div>
   <div class="city-grid" id="cityGrid">
-    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
-    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
-    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
-    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
-    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
-    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
-    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
-    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
-    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
+    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-ico">🏙️</div><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
+    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-ico">🏯</div><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
+    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-ico">⚓</div><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
+    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-ico">🌾</div><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
+    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-ico">🏰</div><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
+    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-ico">🌳</div><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
+    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-ico">🌄</div><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
+    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-ico">🌺</div><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
+    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-ico">🦅</div><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
   </div>
 </div>
 
@@ -187,9 +223,8 @@
   <div class="footer-container">
     <!--logo & about-->
     <div class="footer-box">
-      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
-    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
-  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"><br> CityLink<span>GH</span></div>
+   
     </div>
     <!-- Quick Links -->
     <div class="footer-box">
@@ -220,7 +255,7 @@
       <p>Phone: +233 53 736 1543</p>
 
       <div class="socials">
-        <a href="#">Facebook</a>
+      
         <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
       </div>
     </div>
@@ -236,7 +271,6 @@
   </div>
 </footer>
 
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
 
 <script type="module">
@@ -251,7 +285,6 @@ const firebaseConfig = {
   messagingSenderId: "807811031269",
   appId: "1:807811031269:web:167b22e23f49992136340c"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
@@ -504,7 +537,17 @@ function renderPremiumSpotlight(){
 // ── RENDER GRID ──
 function renderGrid(list){
   const grid=document.getElementById('bizGrid');
-  if(!list.length){grid.innerHTML=`<div class="empty"><div class="ei">🔍</div><h3>No businesses found</h3><p>${activeCity?`No businesses in ${activeCity} yet.`:'Try a different search.'}</p></div>`;return;}
+  if(!list.length){
+    grid.innerHTML=`<div class="empty">
+      <div style="font-size:52px;margin-bottom:12px;">🔍</div>
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:6px;">No businesses found</h3>
+      <p style="font-size:13px;margin-bottom:16px;">${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:240px;margin:0 auto;">
+        <a href="submit.html" style="background:var(--green);color:#fff;padding:11px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;display:block;">＋ List Your Business</a>
+        <button onclick="clearFilters()" style="background:var(--mist);color:var(--text);padding:11px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;font-weight:600;border:1px solid var(--border);cursor:pointer;">🔄 Clear Filters</button>
+      </div>
+    </div>`;return;
+  }
   grid.innerHTML=list.map(b=>{
     const plan=b.plan||'basic';
     const openS=isOpen(b.openTime,b.closeTime);
@@ -615,6 +658,54 @@ window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.
 
 fetchBiz();
 
+// ── SEARCH AUTOCOMPLETE ──
+window.showAC = q => {
+  const list = document.getElementById('acList');
+  if(!q || q.length < 2){ list.style.display='none'; return; }
+  q = q.toLowerCase();
+  const cats = ['Restaurant','Hospital','Hotel','Salon','Pharmacy','School','Mechanic','Lawyer','Supermarket','Photographer','Electrician','Tailor'];
+  const cities = ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga','Wa'];
+  let results = [];
+  // Match businesses
+  allBiz.filter(b => (b.name||'').toLowerCase().includes(q) || (b.category||'').toLowerCase().includes(q)).slice(0,4).forEach(b => {
+    results.push({ico:catEmoji(b.category)||'🏢', name:b.name, sub:b.city||b.location||'', type:'biz', id:b.id});
+  });
+  // Match categories
+  cats.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
+    results.push({ico:'🏷️', name:c, sub:'Browse category', type:'cat', val:c});
+  });
+  // Match cities
+  cities.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
+    results.push({ico:'📍', name:c, sub:'Browse city', type:'city', val:c});
+  });
+  if(!results.length){ list.style.display='none'; return; }
+  list.innerHTML = results.map(r => `
+    <div class="ac-item" onclick="selectAC(${JSON.stringify(r).replace(/"/g,'&quot;')})">
+      <span class="ac-ico">${r.ico}</span>
+      <div><div class="ac-name">${r.name}</div><div class="ac-sub">${r.sub}</div></div>
+    </div>`).join('');
+  list.style.display = 'block';
+};
+window.hideAC = () => { const l=document.getElementById('acList'); if(l)l.style.display='none'; };
+window.selectAC = r => {
+  hideAC();
+  document.getElementById('searchInput').value = r.name;
+  if(r.type==='biz') window.location='business.html?id='+r.id;
+  else if(r.type==='cat'){ activeCat=r.val; applyFilters && applyFilters(); }
+  else if(r.type==='city'){ activeCity=r.val; applyFilters && applyFilters(); }
+};
+
+
+// ── ONBOARDING ──
+if(!localStorage.getItem('clVisited')){
+  document.getElementById('onboardBanner').style.display='block';
+}
+window.dismissOnboard=()=>{
+  document.getElementById('onboardBanner').style.display='none';
+  localStorage.setItem('clVisited','1');
+};
+
+
 // ── FEATURE 7: URL PARAM DEEP LINKS ──
 // Supports ?city=Accra&category=Restaurant&search=pizza&sort=open
 (function applyURLParams(){
@@ -624,6 +715,54 @@ fetchBiz();
   if(p.get('search'))  { searchQ=p.get('search'); const si=document.getElementById('searchInput'); if(si)si.value=searchQ; }
   if(p.get('sort'))    { activeSort=p.get('sort'); }
 })();
+</script>
+
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-inner">
+    <div class="install-ico">📲</div>
+    <div class="install-text">
+      <div class="install-title">Add CityLinkGH to Home Screen</div>
+      <div class="install-sub">Get quick access — works offline too!</div>
+    </div>
+  </div>
+  <div class="install-btns">
+    <button class="ibtn-yes" onclick="doInstall()">Install App</button>
+    <button class="ibtn-no" onclick="dismissInstall()">Not now</button>
+  </div>
+</div>
+
+<script>
+// ── PWA: Service Worker ──
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(r=>console.log('SW registered')).catch(e=>console.log('SW error',e));
+}
+
+// ── PWA: Install Prompt ──
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if(!localStorage.getItem('clInstallDismissed')){
+    setTimeout(()=>document.getElementById('installBanner').style.display='block', 3000);
+  }
+});
+window.doInstall = async () => {
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  if(outcome==='accepted') localStorage.setItem('clInstallDismissed','1');
+  deferredPrompt=null;
+  document.getElementById('installBanner').style.display='none';
+};
+window.dismissInstall = () => {
+  document.getElementById('installBanner').style.display='none';
+  localStorage.setItem('clInstallDismissed','1');
+};
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').style.display='none';
+  console.log('CityLinkGH installed!');
+});
+
 // ── HAMBURGER MENU ──
 window.toggleDrawer = () => {
   const h = document.getElementById('hamburger');
@@ -641,3 +780,17 @@ document.querySelectorAll('.drawer-link').forEach(a => {
 </script>
 </body>
 </html>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-XXXXXXXXXX');
+  // Track search
+  window._trackSearch=q=>gtag('event','search',{search_term:q});
+  // Track city filter
+  window._trackCity=c=>gtag('event','filter_city',{city:c});
+  // Track category
+  window._trackCat=c=>gtag('event','filter_category',{category:c});
+</script>

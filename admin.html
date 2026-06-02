@@ -39,6 +39,7 @@
     <button class="sec-tab active" onclick="switchSection('businesses',this)">🏪 Businesses</button>
     <button class="sec-tab" onclick="switchSection('jobs',this)">💼 Jobs</button>
     <button class="sec-tab" onclick="switchSection('rooms',this)">🏠 Rooms</button>
+    <button class="sec-tab" onclick="switchSection('analytics',this)">📊 Analytics</button>
   </div>
 
   <div class="body">
@@ -128,7 +129,7 @@
         </div>
       </div>
       <div class="sec-t">Manage Businesses</div>
-      <div id="pendBanner" style="display:none;" class="pend-banner"><span style="font-size:20px;">⏳</span><p><span id="pendCount">0</span> pending submissions waiting for review.</p><button onclick="bulkApprovePending()" style="margin-left:auto;background:var(--green);color:#fff;border:none;padding:7px 13px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">✅ Approve All</button></div>
+      <div id="pendBanner" style="display:none;" class="pend-banner"><span style="font-size:20px;">⏳</span><p><span id="pendCount">0</span> pending submissions waiting for review.</p><button onclick="bulkApprovePending()" style="margin-left:auto;background:var(--green);color:#fff;border:none;padding:7px 13px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">✅ Approve All</button><button onclick="sendRenewalReminders()" style="background:#e67e22;color:#fff;border:none;padding:7px 13px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;margin-left:6px;">📱 Remind Expiring</button></div>
       <div class="asearch"><input type="text" id="asearch" placeholder="🔍  Search businesses…" oninput="renderBizList()"></div>
       <div class="tabs">
         <button class="tab active" onclick="setBizTab('all',this)">All</button>
@@ -417,6 +418,38 @@ window.deleteBiz=async id=>{if(!confirm('Delete this business permanently?'))ret
 window.toggleApprove=async id=>{const b=allBiz.find(x=>x.id===id);if(!b)return;await updateDoc(doc(db,'businesses',id),{approved:!b.approved});showToast(b.approved?'⏸ Unpublished':'✅ Now Live!');await fetchAll();};
 
 // ── FEATURE 11: BULK APPROVE ALL PENDING ──
+
+// ── REVENUE: RENEWAL REMINDER SMS ──
+window.sendRenewalReminders=async()=>{
+  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='YOUR_ARKESEL_API_KEY'){showToast('⚠️ Set Arkesel key first');return;}
+  const now=Date.now();
+  const expiring=allBiz.filter(b=>{
+    if(!b.expiresAt||b.plan==='basic')return false;
+    const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();
+    return exp>now&&(exp-now)<3*86400000; // within 3 days
+  });
+  if(!expiring.length){showToast('✅ No listings expiring in 3 days');return;}
+  if(!confirm(`Send renewal SMS to ${expiring.length} expiring listings?`))return;
+  let sent=0;
+  for(const b of expiring){
+    const phone=b.phone||b.whatsapp;
+    if(!phone)continue;
+    const raw=phone.replace(/\D/g,'');
+    const num=raw.startsWith('233')?raw:raw.startsWith('0')?'233'+raw.slice(1):'233'+raw;
+    const exp=b.expiresAt?.toDate?b.expiresAt.toDate():new Date(b.expiresAt);
+    const days=Math.ceil((exp.getTime()-now)/86400000);
+    try{
+      await fetch('https://sms.arkesel.com/api/v2/sms/send',{
+        method:'POST',
+        headers:{'api-key':ARKESEL_API_KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({sender:'CityLinkGH',message:`CityLinkGH: Your listing "${b.name}" expires in ${days} day${days!==1?'s':''}. Renew at citylinkgh.vercel.app/submit.html to stay visible.`,recipients:[num]})
+      });
+      sent++;
+    }catch(_){}
+  }
+  showToast(`📱 Renewal SMS sent to ${sent} businesses!`);
+};
+
 window.bulkApprovePending=async()=>{
   const pending=allBiz.filter(b=>!b.approved);
   if(!pending.length){showToast('No pending listings');return;}
@@ -577,7 +610,7 @@ window.uploadRoomImg=async input=>{
   const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;if(uploadedRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
   const bar=document.getElementById('rUbar'),fill=document.getElementById('rUfill'),stat=document.getElementById('rUstat');
   bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
-  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_rooms');
+const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_rooms');
   try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
     const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
     const data=await res.json();clearInterval(iv);
@@ -640,6 +673,94 @@ const catEmoji=c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'�
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);};
+
+// ── ANALYTICS DASHBOARD ──
+let chartsLoaded = false;
+async function loadAnalytics(){
+  if(chartsLoaded) return;
+  chartsLoaded = true;
+
+  // Load Chart.js dynamically
+  await new Promise(res=>{
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+    s.onload=res; document.head.appendChild(s);
+  });
+
+  // Wait for data
+  if(!allBiz.length) await fetchAll();
+
+  // Analytics stats
+  const now = Date.now();
+  const paid = allBiz.filter(b=>b.plan&&b.plan!=='basic'&&b.approved);
+  const rev = paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);
+  document.getElementById('anTotalBiz').textContent = allBiz.length;
+  document.getElementById('anRevenue').textContent = 'GHS '+rev.toLocaleString();
+  document.getElementById('anJobs').textContent = allJobs.filter(j=>{
+    if(!j.expiresAt)return true;
+    const e=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();
+    return e>now;
+  }).length;
+  document.getElementById('anRooms').textContent = allRooms.filter(r=>r.available!==false).length;
+
+  const chartDefaults = {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{family:'Epilogue',size:11},boxWidth:12}}}
+  };
+
+  // Plan breakdown
+  const plans = ['basic','standard','featured','premium'];
+  const planCounts = plans.map(p=>allBiz.filter(b=>(b.plan||'basic')===p).length);
+  new Chart(document.getElementById('planChart'),{
+    type:'doughnut',
+    data:{labels:['Basic','Standard','Featured','Premium'],
+      datasets:[{data:planCounts,backgroundColor:['#E2D9C8','#1A6B3C','#D4A017','#9B59B6'],borderWidth:0}]},
+    options:chartDefaults
+  });
+
+  // City breakdown
+  const cityMap = {};
+  allBiz.forEach(b=>{if(b.city)cityMap[b.city]=(cityMap[b.city]||0)+1;});
+  const cities = Object.entries(cityMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  new Chart(document.getElementById('cityChart'),{
+    type:'bar',
+    data:{labels:cities.map(x=>x[0]),datasets:[{data:cities.map(x=>x[1]),backgroundColor:'#1A6B3C',borderRadius:6}]},
+    options:{...chartDefaults,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
+  });
+
+  // Category breakdown
+  const catMap = {};
+  allBiz.forEach(b=>{if(b.category)catMap[b.category]=(catMap[b.category]||0)+1;});
+  const cats = Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  new Chart(document.getElementById('catChart'),{
+    type:'bar',
+    data:{labels:cats.map(x=>x[0]),datasets:[{data:cats.map(x=>x[1]),backgroundColor:'#D4A017',borderRadius:6}]},
+    options:{...chartDefaults,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}
+  });
+
+  // Revenue breakdown
+  new Chart(document.getElementById('revChart'),{
+    type:'doughnut',
+    data:{labels:['Basic (Free)','Standard GHS 50','Featured GHS 100','Premium GHS 200'],
+      datasets:[{data:[
+        allBiz.filter(b=>!b.plan||b.plan==='basic').length*0,
+        allBiz.filter(b=>b.plan==='standard'&&b.approved).length*50,
+        allBiz.filter(b=>b.plan==='featured'&&b.approved).length*100,
+        allBiz.filter(b=>b.plan==='premium'&&b.approved).length*200
+      ],backgroundColor:['#E2D9C8','#1A6B3C','#D4A017','#9B59B6'],borderWidth:0}]},
+    options:chartDefaults
+  });
+}
+
+// Override switchSection to load analytics when tab opens
+const _origSwitch = window.switchSection;
+window.switchSection = (name, el) => {
+  _origSwitch(name, el);
+  if(name==='analytics') loadAnalytics();
+  if(name==='jobs'&&!allJobs.length) fetchJobs();
+  if(name==='rooms'&&!allRooms.length) fetchRooms();
+};
+
 </script>
 </body>
 </html>

@@ -12,7 +12,7 @@
   .hbtn.gold{background:var(--gold);color:var(--ink);}
   .hbtn.ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.12);}
   .hbtn.ghost:hover{color:#fff;}
-  .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
+    .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
 
   /* HERO */
   .hero{background:linear-gradient(135deg,#1a3a6e,#0d2044);padding:16px 14px 22px;position:relative;overflow:hidden;}

@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Find full time, part time, remote and internship jobs across Ghana. Post a job free.">
+<meta name="keywords" content="Ghana business directory, jobs Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
+<meta name="author" content="CityLinkGH">
+<meta name="theme-color" content="#0D0D0D">
+<!-- Open Graph / WhatsApp / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://citylinkgh.vercel.app/jobs.html">
+<meta property="og:title" content="Jobs in Ghana — CityLinkGH">
+<meta property="og:description" content="Find full time, part time, remote and internship jobs across Ghana. Post a job free.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:site_name" content="CityLinkGH">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jobs in Ghana — CityLinkGH">
+<meta name="twitter:description" content="Find full time, part time, remote and internship jobs across Ghana. Post a job free.">
+<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Jobs in Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -125,14 +144,14 @@
 
 <div class="spacer"></div>
 
+
 <!--footer-->
 <footer class="footer">
   <div class="footer-container">
     <!--logo & about-->
     <div class="footer-box">
-      <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
-    <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
-  <p>Restaurants, hospitals, salons, mechanics & more — verified & reviewed.</p>
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"><br> CityLink<span>GH</span></div>
+  
     </div>
     <!-- Quick Links -->
     <div class="footer-box">
@@ -163,7 +182,6 @@
       <p>Phone: +233 53 736 1543</p>
 
       <div class="socials">
-        <a href="#">Facebook</a>
         <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
       </div>
     </div>
@@ -197,8 +215,8 @@
         <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selectPlan(this)">
           <div class="po-ico">⭐</div><div class="po-name">Standard</div><div class="po-price">GHS 30 · 60 days</div>
         </div>
-        <div class="plan-opt featured" data-plan="featured" data-price="50" onclick="selectPlan(this)">
-          <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 50 · Top listing</div>
+        <div class="plan-opt featured" data-plan="featured" data-price="60" onclick="selectPlan(this)">
+          <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 60 · Top listing</div>
         </div>
         <div class="plan-opt urgent" data-plan="urgent" data-price="100" onclick="selectPlan(this)">
           <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 100 · #1 + urgent</div>
@@ -309,7 +327,8 @@ const firebaseConfig = {
 const CLOUD_NAME    = "dulnujvm7";
 const UPLOAD_PRESET = "ernest";
 const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
-const ARKESEL_KEY   = "YOUR_ARKESEL_API_KEY";
+const ARKESEL_KEY   = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
+const ADMIN_EMAIL   = "agyemangernest650@gmail.com"; // ← put your email here
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
@@ -348,6 +367,19 @@ async function fetchJobs(){
   }
 }
 
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
+
 // ── FILTERS ──
 window.filterType=el=>{activeType=el.dataset.type;document.querySelectorAll('[data-type]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
 window.filterIndustry=el=>{activeIndustry=el.dataset.industry;document.querySelectorAll('[data-industry]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
@@ -369,19 +401,6 @@ window.applyFilters=()=>{
   document.getElementById('jobsLabel').textContent=`${list.length} Job${list.length!==1?'s':''}${activeCity!=='all'?' in '+activeCity:''}`;
   renderJobs(list);
 };
-
-// ── DARK MODE ──
-window.toggleDark = () => {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme', isDark?'light':'dark');
-};
-// Restore theme
-const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
-
 
 // ── RENDER ──
 function renderJobs(list){
@@ -578,7 +597,7 @@ async function saveJob(data){
 
 // ── ARKESEL SMS ──
 async function sendSMS(to,message){
-  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY'){console.warn('SMS skipped: Arkesel key not configured');return;}
+  if(!ARKESEL_KEY||ARKESEL_KEY==='your-arkesel-api-key'){console.warn('SMS skipped: Arkesel key not configured');return;}
   let num=to.replace(/\D/g,'');if(num.startsWith('0'))num='233'+num.slice(1);if(!num.startsWith('233'))num='233'+num;
   try{await fetch('https://sms.arkesel.com/api/v2/sms/send',{method:'POST',headers:{'api-key':ARKESEL_KEY,'Content-Type':'application/json'},body:JSON.stringify({sender:'CityLinkGH',message,recipients:[num]})});}
   catch(e){console.log('SMS:',e.message);}
@@ -619,3 +638,11 @@ document.querySelectorAll('.drawer-link').forEach(a => {
 </script>
 </body>
 </html>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-XXXXXXXXXX');
+</script>

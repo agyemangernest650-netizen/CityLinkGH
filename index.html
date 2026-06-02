@@ -1,281 +1,244 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
-<meta name="keywords" content="Ghana business directory, index Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
-<meta name="author" content="CityLinkGH">
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="CityLinkGH">
-<meta name="theme-color" content="#0D0D0D">
-<!-- Open Graph / WhatsApp / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://citylinkgh.vercel.app/">
-<meta property="og:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
-<meta property="og:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<title>CityLinkGH — Find Trusted Businesses, Jobs & Rooms in Ghana</title>
+<meta name="description" content="Ghana's #1 local directory. Find verified businesses, jobs and housing across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta property="og:title" content="CityLinkGH — Ghana's Local Directory">
+<meta property="og:description" content="Find businesses, jobs and rooms across Ghana. List your business free.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<meta property="og:site_name" content="CityLinkGH">
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
-<meta name="twitter:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
-<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<meta name="google-site-verification" content="NFnDZi6CZHUm7JzbcQvQ14SoRjBQUqwsZEyAktLb16U" />
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
-<title>CityLinkGH — Find Local Businesses in Ghana</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="index.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#D4A017;--green:#1A6B3C;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;}
+body{font-family:'Epilogue',sans-serif;background:#fff;color:var(--ink);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,13,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.07);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-btns{display:flex;gap:8px;}
+.nav-btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;font-family:'Epilogue',sans-serif;}
+.nb-ghost{color:rgba(255,255,255,.6);background:none;border:1px solid rgba(255,255,255,.15);}
+.nb-gold{background:var(--gold);color:var(--ink);}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#0d0d0d 0%,#1a3a00 60%,#0d2a00 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 60%, rgba(212,160,23,.08) 0%, transparent 60%),radial-gradient(circle at 80% 20%, rgba(26,107,60,.1) 0%, transparent 50%);}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,160,23,.12);border:1px solid rgba(212,160,23,.3);border-radius:20px;padding:5px 13px;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;}
+.hero h1{font-family:'Syne',sans-serif;font-size:38px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;max-width:400px;}
+.hero h1 span{color:var(--gold);}
+.hero p{font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;max-width:360px;margin-bottom:28px;}
+.hero-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;}
+.hb-main{background:var(--gold);color:var(--ink);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;text-decoration:none;display:block;text-align:center;}
+.hb-sec{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;text-decoration:none;display:block;text-align:center;}
+.hero-stats{display:flex;gap:24px;margin-top:36px;}
+.hs{text-align:center;}
+.hs-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;}
+.hs-l{font-size:11px;color:rgba(255,255,255,.45);}
+
+/* CATEGORIES */
+.section{padding:50px 20px;}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.sec-h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:8px;}
+.sec-sub{font-size:14px;color:var(--gray);margin-bottom:28px;line-height:1.6;}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.cat-card{background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:all .2s;}
+.cat-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.cat-card:active{transform:scale(.97);}
+.cc-ico{font-size:28px;margin-bottom:6px;}
+.cc-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;}
+
+/* HOW IT WORKS */
+.how-section{background:var(--cream);padding:50px 20px;}
+.step{display:flex;gap:14px;margin-bottom:22px;align-items:flex-start;}
+.step-num{width:38px;height:38px;border-radius:50%;background:var(--gold);color:var(--ink);font-family:'Syne',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;}
+.step-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+
+/* PRICING */
+.pricing-section{padding:50px 20px;}
+.plan-grid{display:grid;gap:12px;}
+.plan-card{border-radius:16px;border:2px solid var(--border);padding:18px;position:relative;overflow:hidden;}
+.plan-card.featured-plan{border-color:var(--gold);background:linear-gradient(135deg,#fffbf0,#fff);}
+.plan-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;letter-spacing:.05em;}
+.plan-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:4px;}
+.plan-price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green);margin-bottom:10px;}
+.plan-price span{font-size:13px;color:var(--gray);font-family:'Epilogue',sans-serif;font-weight:400;}
+.plan-feat{font-size:12px;color:var(--gray);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.plan-btn{display:block;width:100%;background:var(--green);color:#fff;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;margin-top:14px;}
+.plan-card.featured-plan .plan-btn{background:var(--gold);color:var(--ink);}
+
+/* TESTIMONIALS */
+.testi-section{background:var(--ink);padding:50px 20px;}
+.testi-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:12px;}
+.testi-text{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:12px;}
+.testi-author{display:flex;align-items:center;gap:10px;}
+.ta-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--ink);}
+.ta-name{font-size:13px;font-weight:700;color:#fff;}
+.ta-role{font-size:11px;color:rgba(255,255,255,.4);}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--green),#0d4a26);padding:50px 20px;text-align:center;}
+.cta-section h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;}
+.cta-section p{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:24px;line-height:1.6;}
+.cta-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.cta-btn-main{background:#fff;color:var(--green);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;}
+.cta-btn-sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:30px 20px;text-align:center;}
+.footer-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:12px;}
+.footer-logo span{color:var(--gold);}
+.footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.45);text-decoration:none;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.25);}
+</style>
 </head>
 <body>
-<div class="toast" id="toast"></div>
 
-<header>
-  <div class="logo"><img src="City link.jpeg" width="200" height="70"><br> CityLink<span>GH</span></div>
-  <div class="hdr-right">
-    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">☀️</button>
-    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
-      <span></span><span></span><span></span>
-    </button>
+<nav>
+  <a href="index.html" class="nav-logo">CityLink<span>GH</span></a>
+  <div class="nav-btns">
+    <a href="home.html" class="nav-btn nb-ghost">Browse</a>
+    <a href="submit.html" class="nav-btn nb-gold">List Free</a>
   </div>
-  <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
-<nav class="nav-drawer" id="navDrawer">
-  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
-  <div class="drawer-section">Navigate</div>
-  <a href="index.html" class="drawer-link"> Back to home</a>
-  <a href="business.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
-  <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
-  <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
-  <div class="drawer-section">List Something</div>
-  <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
-  <a href="jobs.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">📋</span> Post a Job</a>
-  <a href="room.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</a>
-  <div class="drawer-section">Account</div>
-  <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
-  <a href="bookingdash.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
-  <a href="about.html" class="drawer-link"><span class="di"> ℹ️</span> About</a>
 </nav>
-</header>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="flag"><div class="f1"></div><div class="f2"></div><div class="f3"></div></div>
-  <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
-  <p>Restaurants, salons, hospitals & more — verified & reviewed.</p>
-  <div class="search-wrap">
-    <span>🔍</span>
-    <div class="autocomplete-wrap"><input type="text" id="searchInput" autocomplete="off" placeholder="Search businesses, services…" oninput="doSearch(this.value)"></div>
-    <button class="near-me-btn" onclick="findNearMe()">📍 Near Me</button>
-    <button class="search-go" onclick="doSearch(document.getElementById('searchInput').value)">Go</button>
-</div>
-
-<!-- STATS -->
-<div class="stats">
-  <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">BUSINESSES</div></div>
-  <div><div class="stat-n" id="statDeals">—</div><div class="stat-l">LIVE DEALS</div></div>
-  <div><div class="stat-n" id="statCities">—</div><div class="stat-l">CITIES</div></div>
-</div>
-
-<!-- NEAR ME BANNER -->
-<div class="near-me-banner" id="nearMeBanner">
-  <div class="nmb-text"><h3>📍 Businesses Near You</h3><p id="nearMeSubtitle">Showing businesses closest to your location</p></div>
-  <button class="nmb-btn" onclick="clearNearMe()">✕ Clear</button>
-</div>
-
-<!-- FLASH DEALS -->
-<div class="deals-section" id="dealsSection" style="display:none;">
-  <div class="deals-hd">
-    <div class="deals-title">🔥 Flash Deals</div>
-    <span class="see-all" onclick="filterSort('featured',document.querySelector('.chip[onclick*=\'featured\']'))">See all →</span>
+  <div class="hero-badge">🇬🇭 Ghana's #1 Local Directory</div>
+  <h1>Find Trusted Businesses <span>Near You</span></h1>
+  <p>Discover verified restaurants, hospitals, salons and more across Accra, Kumasi, Takoradi and all Ghana cities.</p>
+  <div class="hero-btns">
+    <a href="home.html" class="hb-main">🔍 Browse Businesses</a>
+    <a href="submit.html" class="hb-sec">＋ List Your Business Free</a>
   </div>
-  <div class="deals-scroll" id="dealsScroll"></div>
-</div>
-
-<!-- BUSINESS OF THE WEEK -->
-<div id="botwWrap" style="display:none;margin-top:14px;"></div>
-
-<!-- RECENTLY VIEWED -->
-<div class="recently-section" id="recentlySection">
-  <div class="sec-hd" style="margin-bottom:9px;">
-    <h2 style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:7px;"><span style="width:4px;height:15px;background:var(--blue);border-radius:2px;display:block;"></span>Recently Viewed</h2>
-    <span class="see-all" onclick="clearRecent()">Clear</span>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n" id="lsBiz">500+</div><div class="hs-l">Businesses</div></div>
+    <div class="hs"><div class="hs-n" id="lsJobs">200+</div><div class="hs-l">Jobs</div></div>
+    <div class="hs"><div class="hs-n" id="lsRooms">150+</div><div class="hs-l">Rooms</div></div>
   </div>
-  <div class="recently-scroll" id="recentlyScroll"></div>
-</div>
-
-<!-- CITY SELECTOR -->
-
-<!-- ONBOARDING BANNER (first visit only) -->
-<div id="onboardBanner" style="display:none;margin:12px 14px;background:linear-gradient(135deg,#1A6B3C,#0d4a26);border-radius:16px;padding:16px;position:relative;">
-  <button onclick="dismissOnboard()" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.15);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:12px;">✕</button>
-  <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">👋 Welcome to CityLinkGH!</div>
-  <div style="font-size:12px;color:rgba(255,255,255,.8);margin-bottom:12px;line-height:1.5;">Ghana's #1 directory for local businesses, jobs and housing. Browse by city or category below.</div>
-  <div style="display:flex;gap:7px;">
-    <a href="submit.html" style="flex:1;background:var(--gold);color:var(--ink);padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">＋ List Business</a>
-    <a href="jobs.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">💼 Find Jobs</a>
-    <a href="room.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🏠 Rooms</a>
-  </div>
-</div>
-<div class="city-section">
-  <div class="city-hd">
-    <div class="city-title">Browse by City</div>
-    <span class="city-clear" id="cityClear" onclick="clearCity()">✕ Clear</span>
-  </div>
-  <div class="city-grid" id="cityGrid">
-    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
-    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
-    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
-    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
-    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
-    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
-    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
-    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
-    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
-  </div>
-</div>
-
-<!-- VIEW TOGGLE -->
-<div class="view-toggle">
-  <button class="vt active" id="btnList" onclick="switchView('list')">☰ List</button>
-  <button class="vt" id="btnMap" onclick="switchView('map')">🗺️ Map</button>
 </div>
 
 <!-- CATEGORIES -->
-<div class="sp">
-  <div class="sec-hd"><h2>Categories</h2><span class="see-all" onclick="filterCat('all',null)">All →</span></div>
+<div class="section">
+  <div class="sec-label">Browse by Category</div>
+  <div class="sec-h2">What are you looking for?</div>
+  <div class="sec-sub">From restaurants to hospitals — find any local business across Ghana.</div>
   <div class="cat-grid">
-    <div class="cat-tile active" onclick="filterCat('all',this)"><div class="ce">🏙️</div><div class="cn">All</div></div>
-    <div class="cat-tile" onclick="filterCat('Restaurant',this)"><div class="ce">🍽️</div><div class="cn">Food</div></div>
-    <div class="cat-tile" onclick="filterCat('Hospital',this)"><div class="ce">🏥</div><div class="cn">Health</div></div>
-    <div class="cat-tile" onclick="filterCat('Hotel',this)"><div class="ce">🏨</div><div class="cn">Hotels</div></div>
-    <div class="cat-tile" onclick="filterCat('Salon',this)"><div class="ce">💇</div><div class="cn">Salons</div></div>
-    <div class="cat-tile" onclick="filterCat('Pharmacy',this)"><div class="ce">💊</div><div class="cn">Pharma</div></div>
-    <div class="cat-tile" onclick="filterCat('School',this)"><div class="ce">🎓</div><div class="cn">Schools</div></div>
-    <div class="cat-tile" onclick="filterCat('Mechanic',this)"><div class="ce">🔧</div><div class="cn">Mechanics</div></div>
-    <div class="cat-tile" onclick="filterCat('Church',this)"><div class="ce">⛪</div><div class="cn">Churches</div></div>
-    <div class="cat-tile" onclick="filterCat('Lawyer',this)"><div class="ce">⚖️</div><div class="cn">Lawyers</div></div>
-    <div class="cat-tile" onclick="filterCat('Event Planner',this)"><div class="ce">🎉</div><div class="cn">Events</div></div>
-    <div class="cat-tile" onclick="filterCat('Supermarket',this)"><div class="ce">🛒</div><div class="cn">Shops</div></div>
+    <a href="home.html" class="cat-card"><div class="cc-ico">🍽️</div><div class="cc-name">Restaurants</div></a>
+    <a href="home.html" class="cat-card"><div class="cc-ico">🏥</div><div class="cc-name">Hospitals</div></a>
+    <a href="home.html" class="cat-card"><div class="cc-ico">🏨</div><div class="cc-name">Hotels</div></a>
+    <a href="home.html" class="cat-card"><div class="cc-ico">💇</div><div class="cc-name">Salons</div></a>
+    <a href="home.html" class="cat-card"><div class="cc-ico">🔧</div><div class="cc-name">Mechanics</div></a>
+    <a href="home.html" class="cat-card"><div class="cc-ico">🎓</div><div class="cc-name">Schools</div></a>
+    <a href="jobs.html" class="cat-card"><div class="cc-ico">💼</div><div class="cc-name">Jobs</div></a>
+    <a href="room.html" class="cat-card"><div class="cc-ico">🏠</div><div class="cc-name">Rooms</div></a>
+    <a href="home.html" class="cat-card"><div class="cc-ico">🏢</div><div class="cc-name">More →</div></a>
   </div>
 </div>
 
-<!-- FILTER CHIPS -->
-<div class="fbar">
-  <div class="chip active" onclick="filterSort('all',this)">⭐ All</div>
-  <div class="chip" onclick="filterSort('premium',this)">👑 Premium</div>
-  <div class="chip" onclick="filterSort('featured',this)">🌟 Featured</div>
-  <div class="chip" onclick="filterSort('verified',this)">✅ Verified</div>
-  <div class="chip" onclick="filterSort('open',this)">🟢 Open Now</div>
-  <div class="chip" onclick="filterSort('top',this)">🏆 Top Rated</div>
-  <div class="chip" onclick="filterSort('near',this)">📍 Nearest</div>
-  <div class="chip" onclick="filterSort('new',this)">🆕 Newest</div>
+<!-- HOW IT WORKS -->
+<div class="how-section">
+  <div class="sec-label">How It Works</div>
+  <div class="sec-h2">Simple & Fast</div>
+  <div class="sec-sub">Get your business in front of thousands of Ghanaians in minutes.</div>
+  <div class="step"><div class="step-num">1</div><div><div class="step-title">Create Your Listing</div><div class="step-desc">Fill in your business details, add photos and choose your plan. Basic listing is completely free.</div></div></div>
+  <div class="step"><div class="step-num">2</div><div><div class="step-title">Get Discovered</div><div class="step-desc">Your business appears in search results across Ghana. Customers find you by city, category or name.</div></div></div>
+  <div class="step"><div class="step-num">3</div><div><div class="step-title">Receive Bookings</div><div class="step-desc">Customers book appointments directly. You get SMS notifications and manage everything from your dashboard.</div></div></div>
+  <a href="submit.html" style="display:block;background:var(--green);color:#fff;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;text-align:center;margin-top:8px;">Get Started Free →</a>
 </div>
 
-<!-- ACTIVE FILTERS -->
-<div class="active-filters" id="activeFilters"></div>
-
-<!-- SPONSORED -->
-<div class="sponsored-section" id="sponsoredSection" style="display:none;">
-  <div class="sponsored-label">Sponsored</div>
-  <div class="sponsored-scroll" id="sponsoredScroll"></div>
-</div>
-
-<!-- PREMIUM SPOTLIGHT -->
-<div class="premium-section" id="premiumSection" style="display:none;">
-  <div class="premium-hd"><span>👑</span><div class="premium-hd-t">Premium Businesses</div></div>
-  <div class="pscroll" id="premiumScroll"></div>
-</div>
-
-<div class="feat-banner">
-  <div><h3>Grow Your Business</h3><p>Reach thousands of Ghanaians daily.</p></div>
-  <a href="submit.html" class="fbb">List Now →</a>
-</div>
-
-<!-- LIST VIEW -->
-<div id="listView">
-  <div class="sp" style="padding-bottom:5px;">
-    <div class="sec-hd"><h2 id="listTitle">All Businesses</h2><span class="see-all" id="resultCount"></span></div>
-  </div>
-  <div class="biz-grid" id="bizGrid">
-    <div class="skel-card"><div class="skeleton" style="width:85px;flex-shrink:0;"></div><div style="flex:1;padding:11px;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:65%;"></div><div class="skeleton" style="height:11px;width:40%;"></div><div class="skeleton" style="height:11px;width:55%;"></div><div style="display:flex;gap:5px;margin-top:auto;"><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div></div></div></div>
-    <div class="skel-card"><div class="skeleton" style="width:85px;flex-shrink:0;"></div><div style="flex:1;padding:11px;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:70%;"></div><div class="skeleton" style="height:11px;width:35%;"></div><div class="skeleton" style="height:11px;width:50%;"></div><div style="display:flex;gap:5px;margin-top:auto;"><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div></div></div></div>
-  </div>
-</div>
-
-<!-- MAP VIEW -->
-<div id="mapView">
-  <div id="map"></div>
-  <div class="map-sidebar">
-    <div class="sec-hd" style="margin-bottom:7px;"><h2>On Map</h2><span class="see-all" id="mapCount"></span></div>
-    <div id="mapListEl"></div>
-  </div>
-</div>
-
-<div class="spacer"></div>
-
-<!--footer-->
-<footer class="footer">
-  <div class="footer-container">
-    <!--logo & about-->
-    <div class="footer-box">
-      <div class="logo"><img src="City link.jpeg" width="150" height="60"><br> CityLink<span>GH</span></div>
-   
+<!-- PRICING -->
+<div class="pricing-section">
+  <div class="sec-label">Pricing</div>
+  <div class="sec-h2">Simple & Transparent</div>
+  <div class="sec-sub">Start free. Upgrade when you're ready to grow.</div>
+  <div class="plan-grid">
+    <div class="plan-card">
+      <div class="plan-name">📋 Basic</div>
+      <div class="plan-price">Free <span>forever</span></div>
+      <div class="plan-feat">✅ 1 photo</div>
+      <div class="plan-feat">✅ Phone & WhatsApp link</div>
+      <div class="plan-feat">✅ Standard placement</div>
+      <a href="submit.html" class="plan-btn" style="background:var(--mist);color:var(--ink);">Get Started</a>
     </div>
-    <!-- Quick Links -->
-    <div class="footer-box">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="room.html">Apartment/House for rent</a></li>
-        <li><a href="jobs.html">Jobs</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
+    <div class="plan-card featured-plan">
+      <div class="plan-badge">POPULAR</div>
+      <div class="plan-name">⭐ Featured</div>
+      <div class="plan-price">GHS 100 <span>/month</span></div>
+      <div class="plan-feat">✅ 5 photos</div>
+      <div class="plan-feat">✅ Verified badge</div>
+      <div class="plan-feat">✅ Top of results</div>
+      <div class="plan-feat">✅ Gold border highlight</div>
+      <a href="submit.html?plan=featured" class="plan-btn">Choose Featured</a>
     </div>
-
-    <!-- Categories -->
-    <div class="footer-box">
-      <h3>Top Categories</h3>
-      <ul>
-        <li><a href="index.html">Churches</a></li>
-        <li><a href="index.html">Hotels</a></li>
-        <li><a href="index.html">Salons</a></li>
-        <li><a href="index.html">Mechanics</a></li>
-      </ul>
+    <div class="plan-card">
+      <div class="plan-name">👑 Premium</div>
+      <div class="plan-price">GHS 200 <span>/month</span></div>
+      <div class="plan-feat">✅ 10 photos</div>
+      <div class="plan-feat">✅ #1 placement</div>
+      <div class="plan-feat">✅ Spotlight banner</div>
+      <div class="plan-feat">✅ Priority support</div>
+      <a href="submit.html?plan=premium" class="plan-btn">Choose Premium</a>
     </div>
-
-    <!-- Contact -->
-    <div class="footer-box">
-      <h3>Contact</h3>
-      <p>Email: agyemangernest650@gmail.com</p>
-      <p>Phone: +233 53 736 1543</p>
-
-      <div class="socials">
-      
-        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
-      </div>
-    </div>
-
   </div>
+</div>
 
-  <div class="footer-bottom">
-    <p>
-      © 2026 CityLink Ghana. All Rights Reserved.
-    </p>
+<!-- TESTIMONIALS -->
+<div class="testi-section">
+  <div class="sec-label" style="color:var(--gold);">What People Say</div>
+  <div class="sec-h2" style="color:#fff;margin-bottom:20px;">Trusted by Ghanaians</div>
+  <div class="testi-card">
+    <div class="testi-text">"CityLinkGH brought me 3 new customers in my first week. The WhatsApp button makes it so easy for people to reach me directly."</div>
+    <div class="testi-author"><div class="ta-avatar">A</div><div><div class="ta-name">Abena Mensah</div><div class="ta-role">Salon Owner, Kumasi</div></div></div>
   </div>
-</footer>
+  <div class="testi-card">
+    <div class="testi-text">"I found my current job through CityLinkGH. The listings are always fresh and the site is easy to use even on mobile data."</div>
+    <div class="testi-author"><div class="ta-avatar">K</div><div><div class="ta-name">Kwame Asante</div><div class="ta-role">Job Seeker, Accra</div></div></div>
   </div>
+  <div class="testi-card">
+    <div class="testi-text">"Listed my restaurant for free and upgraded to Featured after seeing the difference. Best GHS 100 I've spent on marketing."</div>
+    <div class="testi-author"><div class="ta-avatar">E</div><div><div class="ta-name">Emmanuel Darko</div><div class="ta-role">Restaurant Owner, Takoradi</div></div></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Ready to Get Found?</h2>
+  <p>Join hundreds of businesses already on CityLinkGH. Start for free — no credit card needed.</p>
+  <div class="cta-btns">
+    <a href="submit.html" class="cta-btn-main">＋ List Your Business Free</a>
+    <a href="home.html" class="cta-btn-sec">🔍 Browse First</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CityLink<span>GH</span></div>
+  <div class="footer-links">
+    <a href="home.html">Businesses</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="rooms.html">Rooms</a>
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <div class="footer-copy">© 2026 CityLink Ghana. All Rights Reserved. Made with ❤️ in Ghana.</div>
 </footer>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank"
+   style="position:fixed;bottom:20px;right:16px;background:#25D366;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 16px rgba(37,211,102,.4);z-index:400;text-decoration:none;animation:pulse 2s infinite;">
+  💬
+</a>
+<style>@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(37,211,102,.4);}50%{box-shadow:0 4px 24px rgba(37,211,102,.8);}}</style>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,getCountFromServer}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
   authDomain: "citylinkgh-48ee0.firebaseapp.com",
@@ -284,512 +247,15 @@ const firebaseConfig = {
   messagingSenderId: "807811031269",
   appId: "1:807811031269:web:167b22e23f49992136340c"
 };
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
-
-const PLAN_ORDER = {premium:0,featured:1,standard:2,basic:3};
-const catEmoji   = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
-
-let allBiz=[], activeCat='all', activeSort='all', activeCity='', searchQ='';
-let userLat=null, userLng=null, nearMode=false;
-let map, markers=[], infoWin;
-
-// ── DARK MODE ──
-window.toggleDark = () => {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme', isDark?'light':'dark');
-};
-// Restore theme
-const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
-
-// ── RECENTLY VIEWED ──
-function getRecent(){ try{return JSON.parse(localStorage.getItem('ghRecent')||'[]');}catch{return[];} }
-function addRecent(biz){
-  let list=getRecent().filter(b=>b.id!==biz.id);
-  list.unshift({id:biz.id,name:biz.name,category:biz.category,imageUrl:biz.imageUrl||biz.images?.[0]||''});
-  list=list.slice(0,8);
-  localStorage.setItem('ghRecent',JSON.stringify(list));
-}
-window.clearRecent=()=>{ localStorage.removeItem('ghRecent'); document.getElementById('recentlySection').style.display='none'; };
-
-function renderRecent(){
-  const list=getRecent();
-  const sec=document.getElementById('recentlySection');
-  if(!list.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('recentlyScroll').innerHTML=list.map(b=>`
-    <a class="rv-card" href="business.html?id=${b.id}">
-      <div class="rv-thumb">${b.imageUrl?`<img src="${esc(b.imageUrl)}" alt="">`:`${catEmoji(b.category)}`}</div>
-      <div class="rv-body"><div class="rv-name">${esc(b.name)}</div><div class="rv-cat">${esc(b.category)}</div></div>
-    </a>`).join('');
-}
-
-// ── NEAR ME ──
-window.findNearMe = () => {
-  if(!navigator.geolocation){showToast('⚠️ Location not available on this device');return;}
-  showToast('📍 Detecting your location…');
-  navigator.geolocation.getCurrentPosition(pos=>{
-    userLat=pos.coords.latitude;
-    userLng=pos.coords.longitude;
-    nearMode=true;
-    activeSort='near';
-    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-    document.querySelector('.chip[onclick*="near"]').classList.add('active');
-    document.getElementById('nearMeBanner').style.display='flex';
-    document.getElementById('nearMeSubtitle').textContent=`Showing businesses nearest to you`;
-    applyFilters();
-    showToast('✅ Showing businesses near you!');
-  },()=>showToast('❌ Could not detect location. Please allow location access.'));
-};
-
-window.clearNearMe=()=>{
-  nearMode=false;userLat=null;userLng=null;activeSort='all';
-  document.getElementById('nearMeBanner').style.display='none';
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  document.querySelector('.chip[onclick*=\'"all"\']').classList.add('active');
-  applyFilters();
-};
-
-function calcDist(lat1,lng1,lat2,lng2){
-  const R=6371, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
-  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
-  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-}
-
-function fmtDist(km){ return km<1?`${Math.round(km*1000)}m away`:`${km.toFixed(1)}km away`; }
-
-// ── FETCH ──
-async function fetchBiz(){
+const db=getFirestore(initializeApp(fc));
+(async()=>{
   try{
-    const snap=await getDocs(query(collection(db,'businesses'),where('approved','==',true)));
-    allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));
-    const now=Date.now();
-    allBiz=allBiz.filter(b=>{ if(!b.expiresAt||b.plan==='basic')return true; const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime(); return exp>now; });
-    document.getElementById('statTotal').textContent=allBiz.length;
-    const cities=[...new Set(allBiz.map(b=>b.city).filter(Boolean))].length;
-    document.getElementById('statCities').textContent=Math.max(cities,1);
-    updateCityCounts();
-    renderDeals();
-    renderBOTW();
-    renderSponsored();
-    renderPremiumSpotlight();
-    renderRecent();
-    applyFilters();
-    // Count live deals
-    const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>new Date()).length;
-    document.getElementById('statDeals').textContent=deals||'—';
-  }catch(e){
-    document.getElementById('bizGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
-  }
-}
-
-// ── CITY COUNTS ──
-function updateCityCounts(){
-  ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga'].forEach(c=>{
-    const count=allBiz.filter(b=>b.city===c).length;
-    const el=document.getElementById('cc-'+c.replace(' ','-'));
-    if(el) el.textContent=count+'';
-  });
-}
-
-// ── CITY ──
-window.pickCity=el=>{
-  activeCity=el.dataset.city;
-  document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('cityClear').style.display='block';
-  showActiveFilters();
-  applyFilters();
-  document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`;
-  showToast(`📍 Showing ${activeCity}`);
-};
-window.clearCity=()=>{ activeCity=''; document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active')); document.getElementById('cityClear').style.display='none'; showActiveFilters(); applyFilters(); document.getElementById('listTitle').textContent='All Businesses'; };
-
-function showActiveFilters(){
-  const wrap=document.getElementById('activeFilters');
-  const tags=[];
-  if(activeCity) tags.push(`<div class="af-tag">📍 ${activeCity}<button onclick="clearCity()">×</button></div>`);
-  if(activeCat!=='all') tags.push(`<div class="af-tag">🏷 ${activeCat}<button onclick="filterCat('all',null)">×</button></div>`);
-  if(nearMode) tags.push(`<div class="af-tag">📍 Near Me<button onclick="clearNearMe()">×</button></div>`);
-  wrap.innerHTML=tags.join(''); wrap.style.display=tags.length?'flex':'none';
-}
-
-// ── FILTERS ──
-function filtered(){
-  let list=[...allBiz];
-  if(activeCity) list=list.filter(b=>b.city===activeCity);
-  if(activeCat!=='all') list=list.filter(b=>b.category===activeCat);
-  if(searchQ){const q=searchQ.toLowerCase();list=list.filter(b=>(b.name||'').toLowerCase().includes(q)||(b.category||'').toLowerCase().includes(q)||(b.location||'').toLowerCase().includes(q)||(b.tags||'').toLowerCase().includes(q)||(b.city||'').toLowerCase().includes(q));}
-  if(activeSort==='premium') list=list.filter(b=>b.plan==='premium');
-  else if(activeSort==='featured') list=list.filter(b=>['premium','featured'].includes(b.plan));
-  else if(activeSort==='verified') list=list.filter(b=>b.verified);
-  else if(activeSort==='open') list=list.filter(b=>isOpen(b.openTime,b.closeTime));
-  else if(activeSort==='top') list=[...list].sort((a,b)=>(b.rating||0)-(a.rating||0));
-  else if(activeSort==='near'&&userLat){
-    list=list.filter(b=>b.lat&&b.lng);
-    list=[...list].sort((a,b)=>calcDist(userLat,userLng,Number(a.lat),Number(a.lng))-calcDist(userLat,userLng,Number(b.lat),Number(b.lng)));
-  }
-  else if(activeSort==='new') list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
-  else list=[...list].sort((a,b)=>(PLAN_ORDER[a.plan]||3)-(PLAN_ORDER[b.plan]||3)||(b.rating||0)-(a.rating||0));
-  return list;
-}
-
-function applyFilters(){
-  const list=filtered();
-  document.getElementById('resultCount').textContent=`${list.length} result${list.length!==1?'s':''}`;
-  renderGrid(list);
-  if(window._mapReady) populateMap(list);
-}
-
-window.doSearch=q=>{searchQ=q;applyFilters();};
-window.filterCat=(cat,el)=>{activeCat=cat;document.querySelectorAll('.cat-tile').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');if(cat!=='all')document.getElementById('listTitle').textContent=cat;showActiveFilters();applyFilters();};
-window.filterSort=(sort,el)=>{activeSort=sort;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');if(sort==='near')findNearMe();else applyFilters();};
-
-// ── FLASH DEALS ──
-function renderDeals(){
-  const now=new Date();
-  const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>now).slice(0,8);
-  const sec=document.getElementById('dealsSection');
-  if(!deals.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('dealsScroll').innerHTML=deals.map(b=>{
-    const exp=new Date(b.deal.expiresAt);
-    const mins=Math.max(0,Math.floor((exp-now)/60000));
-    const hrs=Math.floor(mins/60),rem=mins%60;
-    const timeStr=hrs>0?`${hrs}h ${rem}m`:mins>0?`${mins}m`:'Ending soon';
-    const img=b.imageUrl||b.images?.[0]||'';
-    return `
-      <a class="deal-card" href="business.html?id=${b.id}">
-        <div class="deal-img">
-          ${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}
-          <div class="deal-badge">${b.deal.discount||'Special Deal'}</div>
-          <div class="deal-timer">⏰ ${timeStr}</div>
-        </div>
-        <div class="deal-body">
-          <div class="deal-biz">${esc(b.name)}</div>
-          <div class="deal-desc">${esc(b.deal.description||'')}</div>
-          <div class="deal-discount">${esc(b.deal.discount||'')}</div>
-        </div>
-      </a>`;
-  }).join('');
-}
-
-// ── BUSINESS OF THE WEEK ──
-function renderBOTW(){
-  const botw=allBiz.find(b=>b.businessOfWeek);
-  const wrap=document.getElementById('botwWrap');
-  if(!botw){wrap.style.display='none';return;}
-  wrap.style.display='block';
-  const img=botw.imageUrl||botw.images?.[0]||'';
-  wrap.innerHTML=`
-    <a class="botw" href="business.html?id=${botw.id}">
-      <div class="botw-img">
-        ${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(botw.category)}`}
-      </div>
-      <div class="botw-overlay"></div>
-      <div class="botw-crown">👑 BUSINESS OF THE WEEK</div>
-      <div class="botw-body">
-        <div class="botw-label">Featured This Week</div>
-        <div class="botw-name">${esc(botw.name)}</div>
-        <div class="botw-meta">📍 ${esc(botw.city||botw.location||'Ghana')} · ${esc(botw.category)}</div>
-      </div>
-    </a>`;
-}
-
-// ── SPONSORED ──
-function renderSponsored(){
-  const sponsored=allBiz.filter(b=>b.sponsored&&b.plan==='premium').slice(0,5);
-  const sec=document.getElementById('sponsoredSection');
-  if(!sponsored.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('sponsoredScroll').innerHTML=sponsored.map(b=>{
-    const img=b.imageUrl||b.images?.[0]||'';
-    return `
-      <a class="spon-card" href="business.html?id=${b.id}">
-        <div class="spon-badge">AD</div>
-        <div class="spon-img">${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}</div>
-        <div class="spon-body">
-          <div class="spon-name">${esc(b.name)}</div>
-          <div class="spon-cat">${esc(b.category)}</div>
-        </div>
-      </a>`;
-  }).join('');
-}
-
-// ── PREMIUM SPOTLIGHT ──
-function renderPremiumSpotlight(){
-  const premiums=allBiz.filter(b=>b.plan==='premium').slice(0,8);
-  const sec=document.getElementById('premiumSection');
-  if(!premiums.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('premiumScroll').innerHTML=premiums.map(b=>{
-    const img=b.imageUrl||b.images?.[0]||'';
-    return `<div class="pcard-wrap"><a class="pcard" href="business.html?id=${b.id}"><div class="pcard-img">${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}</div><div class="pcard-ribbon">👑 PREMIUM</div><div class="pcard-body"><div class="pcard-name">${esc(b.name)}</div><div class="pcard-cat">${esc(b.category)} · ${esc(b.city||'')}</div></div></a></div>`;
-  }).join('');
-}
-
-// ── RENDER GRID ──
-function renderGrid(list){
-  const grid=document.getElementById('bizGrid');
-  if(!list.length){
-    grid.innerHTML=`<div class="empty">
-      <div style="font-size:52px;margin-bottom:12px;">🔍</div>
-      <h3 style="font-size:16px;font-weight:800;margin-bottom:6px;">No businesses found</h3>
-      <p style="font-size:13px;margin-bottom:16px;">${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
-      <div style="display:flex;flex-direction:column;gap:8px;max-width:240px;margin:0 auto;">
-        <a href="submit.html" style="background:var(--green);color:#fff;padding:11px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;display:block;">＋ List Your Business</a>
-        <button onclick="clearFilters()" style="background:var(--mist);color:var(--text);padding:11px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;font-weight:600;border:1px solid var(--border);cursor:pointer;">🔄 Clear Filters</button>
-      </div>
-    </div>`;return;
-  }
-  grid.innerHTML=list.map(b=>{
-    const plan=b.plan||'basic';
-    const openS=isOpen(b.openTime,b.closeTime);
-    const imgUrl=b.imageUrl||(b.images?.[0])||'';
-    const rawWa=(b.whatsapp||b.phone||'').replace(/\D/g,'');
-    const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-    const tags=(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,2).map(t=>`<span class="biz-tag">${esc(t)}</span>`).join('');
-    const stripHtml=plan!=='basic'?`<div class="pstrip ${plan==='standard'?'standard':plan}"></div>`:'';
-    const badgeHtml=plan==='premium'?`<div class="plan-badge pb-premium">👑</div>`:plan==='featured'?`<div class="plan-badge pb-featured">⭐</div>`:plan==='standard'?`<div class="plan-badge pb-standard">✓</div>`:'';
-    const dist=userLat&&b.lat&&b.lng?`<div class="dist-badge">📍 ${fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng)))}</div>`:'';
-    const dealHtml=b.deal?.active&&new Date(b.deal.expiresAt)>new Date()?`<div style="background:#fde8e8;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-bottom:5px;">🔥 ${b.deal.discount}</div>`:'';
-    return `
-      <a class="biz-card plan-${plan}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
-        ${stripHtml}
-        <div class="biz-thumb">
-          ${imgUrl?`<img src="${esc(imgUrl)}" alt="" onerror="this.style.display='none'">`:''}
-          <span style="${imgUrl?'display:none':''}">${catEmoji(b.category)}</span>
-          ${badgeHtml}
-          ${b.verified?'<div class="ver-dot">✓</div>':''}
-        </div>
-        <div class="biz-body">
-          <div class="biz-top">
-            <div class="biz-name">${esc(b.name)}</div>
-            ${b.rating?`<div style="display:flex;align-items:center;gap:2px;flex-shrink:0;"><span class="stars">${'★'.repeat(Math.round(b.rating||0))}</span><span class="rnum">${Number(b.rating).toFixed(1)}</span></div>`:''}
-          </div>
-          <div class="biz-cat">${esc(b.category)} ${openS===null?'':(openS?'<span class="open-now">● Open</span>':'<span class="closed-now">● Closed</span>')}</div>
-          ${dist}
-          <div class="biz-loc" onclick="event.preventDefault();pickCityByName('${esc(b.city||'')}')">📍 ${esc(b.location||'')}${b.location&&b.city?', ':''}${esc(b.city||'')}</div>
-          ${dealHtml}
-          ${tags?`<div class="biz-tags">${tags}</div>`:''}
-          <div class="biz-acts" onclick="event.preventDefault()">
-            ${b.phone?`<a class="biz-btn btn-call" href="tel:${esc(b.phone)}">📞 Call</a>`:''}
-            ${waNum?`<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank">💬 Chat</a>`:''}
-            <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
-            <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n\n👉 '+location.origin+'/business.html?id='+b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share on WhatsApp">📤</a>
-          </div>
-        </div>
-      </a>`;
-  }).join('');
-}
-
-// ── TRACK VIEW + RECENTLY VIEWED ──
-window.trackView=async bizId=>{
-  const b=allBiz.find(x=>x.id===bizId);
-  if(b){ addRecent(b); renderRecent(); }
-  // Increment view count in Firebase
-  try{ await updateDoc(doc(db,'businesses',bizId),{views:increment(1)}); }catch(_){}
-};
-
-window.pickCityByName=city=>{
-  if(!city)return;
-  activeCity=city;
-  const el=document.querySelector(`.city-card[data-city="${city}"]`);
-  document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active'));
-  if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}
-  document.getElementById('cityClear').style.display='block';
-  document.getElementById('listTitle').textContent=`Businesses in ${city}`;
-  showActiveFilters();applyFilters();
-  showToast(`📍 Showing ${city}`);
-};
-
-// ── MAP ──
-window.switchView=view=>{
-  document.getElementById('listView').style.display=view==='list'?'block':'none';
-  document.getElementById('mapView').style.display=view==='map'?'flex':'none';
-  document.getElementById('btnList').classList.toggle('active',view==='list');
-  document.getElementById('btnMap').classList.toggle('active',view==='map');
-  if(view==='map'&&!window._mapReady) initMap();
-};
-
-function initMap(){
-  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p=>{userLat=p.coords.latitude;userLng=p.coords.longitude;if(map)map.setCenter({lat:userLat,lng:userLng});});
-  map=new google.maps.Map(document.getElementById('map'),{center:{lat:userLat||5.6037,lng:userLng||-0.1870},zoom:12,mapTypeControl:false,streetViewControl:false,fullscreenControl:false,styles:[{featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]}]});
-  infoWin=new google.maps.InfoWindow();
-  if(userLat) new google.maps.Marker({position:{lat:userLat,lng:userLng},map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:'#1A6B3C',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'You'});
-  window._mapReady=true;
-  populateMap(filtered());
-}
-
-function populateMap(list){
-  markers.forEach(m=>m.setMap(null));markers=[];
-  const wc=list.filter(b=>b.lat&&b.lng);
-  document.getElementById('mapCount').textContent=`${wc.length} on map`;
-  const colors={premium:'#9B59B6',featured:'#D4A017',standard:'#1A6B3C',basic:'#7A7265'};
-  wc.forEach(b=>{
-    const dist=userLat?calcDist(userLat,userLng,Number(b.lat),Number(b.lng)):null;
-    const mk=new google.maps.Marker({position:{lat:Number(b.lat),lng:Number(b.lng)},map,title:b.name,icon:{path:google.maps.SymbolPath.CIRCLE,scale:b.plan==='premium'?11:b.plan==='featured'?9:7,fillColor:colors[b.plan||'basic'],fillOpacity:1,strokeColor:'#fff',strokeWeight:2}});
-    mk.addListener('click',()=>{
-      infoWin.setContent(`<div style="font-family:'Syne',sans-serif;max-width:180px;"><b style="font-size:12px;">${esc(b.name)}</b><div style="font-size:10px;color:#1A6B3C;text-transform:uppercase;font-weight:700;margin:3px 0;">${esc(b.category)}</div><div style="font-size:11px;color:#7A7265;margin-bottom:3px;">📍 ${esc(b.city||b.location||'')}</div>${dist?`<div style="font-size:11px;color:#2980B9;font-weight:600;margin-bottom:6px;">📍 ${fmtDist(dist)}</div>`:''}<a href="business.html?id=${b.id}" style="background:#1A6B3C;color:#fff;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:700;">View →</a></div>`);
-      infoWin.open(map,mk);
-    });
-    markers.push(mk);
-  });
-  document.getElementById('mapListEl').innerHTML=wc.length?wc.map(b=>{
-    const dist=userLat&&b.lat?fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng))):null;
-    return `<div class="map-item" onclick="window.location='business.html?id=${b.id}'">
-      <div class="map-thumb">${(b.imageUrl||b.images?.[0])?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:`${catEmoji(b.category)}`}</div>
-      <div><div class="map-name">${esc(b.name)}</div><div class="map-sub">📍 ${esc(b.city||b.location||'Ghana')}</div></div>
-      ${dist?`<div class="map-dist">${dist}</div>`:''}
-    </div>`;
-  }).join(''):`<div style="text-align:center;padding:16px;color:var(--gray);font-size:13px;">No coordinates set yet.</div>`;
-}
-
-function isOpen(o,c){if(!o||!c)return null;const now=new Date(),cur=now.getHours()*60+now.getMinutes();const[oh,om]=o.split(':').map(Number),[ch,cm]=c.split(':').map(Number);return cur>=oh*60+om&&cur<=ch*60+cm;}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-let toastT;
-window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
-
-fetchBiz();
-
-// ── SEARCH AUTOCOMPLETE ──
-window.showAC = q => {
-  const list = document.getElementById('acList');
-  if(!q || q.length < 2){ list.style.display='none'; return; }
-  q = q.toLowerCase();
-  const cats = ['Restaurant','Hospital','Hotel','Salon','Pharmacy','School','Mechanic','Lawyer','Supermarket','Photographer','Electrician','Tailor'];
-  const cities = ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga','Wa'];
-  let results = [];
-  // Match businesses
-  allBiz.filter(b => (b.name||'').toLowerCase().includes(q) || (b.category||'').toLowerCase().includes(q)).slice(0,4).forEach(b => {
-    results.push({ico:catEmoji(b.category)||'🏢', name:b.name, sub:b.city||b.location||'', type:'biz', id:b.id});
-  });
-  // Match categories
-  cats.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
-    results.push({ico:'🏷️', name:c, sub:'Browse category', type:'cat', val:c});
-  });
-  // Match cities
-  cities.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
-    results.push({ico:'📍', name:c, sub:'Browse city', type:'city', val:c});
-  });
-  if(!results.length){ list.style.display='none'; return; }
-  list.innerHTML = results.map(r => `
-    <div class="ac-item" onclick="selectAC(${JSON.stringify(r).replace(/"/g,'&quot;')})">
-      <span class="ac-ico">${r.ico}</span>
-      <div><div class="ac-name">${r.name}</div><div class="ac-sub">${r.sub}</div></div>
-    </div>`).join('');
-  list.style.display = 'block';
-};
-window.hideAC = () => { const l=document.getElementById('acList'); if(l)l.style.display='none'; };
-window.selectAC = r => {
-  hideAC();
-  document.getElementById('searchInput').value = r.name;
-  if(r.type==='biz') window.location='business.html?id='+r.id;
-  else if(r.type==='cat'){ activeCat=r.val; applyFilters && applyFilters(); }
-  else if(r.type==='city'){ activeCity=r.val; applyFilters && applyFilters(); }
-};
-
-
-// ── ONBOARDING ──
-if(!localStorage.getItem('clVisited')){
-  document.getElementById('onboardBanner').style.display='block';
-}
-window.dismissOnboard=()=>{
-  document.getElementById('onboardBanner').style.display='none';
-  localStorage.setItem('clVisited','1');
-};
-
-
-// ── FEATURE 7: URL PARAM DEEP LINKS ──
-// Supports ?city=Accra&category=Restaurant&search=pizza&sort=open
-(function applyURLParams(){
-  const p=new URLSearchParams(window.location.search);
-  if(p.get('city'))    { activeCity=p.get('city'); document.querySelectorAll('.city-card').forEach(c=>{if(c.dataset.city===activeCity)c.classList.add('active');}); document.getElementById('cityClear').style.display='block'; document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`; }
-  if(p.get('category')){ activeCat=p.get('category'); document.querySelectorAll('.cat-tile').forEach(t=>{if(t.dataset.cat===activeCat)t.classList.add('active');}); }
-  if(p.get('search'))  { searchQ=p.get('search'); const si=document.getElementById('searchInput'); if(si)si.value=searchQ; }
-  if(p.get('sort'))    { activeSort=p.get('sort'); }
+    const[b,j,r]=await Promise.all([getCountFromServer(collection(db,'businesses')),getCountFromServer(collection(db,'jobs')),getCountFromServer(collection(db,'rooms'))]);
+    document.getElementById('lsBiz').textContent=b.data().count+'+';
+    document.getElementById('lsJobs').textContent=j.data().count+'+';
+    document.getElementById('lsRooms').textContent=r.data().count+'+';
+  }catch(_){}
 })();
-</script>
-
-<div class="install-banner" id="installBanner">
-  <div class="install-banner-inner">
-    <div class="install-ico">📲</div>
-    <div class="install-text">
-      <div class="install-title">Add CityLinkGH to Home Screen</div>
-      <div class="install-sub">Get quick access — works offline too!</div>
-    </div>
-  </div>
-  <div class="install-btns">
-    <button class="ibtn-yes" onclick="doInstall()">Install App</button>
-    <button class="ibtn-no" onclick="dismissInstall()">Not now</button>
-  </div>
-</div>
-
-<script>
-// ── PWA: Service Worker ──
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js').then(r=>console.log('SW registered')).catch(e=>console.log('SW error',e));
-}
-
-// ── PWA: Install Prompt ──
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if(!localStorage.getItem('clInstallDismissed')){
-    setTimeout(()=>document.getElementById('installBanner').style.display='block', 3000);
-  }
-});
-window.doInstall = async () => {
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const {outcome} = await deferredPrompt.userChoice;
-  if(outcome==='accepted') localStorage.setItem('clInstallDismissed','1');
-  deferredPrompt=null;
-  document.getElementById('installBanner').style.display='none';
-};
-window.dismissInstall = () => {
-  document.getElementById('installBanner').style.display='none';
-  localStorage.setItem('clInstallDismissed','1');
-};
-window.addEventListener('appinstalled', () => {
-  document.getElementById('installBanner').style.display='none';
-  console.log('CityLinkGH installed!');
-});
-
-// ── HAMBURGER MENU ──
-window.toggleDrawer = () => {
-  const h = document.getElementById('hamburger');
-  const d = document.getElementById('navDrawer');
-  const o = document.getElementById('navOverlay');
-  h.classList.toggle('open');
-  d.classList.toggle('open');
-  o.classList.toggle('open');
-  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
-};
-// Mark active link
-document.querySelectorAll('.drawer-link').forEach(a => {
-  if(a.href === window.location.href) a.classList.add('active');
-});
 </script>
 </body>
 </html>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer=window.dataLayer||[];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());
-  gtag('config','G-XXXXXXXXXX');
-  // Track search
-  window._trackSearch=q=>gtag('event','search',{search_term:q});
-  // Track city filter
-  window._trackCity=c=>gtag('event','filter_city',{city:c});
-  // Track category
-  window._trackCat=c=>gtag('event','filter_category',{category:c});
-</script>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta name="keywords" content="Ghana business directory, index Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
+<meta name="author" content="CityLinkGH">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="CityLinkGH">
+<meta name="theme-color" content="#0D0D0D">
+<!-- Open Graph / WhatsApp / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://citylinkgh.vercel.app/">
+<meta property="og:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
+<meta property="og:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:site_name" content="CityLinkGH">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
+<meta name="twitter:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
+<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta name="google-site-verification" content="NFnDZi6CZHUm7JzbcQvQ14SoRjBQUqwsZEyAktLb16U" />
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<title>CityLinkGH — Find Local Businesses in Ghana</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="logo"><img src="City link.jpeg" width="200" height="70"><br> CityLink<span>GH</span></div>
+  <div class="hdr-right">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">☀️</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+  <div class="drawer-section">Navigate</div>
+  <a href="index.html" class="drawer-link"> Back to home</a>
+  <a href="business.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+  <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
+  <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+  <div class="drawer-section">List Something</div>
+  <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
+  <a href="jobs.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">📋</span> Post a Job</a>
+  <a href="room.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</a>
+  <div class="drawer-section">Account</div>
+  <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
+  <a href="bookingdash.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
+  <a href="about.html" class="drawer-link"><span class="di"> ℹ️</span> About</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="flag"><div class="f1"></div><div class="f2"></div><div class="f3"></div></div>
+  <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
+  <p>Restaurants, salons, hospitals & more — verified & reviewed.</p>
+  <div class="search-wrap">
+    <span>🔍</span>
+    <div class="autocomplete-wrap"><input type="text" id="searchInput" autocomplete="off" placeholder="Search businesses, services…" oninput="doSearch(this.value)"></div>
+    <button class="near-me-btn" onclick="findNearMe()">📍 Near Me</button>
+    <button class="search-go" onclick="doSearch(document.getElementById('searchInput').value)">Go</button>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">BUSINESSES</div></div>
+  <div><div class="stat-n" id="statDeals">—</div><div class="stat-l">LIVE DEALS</div></div>
+  <div><div class="stat-n" id="statCities">—</div><div class="stat-l">CITIES</div></div>
+</div>
+
+<!-- NEAR ME BANNER -->
+<div class="near-me-banner" id="nearMeBanner">
+  <div class="nmb-text"><h3>📍 Businesses Near You</h3><p id="nearMeSubtitle">Showing businesses closest to your location</p></div>
+  <button class="nmb-btn" onclick="clearNearMe()">✕ Clear</button>
+</div>
+
+<!-- FLASH DEALS -->
+<div class="deals-section" id="dealsSection" style="display:none;">
+  <div class="deals-hd">
+    <div class="deals-title">🔥 Flash Deals</div>
+    <span class="see-all" onclick="filterSort('featured',document.querySelector('.chip[onclick*=\'featured\']'))">See all →</span>
+  </div>
+  <div class="deals-scroll" id="dealsScroll"></div>
+</div>
+
+<!-- BUSINESS OF THE WEEK -->
+<div id="botwWrap" style="display:none;margin-top:14px;"></div>
+
+<!-- RECENTLY VIEWED -->
+<div class="recently-section" id="recentlySection">
+  <div class="sec-hd" style="margin-bottom:9px;">
+    <h2 style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:7px;"><span style="width:4px;height:15px;background:var(--blue);border-radius:2px;display:block;"></span>Recently Viewed</h2>
+    <span class="see-all" onclick="clearRecent()">Clear</span>
+  </div>
+  <div class="recently-scroll" id="recentlyScroll"></div>
+</div>
+
+<!-- CITY SELECTOR -->
+
+<!-- ONBOARDING BANNER (first visit only) -->
+<div id="onboardBanner" style="display:none;margin:12px 14px;background:linear-gradient(135deg,#1A6B3C,#0d4a26);border-radius:16px;padding:16px;position:relative;">
+  <button onclick="dismissOnboard()" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.15);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:12px;">✕</button>
+  <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">👋 Welcome to CityLinkGH!</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.8);margin-bottom:12px;line-height:1.5;">Ghana's #1 directory for local businesses, jobs and housing. Browse by city or category below.</div>
+  <div style="display:flex;gap:7px;">
+    <a href="submit.html" style="flex:1;background:var(--gold);color:var(--ink);padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">＋ List Business</a>
+    <a href="jobs.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">💼 Find Jobs</a>
+    <a href="room.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🏠 Rooms</a>
+  </div>
+</div>
+<div class="city-section">
+  <div class="city-hd">
+    <div class="city-title">Browse by City</div>
+    <span class="city-clear" id="cityClear" onclick="clearCity()">✕ Clear</span>
+  </div>
+  <div class="city-grid" id="cityGrid">
+    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
+    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
+    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
+    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
+    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
+    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
+    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
+    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
+    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
+  </div>
+</div>
+
+<!-- VIEW TOGGLE -->
+<div class="view-toggle">
+  <button class="vt active" id="btnList" onclick="switchView('list')">☰ List</button>
+  <button class="vt" id="btnMap" onclick="switchView('map')">🗺️ Map</button>
+</div>
+
+<!-- CATEGORIES -->
+<div class="sp">
+  <div class="sec-hd"><h2>Categories</h2><span class="see-all" onclick="filterCat('all',null)">All →</span></div>
+  <div class="cat-grid">
+    <div class="cat-tile active" onclick="filterCat('all',this)"><div class="ce">🏙️</div><div class="cn">All</div></div>
+    <div class="cat-tile" onclick="filterCat('Restaurant',this)"><div class="ce">🍽️</div><div class="cn">Food</div></div>
+    <div class="cat-tile" onclick="filterCat('Hospital',this)"><div class="ce">🏥</div><div class="cn">Health</div></div>
+    <div class="cat-tile" onclick="filterCat('Hotel',this)"><div class="ce">🏨</div><div class="cn">Hotels</div></div>
+    <div class="cat-tile" onclick="filterCat('Salon',this)"><div class="ce">💇</div><div class="cn">Salons</div></div>
+    <div class="cat-tile" onclick="filterCat('Pharmacy',this)"><div class="ce">💊</div><div class="cn">Pharma</div></div>
+    <div class="cat-tile" onclick="filterCat('School',this)"><div class="ce">🎓</div><div class="cn">Schools</div></div>
+    <div class="cat-tile" onclick="filterCat('Mechanic',this)"><div class="ce">🔧</div><div class="cn">Mechanics</div></div>
+    <div class="cat-tile" onclick="filterCat('Church',this)"><div class="ce">⛪</div><div class="cn">Churches</div></div>
+    <div class="cat-tile" onclick="filterCat('Lawyer',this)"><div class="ce">⚖️</div><div class="cn">Lawyers</div></div>
+    <div class="cat-tile" onclick="filterCat('Event Planner',this)"><div class="ce">🎉</div><div class="cn">Events</div></div>
+    <div class="cat-tile" onclick="filterCat('Supermarket',this)"><div class="ce">🛒</div><div class="cn">Shops</div></div>
+  </div>
+</div>
+
+<!-- FILTER CHIPS -->
+<div class="fbar">
+  <div class="chip active" onclick="filterSort('all',this)">⭐ All</div>
+  <div class="chip" onclick="filterSort('premium',this)">👑 Premium</div>
+  <div class="chip" onclick="filterSort('featured',this)">🌟 Featured</div>
+  <div class="chip" onclick="filterSort('verified',this)">✅ Verified</div>
+  <div class="chip" onclick="filterSort('open',this)">🟢 Open Now</div>
+  <div class="chip" onclick="filterSort('top',this)">🏆 Top Rated</div>
+  <div class="chip" onclick="filterSort('near',this)">📍 Nearest</div>
+  <div class="chip" onclick="filterSort('new',this)">🆕 Newest</div>
+</div>
+
+<!-- ACTIVE FILTERS -->
+<div class="active-filters" id="activeFilters"></div>
+
+<!-- SPONSORED -->
+<div class="sponsored-section" id="sponsoredSection" style="display:none;">
+  <div class="sponsored-label">Sponsored</div>
+  <div class="sponsored-scroll" id="sponsoredScroll"></div>
+</div>
+
+<!-- PREMIUM SPOTLIGHT -->
+<div class="premium-section" id="premiumSection" style="display:none;">
+  <div class="premium-hd"><span>👑</span><div class="premium-hd-t">Premium Businesses</div></div>
+  <div class="pscroll" id="premiumScroll"></div>
+</div>
+
+<div class="feat-banner">
+  <div><h3>Grow Your Business</h3><p>Reach thousands of Ghanaians daily.</p></div>
+  <a href="submit.html" class="fbb">List Now →</a>
+</div>
+
+<!-- LIST VIEW -->
+<div id="listView">
+  <div class="sp" style="padding-bottom:5px;">
+    <div class="sec-hd"><h2 id="listTitle">All Businesses</h2><span class="see-all" id="resultCount"></span></div>
+  </div>
+  <div class="biz-grid" id="bizGrid">
+    <div class="skel-card"><div class="skeleton" style="width:85px;flex-shrink:0;"></div><div style="flex:1;padding:11px;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:65%;"></div><div class="skeleton" style="height:11px;width:40%;"></div><div class="skeleton" style="height:11px;width:55%;"></div><div style="display:flex;gap:5px;margin-top:auto;"><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div></div></div></div>
+    <div class="skel-card"><div class="skeleton" style="width:85px;flex-shrink:0;"></div><div style="flex:1;padding:11px;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:70%;"></div><div class="skeleton" style="height:11px;width:35%;"></div><div class="skeleton" style="height:11px;width:50%;"></div><div style="display:flex;gap:5px;margin-top:auto;"><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div></div></div></div>
+  </div>
+</div>
+
+<!-- MAP VIEW -->
+<div id="mapView">
+  <div id="map"></div>
+  <div class="map-sidebar">
+    <div class="sec-hd" style="margin-bottom:7px;"><h2>On Map</h2><span class="see-all" id="mapCount"></span></div>
+    <div id="mapListEl"></div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!--footer-->
+<footer class="footer">
+  <div class="footer-container">
+    <!--logo & about-->
+    <div class="footer-box">
+      <div class="logo"><img src="City link.jpeg" width="150" height="60"><br> CityLink<span>GH</span></div>
+   
+    </div>
+    <!-- Quick Links -->
+    <div class="footer-box">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="room.html">Apartment/House for rent</a></li>
+        <li><a href="jobs.html">Jobs</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <!-- Categories -->
+    <div class="footer-box">
+      <h3>Top Categories</h3>
+      <ul>
+        <li><a href="index.html">Churches</a></li>
+        <li><a href="index.html">Hotels</a></li>
+        <li><a href="index.html">Salons</a></li>
+        <li><a href="index.html">Mechanics</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-box">
+      <h3>Contact</h3>
+      <p>Email: agyemangernest650@gmail.com</p>
+      <p>Phone: +233 53 736 1543</p>
+
+      <div class="socials">
+      
+        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>
+      © 2026 CityLink Ghana. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+  </div>
+</footer>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+const PLAN_ORDER = {premium:0,featured:1,standard:2,basic:3};
+const catEmoji   = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
+
+let allBiz=[], activeCat='all', activeSort='all', activeCity='', searchQ='';
+let userLat=null, userLng=null, nearMode=false;
+let map, markers=[], infoWin;
+
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
+// ── RECENTLY VIEWED ──
+function getRecent(){ try{return JSON.parse(localStorage.getItem('ghRecent')||'[]');}catch{return[];} }
+function addRecent(biz){
+  let list=getRecent().filter(b=>b.id!==biz.id);
+  list.unshift({id:biz.id,name:biz.name,category:biz.category,imageUrl:biz.imageUrl||biz.images?.[0]||''});
+  list=list.slice(0,8);
+  localStorage.setItem('ghRecent',JSON.stringify(list));
+}
+window.clearRecent=()=>{ localStorage.removeItem('ghRecent'); document.getElementById('recentlySection').style.display='none'; };
+
+function renderRecent(){
+  const list=getRecent();
+  const sec=document.getElementById('recentlySection');
+  if(!list.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('recentlyScroll').innerHTML=list.map(b=>`
+    <a class="rv-card" href="business.html?id=${b.id}">
+      <div class="rv-thumb">${b.imageUrl?`<img src="${esc(b.imageUrl)}" alt="">`:`${catEmoji(b.category)}`}</div>
+      <div class="rv-body"><div class="rv-name">${esc(b.name)}</div><div class="rv-cat">${esc(b.category)}</div></div>
+    </a>`).join('');
+}
+
+// ── NEAR ME ──
+window.findNearMe = () => {
+  if(!navigator.geolocation){showToast('⚠️ Location not available on this device');return;}
+  showToast('📍 Detecting your location…');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userLat=pos.coords.latitude;
+    userLng=pos.coords.longitude;
+    nearMode=true;
+    activeSort='near';
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    document.querySelector('.chip[onclick*="near"]').classList.add('active');
+    document.getElementById('nearMeBanner').style.display='flex';
+    document.getElementById('nearMeSubtitle').textContent=`Showing businesses nearest to you`;
+    applyFilters();
+    showToast('✅ Showing businesses near you!');
+  },()=>showToast('❌ Could not detect location. Please allow location access.'));
+};
+
+window.clearNearMe=()=>{
+  nearMode=false;userLat=null;userLng=null;activeSort='all';
+  document.getElementById('nearMeBanner').style.display='none';
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.chip[onclick*=\'"all"\']').classList.add('active');
+  applyFilters();
+};
+
+function calcDist(lat1,lng1,lat2,lng2){
+  const R=6371, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function fmtDist(km){ return km<1?`${Math.round(km*1000)}m away`:`${km.toFixed(1)}km away`; }
+
+// ── FETCH ──
+async function fetchBiz(){
+  try{
+    const snap=await getDocs(query(collection(db,'businesses'),where('approved','==',true)));
+    allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const now=Date.now();
+    allBiz=allBiz.filter(b=>{ if(!b.expiresAt||b.plan==='basic')return true; const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime(); return exp>now; });
+    document.getElementById('statTotal').textContent=allBiz.length;
+    const cities=[...new Set(allBiz.map(b=>b.city).filter(Boolean))].length;
+    document.getElementById('statCities').textContent=Math.max(cities,1);
+    updateCityCounts();
+    renderDeals();
+    renderBOTW();
+    renderSponsored();
+    renderPremiumSpotlight();
+    renderRecent();
+    applyFilters();
+    // Count live deals
+    const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>new Date()).length;
+    document.getElementById('statDeals').textContent=deals||'—';
+  }catch(e){
+    document.getElementById('bizGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ── CITY COUNTS ──
+function updateCityCounts(){
+  ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga'].forEach(c=>{
+    const count=allBiz.filter(b=>b.city===c).length;
+    const el=document.getElementById('cc-'+c.replace(' ','-'));
+    if(el) el.textContent=count+'';
+  });
+}
+
+// ── CITY ──
+window.pickCity=el=>{
+  activeCity=el.dataset.city;
+  document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cityClear').style.display='block';
+  showActiveFilters();
+  applyFilters();
+  document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`;
+  showToast(`📍 Showing ${activeCity}`);
+};
+window.clearCity=()=>{ activeCity=''; document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active')); document.getElementById('cityClear').style.display='none'; showActiveFilters(); applyFilters(); document.getElementById('listTitle').textContent='All Businesses'; };
+
+function showActiveFilters(){
+  const wrap=document.getElementById('activeFilters');
+  const tags=[];
+  if(activeCity) tags.push(`<div class="af-tag">📍 ${activeCity}<button onclick="clearCity()">×</button></div>`);
+  if(activeCat!=='all') tags.push(`<div class="af-tag">🏷 ${activeCat}<button onclick="filterCat('all',null)">×</button></div>`);
+  if(nearMode) tags.push(`<div class="af-tag">📍 Near Me<button onclick="clearNearMe()">×</button></div>`);
+  wrap.innerHTML=tags.join(''); wrap.style.display=tags.length?'flex':'none';
+}
+
+// ── FILTERS ──
+function filtered(){
+  let list=[...allBiz];
+  if(activeCity) list=list.filter(b=>b.city===activeCity);
+  if(activeCat!=='all') list=list.filter(b=>b.category===activeCat);
+  if(searchQ){const q=searchQ.toLowerCase();list=list.filter(b=>(b.name||'').toLowerCase().includes(q)||(b.category||'').toLowerCase().includes(q)||(b.location||'').toLowerCase().includes(q)||(b.tags||'').toLowerCase().includes(q)||(b.city||'').toLowerCase().includes(q));}
+  if(activeSort==='premium') list=list.filter(b=>b.plan==='premium');
+  else if(activeSort==='featured') list=list.filter(b=>['premium','featured'].includes(b.plan));
+  else if(activeSort==='verified') list=list.filter(b=>b.verified);
+  else if(activeSort==='open') list=list.filter(b=>isOpen(b.openTime,b.closeTime));
+  else if(activeSort==='top') list=[...list].sort((a,b)=>(b.rating||0)-(a.rating||0));
+  else if(activeSort==='near'&&userLat){
+    list=list.filter(b=>b.lat&&b.lng);
+    list=[...list].sort((a,b)=>calcDist(userLat,userLng,Number(a.lat),Number(a.lng))-calcDist(userLat,userLng,Number(b.lat),Number(b.lng)));
+  }
+  else if(activeSort==='new') list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
+  else list=[...list].sort((a,b)=>(PLAN_ORDER[a.plan]||3)-(PLAN_ORDER[b.plan]||3)||(b.rating||0)-(a.rating||0));
+  return list;
+}
+
+function applyFilters(){
+  const list=filtered();
+  document.getElementById('resultCount').textContent=`${list.length} result${list.length!==1?'s':''}`;
+  renderGrid(list);
+  if(window._mapReady) populateMap(list);
+}
+
+window.doSearch=q=>{searchQ=q;applyFilters();};
+window.filterCat=(cat,el)=>{activeCat=cat;document.querySelectorAll('.cat-tile').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');if(cat!=='all')document.getElementById('listTitle').textContent=cat;showActiveFilters();applyFilters();};
+window.filterSort=(sort,el)=>{activeSort=sort;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');if(sort==='near')findNearMe();else applyFilters();};
+
+// ── FLASH DEALS ──
+function renderDeals(){
+  const now=new Date();
+  const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>now).slice(0,8);
+  const sec=document.getElementById('dealsSection');
+  if(!deals.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('dealsScroll').innerHTML=deals.map(b=>{
+    const exp=new Date(b.deal.expiresAt);
+    const mins=Math.max(0,Math.floor((exp-now)/60000));
+    const hrs=Math.floor(mins/60),rem=mins%60;
+    const timeStr=hrs>0?`${hrs}h ${rem}m`:mins>0?`${mins}m`:'Ending soon';
+    const img=b.imageUrl||b.images?.[0]||'';
+    return `
+      <a class="deal-card" href="business.html?id=${b.id}">
+        <div class="deal-img">
+          ${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}
+          <div class="deal-badge">${b.deal.discount||'Special Deal'}</div>
+          <div class="deal-timer">⏰ ${timeStr}</div>
+        </div>
+        <div class="deal-body">
+          <div class="deal-biz">${esc(b.name)}</div>
+          <div class="deal-desc">${esc(b.deal.description||'')}</div>
+          <div class="deal-discount">${esc(b.deal.discount||'')}</div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+// ── BUSINESS OF THE WEEK ──
+function renderBOTW(){
+  const botw=allBiz.find(b=>b.businessOfWeek);
+  const wrap=document.getElementById('botwWrap');
+  if(!botw){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  const img=botw.imageUrl||botw.images?.[0]||'';
+  wrap.innerHTML=`
+    <a class="botw" href="business.html?id=${botw.id}">
+      <div class="botw-img">
+        ${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(botw.category)}`}
+      </div>
+      <div class="botw-overlay"></div>
+      <div class="botw-crown">👑 BUSINESS OF THE WEEK</div>
+      <div class="botw-body">
+        <div class="botw-label">Featured This Week</div>
+        <div class="botw-name">${esc(botw.name)}</div>
+        <div class="botw-meta">📍 ${esc(botw.city||botw.location||'Ghana')} · ${esc(botw.category)}</div>
+      </div>
+    </a>`;
+}
+
+// ── SPONSORED ──
+function renderSponsored(){
+  const sponsored=allBiz.filter(b=>b.sponsored&&b.plan==='premium').slice(0,5);
+  const sec=document.getElementById('sponsoredSection');
+  if(!sponsored.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('sponsoredScroll').innerHTML=sponsored.map(b=>{
+    const img=b.imageUrl||b.images?.[0]||'';
+    return `
+      <a class="spon-card" href="business.html?id=${b.id}">
+        <div class="spon-badge">AD</div>
+        <div class="spon-img">${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}</div>
+        <div class="spon-body">
+          <div class="spon-name">${esc(b.name)}</div>
+          <div class="spon-cat">${esc(b.category)}</div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+// ── PREMIUM SPOTLIGHT ──
+function renderPremiumSpotlight(){
+  const premiums=allBiz.filter(b=>b.plan==='premium').slice(0,8);
+  const sec=document.getElementById('premiumSection');
+  if(!premiums.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('premiumScroll').innerHTML=premiums.map(b=>{
+    const img=b.imageUrl||b.images?.[0]||'';
+    return `<div class="pcard-wrap"><a class="pcard" href="business.html?id=${b.id}"><div class="pcard-img">${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}</div><div class="pcard-ribbon">👑 PREMIUM</div><div class="pcard-body"><div class="pcard-name">${esc(b.name)}</div><div class="pcard-cat">${esc(b.category)} · ${esc(b.city||'')}</div></div></a></div>`;
+  }).join('');
+}
+
+// ── RENDER GRID ──
+function renderGrid(list){
+  const grid=document.getElementById('bizGrid');
+  if(!list.length){
+    grid.innerHTML=`<div class="empty">
+      <div style="font-size:52px;margin-bottom:12px;">🔍</div>
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:6px;">No businesses found</h3>
+      <p style="font-size:13px;margin-bottom:16px;">${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:240px;margin:0 auto;">
+        <a href="submit.html" style="background:var(--green);color:#fff;padding:11px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;display:block;">＋ List Your Business</a>
+        <button onclick="clearFilters()" style="background:var(--mist);color:var(--text);padding:11px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;font-weight:600;border:1px solid var(--border);cursor:pointer;">🔄 Clear Filters</button>
+      </div>
+    </div>`;return;
+  }
+  grid.innerHTML=list.map(b=>{
+    const plan=b.plan||'basic';
+    const openS=isOpen(b.openTime,b.closeTime);
+    const imgUrl=b.imageUrl||(b.images?.[0])||'';
+    const rawWa=(b.whatsapp||b.phone||'').replace(/\D/g,'');
+    const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+    const tags=(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,2).map(t=>`<span class="biz-tag">${esc(t)}</span>`).join('');
+    const stripHtml=plan!=='basic'?`<div class="pstrip ${plan==='standard'?'standard':plan}"></div>`:'';
+    const badgeHtml=plan==='premium'?`<div class="plan-badge pb-premium">👑</div>`:plan==='featured'?`<div class="plan-badge pb-featured">⭐</div>`:plan==='standard'?`<div class="plan-badge pb-standard">✓</div>`:'';
+    const dist=userLat&&b.lat&&b.lng?`<div class="dist-badge">📍 ${fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng)))}</div>`:'';
+    const dealHtml=b.deal?.active&&new Date(b.deal.expiresAt)>new Date()?`<div style="background:#fde8e8;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-bottom:5px;">🔥 ${b.deal.discount}</div>`:'';
+    return `
+      <a class="biz-card plan-${plan}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
+        ${stripHtml}
+        <div class="biz-thumb">
+          ${imgUrl?`<img src="${esc(imgUrl)}" alt="" onerror="this.style.display='none'">`:''}
+          <span style="${imgUrl?'display:none':''}">${catEmoji(b.category)}</span>
+          ${badgeHtml}
+          ${b.verified?'<div class="ver-dot">✓</div>':''}
+        </div>
+        <div class="biz-body">
+          <div class="biz-top">
+            <div class="biz-name">${esc(b.name)}</div>
+            ${b.rating?`<div style="display:flex;align-items:center;gap:2px;flex-shrink:0;"><span class="stars">${'★'.repeat(Math.round(b.rating||0))}</span><span class="rnum">${Number(b.rating).toFixed(1)}</span></div>`:''}
+          </div>
+          <div class="biz-cat">${esc(b.category)} ${openS===null?'':(openS?'<span class="open-now">● Open</span>':'<span class="closed-now">● Closed</span>')}</div>
+          ${dist}
+          <div class="biz-loc" onclick="event.preventDefault();pickCityByName('${esc(b.city||'')}')">📍 ${esc(b.location||'')}${b.location&&b.city?', ':''}${esc(b.city||'')}</div>
+          ${dealHtml}
+          ${tags?`<div class="biz-tags">${tags}</div>`:''}
+          <div class="biz-acts" onclick="event.preventDefault()">
+            ${b.phone?`<a class="biz-btn btn-call" href="tel:${esc(b.phone)}">📞 Call</a>`:''}
+            ${waNum?`<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank">💬 Chat</a>`:''}
+            <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
+            <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n\n👉 '+location.origin+'/business.html?id='+b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share on WhatsApp">📤</a>
+          </div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+// ── TRACK VIEW + RECENTLY VIEWED ──
+window.trackView=async bizId=>{
+  const b=allBiz.find(x=>x.id===bizId);
+  if(b){ addRecent(b); renderRecent(); }
+  // Increment view count in Firebase
+  try{ await updateDoc(doc(db,'businesses',bizId),{views:increment(1)}); }catch(_){}
+};
+
+window.pickCityByName=city=>{
+  if(!city)return;
+  activeCity=city;
+  const el=document.querySelector(`.city-card[data-city="${city}"]`);
+  document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active'));
+  if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}
+  document.getElementById('cityClear').style.display='block';
+  document.getElementById('listTitle').textContent=`Businesses in ${city}`;
+  showActiveFilters();applyFilters();
+  showToast(`📍 Showing ${city}`);
+};
+
+// ── MAP ──
+window.switchView=view=>{
+  document.getElementById('listView').style.display=view==='list'?'block':'none';
+  document.getElementById('mapView').style.display=view==='map'?'flex':'none';
+  document.getElementById('btnList').classList.toggle('active',view==='list');
+  document.getElementById('btnMap').classList.toggle('active',view==='map');
+  if(view==='map'&&!window._mapReady) initMap();
+};
+
+function initMap(){
+  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p=>{userLat=p.coords.latitude;userLng=p.coords.longitude;if(map)map.setCenter({lat:userLat,lng:userLng});});
+  map=new google.maps.Map(document.getElementById('map'),{center:{lat:userLat||5.6037,lng:userLng||-0.1870},zoom:12,mapTypeControl:false,streetViewControl:false,fullscreenControl:false,styles:[{featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]}]});
+  infoWin=new google.maps.InfoWindow();
+  if(userLat) new google.maps.Marker({position:{lat:userLat,lng:userLng},map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:'#1A6B3C',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'You'});
+  window._mapReady=true;
+  populateMap(filtered());
+}
+
+function populateMap(list){
+  markers.forEach(m=>m.setMap(null));markers=[];
+  const wc=list.filter(b=>b.lat&&b.lng);
+  document.getElementById('mapCount').textContent=`${wc.length} on map`;
+  const colors={premium:'#9B59B6',featured:'#D4A017',standard:'#1A6B3C',basic:'#7A7265'};
+  wc.forEach(b=>{
+    const dist=userLat?calcDist(userLat,userLng,Number(b.lat),Number(b.lng)):null;
+    const mk=new google.maps.Marker({position:{lat:Number(b.lat),lng:Number(b.lng)},map,title:b.name,icon:{path:google.maps.SymbolPath.CIRCLE,scale:b.plan==='premium'?11:b.plan==='featured'?9:7,fillColor:colors[b.plan||'basic'],fillOpacity:1,strokeColor:'#fff',strokeWeight:2}});
+    mk.addListener('click',()=>{
+      infoWin.setContent(`<div style="font-family:'Syne',sans-serif;max-width:180px;"><b style="font-size:12px;">${esc(b.name)}</b><div style="font-size:10px;color:#1A6B3C;text-transform:uppercase;font-weight:700;margin:3px 0;">${esc(b.category)}</div><div style="font-size:11px;color:#7A7265;margin-bottom:3px;">📍 ${esc(b.city||b.location||'')}</div>${dist?`<div style="font-size:11px;color:#2980B9;font-weight:600;margin-bottom:6px;">📍 ${fmtDist(dist)}</div>`:''}<a href="business.html?id=${b.id}" style="background:#1A6B3C;color:#fff;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:700;">View →</a></div>`);
+      infoWin.open(map,mk);
+    });
+    markers.push(mk);
+  });
+  document.getElementById('mapListEl').innerHTML=wc.length?wc.map(b=>{
+    const dist=userLat&&b.lat?fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng))):null;
+    return `<div class="map-item" onclick="window.location='business.html?id=${b.id}'">
+      <div class="map-thumb">${(b.imageUrl||b.images?.[0])?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:`${catEmoji(b.category)}`}</div>
+      <div><div class="map-name">${esc(b.name)}</div><div class="map-sub">📍 ${esc(b.city||b.location||'Ghana')}</div></div>
+      ${dist?`<div class="map-dist">${dist}</div>`:''}
+    </div>`;
+  }).join(''):`<div style="text-align:center;padding:16px;color:var(--gray);font-size:13px;">No coordinates set yet.</div>`;
+}
+
+function isOpen(o,c){if(!o||!c)return null;const now=new Date(),cur=now.getHours()*60+now.getMinutes();const[oh,om]=o.split(':').map(Number),[ch,cm]=c.split(':').map(Number);return cur>=oh*60+om&&cur<=ch*60+cm;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+fetchBiz();
+
+// ── SEARCH AUTOCOMPLETE ──
+window.showAC = q => {
+  const list = document.getElementById('acList');
+  if(!q || q.length < 2){ list.style.display='none'; return; }
+  q = q.toLowerCase();
+  const cats = ['Restaurant','Hospital','Hotel','Salon','Pharmacy','School','Mechanic','Lawyer','Supermarket','Photographer','Electrician','Tailor'];
+  const cities = ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga','Wa'];
+  let results = [];
+  // Match businesses
+  allBiz.filter(b => (b.name||'').toLowerCase().includes(q) || (b.category||'').toLowerCase().includes(q)).slice(0,4).forEach(b => {
+    results.push({ico:catEmoji(b.category)||'🏢', name:b.name, sub:b.city||b.location||'', type:'biz', id:b.id});
+  });
+  // Match categories
+  cats.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
+    results.push({ico:'🏷️', name:c, sub:'Browse category', type:'cat', val:c});
+  });
+  // Match cities
+  cities.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
+    results.push({ico:'📍', name:c, sub:'Browse city', type:'city', val:c});
+  });
+  if(!results.length){ list.style.display='none'; return; }
+  list.innerHTML = results.map(r => `
+    <div class="ac-item" onclick="selectAC(${JSON.stringify(r).replace(/"/g,'&quot;')})">
+      <span class="ac-ico">${r.ico}</span>
+      <div><div class="ac-name">${r.name}</div><div class="ac-sub">${r.sub}</div></div>
+    </div>`).join('');
+  list.style.display = 'block';
+};
+window.hideAC = () => { const l=document.getElementById('acList'); if(l)l.style.display='none'; };
+window.selectAC = r => {
+  hideAC();
+  document.getElementById('searchInput').value = r.name;
+  if(r.type==='biz') window.location='business.html?id='+r.id;
+  else if(r.type==='cat'){ activeCat=r.val; applyFilters && applyFilters(); }
+  else if(r.type==='city'){ activeCity=r.val; applyFilters && applyFilters(); }
+};
+
+
+// ── ONBOARDING ──
+if(!localStorage.getItem('clVisited')){
+  document.getElementById('onboardBanner').style.display='block';
+}
+window.dismissOnboard=()=>{
+  document.getElementById('onboardBanner').style.display='none';
+  localStorage.setItem('clVisited','1');
+};
+
+
+// ── FEATURE 7: URL PARAM DEEP LINKS ──
+// Supports ?city=Accra&category=Restaurant&search=pizza&sort=open
+(function applyURLParams(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('city'))    { activeCity=p.get('city'); document.querySelectorAll('.city-card').forEach(c=>{if(c.dataset.city===activeCity)c.classList.add('active');}); document.getElementById('cityClear').style.display='block'; document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`; }
+  if(p.get('category')){ activeCat=p.get('category'); document.querySelectorAll('.cat-tile').forEach(t=>{if(t.dataset.cat===activeCat)t.classList.add('active');}); }
+  if(p.get('search'))  { searchQ=p.get('search'); const si=document.getElementById('searchInput'); if(si)si.value=searchQ; }
+  if(p.get('sort'))    { activeSort=p.get('sort'); }
+})();
+</script>
+
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-inner">
+    <div class="install-ico">📲</div>
+    <div class="install-text">
+      <div class="install-title">Add CityLinkGH to Home Screen</div>
+      <div class="install-sub">Get quick access — works offline too!</div>
+    </div>
+  </div>
+  <div class="install-btns">
+    <button class="ibtn-yes" onclick="doInstall()">Install App</button>
+    <button class="ibtn-no" onclick="dismissInstall()">Not now</button>
+  </div>
+</div>
+
+<script>
+// ── PWA: Service Worker ──
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(r=>console.log('SW registered')).catch(e=>console.log('SW error',e));
+}
+
+// ── PWA: Install Prompt ──
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if(!localStorage.getItem('clInstallDismissed')){
+    setTimeout(()=>document.getElementById('installBanner').style.display='block', 3000);
+  }
+});
+window.doInstall = async () => {
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  if(outcome==='accepted') localStorage.setItem('clInstallDismissed','1');
+  deferredPrompt=null;
+  document.getElementById('installBanner').style.display='none';
+};
+window.dismissInstall = () => {
+  document.getElementById('installBanner').style.display='none';
+  localStorage.setItem('clInstallDismissed','1');
+};
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').style.display='none';
+  console.log('CityLinkGH installed!');
+});
+
+// ── HAMBURGER MENU ──
+window.toggleDrawer = () => {
+  const h = document.getElementById('hamburger');
+  const d = document.getElementById('navDrawer');
+  const o = document.getElementById('navOverlay');
+  h.classList.toggle('open');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+};
+// Mark active link
+document.querySelectorAll('.drawer-link').forEach(a => {
+  if(a.href === window.location.href) a.classList.add('active');
+});
+</script>
+</body>
+</html>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-XXXXXXXXXX');
+  // Track search
+  window._trackSearch=q=>gtag('event','search',{search_term:q});
+  // Track city filter
+  window._trackCity=c=>gtag('event','filter_city',{city:c});
+  // Track category
+  window._trackCat=c=>gtag('event','filter_category',{category:c});
+</script>

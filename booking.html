@@ -452,7 +452,7 @@ window.confirmBooking = async () => {
 
 // ── ARKESEL SMS ──
 async function sendSMS(to, message) {
-  if (!ARKESEL_API_KEY || ARKESEL_API_KEY === 'VWZXc3VHaGh4aHlrRHhMcEl6Zm4') { console.warn('SMS skipped: Arkesel key not configured'); return; }
+  if (!ARKESEL_API_KEY || ARKESEL_API_KEY === 'your-arkesel-api-key') { console.warn('SMS skipped: Arkesel key not configured'); return; }
   const raw = to.replace(/\D/g,'');
   const num = raw.startsWith('233') ? raw : raw.startsWith('0') ? '233'+raw.slice(1) : '233'+raw;
   try {

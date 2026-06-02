@@ -154,6 +154,7 @@
     <!--logo & about-->
     <div class="footer-box">
       <div class="logo"><img src="City link.jpeg" width="150" height="60"><br> CityLink<span>GH</span></div>
+  
     </div>
     <!-- Quick Links -->
     <div class="footer-box">
@@ -179,27 +180,12 @@
 
     <!-- Contact -->
     <div class="footer-box">
+      <h3>Contact</h3>
+      <p>Email: agyemangernest650@gmail.com</p>
+      <p>Phone: +233 53 736 1543</p>
+
       <div class="socials">
-         <a class="contact-item" href="https://wa.me/233537361543?text=Hello CityLinkGH!" target="_blank">
-      <div class="ci-ico" style="background:#e8fff0;">💬</div>
-      <div><div class="ci-lbl">WhatsApp</div><div class="ci-val">Chat with us</div></div>
-      <span style="margin-left:auto;color:var(--gray);">›</span>
-    </a>
-    <a class="contact-item" href="mailto:hello@citylinkgh.com">
-      <div class="ci-ico" style="background:#e8f0ff;">📧</div>
-      <div><div class="ci-lbl">Email</div><div class="ci-val">hello@citylinkgh.com</div></div>
-      <span style="margin-left:auto;color:var(--gray);">›</span>
-    </a>
-    <a class="contact-item" href="https://www.facebook.com/citylinkgh" target="_blank">
-      <div class="ci-ico" style="background:#e8f0ff;">📘</div>
-      <div><div class="ci-lbl">Facebook</div><div class="ci-val">CityLinkGH</div></div>
-      <span style="margin-left:auto;color:var(--gray);">›</span>
-    </a>
-    <a class="contact-item" href="https://www.instagram.com/citylinkgh" target="_blank">
-      <div class="ci-ico" style="background:#ffe8f5;">📸</div>
-      <div><div class="ci-lbl">Instagram</div><div class="ci-val">@citylinkgh</div></div>
-      <span style="margin-left:auto;color:var(--gray);">›</span>
-    </a>
+        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
       </div>
     </div>
 
@@ -365,17 +351,19 @@ import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/fire
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_API_KEY",
-  authDomain:"YOUR_PROJECT.firebaseapp.com",
-  projectId:"YOUR_PROJECT",
-  storageBucket:"YOUR_PROJECT.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
 };
-const CLOUD_NAME    = "YOUR_CLOUD_NAME";
-const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
-const PAYSTACK_KEY  = "pk_live_YOUR_PAYSTACK_PUBLIC_KEY";
-const ARKESEL_KEY   = "YOUR_ARKESEL_API_KEY";
+
+// Cloudinary
+const CLOUD_NAME    = "dulnujvm7";
+const UPLOAD_PRESET = "ernest";
+const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
+const ARKESEL_KEY   = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
 
 const IMG_LIMITS = {free:1, standard:5, featured:8, urgent:10};
 
@@ -400,6 +388,19 @@ async function fetchRooms(){
     document.getElementById('roomsGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
   }
 }
+
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
 
 // ── FILTERS ──
 window.filterType = el => {
@@ -702,6 +703,21 @@ document.getElementById('detailModal').addEventListener('click',e=>{if(e.target=
 
 fetchRooms();
 renderImgGrid();
+
+// ── HAMBURGER MENU ──
+window.toggleDrawer = () => {
+  const h = document.getElementById('hamburger');
+  const d = document.getElementById('navDrawer');
+  const o = document.getElementById('navOverlay');
+  h.classList.toggle('open');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+};
+// Mark active link
+document.querySelectorAll('.drawer-link').forEach(a => {
+  if(a.href === window.location.href) a.classList.add('active');
+});
 </script>
 </body>
 </html>

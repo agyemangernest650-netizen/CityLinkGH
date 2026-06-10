@@ -6,125 +6,6 @@
 <title>CityLinkGH — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="admin.css">
-<style>
-/* ── BULK IMPORT STYLES ── */
-.bulk-card {
-  background: #fff;
-  border: 2px dashed #1A6B3C;
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 24px;
-}
-.bulk-card .bulk-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.bulk-card .bulk-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1A6B3C;
-}
-.bulk-card .bulk-sub {
-  font-size: 12px;
-  color: #888;
-  margin-top: 2px;
-  font-family: 'Epilogue', sans-serif;
-}
-.bulk-progress {
-  background: #f0f0f0;
-  border-radius: 6px;
-  height: 8px;
-  margin: 12px 0 6px;
-  overflow: hidden;
-  display: none;
-}
-.bulk-progress-fill {
-  height: 100%;
-  background: #1A6B3C;
-  border-radius: 6px;
-  width: 0%;
-  transition: width 0.3s;
-}
-.bulk-log {
-  background: #0f1a12;
-  color: #7fff9a;
-  border-radius: 8px;
-  padding: 12px;
-  font-family: 'Courier New', monospace;
-  font-size: 11px;
-  height: 130px;
-  overflow-y: auto;
-  margin-top: 10px;
-  display: none;
-  line-height: 1.7;
-}
-.bulk-log .lok  { color: #4ade80; }
-.bulk-log .lerr { color: #f87171; }
-.bulk-log .linf { color: #fbbf24; }
-.bulk-stats-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-.bulk-stat {
-  background: #f5f5f0;
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 12px;
-  font-family: 'Epilogue', sans-serif;
-  flex: 1;
-  min-width: 80px;
-  text-align: center;
-}
-.bulk-stat strong {
-  display: block;
-  font-size: 20px;
-  font-family: 'Syne', sans-serif;
-  color: #1A6B3C;
-}
-.btn-bulk-import {
-  background: #1A6B3C;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 18px;
-  font-family: 'Epilogue', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-.btn-bulk-import:hover { background: #155530; }
-.btn-bulk-import:disabled { background: #aaa; cursor: not-allowed; }
-.btn-bulk-clear {
-  background: transparent;
-  border: 1.5px solid #ccc;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-family: 'Epilogue', sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-  color: #666;
-}
-.btn-bulk-clear:hover { border-color: #e74c3c; color: #e74c3c; }
-.bulk-toggle {
-  font-size: 12px;
-  color: #1A6B3C;
-  cursor: pointer;
-  text-decoration: underline;
-  font-family: 'Epilogue', sans-serif;
-  background: none;
-  border: none;
-  padding: 0;
-}
-</style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -163,7 +44,7 @@
 
   <div class="body">
 
-    <!-- BUSINESSES -->
+    <!-- ═══════════ BUSINESSES ═══════════ -->
     <div class="section-panel active" id="panel-businesses">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="sTotal" style="color:var(--ink);">—</div><div class="stat-l">Total</div></div>
@@ -182,47 +63,49 @@
         <div style="font-size:40px;opacity:.6;">💰</div>
       </div>
 
-      <!-- ══════════════════════════════════════════ -->
-      <!-- BULK IMPORT SECTION -->
-      <!-- ══════════════════════════════════════════ -->
+      <!-- BUSINESSES BULK -->
       <div class="sec-t" style="display:flex;align-items:center;justify-content:space-between;">
         <span>📦 Bulk Import Businesses</span>
-        <button class="bulk-toggle" onclick="toggleBulkPanel()">▲ Hide</button>
+        <button class="bulk-toggle" onclick="togglePanel('bulkPanel',this)">▲ Hide</button>
       </div>
       <div id="bulkPanel" class="bulk-card">
         <div class="bulk-header">
           <div>
             <div class="bulk-title">🚀 Import 50 Real Ghana Businesses</div>
-            <div class="bulk-sub">Pre-loaded with Accra, Kumasi, Tamale, Cape Coast, Takoradi, Sunyani, Ho, Koforidua & Bolgatanga</div>
+            <div class="bulk-sub">Accra, Kumasi, Tamale, Cape Coast, Takoradi, Sunyani, Ho, Koforidua & Bolgatanga</div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-bulk-import" id="btnBulkImport" onclick="runBulkImport()">⬆ Import All 50</button>
-            <button class="btn-bulk-clear" onclick="clearBulkLog()">✕ Clear Log</button>
+            <button class="btn-bulk-import" id="btnBizImport" onclick="runBizBulkImport()">⬆ Import All 50</button>
+            <button class="btn-bulk-clear" onclick="resetBulkUI('biz')">✕ Clear</button>
           </div>
         </div>
-
         <div class="bulk-stats-row">
-          <div class="bulk-stat"><strong id="bsTotal">50</strong>Businesses</div>
-          <div class="bulk-stat"><strong id="bsCities">9</strong>Cities</div>
-          <div class="bulk-stat"><strong id="bsCats">7</strong>Categories</div>
-          <div class="bulk-stat"><strong id="bsDone" style="color:#1A6B3C;">0</strong>Uploaded</div>
-          <div class="bulk-stat"><strong id="bsFail" style="color:#e74c3c;">0</strong>Failed</div>
+          <div class="bulk-stat"><strong>50</strong>Businesses</div>
+          <div class="bulk-stat"><strong>9</strong>Cities</div>
+          <div class="bulk-stat"><strong>7</strong>Categories</div>
+          <div class="bulk-stat"><strong id="bizDone" style="color:#1A6B3C;">0</strong>Uploaded</div>
+          <div class="bulk-stat"><strong id="bizFail" style="color:#e74c3c;">0</strong>Failed</div>
         </div>
-
-        <div class="bulk-progress" id="bulkProgress">
-          <div class="bulk-progress-fill" id="bulkProgressFill"></div>
+        <!-- BIZ IMAGE UPLOAD -->
+        <div class="bulk-img-box green">
+          <div class="bibox-title" style="color:#1A6B3C;">📸 Add Category Photos via Cloudinary (Optional)</div>
+          <div class="bibox-sub">Upload up to 7 photos — one per category. They'll be assigned to all listings in that category.<br>Order: Restaurant → Hospital → Hotel → Salon → Pharmacy → School → Mechanic</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <label class="choose-btn green">📷 Choose Photos (up to 7)<input type="file" accept="image/*" multiple style="display:none;" onchange="uploadBulkPhotos(this,'biz')"></label>
+            <span style="font-size:12px;color:#1A6B3C;font-family:'Epilogue',sans-serif;" id="bizImgStatus">No photos yet — businesses will import without images</span>
+          </div>
+          <div class="ubar" id="bizImgBar" style="display:none;margin-top:8px;"><div class="ufill" id="bizImgFill"></div></div>
+          <div class="bibox-preview" id="bizImgPreview"></div>
         </div>
-        <div style="font-size:11px;color:#aaa;margin-top:4px;" id="bulkProgressLabel"></div>
-
-        <div class="bulk-log" id="bulkLog"></div>
+        <div class="bulk-progress" id="bizProgress"><div class="bulk-progress-fill" id="bizProgressFill"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px;" id="bizProgressLabel"></div>
+        <div class="bulk-log" id="bizLog"></div>
       </div>
-      <!-- ══════════════════════════════════════════ -->
 
       <div class="sec-t">Add / Edit Business</div>
       <div class="fcard">
         <input type="hidden" id="editId">
-        <div class="field">
-          <label>Plan</label>
+        <div class="field"><label>Plan</label>
           <div class="plan-sel">
             <div class="plan-opt basic selected" data-plan="basic" onclick="selBizPlan('basic',this)"><div class="po-name">📋 Basic</div><div class="po-price">Free</div></div>
             <div class="plan-opt standard" data-plan="standard" onclick="selBizPlan('standard',this)"><div class="po-name">✓ Standard</div><div class="po-price">GHS 50</div></div>
@@ -234,12 +117,8 @@
         <div class="field"><label>Business Name *</label><input type="text" id="bName" placeholder="e.g. Kofi's Kitchen"></div>
         <div class="field"><label>Description</label><textarea id="bDesc"></textarea></div>
         <div class="r2">
-          <div class="field"><label>Category *</label>
-            <select id="bCat"><option value="">Select…</option><option>Restaurant</option><option>Hospital</option><option>Hotel</option><option>Salon</option><option>Pharmacy</option><option>School</option><option>Church</option><option>Mechanic</option><option>Lawyer</option><option>Event Planner</option><option>Supermarket</option><option>Photographer</option><option>Electrician</option><option>Plumber</option><option>Tailor</option><option>Other</option></select>
-          </div>
-          <div class="field"><label>City *</label>
-            <select id="bCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option><option>Wa</option></select>
-          </div>
+          <div class="field"><label>Category *</label><select id="bCat"><option value="">Select…</option><option>Restaurant</option><option>Hospital</option><option>Hotel</option><option>Salon</option><option>Pharmacy</option><option>School</option><option>Church</option><option>Mechanic</option><option>Lawyer</option><option>Event Planner</option><option>Supermarket</option><option>Photographer</option><option>Electrician</option><option>Plumber</option><option>Tailor</option><option>Other</option></select></div>
+          <div class="field"><label>City *</label><select id="bCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option><option>Wa</option></select></div>
         </div>
         <div class="field"><label>Street / Area</label><input type="text" id="bLoc" placeholder="e.g. Osu, near Frankies"></div>
         <div class="r3">
@@ -270,10 +149,7 @@
         </div>
         <div class="field">
           <label>Photos — <span id="imgLimitLabel">max 1 for basic</span></label>
-          <div class="img-upload-section">
-            <div class="img-grid" id="imgGrid"></div>
-            <div class="img-limit-bar" id="imgLimitBar"><span id="imgCountLabel">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div>
-          </div>
+          <div class="img-upload-section"><div class="img-grid" id="imgGrid"></div><div class="img-limit-bar" id="imgLimitBar"><span id="imgCountLabel">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div></div>
           <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
           <div class="ustat" id="ustat"></div>
           <div style="margin-top:8px;"><label>Or paste URL</label><input type="url" id="bImgDirect" placeholder="https://…" onchange="addBizUrlImg(this.value)"></div>
@@ -297,7 +173,7 @@
       <div class="biz-list" id="bizList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
-    <!-- JOBS -->
+    <!-- ═══════════ JOBS ═══════════ -->
     <div class="section-panel" id="panel-jobs">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="jTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Jobs</div></div>
@@ -309,11 +185,50 @@
         <div><div class="rev-lbl">Jobs Revenue</div><div class="rev-amt" id="jRevAmt">GHS 0</div><div class="rev-sub" id="jRevSub">0 paid job listings</div></div>
         <div style="font-size:40px;opacity:.6;">💼</div>
       </div>
+
+      <!-- JOBS BULK -->
+      <div class="sec-t" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>📦 Bulk Import Jobs</span>
+        <button class="bulk-toggle" style="color:#2563eb;" onclick="togglePanel('jobBulkPanel',this)">▲ Hide</button>
+      </div>
+      <div id="jobBulkPanel" class="bulk-card jobs-bulk">
+        <div class="bulk-header">
+          <div>
+            <div class="bulk-title">💼 Import 40 Ghana Job Listings</div>
+            <div class="bulk-sub">Tech, Finance, Health, Engineering, Sales, Media, NGO, Hospitality — Accra, Kumasi, Takoradi, Tamale & Remote</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-bulk-import" id="btnJobImport" onclick="runJobBulkImport()">⬆ Import All 40</button>
+            <button class="btn-bulk-clear" onclick="resetBulkUI('job')">✕ Clear</button>
+          </div>
+        </div>
+        <div class="bulk-stats-row">
+          <div class="bulk-stat"><strong>40</strong>Jobs</div>
+          <div class="bulk-stat"><strong>5</strong>Cities</div>
+          <div class="bulk-stat"><strong>8</strong>Industries</div>
+          <div class="bulk-stat"><strong id="jobDone" style="color:#2563eb;">0</strong>Uploaded</div>
+          <div class="bulk-stat"><strong id="jobFail" style="color:#e74c3c;">0</strong>Failed</div>
+        </div>
+        <!-- JOB LOGO UPLOAD -->
+        <div class="bulk-img-box blue">
+          <div class="bibox-title" style="color:#2563eb;">🖼 Add Company Logos via Cloudinary (Optional)</div>
+          <div class="bibox-sub">Upload up to 8 logos — one per industry group. They'll be used as company logos for matching jobs.<br>Order: Technology → Finance → Health → Sales → Education → Engineering → Media → NGO/Hospitality</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <label class="choose-btn blue">🖼 Choose Logos (up to 8)<input type="file" accept="image/*" multiple style="display:none;" onchange="uploadBulkPhotos(this,'job')"></label>
+            <span style="font-size:12px;color:#2563eb;font-family:'Epilogue',sans-serif;" id="jobImgStatus">No logos yet — jobs will import without logos</span>
+          </div>
+          <div class="ubar" id="jobImgBar" style="display:none;margin-top:8px;"><div class="ufill" id="jobImgFill" style="background:#2563eb;"></div></div>
+          <div class="bibox-preview" id="jobImgPreview"></div>
+        </div>
+        <div class="bulk-progress" id="jobProgress"><div class="bulk-progress-fill" id="jobProgressFill"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px;" id="jobProgressLabel"></div>
+        <div class="bulk-log" id="jobLog"></div>
+      </div>
+
       <div class="sec-t">Add / Edit Job</div>
       <div class="fcard">
         <input type="hidden" id="jEditId">
-        <div class="field">
-          <label>Plan</label>
+        <div class="field"><label>Plan</label>
           <div class="plan-sel">
             <div class="plan-opt free selected" data-plan="free" data-price="0" onclick="selJobPlan(this)"><div class="po-name">📋 Free</div><div class="po-price">30 days</div></div>
             <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selJobPlan(this)"><div class="po-name">⭐ Standard</div><div class="po-price">GHS 30</div></div>
@@ -324,20 +239,12 @@
         <div class="field"><label>Job Title *</label><input type="text" id="jTitle" placeholder="e.g. Marketing Manager"></div>
         <div class="field"><label>Company Name *</label><input type="text" id="jCompany" placeholder="e.g. Stanbic Bank Ghana"></div>
         <div class="r2">
-          <div class="field"><label>Job Type *</label>
-            <select id="jType"><option value="">Select…</option><option>Full Time</option><option>Part Time</option><option>Remote</option><option>Contract</option><option>Internship</option><option>Attachment</option></select>
-          </div>
-          <div class="field"><label>Industry</label>
-            <select id="jIndustry"><option value="">Select…</option><option>Technology</option><option>Finance</option><option>Health</option><option>Education</option><option>Sales</option><option>Engineering</option><option>Media</option><option>NGO</option><option>Agriculture</option><option>Hospitality</option><option>Legal</option><option>Other</option></select>
-          </div>
+          <div class="field"><label>Job Type *</label><select id="jType"><option value="">Select…</option><option>Full Time</option><option>Part Time</option><option>Remote</option><option>Contract</option><option>Internship</option><option>Attachment</option></select></div>
+          <div class="field"><label>Industry</label><select id="jIndustry"><option value="">Select…</option><option>Technology</option><option>Finance</option><option>Health</option><option>Education</option><option>Sales</option><option>Engineering</option><option>Media</option><option>NGO</option><option>Agriculture</option><option>Hospitality</option><option>Legal</option><option>Other</option></select></div>
         </div>
         <div class="r2">
-          <div class="field"><label>City *</label>
-            <select id="jCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Remote</option><option>Nationwide</option></select>
-          </div>
-          <div class="field"><label>Experience</label>
-            <select id="jExp"><option>No experience</option><option>1 year</option><option>2–3 years</option><option>3–5 years</option><option>5+ years</option></select>
-          </div>
+          <div class="field"><label>City *</label><select id="jCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Remote</option><option>Nationwide</option></select></div>
+          <div class="field"><label>Experience</label><select id="jExp"><option>No experience</option><option>1 year</option><option>2–3 years</option><option>3–5 years</option><option>5+ years</option></select></div>
         </div>
         <div class="r2">
           <div class="field"><label>Salary Range</label><input type="text" id="jSalary" placeholder="e.g. GHS 2,000–3,500"></div>
@@ -372,7 +279,7 @@
       <div class="biz-list" id="jobList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
-    <!-- ROOMS -->
+    <!-- ═══════════ ROOMS ═══════════ -->
     <div class="section-panel" id="panel-rooms">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="rTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Rooms</div></div>
@@ -384,11 +291,50 @@
         <div><div class="rev-lbl">Rooms Revenue</div><div class="rev-amt" id="rRevAmt">GHS 0</div><div class="rev-sub" id="rRevSub">0 paid room listings</div></div>
         <div style="font-size:40px;opacity:.6;">🏠</div>
       </div>
+
+      <!-- ROOMS BULK -->
+      <div class="sec-t" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>📦 Bulk Import Rooms</span>
+        <button class="bulk-toggle" style="color:#7c3aed;" onclick="togglePanel('roomBulkPanel',this)">▲ Hide</button>
+      </div>
+      <div id="roomBulkPanel" class="bulk-card rooms-bulk">
+        <div class="bulk-header">
+          <div>
+            <div class="bulk-title">🏠 Import 45 Ghana Rental Listings</div>
+            <div class="bulk-sub">Single rooms, self-contained, apartments & houses — all 9 cities with real GHS prices</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-bulk-import" id="btnRoomImport" onclick="runRoomBulkImport()">⬆ Import All 45</button>
+            <button class="btn-bulk-clear" onclick="resetBulkUI('room')">✕ Clear</button>
+          </div>
+        </div>
+        <div class="bulk-stats-row">
+          <div class="bulk-stat"><strong>45</strong>Listings</div>
+          <div class="bulk-stat"><strong>9</strong>Cities</div>
+          <div class="bulk-stat"><strong>6</strong>Types</div>
+          <div class="bulk-stat"><strong id="roomDone" style="color:#7c3aed;">0</strong>Uploaded</div>
+          <div class="bulk-stat"><strong id="roomFail" style="color:#e74c3c;">0</strong>Failed</div>
+        </div>
+        <!-- ROOM IMAGE UPLOAD -->
+        <div class="bulk-img-box purple">
+          <div class="bibox-title" style="color:#7c3aed;">📸 Add City Photos via Cloudinary (Optional)</div>
+          <div class="bibox-sub">Upload up to 9 photos — one per city. Assigned to all listings in that city.<br>Order: Accra → Kumasi → Tamale → Cape Coast → Takoradi → Sunyani → Ho → Koforidua → Bolgatanga</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <label class="choose-btn purple">📷 Choose Photos (up to 9)<input type="file" accept="image/*" multiple style="display:none;" onchange="uploadBulkPhotos(this,'room')"></label>
+            <span style="font-size:12px;color:#7c3aed;font-family:'Epilogue',sans-serif;" id="roomImgStatus">No photos yet — listings will import without images</span>
+          </div>
+          <div class="ubar" id="roomImgBar" style="display:none;margin-top:8px;"><div class="ufill" id="roomImgFill" style="background:#7c3aed;"></div></div>
+          <div class="bibox-preview" id="roomImgPreview"></div>
+        </div>
+        <div class="bulk-progress" id="roomProgress"><div class="bulk-progress-fill" id="roomProgressFill"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px;" id="roomProgressLabel"></div>
+        <div class="bulk-log" id="roomLog"></div>
+      </div>
+
       <div class="sec-t">Add / Edit Room / House</div>
       <div class="fcard">
         <input type="hidden" id="rEditId">
-        <div class="field">
-          <label>Plan</label>
+        <div class="field"><label>Plan</label>
           <div class="plan-sel">
             <div class="plan-opt free selected" data-plan="free" data-price="0" onclick="selRoomPlan(this)"><div class="po-name">📋 Free</div><div class="po-price">1 photo</div></div>
             <div class="plan-opt standard" data-plan="standard" data-price="30" onclick="selRoomPlan(this)"><div class="po-name">⭐ Standard</div><div class="po-price">GHS 30</div></div>
@@ -398,19 +344,13 @@
         </div>
         <div class="field"><label>Title *</label><input type="text" id="rTitle" placeholder="e.g. Self Contained in Osu, Accra"></div>
         <div class="r2">
-          <div class="field"><label>Type *</label>
-            <select id="rType"><option value="">Select…</option><option>Single Room</option><option>Chamber &amp; Hall</option><option>Self Contained</option><option>1 Bedroom</option><option>2 Bedroom</option><option>3 Bedroom</option><option>Apartment</option><option>House</option><option>Office Space</option><option>Shop</option></select>
-          </div>
-          <div class="field"><label>City *</label>
-            <select id="rCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option></select>
-          </div>
+          <div class="field"><label>Type *</label><select id="rType"><option value="">Select…</option><option>Single Room</option><option>Chamber &amp; Hall</option><option>Self Contained</option><option>1 Bedroom</option><option>2 Bedroom</option><option>3 Bedroom</option><option>Apartment</option><option>House</option><option>Office Space</option><option>Shop</option></select></div>
+          <div class="field"><label>City *</label><select id="rCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option></select></div>
         </div>
         <div class="field"><label>District / Area *</label><input type="text" id="rDistrict" placeholder="e.g. Osu, East Legon, Spintex"></div>
         <div class="r2">
           <div class="field"><label>Rent (GHS) *</label><input type="number" id="rPrice" placeholder="e.g. 1500"></div>
-          <div class="field"><label>Payment Period</label>
-            <select id="rPeriod"><option>per year</option><option>per month</option><option>2 years advance</option><option>negotiable</option></select>
-          </div>
+          <div class="field"><label>Payment Period</label><select id="rPeriod"><option>per year</option><option>per month</option><option>2 years advance</option><option>negotiable</option></select></div>
         </div>
         <div class="r2">
           <div class="field"><label>Bedrooms</label><select id="rBeds"><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
@@ -424,10 +364,7 @@
         <div class="field"><label>Landlord / Agent Name</label><input type="text" id="rPoster" placeholder="Your name"></div>
         <div class="field">
           <label>Photos — <span id="rImgLimitLabel">max 1 (free)</span></label>
-          <div class="img-upload-section">
-            <div class="img-grid" id="rImgGrid"></div>
-            <div class="img-limit-bar" id="rImgLimitBar"><span id="rImgCountLabel">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div>
-          </div>
+          <div class="img-upload-section"><div class="img-grid" id="rImgGrid"></div><div class="img-limit-bar" id="rImgLimitBar"><span id="rImgCountLabel">0 / 1 photos</span><span style="font-size:10px;">Cloudinary CDN</span></div></div>
           <div class="ubar" id="rUbar"><div class="ufill" id="rUfill"></div></div>
           <div class="ustat" id="rUstat"></div>
           <div style="margin-top:8px;"><label>Or paste URL</label><input type="url" id="rImgDirect" placeholder="https://…" onchange="addRoomUrlImg(this.value)"></div>
@@ -458,216 +395,307 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-ap
 import{getFirestore,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,query,orderBy,serverTimestamp,Timestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
-  authDomain: "citylinkgh-48ee0.firebaseapp.com",
-  projectId: "citylinkgh-48ee0",
-  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
-  messagingSenderId: "807811031269",
-  appId: "1:807811031269:web:167b22e23f49992136340c"
-};
+const FC={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
+const CN="dulnujvm7",UP="ernest";
+const BPF={basic:{verified:false,featured:false,approved:true},standard:{verified:true,featured:false,approved:false},featured:{verified:true,featured:true,approved:false},premium:{verified:true,featured:true,approved:false}};
+const BIL={basic:1,standard:3,featured:5,premium:10};
+const BPN={basic:'📋 Auto-approved. Free. Standard placement.',standard:'✅ Verified badge. Higher placement. GHS 50/mo.',featured:'⭐ Featured + Verified. Gold border. Top results. GHS 100/mo.',premium:'👑 Spotlight + Featured + Verified. #1 placement. GHS 200/mo.'};
+const JPD={free:30,standard:60,featured:90,urgent:90};
+const RIL={free:1,standard:5,featured:8,urgent:10};
 
-const CLOUD_NAME    = "dulnujvm7";
-const UPLOAD_PRESET = "ernest";
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+let allBiz=[],bizTab='all',selRating=0,curBizPlan='basic',upBizImgs=[];
+let allJobs=[],jobTab='all',curJobPlan='free',curJobPrice=0;
+let allRooms=[],roomTab='all',curRoomPlan='free',curRoomPrice=0,upRoomImgs=[];
 
-const BIZ_PLAN_FLAGS={basic:{verified:false,featured:false,approved:true},standard:{verified:true,featured:false,approved:false},featured:{verified:true,featured:true,approved:false},premium:{verified:true,featured:true,approved:false}};
-const BIZ_IMG_LIMITS={basic:1,standard:3,featured:5,premium:10};
-const BIZ_PLAN_NOTES={basic:'📋 Auto-approved. Free. Standard placement.',standard:'✅ Verified badge. Higher placement. GHS 50/mo.',featured:'⭐ Featured + Verified. Gold border. Top results. GHS 100/mo.',premium:'👑 Spotlight + Featured + Verified. #1 placement. GHS 200/mo.'};
-const JOB_PLAN_DAYS={free:30,standard:60,featured:90,urgent:90};
-const ROOM_IMG_LIMITS={free:1,standard:5,featured:8,urgent:10};
-
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
-const auth=getAuth(app);
-
-let allBiz=[],bizTab='all',selRating=0,currentBizPlan='basic',uploadedBizImgs=[];
-let allJobs=[],jobTab='all',currentJobPlan='free',currentJobPrice=0;
-let allRooms=[],roomTab='all',currentRoomPlan='free',currentRoomPrice=0,uploadedRoomImgs=[];
+// ─── BULK IMAGE ARRAYS ───
+// biz: indexed by category [Restaurant,Hospital,Hotel,Salon,Pharmacy,School,Mechanic]
+// job: indexed by industry group [Technology,Finance,Health,Sales,Education,Engineering,Media,NGO/Hospitality]
+// room: indexed by city [Accra,Kumasi,Tamale,CapeCoast,Takoradi,Sunyani,Ho,Koforidua,Bolgatanga]
+const BIZ_CATS=['Restaurant','Hospital','Hotel','Salon','Pharmacy','School','Mechanic'];
+const JOB_INDS=['Technology','Finance','Health','Sales','Education','Engineering','Media','NGO'];
+const ROOM_CITIES=['Accra','Kumasi','Tamale','Cape Coast','Takoradi','Sunyani','Ho','Koforidua','Bolgatanga'];
+let bulkBizImgs=new Array(7).fill('');
+let bulkJobImgs=new Array(8).fill('');
+let bulkRoomImgs=new Array(9).fill('');
 
 // ════════════════════════════════════
-// BULK IMPORT DATA — 50 REAL GHANA BUSINESSES
+// BULK DATA — 50 BUSINESSES
 // ════════════════════════════════════
-const BULK_BUSINESSES = [
-  // ACCRA — FOOD
+const BULK_BIZ=[
   {name:"Buka Restaurant",category:"Restaurant",city:"Accra",location:"5 Jungle Ave, Osu",phone:"030 277 6178",desc:"Authentic Ghanaian dishes in a lively atmosphere",rating:4.4,lat:5.5564,lng:-0.1969},
   {name:"Nkontomire Joint",category:"Restaurant",city:"Accra",location:"Ring Road Central",phone:"024 345 6789",desc:"Local chop bar serving traditional Ghanaian food",rating:4.2,lat:5.5649,lng:-0.2057},
   {name:"Santoku Restaurant",category:"Restaurant",city:"Accra",location:"Airport Residential Area",phone:"030 276 3354",desc:"Asian fusion cuisine in Accra's upscale district",rating:4.5,lat:5.6035,lng:-0.1870},
   {name:"Nando's Accra Mall",category:"Restaurant",city:"Accra",location:"Accra Mall, Spintex Road",phone:"030 273 8812",desc:"Flame-grilled PERi-PERi chicken",rating:4.1,lat:5.6349,lng:-0.1628},
   {name:"Coco Vanilla",category:"Restaurant",city:"Accra",location:"A&C Mall, East Legon",phone:"030 270 8640",desc:"Bakery café with sandwiches and pastries",rating:4.3,lat:5.6421,lng:-0.1527},
-  // ACCRA — HEALTH
   {name:"Korle Bu Teaching Hospital",category:"Hospital",city:"Accra",location:"Guggisberg Ave, Korle Bu",phone:"030 266 2100",desc:"Ghana's largest public hospital",rating:4.0,lat:5.5405,lng:-0.2268},
   {name:"Nyaho Medical Centre",category:"Hospital",city:"Accra",location:"Airport Residential Area",phone:"030 271 1816",desc:"Private hospital with specialist services",rating:4.5,lat:5.6072,lng:-0.1823},
   {name:"Greater Accra Regional Hospital",category:"Hospital",city:"Accra",location:"Castle Rd, Ridge",phone:"030 266 5401",desc:"Regional government hospital serving Greater Accra",rating:3.9,lat:5.5573,lng:-0.2006},
-  // ACCRA — HOTELS
   {name:"Kempinski Hotel Gold Coast City",category:"Hotel",city:"Accra",location:"Gamel Abdul Nasser Ave",phone:"030 267 8200",desc:"5-star luxury hotel in the heart of Accra",rating:4.8,lat:5.5579,lng:-0.1994},
   {name:"Labadi Beach Hotel",category:"Hotel",city:"Accra",location:"La, Accra",phone:"030 277 2501",desc:"Beachfront hotel with ocean views",rating:4.3,lat:5.5512,lng:-0.1524},
   {name:"Movenpick Ambassador Hotel",category:"Hotel",city:"Accra",location:"Independence Ave",phone:"030 261 1000",desc:"Luxury hotel near Parliament House",rating:4.6,lat:5.5566,lng:-0.2024},
-  // ACCRA — SALONS
   {name:"Halamasad Spa & Salon",category:"Salon",city:"Accra",location:"East Legon",phone:"024 411 2200",desc:"Full-service spa and beauty salon",rating:4.4,lat:5.6398,lng:-0.1612},
   {name:"The Glam House",category:"Salon",city:"Accra",location:"Osu Oxford Street",phone:"020 812 3344",desc:"Hair, nails and beauty treatments",rating:4.2,lat:5.5554,lng:-0.1973},
-  // ACCRA — PHARMA
   {name:"Entrance Pharmacy",category:"Pharmacy",city:"Accra",location:"Osu, Accra",phone:"030 278 1230",desc:"24/7 pharmacy with wide range of medications",rating:4.3,lat:5.5567,lng:-0.1960},
   {name:"Dannex Pharmacy",category:"Pharmacy",city:"Accra",location:"Dansoman",phone:"030 231 4567",desc:"Community pharmacy serving Dansoman area",rating:4.1,lat:5.5478,lng:-0.2461},
-  // ACCRA — SCHOOLS
   {name:"Ghana International School",category:"School",city:"Accra",location:"Cantonments",phone:"030 277 6271",desc:"International curriculum school from K-12",rating:4.6,lat:5.5741,lng:-0.1796},
   {name:"University of Ghana",category:"School",city:"Accra",location:"Legon",phone:"030 250 0381",desc:"Ghana's premier public research university",rating:4.5,lat:5.6502,lng:-0.1870},
-  // ACCRA — MECHANICS
   {name:"Auto Plaza Garage",category:"Mechanic",city:"Accra",location:"Tema Motorway",phone:"024 567 8901",desc:"Full auto repair and servicing centre",rating:4.0,lat:5.5960,lng:-0.1423},
-
-  // KUMASI
   {name:"Pizzaman Chickenman Kumasi",category:"Restaurant",city:"Kumasi",location:"Airport Area",phone:"032 209 7835",desc:"Popular fast food chain with pizza and chicken",rating:4.2,lat:6.7146,lng:-1.5984},
   {name:"Royal Gardens Chinese Restaurant",category:"Restaurant",city:"Kumasi",location:"Adum, Kumasi",phone:"032 202 3456",desc:"Iconic Chinese restaurant in Kumasi",rating:4.3,lat:6.6885,lng:-1.6244},
-  {name:"Dine Ghana Kumasi",category:"Restaurant",city:"Kumasi",location:"KNUST Campus Area",phone:"032 209 3456",desc:"Local Ghanaian cuisine near KNUST",rating:4.1,lat:6.6744,lng:-1.5720},
   {name:"Komfo Anokye Teaching Hospital",category:"Hospital",city:"Kumasi",location:"Bantama, Kumasi",phone:"032 202 2301",desc:"Second largest hospital in Ghana",rating:4.0,lat:6.7012,lng:-1.6204},
-  {name:"Kumasi South Hospital",category:"Hospital",city:"Kumasi",location:"Santasi, Kumasi",phone:"032 202 0123",desc:"Government hospital in Kumasi South",rating:3.9,lat:6.6690,lng:-1.6238},
   {name:"Golden Tulip Kumasi City",category:"Hotel",city:"Kumasi",location:"Prempeh II St",phone:"032 209 6000",desc:"Upscale hotel in central Kumasi",rating:4.4,lat:6.6886,lng:-1.6231},
-  {name:"Rattray Park Hotel",category:"Hotel",city:"Kumasi",location:"Nhyiaeso, Kumasi",phone:"032 202 0771",desc:"Comfortable hotel with conference facilities",rating:4.0,lat:6.6960,lng:-1.6052},
   {name:"Glam Haus Kumasi",category:"Salon",city:"Kumasi",location:"Adum, Kumasi",phone:"054 788 2211",desc:"Modern hair and beauty salon",rating:4.2,lat:6.6876,lng:-1.6250},
   {name:"Ernest Chemist Kumasi",category:"Pharmacy",city:"Kumasi",location:"Suame Roundabout",phone:"032 202 5678",desc:"Well-stocked pharmacy near Suame",rating:4.3,lat:6.7068,lng:-1.5972},
   {name:"Kwame Nkrumah Univ of Sci & Tech",category:"School",city:"Kumasi",location:"KNUST Campus",phone:"032 206 0137",desc:"Ghana's leading science and technology university",rating:4.7,lat:6.6745,lng:-1.5716},
   {name:"Suame Mechanics Village",category:"Mechanic",city:"Kumasi",location:"Suame, Kumasi",phone:"054 312 4567",desc:"Largest auto repair cluster in West Africa",rating:4.1,lat:6.7108,lng:-1.5945},
-
-  // TAMALE
   {name:"Heritage Kitchen Tamale",category:"Restaurant",city:"Tamale",location:"Lamashegu, Tamale",phone:"037 202 3456",desc:"Northern Ghanaian cuisine specialists",rating:4.0,lat:9.4075,lng:-0.8333},
   {name:"Tamale Teaching Hospital",category:"Hospital",city:"Tamale",location:"Hospital Road, Tamale",phone:"037 202 2280",desc:"3rd largest hospital in Ghana",rating:4.0,lat:9.3978,lng:-0.8356},
   {name:"Gariba Lodge",category:"Hotel",city:"Tamale",location:"Central Tamale",phone:"037 202 2823",desc:"Comfortable lodging in northern Ghana",rating:4.1,lat:9.4067,lng:-0.8385},
   {name:"Northern Star Pharmacy",category:"Pharmacy",city:"Tamale",location:"Central Market Area",phone:"037 202 4567",desc:"Pharmacy serving central Tamale",rating:4.0,lat:9.4009,lng:-0.8454},
   {name:"University for Development Studies",category:"School",city:"Tamale",location:"Nyankpala Campus",phone:"037 202 3219",desc:"Public university focused on northern development",rating:4.3,lat:9.4033,lng:-0.8382},
-
-  // CAPE COAST
   {name:"Baobab House Restaurant",category:"Restaurant",city:"Cape Coast",location:"Victoria Road",phone:"042 203 3120",desc:"Beachside dining with fresh seafood",rating:4.3,lat:5.1053,lng:-1.2477},
   {name:"Cape Coast Teaching Hospital",category:"Hospital",city:"Cape Coast",location:"Adisadel, Cape Coast",phone:"042 203 2480",desc:"Main referral hospital for Central Region",rating:4.0,lat:5.1091,lng:-1.2474},
   {name:"Coconut Grove Beach Resort",category:"Hotel",city:"Cape Coast",location:"Elmina, Cape Coast",phone:"042 203 3560",desc:"Beachfront resort near Elmina Castle",rating:4.4,lat:5.0847,lng:-1.3506},
   {name:"University of Cape Coast",category:"School",city:"Cape Coast",location:"UCC Campus",phone:"042 203 2440",desc:"Premier university in Central Ghana",rating:4.5,lat:5.1054,lng:-1.2880},
-
-  // TAKORADI
   {name:"Raybow International Hotel",category:"Hotel",city:"Takoradi",location:"Market Circle",phone:"031 202 4788",desc:"City centre hotel near market circle",rating:4.1,lat:4.8934,lng:-1.7551},
   {name:"Effia Nkwanta Regional Hospital",category:"Hospital",city:"Takoradi",location:"Hospital Hill",phone:"031 202 2241",desc:"Main government hospital in Western Region",rating:3.9,lat:4.9054,lng:-1.7547},
   {name:"Papaye Fast Food Takoradi",category:"Restaurant",city:"Takoradi",location:"Market Circle",phone:"031 202 2278",desc:"Popular Ghanaian fast food chain",rating:4.2,lat:4.8963,lng:-1.7562},
   {name:"Premier Pharmacy Takoradi",category:"Pharmacy",city:"Takoradi",location:"Harbour Area",phone:"031 202 6543",desc:"Well-stocked pharmacy near the harbour",rating:4.0,lat:4.8856,lng:-1.7542},
-
-  // SUNYANI
   {name:"Sunyani Municipal Hospital",category:"Hospital",city:"Sunyani",location:"Hospital Road",phone:"035 202 2063",desc:"Main hospital in Bono Region",rating:3.9,lat:7.3376,lng:-2.3264},
   {name:"Silver Springs Hotel",category:"Hotel",city:"Sunyani",location:"Sunyani town centre",phone:"035 202 3344",desc:"Comfortable hotel in Sunyani",rating:4.0,lat:7.3415,lng:-2.3213},
   {name:"Bono Bites Restaurant",category:"Restaurant",city:"Sunyani",location:"Fiapre Road",phone:"024 999 7654",desc:"Local restaurant serving Bono regional dishes",rating:4.1,lat:7.3456,lng:-2.3301},
-
-  // HO
   {name:"Ho Teaching Hospital",category:"Hospital",city:"Ho",location:"Bankoe, Ho",phone:"036 202 1213",desc:"Referral hospital for Volta Region",rating:4.0,lat:6.6011,lng:0.4714},
   {name:"Chances Hotel Ho",category:"Hotel",city:"Ho",location:"Ho city centre",phone:"036 202 7878",desc:"Popular hotel in Ho city",rating:4.0,lat:6.6085,lng:0.4701},
   {name:"Volta Star Restaurant",category:"Restaurant",city:"Ho",location:"Central Ho",phone:"054 444 3322",desc:"Restaurant with Volta Regional specialties",rating:4.1,lat:6.6048,lng:0.4718},
-
-  // KOFORIDUA
   {name:"St. Joseph Hospital Koforidua",category:"Hospital",city:"Koforidua",location:"Hospital Road",phone:"034 202 2040",desc:"Catholic mission hospital in Eastern Region",rating:4.1,lat:6.0898,lng:-0.2590},
   {name:"Koforidua Technical University",category:"School",city:"Koforidua",location:"Koforidua",phone:"034 202 2134",desc:"Technical university in Eastern Region",rating:4.2,lat:6.0934,lng:-0.2613},
   {name:"Okess Hotel",category:"Hotel",city:"Koforidua",location:"Koforidua",phone:"034 202 5566",desc:"Budget-friendly hotel in Koforidua",rating:3.9,lat:6.0910,lng:-0.2601},
-
-  // BOLGATANGA
   {name:"Bolgatanga Regional Hospital",category:"Hospital",city:"Bolgatanga",location:"Hospital Road",phone:"072 202 2056",desc:"Main regional hospital for Upper East",rating:3.9,lat:10.7877,lng:-0.8530},
   {name:"Catering Rest House Bolga",category:"Hotel",city:"Bolgatanga",location:"Bolgatanga",phone:"072 202 2238",desc:"Government rest house in Bolgatanga",rating:3.8,lat:10.7860,lng:-0.8514},
   {name:"Bolga Market Kitchen",category:"Restaurant",city:"Bolgatanga",location:"Central Market",phone:"024 777 8899",desc:"Local food by the famous Bolga market",rating:4.0,lat:10.7880,lng:-0.8522},
 ];
 
-// ── BULK IMPORT LOGIC ──
-let bulkDone = 0, bulkFail = 0;
+// ════════════════════════════════════
+// BULK DATA — 40 JOBS
+// ji = job industry index mapping
+// ════════════════════════════════════
+const BULK_JOBS=[
+  {jobTitle:"Frontend Developer",company:"Hubtel",city:"Accra",jobType:"Full Time",industry:"Technology",salary:"GHS 4,000–6,000",experience:"2–3 years",desc:"Build and maintain web and mobile UIs for Ghana's leading payments platform using React and TypeScript.",requirements:"BSc Computer Science or related. Proficient in React, HTML/CSS, JavaScript.",howToApply:"Email CV and portfolio to careers@hubtel.com",tags:"React,JavaScript,TypeScript",phone:"030 274 5566",email:"careers@hubtel.com",deadline:"2026-07-30",ji:0},
+  {jobTitle:"Mobile App Developer (Android)",company:"MTN Ghana",city:"Accra",jobType:"Full Time",industry:"Technology",salary:"GHS 5,000–8,000",experience:"3–5 years",desc:"Develop and maintain the MTN MoMo Android application serving millions of Ghanaians.",requirements:"BSc Computer Science. 3+ years Android development (Kotlin/Java).",howToApply:"Apply at careers.mtn.com.gh",tags:"Android,Kotlin,Java,Mobile",phone:"030 250 5000",email:"careers@mtn.com.gh",deadline:"2026-07-15",ji:0},
+  {jobTitle:"IT Support Technician",company:"Vodafone Ghana",city:"Accra",jobType:"Full Time",industry:"Technology",salary:"GHS 2,500–3,500",experience:"1 year",desc:"Provide first and second line IT support to staff. Manage hardware, software and network issues.",requirements:"HND/BSc IT or related. CompTIA A+ preferred.",howToApply:"Send CV to it.jobs@vodafone.com.gh",tags:"IT Support,Networking,Hardware",phone:"020 000 0001",email:"it.jobs@vodafone.com.gh",deadline:"2026-07-20",ji:0},
+  {jobTitle:"Cybersecurity Analyst",company:"GCB Bank",city:"Accra",jobType:"Full Time",industry:"Technology",salary:"GHS 5,000–7,000",experience:"3–5 years",desc:"Monitor, detect and respond to cybersecurity incidents. Manage security tools and perform risk assessments.",requirements:"BSc Computer Science. CEH or CISSP preferred.",howToApply:"Email cybersec@gcbbank.com.gh",tags:"Cybersecurity,SIEM,Risk,Network",phone:"030 267 4600",email:"cybersec@gcbbank.com.gh",deadline:"2026-07-25",ji:0},
+  {jobTitle:"Software QA Tester",company:"Farmerline",city:"Remote",jobType:"Remote",industry:"Technology",salary:"GHS 3,000–4,500",experience:"1 year",desc:"Test Farmerline's agtech mobile and web platforms to identify bugs and improve user experience.",requirements:"Degree or diploma in IT. Knowledge of manual and automated testing.",howToApply:"Email qa@farmerline.co",tags:"QA,Testing,Remote,Software",phone:"030 277 5544",email:"qa@farmerline.co",deadline:"2026-08-01",ji:0},
+  {jobTitle:"Data Analyst",company:"Stanbic Bank Ghana",city:"Accra",jobType:"Full Time",industry:"Finance",salary:"GHS 4,500–6,500",experience:"2–3 years",desc:"Analyse business and financial data to generate insights and support strategic decisions.",requirements:"BSc Statistics, Mathematics or related. Proficient in SQL, Excel, Power BI.",howToApply:"Apply via stanbicbank.com.gh/careers",tags:"SQL,Excel,Power BI,Data",phone:"030 274 1234",email:"hr@stanbicbank.com.gh",deadline:"2026-08-01",ji:1},
+  {jobTitle:"Accountant",company:"Deloitte Ghana",city:"Accra",jobType:"Full Time",industry:"Finance",salary:"GHS 4,000–5,500",experience:"2–3 years",desc:"Prepare financial statements, manage accounts and assist with audits.",requirements:"BSc Accounting or Finance. ICAG or ACCA part-qualified preferred.",howToApply:"Apply at deloitte.com/gh/careers",tags:"Accounting,ICAG,QuickBooks,Finance",phone:"030 277 3400",email:"ghrecruit@deloitte.com",deadline:"2026-07-31",ji:1},
+  {jobTitle:"Credit Officer",company:"Fidelity Bank Ghana",city:"Accra",jobType:"Full Time",industry:"Finance",salary:"GHS 3,000–4,500",experience:"2–3 years",desc:"Assess loan applications, conduct credit analysis and manage loan portfolios.",requirements:"BSc Finance, Economics or Banking. Strong analytical skills.",howToApply:"Send CV to creditjobs@fidelitybank.com.gh",tags:"Credit,Banking,Loans,Finance",phone:"030 212 3456",email:"creditjobs@fidelitybank.com.gh",deadline:"2026-08-05",ji:1},
+  {jobTitle:"Insurance Sales Agent",company:"Enterprise Insurance",city:"Accra",jobType:"Full Time",industry:"Finance",salary:"GHS 1,800 + commission",experience:"No experience",desc:"Sell life, motor and property insurance products to individuals and businesses.",requirements:"Minimum HND. Good communication skills.",howToApply:"Call 030 274 1100 or email sales@enterpriseinsurance.com.gh",tags:"Insurance,Sales,Finance,Field",phone:"030 274 1100",email:"sales@enterpriseinsurance.com.gh",deadline:"2026-07-20",ji:1},
+  {jobTitle:"Staff Nurse",company:"Nyaho Medical Centre",city:"Accra",jobType:"Full Time",industry:"Health",salary:"GHS 3,000–4,000",experience:"1 year",desc:"Provide quality nursing care to patients in a private hospital setting.",requirements:"Registered Nurse (RN) certificate. Valid nursing licence.",howToApply:"Email CV to nursing@nyahomed.com",tags:"Nursing,Healthcare,Hospital",phone:"030 271 1816",email:"nursing@nyahomed.com",deadline:"2026-07-28",ji:2},
+  {jobTitle:"Pharmacist",company:"Medifarm Ghana",city:"Accra",jobType:"Full Time",industry:"Health",salary:"GHS 4,000–5,500",experience:"1 year",desc:"Dispense medications, counsel patients and manage pharmacy inventory.",requirements:"BSc Pharmacy. Registered with the Pharmacy Council of Ghana.",howToApply:"Send to pharmacist@medifarm.com.gh",tags:"Pharmacy,Healthcare,Dispensing",phone:"030 278 3344",email:"pharmacist@medifarm.com.gh",deadline:"2026-08-10",ji:2},
+  {jobTitle:"Medical Laboratory Scientist",company:"Trust Hospital",city:"Accra",jobType:"Full Time",industry:"Health",salary:"GHS 3,500–4,500",experience:"2–3 years",desc:"Perform laboratory tests and analyses to support diagnosis and treatment.",requirements:"BSc Medical Laboratory Science. Registered with ALSGB.",howToApply:"Apply to lab@trusthospital.com.gh",tags:"Lab,Healthcare,Science,Medical",phone:"030 274 2288",email:"lab@trusthospital.com.gh",deadline:"2026-07-30",ji:2},
+  {jobTitle:"Project Officer (Health)",company:"GHS — USAID Support",city:"Accra",jobType:"Full Time",industry:"Health",salary:"GHS 4,500–6,000",experience:"3–5 years",desc:"Coordinate USAID-funded health program activities including training and stakeholder engagement.",requirements:"MPH or BSc Public Health + 3 years NGO experience.",howToApply:"Email ghs.usaid.hr@ghs.gov.gh",tags:"Public Health,NGO,USAID",phone:"030 268 8000",email:"ghs.usaid.hr@ghs.gov.gh",deadline:"2026-07-28",ji:2},
+  {jobTitle:"Sales Representative",company:"Unilever Ghana",city:"Accra",jobType:"Full Time",industry:"Sales",salary:"GHS 2,500–3,500 + bonus",experience:"1 year",desc:"Drive sales of Unilever consumer goods across retail and wholesale outlets.",requirements:"HND/BSc Business or Marketing. Driving licence required.",howToApply:"Apply at unilever.com/en/careers",tags:"Sales,FMCG,Consumer Goods,Field",phone:"030 266 5511",email:"ghsales@unilever.com",deadline:"2026-07-18",ji:3},
+  {jobTitle:"Digital Marketing Officer",company:"Melcom Ghana",city:"Accra",jobType:"Full Time",industry:"Sales",salary:"GHS 3,000–4,000",experience:"2–3 years",desc:"Manage Melcom's social media, email campaigns, SEO and digital ads.",requirements:"BSc Marketing or Communications. Experience with Meta Ads, Google Ads.",howToApply:"Email CV to digital@melcom.com.gh",tags:"Digital Marketing,Social Media,SEO,Ads",phone:"030 266 4400",email:"digital@melcom.com.gh",deadline:"2026-08-01",ji:3},
+  {jobTitle:"Customer Service Representative",company:"AirtelTigo Ghana",city:"Accra",jobType:"Full Time",industry:"Sales",salary:"GHS 2,000–2,800",experience:"No experience",desc:"Handle customer inquiries, complaints and service requests.",requirements:"Minimum SHS + diploma. Excellent communication.",howToApply:"Apply at airteltigo.com.gh/careers",tags:"Customer Service,Telecom,Communication",phone:"020 500 0000",email:"jobs@airteltigo.com.gh",deadline:"2026-07-22",ji:3},
+  {jobTitle:"Social Media Manager",company:"Electroland Ghana",city:"Accra",jobType:"Full Time",industry:"Sales",salary:"GHS 2,800–3,800",experience:"2–3 years",desc:"Manage Electroland's Facebook, Instagram, TikTok and Twitter. Run paid ads and drive sales.",requirements:"BSc Marketing. Proven social media track record. Meta Ads Manager knowledge.",howToApply:"Email socialmedia@electroland.com.gh",tags:"Social Media,Marketing,Meta Ads,TikTok",phone:"030 274 8800",email:"socialmedia@electroland.com.gh",deadline:"2026-07-28",ji:3},
+  {jobTitle:"Secondary School Teacher (Math & Science)",company:"Accra Academy",city:"Accra",jobType:"Full Time",industry:"Education",salary:"GHS 2,500–3,500",experience:"2–3 years",desc:"Teach mathematics and integrated science to JHS/SHS students.",requirements:"BSc Education or relevant subject degree. Teaching certificate.",howToApply:"Submit to admin@accraacademy.edu.gh",tags:"Teaching,Math,Science,Education",phone:"030 266 2011",email:"admin@accraacademy.edu.gh",deadline:"2026-07-25",ji:4},
+  {jobTitle:"Early Childhood Educator",company:"Busy Bees Ghana",city:"Accra",jobType:"Full Time",industry:"Education",salary:"GHS 2,000–2,800",experience:"1 year",desc:"Teach and care for children aged 2–6 in a structured early learning environment.",requirements:"Diploma/Degree in Early Childhood Education.",howToApply:"Email hr@busybees.edu.gh",tags:"Teaching,Early Childhood,Kindergarten",phone:"030 263 3311",email:"hr@busybees.edu.gh",deadline:"2026-07-28",ji:4},
+  {jobTitle:"Agricultural Extension Officer",company:"Yara Ghana",city:"Kumasi",jobType:"Full Time",industry:"Education",salary:"GHS 3,000–4,000",experience:"2–3 years",desc:"Support farmers with agronomic advice and crop management in Ashanti Region.",requirements:"BSc Agriculture or Agronomy. Driving licence. Willingness to travel.",howToApply:"Email agri@yara.com.gh",tags:"Agriculture,Farming,Extension,Crops",phone:"032 209 8877",email:"agri@yara.com.gh",deadline:"2026-08-01",ji:4},
+  {jobTitle:"Petroleum Engineer",company:"Aker Energy Ghana",city:"Takoradi",jobType:"Full Time",industry:"Engineering",salary:"GHS 12,000–18,000",experience:"5+ years",desc:"Support offshore oil and gas production operations. Optimize well performance.",requirements:"BSc Petroleum or Chemical Engineering. 5+ years offshore experience.",howToApply:"Apply at akerenergy.com/careers",tags:"Petroleum,Offshore,Oil,Engineering",phone:"031 202 1234",email:"careers@akerenergy.com",deadline:"2026-08-15",ji:5},
+  {jobTitle:"Civil Engineer (Roads)",company:"Amandi Engineering",city:"Takoradi",jobType:"Full Time",industry:"Engineering",salary:"GHS 5,000–8,000",experience:"3–5 years",desc:"Design, supervise and manage road construction projects in the Western Region.",requirements:"BSc Civil Engineering. Registered with GhIE. Experience with AutoCAD.",howToApply:"Send CV to civil@amandi.com.gh",tags:"Civil,Roads,Construction,AutoCAD",phone:"031 202 5678",email:"civil@amandi.com.gh",deadline:"2026-07-30",ji:5},
+  {jobTitle:"Mechanical Engineer",company:"Tullow Oil Ghana",city:"Takoradi",jobType:"Full Time",industry:"Engineering",salary:"GHS 8,000–14,000",experience:"3–5 years",desc:"Support mechanical integrity of offshore equipment, pipelines and pressure vessels.",requirements:"BSc Mechanical Engineering. Experience in oil & gas. Familiar with API standards.",howToApply:"Apply at tullowoil.com/careers",tags:"Mechanical,Offshore,Engineering,Oil",phone:"031 203 5544",email:"ghcareers@tullowoil.com",deadline:"2026-08-10",ji:5},
+  {jobTitle:"Electrical Technician",company:"Eni Ghana",city:"Takoradi",jobType:"Full Time",industry:"Engineering",salary:"GHS 4,000–6,000",experience:"2–3 years",desc:"Install, maintain and repair electrical systems on offshore platforms.",requirements:"HND Electrical Engineering. Knowledge of electrical safety standards.",howToApply:"Email technician@eni.com.gh",tags:"Electrical,Offshore,Maintenance,Oil",phone:"031 202 9900",email:"technician@eni.com.gh",deadline:"2026-08-05",ji:5},
+  {jobTitle:"Supply Chain Officer",company:"Guinness Ghana Breweries",city:"Kumasi",jobType:"Full Time",industry:"Engineering",salary:"GHS 4,000–5,500",experience:"2–3 years",desc:"Manage procurement, inventory and distribution operations for the Kumasi facility.",requirements:"BSc Logistics, Supply Chain or Business. Knowledge of ERP systems.",howToApply:"Apply at diageo.com/en-row/careers",tags:"Supply Chain,Procurement,Logistics,FMCG",phone:"032 202 4321",email:"ghcareers@diageo.com",deadline:"2026-07-28",ji:5},
+  {jobTitle:"Broadcast Journalist",company:"TV3 Ghana",city:"Accra",jobType:"Full Time",industry:"Media",salary:"GHS 3,000–4,500",experience:"2–3 years",desc:"Research, write and present news stories for TV3's daily broadcasts.",requirements:"BSc Communication or Journalism. Strong on-camera presence.",howToApply:"Email showreel and CV to recruitment@tv3.com.gh",tags:"Journalism,Broadcasting,TV,News",phone:"030 276 5678",email:"recruitment@tv3.com.gh",deadline:"2026-07-20",ji:6},
+  {jobTitle:"Graphic Designer",company:"Graphic Communications Group",city:"Accra",jobType:"Full Time",industry:"Media",salary:"GHS 2,800–3,800",experience:"2–3 years",desc:"Create print and digital designs for Ghana's leading newspaper group.",requirements:"BSc/HND Graphic Design. Proficient in Adobe Creative Suite.",howToApply:"Email portfolio to design@graphic.com.gh",tags:"Design,Adobe,Photoshop,Print",phone:"030 266 4301",email:"design@graphic.com.gh",deadline:"2026-07-25",ji:6},
+  {jobTitle:"Video Producer / Editor",company:"Joy FM (Multimedia Group)",city:"Accra",jobType:"Full Time",industry:"Media",salary:"GHS 3,500–5,000",experience:"2–3 years",desc:"Produce and edit video content for Joy News, Adom TV and digital platforms.",requirements:"BSc/HND Film, Media or related. Proficient in Adobe Premiere Pro.",howToApply:"Apply at myjoyonline.com/careers",tags:"Video,Editing,Adobe Premiere,Media",phone:"030 278 3388",email:"media@myjoyonline.com",deadline:"2026-08-01",ji:6},
+  {jobTitle:"Content Writer",company:"Pulse Ghana",city:"Remote",jobType:"Remote",industry:"Media",salary:"GHS 2,000–3,000",experience:"1 year",desc:"Write engaging articles about Ghana lifestyle, entertainment and culture.",requirements:"BSc Communications or English. Strong writing portfolio. SEO knowledge.",howToApply:"Email samples and CV to editorial@pulse.com.gh",tags:"Writing,Content,SEO,Media,Remote",phone:"030 278 9900",email:"editorial@pulse.com.gh",deadline:"2026-07-20",ji:6},
+  {jobTitle:"Community Development Officer",company:"CARE International Ghana",city:"Tamale",jobType:"Full Time",industry:"NGO",salary:"GHS 3,500–5,000",experience:"2–3 years",desc:"Implement community livelihood and women empowerment programs in northern Ghana.",requirements:"BSc Social Work, Development Studies or related.",howToApply:"Apply via care.org/careers",tags:"NGO,Community,Development,Northern",phone:"037 202 5678",email:"ghcareers@care.org",deadline:"2026-07-30",ji:7},
+  {jobTitle:"Monitoring & Evaluation Officer",company:"World Vision Ghana",city:"Tamale",jobType:"Full Time",industry:"NGO",salary:"GHS 4,000–5,500",experience:"2–3 years",desc:"Design and implement M&E frameworks for WV Ghana's food security and education programs.",requirements:"BSc Statistics, Development Studies. Experience in MEAL.",howToApply:"Apply at worldvision.org/careers",tags:"M&E,NGO,Statistics,Development",phone:"037 202 3344",email:"wvgh.hr@worldvision.org",deadline:"2026-08-05",ji:7},
+  {jobTitle:"Hotel Receptionist",company:"Kempinski Hotel Gold Coast City",city:"Accra",jobType:"Full Time",industry:"Hospitality",salary:"GHS 2,500–3,200",experience:"1 year",desc:"Welcome guests, manage check-in/out and coordinate with housekeeping.",requirements:"HND/Degree Hospitality or Tourism. Excellent English.",howToApply:"Email hotel.hr@kempinski.com",tags:"Hotel,Reception,Hospitality,Tourism",phone:"030 267 8200",email:"hotel.hr@kempinski.com",deadline:"2026-07-18",ji:7},
+  {jobTitle:"Tour Guide",company:"Coconut Grove Beach Resort",city:"Cape Coast",jobType:"Full Time",industry:"Hospitality",salary:"GHS 1,800–2,500 + tips",experience:"1 year",desc:"Guide tourists through Cape Coast Castle, Elmina and local attractions.",requirements:"Diploma/Degree Tourism or History. Excellent spoken English.",howToApply:"Email guide@coconutgrove.com.gh",tags:"Tour Guide,Tourism,Cape Coast,History",phone:"042 203 3560",email:"guide@coconutgrove.com.gh",deadline:"2026-07-22",ji:7},
+  {jobTitle:"Chef (Continental & Ghanaian)",company:"Labadi Beach Hotel",city:"Accra",jobType:"Full Time",industry:"Hospitality",salary:"GHS 3,500–5,000",experience:"3–5 years",desc:"Prepare and present continental and Ghanaian dishes in a 4-star hotel restaurant.",requirements:"Diploma Professional Cookery. 3+ years in a hotel kitchen.",howToApply:"Send CV to kitchen@labadibeachhotel.com.gh",tags:"Chef,Cooking,Hotel,Restaurant",phone:"030 277 2501",email:"kitchen@labadibeachhotel.com.gh",deadline:"2026-07-25",ji:7},
+  {jobTitle:"Legal Officer",company:"SSNIT Kumasi",city:"Kumasi",jobType:"Full Time",industry:"NGO",salary:"GHS 4,500–6,000",experience:"3–5 years",desc:"Provide legal advice, draft contracts and manage litigation for SSNIT Kumasi office.",requirements:"LLB + BL. Ghana Bar Association member.",howToApply:"Apply at ssnit.com.gh/careers",tags:"Legal,Law,Contracts,Litigation",phone:"032 202 5500",email:"legal.kumasi@ssnit.com.gh",deadline:"2026-08-05",ji:7},
+  {jobTitle:"HR Officer",company:"Nationwide (Multiple Branches)",city:"Nationwide",jobType:"Full Time",industry:"NGO",salary:"GHS 3,000–4,000",experience:"2–3 years",desc:"Handle recruitment, onboarding, staff records and employee relations.",requirements:"BSc HR Management. Knowledge of Ghana Labour Act.",howToApply:"Send CV to hr.nationwide@citylink.gh",tags:"HR,Recruitment,Labour,People",phone:"055 123 4567",email:"hr.nationwide@citylink.gh",deadline:"2026-08-10",ji:7},
+  {jobTitle:"Virtual Assistant",company:"Ghana Tech Lab",city:"Remote",jobType:"Remote",industry:"Technology",salary:"GHS 1,500–2,500",experience:"No experience",desc:"Provide administrative and research support to startup founders remotely.",requirements:"Good communication. Proficient in Google Workspace and Zoom.",howToApply:"Apply at ghanatechlab.org/jobs",tags:"Virtual Assistant,Remote,Admin,Tech",phone:"030 290 1234",email:"jobs@ghanatechlab.org",deadline:"2026-07-25",ji:0},
+{jobTitle:"Logistics & Delivery Coordinator",company:"Jumia Ghana",city:"Accra",jobType:"Full Time",industry:"Sales",salary:"GHS 2,500–3,500",experience:"1 year",desc:"Coordinate last-mile delivery operations, manage drivers and resolve delivery issues.",requirements:"HND/BSc Logistics or Business. Driving licence.",howToApply:"Apply at jumia.com.gh/careers",tags:"Logistics,Delivery,E-commerce,Operations",phone:"030 290 5566",email:"logistics@jumia.com.gh",deadline:"2026-07-22",ji:3},
+];
 
-window.toggleBulkPanel = () => {
-  const panel = document.getElementById('bulkPanel');
-  const btn = document.querySelector('.bulk-toggle');
-  const hidden = panel.style.display === 'none';
-  panel.style.display = hidden ? 'block' : 'none';
-  btn.textContent = hidden ? '▲ Hide' : '▼ Show';
-};
+// ════════════════════════════════════
+// BULK DATA — 45 ROOMS
+// ════════════════════════════════════
+const BULK_ROOMS=[
+  {title:"Self Contained in Osu",type:"Self Contained",city:"Accra",district:"Osu",price:4800,period:"per year",beds:"1",baths:"1",desc:"Neat self-contained room with running water and prepaid electricity. Tiled floors. 5 mins from Oxford Street.",phone:"024 112 2334",poster:"Kwame Mensah",ci:0},
+  {title:"Chamber & Hall in Dansoman",type:"Chamber & Hall",city:"Accra",district:"Dansoman",price:3200,period:"per year",beds:"1",baths:"Shared",desc:"Spacious chamber and hall with indoor kitchen. Water included. Close to Dansoman market.",phone:"020 334 5567",poster:"Abena Adjei",ci:0},
+  {title:"1 Bedroom Apartment in East Legon",type:"1 Bedroom",city:"Accra",district:"East Legon",price:9600,period:"per year",beds:"1",baths:"1",desc:"Modern apartment with fitted kitchen, A/C, DSTV point. Gated compound. Near A&C mall.",phone:"055 778 9900",poster:"Kofi Darko",ci:0},
+  {title:"2 Bedroom Flat in Spintex",type:"2 Bedroom",city:"Accra",district:"Spintex",price:14400,period:"per year",beds:"2",baths:"2",desc:"Brand new 2-bedroom flat. Prepaid meter, ample parking. Minutes from Accra Mall.",phone:"024 567 8901",poster:"Ama Osei",ci:0},
+  {title:"Single Room in Madina",type:"Single Room",city:"Accra",district:"Madina",price:1800,period:"per year",beds:"1",baths:"Shared",desc:"Clean single room in compound house. Shared facilities. Good ventilation.",phone:"020 123 4567",poster:"Yaw Asante",ci:0},
+  {title:"3 Bedroom House in Tema",type:"3 Bedroom",city:"Accra",district:"Tema Community 25",price:18000,period:"per year",beds:"3",baths:"2",desc:"Storey building. 3 bedrooms, 2 baths, sitting room and fitted kitchen. Gated.",phone:"030 225 6789",poster:"Nana Boateng",ci:0},
+  {title:"Self Contained in Adenta",type:"Self Contained",city:"Accra",district:"Adenta",price:4200,period:"per year",beds:"1",baths:"1",desc:"Self-contained room. Water and electricity available. Quiet neighborhood.",phone:"026 334 5512",poster:"Gifty Nkrumah",ci:0},
+  {title:"Executive Apartment in Airport Hills",type:"Apartment",city:"Accra",district:"Airport Hills",price:24000,period:"per year",beds:"2",baths:"2",desc:"Executive apartment with sea breeze. Furnished option available. Pool and gym access.",phone:"055 100 2233",poster:"Charles Agyei",ci:0},
+  {title:"Self Contained near KNUST",type:"Self Contained",city:"Kumasi",district:"Ayigya",price:3600,period:"per year",beds:"1",baths:"1",desc:"Self-contained near KNUST campus. Ideal for students and young professionals.",phone:"032 201 3344",poster:"Akua Frimpong",ci:1},
+  {title:"Chamber & Hall in Asokwa",type:"Chamber & Hall",city:"Kumasi",district:"Asokwa",price:2800,period:"per year",beds:"1",baths:"Shared",desc:"Nice chamber and hall in quiet area. Indoor kitchen. Close to Asokwa market.",phone:"054 223 4456",poster:"Kweku Owusu",ci:1},
+  {title:"2 Bedroom in Ahodwo",type:"2 Bedroom",city:"Kumasi",district:"Ahodwo",price:12000,period:"per year",beds:"2",baths:"2",desc:"Modern 2-bedroom in upscale Ahodwo. Tiled, prepaid meter, reliable water.",phone:"032 209 5566",poster:"Maame Adu",ci:1},
+  {title:"Single Room in Suame",type:"Single Room",city:"Kumasi",district:"Suame",price:1500,period:"per year",beds:"1",baths:"Shared",desc:"Affordable single room near Suame Magazine. Shared facilities.",phone:"020 889 0011",poster:"Kofi Antwi",ci:1},
+  {title:"3 Bedroom House in Nhyiaeso",type:"3 Bedroom",city:"Kumasi",district:"Nhyiaeso",price:15000,period:"per year",beds:"3",baths:"2",desc:"Spacious 3-bedroom house. Own compound, borehole water, security light.",phone:"032 202 7788",poster:"Akosua Mensah",ci:1},
+  {title:"1 Bedroom Flat in Bantama",type:"1 Bedroom",city:"Kumasi",district:"Bantama",price:7200,period:"per year",beds:"1",baths:"1",desc:"Modern 1-bedroom flat near Bantama market. Fitted kitchen, indoor bath.",phone:"054 112 2345",poster:"Isaac Asante",ci:1},
+  {title:"Self Contained in Tamale Central",type:"Self Contained",city:"Tamale",district:"Central Tamale",price:3000,period:"per year",beds:"1",baths:"1",desc:"Self-contained near central market. Good ventilation, water and electricity.",phone:"037 201 5566",poster:"Abdul Rahman",ci:2},
+  {title:"Chamber & Hall in Lamashegu",type:"Chamber & Hall",city:"Tamale",district:"Lamashegu",price:2200,period:"per year",beds:"1",baths:"Shared",desc:"Affordable housing in Lamashegu. Close to shops and transport.",phone:"024 778 8899",poster:"Fatimah Alhassan",ci:2},
+  {title:"2 Bedroom in Bilpela",type:"2 Bedroom",city:"Tamale",district:"Bilpela",price:9000,period:"per year",beds:"2",baths:"1",desc:"2-bedroom house in calm residential area. Borehole water, prepaid electricity.",phone:"037 202 3344",poster:"Mohammed Yakubu",ci:2},
+  {title:"Single Room in Gumani",type:"Single Room",city:"Tamale",district:"Gumani",price:1200,period:"per year",beds:"1",baths:"Shared",desc:"Basic but clean single room in compound. Suitable for students.",phone:"020 556 7788",poster:"Hadiza Issahaku",ci:2},
+  {title:"3 Bedroom House in Vittin",type:"3 Bedroom",city:"Tamale",district:"Vittin",price:12000,period:"per year",beds:"3",baths:"2",desc:"Spacious 3-bedroom bungalow. Large compound, safe neighborhood.",phone:"037 203 1122",poster:"Ibrahim Mahama",ci:2},
+  {title:"Self Contained near UCC",type:"Self Contained",city:"Cape Coast",district:"Amamoma",price:3200,period:"per year",beds:"1",baths:"1",desc:"Self-contained near University of Cape Coast. Perfect for lecturers.",phone:"042 202 3344",poster:"Efua Baidoo",ci:3},
+  {title:"1 Bedroom near Elmina",type:"1 Bedroom",city:"Cape Coast",district:"Elmina",price:6000,period:"per year",beds:"1",baths:"1",desc:"1-bedroom near beach. Suitable for hospitality workers. Sea breeze.",phone:"024 445 6678",poster:"Kofi Egyir",ci:3},
+  {title:"Chamber & Hall in Abura",type:"Chamber & Hall",city:"Cape Coast",district:"Abura",price:2400,period:"per year",beds:"1",baths:"Shared",desc:"Decent chamber and hall in residential area. Short walk to market.",phone:"042 203 7788",poster:"Abena Essilfie",ci:3},
+  {title:"2 Bedroom House in Pedu",type:"2 Bedroom",city:"Cape Coast",district:"Pedu",price:8400,period:"per year",beds:"2",baths:"1",desc:"2-bedroom in quiet Pedu. Good water supply, tiled. Own compound.",phone:"055 223 3344",poster:"Sam Arhin",ci:3},
+  {title:"Self Contained in Anaji",type:"Self Contained",city:"Takoradi",district:"Anaji",price:3600,period:"per year",beds:"1",baths:"1",desc:"Clean self-contained near Anaji market. Good for oil & gas workers.",phone:"031 201 4455",poster:"Grace Egyir",ci:4},
+  {title:"2 Bedroom in Effia",type:"2 Bedroom",city:"Takoradi",district:"Effia",price:10800,period:"per year",beds:"2",baths:"2",desc:"2-bedroom flat in Effia. Near hospital and schools. Secure compound.",phone:"031 202 6677",poster:"John Turkson",ci:4},
+  {title:"Single Room near Market Circle",type:"Single Room",city:"Takoradi",district:"Market Circle",price:2000,period:"per year",beds:"1",baths:"Shared",desc:"Single room close to Market Circle. Easy access to transport.",phone:"020 334 5566",poster:"Adwoa Hayford",ci:4},
+  {title:"3 Bedroom in Tanokrom",type:"3 Bedroom",city:"Takoradi",district:"Tanokrom",price:16000,period:"per year",beds:"3",baths:"2",desc:"Executive 3-bedroom. Fitted kitchen, security, borehole water.",phone:"055 667 8899",poster:"Emmanuel Asante",ci:4},
+  {title:"Self Contained in Sunyani",type:"Self Contained",city:"Sunyani",district:"Sunyani Central",price:2800,period:"per year",beds:"1",baths:"1",desc:"Self-contained in central Sunyani. Reliable water and electricity.",phone:"035 201 2233",poster:"Yaa Amoah",ci:5},
+  {title:"Chamber & Hall in Fiapre",type:"Chamber & Hall",city:"Sunyani",district:"Fiapre",price:2000,period:"per year",beds:"1",baths:"Shared",desc:"Affordable chamber & hall in Fiapre junction area.",phone:"024 556 7788",poster:"Kwame Boateng",ci:5},
+  {title:"2 Bedroom in Abesim",type:"2 Bedroom",city:"Sunyani",district:"Abesim",price:7200,period:"per year",beds:"2",baths:"1",desc:"2-bedroom house in Abesim. Good neighborhood. Own gate.",phone:"035 202 9900",poster:"Felicia Bonsu",ci:5},
+  {title:"Self Contained in Ho Central",type:"Self Contained",city:"Ho",district:"Ho Central",price:3000,period:"per year",beds:"1",baths:"1",desc:"Self-contained in Ho central. Suitable for civil servants and teachers.",phone:"036 201 4455",poster:"Dela Agbeko",ci:6},
+  {title:"Single Room in Bankoe",type:"Single Room",city:"Ho",district:"Bankoe",price:1600,period:"per year",beds:"1",baths:"Shared",desc:"Clean single room near Ho Teaching Hospital. Compound house.",phone:"020 778 8890",poster:"Seyram Glikpo",ci:6},
+  {title:"2 Bedroom in Ho Dome",type:"2 Bedroom",city:"Ho",district:"Ho Dome",price:7800,period:"per year",beds:"2",baths:"1",desc:"2-bedroom house in Ho Dome. Peaceful area. Water and light.",phone:"036 203 6677",poster:"Abla Tetteh",ci:6},
+  {title:"Self Contained in Koforidua",type:"Self Contained",city:"Koforidua",district:"Koforidua Central",price:3200,period:"per year",beds:"1",baths:"1",desc:"Self-contained in Koforidua town. Running water, prepaid electricity.",phone:"034 201 3344",poster:"Kweku Asante",ci:7},
+  {title:"1 Bedroom near Tech Uni",type:"1 Bedroom",city:"Koforidua",district:"Koforidua Tech",price:6000,period:"per year",beds:"1",baths:"1",desc:"Modern 1-bedroom near Koforidua Technical University.",phone:"024 445 5667",poster:"Adwoa Nimako",ci:7},
+  {title:"Chamber & Hall in Effiduase",type:"Chamber & Hall",city:"Koforidua",district:"Effiduase",price:2200,period:"per year",beds:"1",baths:"Shared",desc:"Affordable chamber and hall. Good access to transport.",phone:"034 202 8899",poster:"Kofi Boateng",ci:7},
+  {title:"Self Contained in Bolga Central",type:"Self Contained",city:"Bolgatanga",district:"Bolgatanga Central",price:2400,period:"per year",beds:"1",baths:"1",desc:"Self-contained in Bolga town. Suitable for NGO workers and civil servants.",phone:"072 201 4455",poster:"Abugri Adams",ci:8},
+  {title:"Single Room in Zorbisi",type:"Single Room",city:"Bolgatanga",district:"Zorbisi",price:1200,period:"per year",beds:"1",baths:"Shared",desc:"Affordable single room in compound. Near Bolga market.",phone:"020 889 9001",poster:"Adisa Atule",ci:8},
+  {title:"2 Bedroom in Sumbrungu",type:"2 Bedroom",city:"Bolgatanga",district:"Sumbrungu",price:7200,period:"per year",beds:"2",baths:"1",desc:"2-bedroom house in residential area. Borehole water. Secure.",phone:"072 202 6677",poster:"Fatima Apaga",ci:8},
+];
 
-window.clearBulkLog = () => {
-  document.getElementById('bulkLog').innerHTML = '';
-  document.getElementById('bulkLog').style.display = 'none';
-  bulkDone = 0; bulkFail = 0;
-  document.getElementById('bsDone').textContent = '0';
-  document.getElementById('bsFail').textContent = '0';
-  document.getElementById('bulkProgress').style.display = 'none';
-  document.getElementById('bulkProgressFill').style.width = '0%';
-  document.getElementById('bulkProgressLabel').textContent = '';
-};
-
-function bulkLog(msg, type='ok') {
-  const box = document.getElementById('bulkLog');
-  box.style.display = 'block';
-  const line = document.createElement('div');
-  line.className = type === 'ok' ? 'lok' : type === 'err' ? 'lerr' : 'linf';
-  line.textContent = msg;
-  box.appendChild(line);
-  box.scrollTop = box.scrollHeight;
-}
-
-window.runBulkImport = async () => {
-  const btn = document.getElementById('btnBulkImport');
-  btn.disabled = true;
-  btn.textContent = '⏳ Importing…';
-  bulkDone = 0; bulkFail = 0;
-  document.getElementById('bsDone').textContent = '0';
-  document.getElementById('bsFail').textContent = '0';
-  document.getElementById('bulkProgress').style.display = 'block';
-  document.getElementById('bulkLog').style.display = 'block';
-  document.getElementById('bulkLog').innerHTML = '';
-
-  bulkLog(`→ Starting import of ${BULK_BUSINESSES.length} businesses…`, 'inf');
-
-  for (let i = 0; i < BULK_BUSINESSES.length; i++) {
-    const b = BULK_BUSINESSES[i];
-    const pct = Math.round(((i + 1) / BULK_BUSINESSES.length) * 100);
-    document.getElementById('bulkProgressFill').style.width = pct + '%';
-    document.getElementById('bulkProgressLabel').textContent = `${i + 1} of ${BULK_BUSINESSES.length} — ${pct}%`;
-
-    try {
-      await addDoc(collection(db, 'businesses'), {
-        name: b.name,
-        category: b.category,
-        city: b.city,
-        location: b.location,
-        phone: b.phone,
-        desc: b.desc,
-        rating: b.rating,
-        lat: b.lat,
-        lng: b.lng,
-        plan: 'basic',
-        verified: false,
-        featured: false,
-        approved: true,
-        images: [],
-        imageUrl: '',
-        tags: '',
-        whatsapp: '',
-        email: '',
-        website: '',
-        source: 'bulk-import',
-        createdAt: serverTimestamp()
-      });
-      bulkDone++;
-      document.getElementById('bsDone').textContent = bulkDone;
-      bulkLog(`✓ ${b.name} (${b.city})`, 'ok');
-    } catch (e) {
-      bulkFail++;
-      document.getElementById('bsFail').textContent = bulkFail;
-      bulkLog(`✗ ${b.name} — ${e.message}`, 'err');
-    }
-
-    // Small delay to avoid Firestore rate limits
-    await new Promise(r => setTimeout(r, 100));
+// ════════════════════════════════════
+// SHARED CLOUDINARY BULK PHOTO UPLOAD
+// ════════════════════════════════════
+window.uploadBulkPhotos=async(input,type)=>{
+  const cfg={
+    biz:{max:7,labels:BIZ_CATS,arr:bulkBizImgs,folder:'citylinkgh_biz',bar:'bizImgBar',fill:'bizImgFill',status:'bizImgStatus',preview:'bizImgPreview',fillColor:'#1A6B3C'},
+    job:{max:8,labels:JOB_INDS,arr:bulkJobImgs,folder:'citylinkgh_jobs',bar:'jobImgBar',fill:'jobImgFill',status:'jobImgStatus',preview:'jobImgPreview',fillColor:'#2563eb'},
+    room:{max:9,labels:ROOM_CITIES,arr:bulkRoomImgs,folder:'citylinkgh_rooms',bar:'roomImgBar',fill:'roomImgFill',status:'roomImgStatus',preview:'roomImgPreview',fillColor:'#7c3aed'},
+  }[type];
+  const files=Array.from(input.files).slice(0,cfg.max);
+  if(!files.length)return;
+  const bar=document.getElementById(cfg.bar),fill=document.getElementById(cfg.fill),status=document.getElementById(cfg.status),preview=document.getElementById(cfg.preview);
+  fill.style.background=cfg.fillColor;
+  bar.style.display='block';preview.innerHTML='';status.textContent=`Uploading ${files.length} photo${files.length>1?'s':''}…`;
+  for(let i=0;i<files.length;i++){
+    fill.style.width=Math.round(((i+0.5)/files.length)*100)+'%';
+    const fd=new FormData();fd.append('file',files[i]);fd.append('upload_preset',UP);fd.append('folder',cfg.folder);
+    try{
+      const res=await fetch(`https://api.cloudinary.com/v1_1/${CN}/image/upload`,{method:'POST',body:fd});
+      const data=await res.json();
+      if(data.secure_url){
+        cfg.arr[i]=data.secure_url;
+        const item=document.createElement('div');item.className='bi-item';
+        item.innerHTML=`<img src="${data.secure_url}" alt="${cfg.labels[i]||i+1}" style="border-color:${cfg.fillColor}"><div class="bi-label" style="background:${cfg.fillColor}99">${cfg.labels[i]||'#'+(i+1)}</div>`;
+        preview.appendChild(item);
+      }else{const ph=document.createElement('div');ph.className='bi-ph';ph.textContent='✗';preview.appendChild(ph);}
+    }catch(_){const ph=document.createElement('div');ph.className='bi-ph';ph.textContent='✗';preview.appendChild(ph);}
+    fill.style.width=Math.round(((i+1)/files.length)*100)+'%';
   }
+  status.textContent=`✅ ${files.length} photo${files.length>1?'s':''} uploaded — ready to import`;
+  setTimeout(()=>bar.style.display='none',1500);
+};
 
-  bulkLog(`─── Done: ${bulkDone} imported, ${bulkFail} failed ───`, 'inf');
-  showToast(`✅ ${bulkDone} businesses imported!`);
-  btn.disabled = false;
-  btn.textContent = '⬆ Import All 50';
-  await fetchAll(); // refresh the business list
+// ════════════════════════════════════
+// SHARED BULK UTILITIES
+// ════════════════════════════════════
+window.togglePanel=(id,btn)=>{const el=document.getElementById(id),hidden=el.style.display==='none';el.style.display=hidden?'block':'none';btn.textContent=hidden?'▲ Hide':'▼ Show';};
+window.resetBulkUI=type=>{
+  const m={biz:['bizLog','bizDone','bizFail','bizProgress','bizProgressFill','bizProgressLabel'],job:['jobLog','jobDone','jobFail','jobProgress','jobProgressFill','jobProgressLabel'],room:['roomLog','roomDone','roomFail','roomProgress','roomProgressFill','roomProgressLabel']}[type];
+  document.getElementById(m[0]).innerHTML='';document.getElementById(m[0]).style.display='none';
+  document.getElementById(m[1]).textContent='0';document.getElementById(m[2]).textContent='0';
+  document.getElementById(m[3]).style.display='none';document.getElementById(m[4]).style.width='0%';document.getElementById(m[5]).textContent='';
+};
+function bLog(id,msg,t='ok'){const b=document.getElementById(id);b.style.display='block';const l=document.createElement('div');l.className=t==='ok'?'lok':t==='err'?'lerr':'linf';l.textContent=msg;b.appendChild(l);b.scrollTop=b.scrollHeight;}
+
+// ── BUSINESSES IMPORT ──
+window.runBizBulkImport=async()=>{
+  const btn=document.getElementById('btnBizImport');btn.disabled=true;btn.textContent='⏳ Importing…';
+  let done=0,fail=0;
+  document.getElementById('bizDone').textContent='0';document.getElementById('bizFail').textContent='0';
+  document.getElementById('bizProgress').style.display='block';document.getElementById('bizLog').style.display='block';document.getElementById('bizLog').innerHTML='';
+  bLog('bizLog',`→ Starting import of ${BULK_BIZ.length} businesses…`,'inf');
+  for(let i=0;i<BULK_BIZ.length;i++){
+    const b=BULK_BIZ[i];
+    const pct=Math.round(((i+1)/BULK_BIZ.length)*100);
+    document.getElementById('bizProgressFill').style.width=pct+'%';
+    document.getElementById('bizProgressLabel').textContent=`${i+1} of ${BULK_BIZ.length} — ${pct}%`;
+    const catIdx=BIZ_CATS.indexOf(b.category);
+    const imgUrl=catIdx>=0?bulkBizImgs[catIdx]:'';
+    try{
+      await addDoc(collection(db,'businesses'),{name:b.name,category:b.category,city:b.city,location:b.location,phone:b.phone,desc:b.desc,rating:b.rating,lat:b.lat,lng:b.lng,plan:'basic',verified:false,featured:false,approved:true,images:imgUrl?[imgUrl]:[],imageUrl:imgUrl,tags:'',whatsapp:'',email:'',website:'',source:'bulk-import',createdAt:serverTimestamp()});
+      done++;document.getElementById('bizDone').textContent=done;
+      bLog('bizLog',`✓ ${b.name} (${b.city})${imgUrl?' 📸':''}`, 'ok');
+    }catch(e){fail++;document.getElementById('bizFail').textContent=fail;bLog('bizLog',`✗ ${b.name} — ${e.message}`,'err');}
+    await new Promise(r=>setTimeout(r,100));
+  }
+  bLog('bizLog',`─── Done: ${done} imported, ${fail} failed ───`,'inf');
+  showToast(`✅ ${done} businesses imported!`);
+  btn.disabled=false;btn.textContent='⬆ Import All 50';
+  await fetchAll();
+};
+
+// ── JOBS IMPORT ──
+window.runJobBulkImport=async()=>{
+  const btn=document.getElementById('btnJobImport');btn.disabled=true;btn.textContent='⏳ Importing…';
+  let done=0,fail=0;
+  document.getElementById('jobDone').textContent='0';document.getElementById('jobFail').textContent='0';
+  document.getElementById('jobProgress').style.display='block';document.getElementById('jobLog').style.display='block';document.getElementById('jobLog').innerHTML='';
+  bLog('jobLog',`→ Starting import of ${BULK_JOBS.length} job listings…`,'inf');
+  const expiry=new Date(Date.now()+60*86400000);
+  for(let i=0;i<BULK_JOBS.length;i++){
+    const j=BULK_JOBS[i];
+    const pct=Math.round(((i+1)/BULK_JOBS.length)*100);
+    document.getElementById('jobProgressFill').style.width=pct+'%';
+    document.getElementById('jobProgressLabel').textContent=`${i+1} of ${BULK_JOBS.length} — ${pct}%`;
+    const logoUrl=j.ji>=0?bulkJobImgs[j.ji]:'';
+    try{
+      await addDoc(collection(db,'jobs'),{jobTitle:j.jobTitle,company:j.company,city:j.city,jobType:j.jobType,industry:j.industry,salary:j.salary,experience:j.experience,desc:j.desc,requirements:j.requirements,howToApply:j.howToApply,tags:j.tags,phone:j.phone,whatsapp:j.phone,email:j.email||'',logoUrl,deadline:j.deadline,plan:'free',paid:false,views:0,expiresAt:Timestamp.fromDate(expiry),source:'bulk-import',createdAt:serverTimestamp()});
+      done++;document.getElementById('jobDone').textContent=done;
+      bLog('jobLog',`✓ ${j.jobTitle} @ ${j.company} (${j.city})${logoUrl?' 🖼':''}`, 'ok');
+    }catch(e){fail++;document.getElementById('jobFail').textContent=fail;bLog('jobLog',`✗ ${j.jobTitle} — ${e.message}`,'err');}
+    await new Promise(r=>setTimeout(r,100));
+  }
+  bLog('jobLog',`─── Done: ${done} imported, ${fail} failed ───`,'inf');
+  showToast(`✅ ${done} job listings imported!`);
+  btn.disabled=false;btn.textContent='⬆ Import All 40';
+  await fetchJobs();
+};
+
+// ── ROOMS IMPORT ──
+window.runRoomBulkImport=async()=>{
+  const btn=document.getElementById('btnRoomImport');btn.disabled=true;btn.textContent='⏳ Importing…';
+  let done=0,fail=0;
+  document.getElementById('roomDone').textContent='0';document.getElementById('roomFail').textContent='0';
+  document.getElementById('roomProgress').style.display='block';document.getElementById('roomLog').style.display='block';document.getElementById('roomLog').innerHTML='';
+  bLog('roomLog',`→ Starting import of ${BULK_ROOMS.length} room listings…`,'inf');
+  for(let i=0;i<BULK_ROOMS.length;i++){
+    const r=BULK_ROOMS[i];
+    const pct=Math.round(((i+1)/BULK_ROOMS.length)*100);
+    document.getElementById('roomProgressFill').style.width=pct+'%';
+    document.getElementById('roomProgressLabel').textContent=`${i+1} of ${BULK_ROOMS.length} — ${pct}%`;
+    const imgUrl=bulkRoomImgs[r.ci]||'';
+    try{
+      await addDoc(collection(db,'rooms'),{title:r.title,type:r.type,city:r.city,district:r.district,price:r.price,period:r.period,beds:r.beds,baths:r.baths,desc:r.desc,phone:r.phone,whatsapp:r.phone,poster:r.poster,images:imgUrl?[imgUrl]:[],imageUrl:imgUrl,plan:'free',paid:false,available:true,views:0,source:'bulk-import',createdAt:serverTimestamp()});
+      done++;document.getElementById('roomDone').textContent=done;
+      bLog('roomLog',`✓ ${r.title} (${r.city}) GHS ${r.price.toLocaleString()}${imgUrl?' 📸':''}`, 'ok');
+    }catch(e){fail++;document.getElementById('roomFail').textContent=fail;bLog('roomLog',`✗ ${r.title} — ${e.message}`,'err');}
+    await new Promise(res=>setTimeout(res,100));
+  }
+  bLog('roomLog',`─── Done: ${done} imported, ${fail} failed ───`,'inf');
+  showToast(`✅ ${done} room listings imported!`);
+  btn.disabled=false;btn.textContent='⬆ Import All 45';
+  await fetchRooms();
 };
 
 // ── SECTION SWITCH ──
 window.switchSection=(name,el)=>{
   document.querySelectorAll('.section-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  el.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');el.classList.add('active');
   if(name==='jobs'&&!allJobs.length)fetchJobs();
   if(name==='rooms'&&!allRooms.length)fetchRooms();
 };
@@ -678,269 +706,58 @@ onAuthStateChanged(auth,u=>{
   else{document.getElementById('loginWrap').style.display='flex';document.getElementById('adminWrap').style.display='none';}
 });
 window.doLogin=async()=>{
-  const e=document.getElementById('lemail').value.trim(),p=document.getElementById('lpwd').value,err=document.getElementById('lerr');
-  err.style.display='none';
+  const e=document.getElementById('lemail').value.trim(),p=document.getElementById('lpwd').value,err=document.getElementById('lerr');err.style.display='none';
   try{await signInWithEmailAndPassword(auth,e,p);}
   catch(ex){err.textContent=ex.code==='auth/invalid-credential'?'Wrong email or password.':ex.message;err.style.display='block';}
 };
 window.doLogout=async()=>await signOut(auth);
 
-// ════════════════════════════════════
-// BUSINESSES
-// ════════════════════════════════════
-window.selBizPlan=(plan,el)=>{
-  currentBizPlan=plan;
-  document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  const note=document.getElementById('planNote');note.textContent=BIZ_PLAN_NOTES[plan];note.style.display='block';
-  const limit=BIZ_IMG_LIMITS[plan];document.getElementById('imgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} for ${plan}`;
-  if(plan!=='basic'){const exp=new Date();exp.setDate(exp.getDate()+30);document.getElementById('bExpiry').value=exp.toISOString().split('T')[0];}
-  else document.getElementById('bExpiry').value='';
-  renderBizImgGrid();
-};
-function renderBizImgGrid(){
-  const limit=BIZ_IMG_LIMITS[currentBizPlan]||1,grid=document.getElementById('imgGrid');
-  let html=uploadedBizImgs.map((img,i)=>`<div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeBizImg(${i})">×</button></div>`).join('');
-  if(uploadedBizImgs.length<limit)html+=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadBizImg(this)"><span>📷</span><span>Add</span></div>`;
-  grid.innerHTML=html;
-  const bar=document.getElementById('imgLimitBar');bar.className='img-limit-bar'+(uploadedBizImgs.length>=limit?' maxed':'');
-  document.getElementById('imgCountLabel').textContent=`${uploadedBizImgs.length} / ${limit} photo${limit!==1?'s':''}`;
-}
-window.removeBizImg=idx=>{uploadedBizImgs.splice(idx,1);renderBizImgGrid();};
-window.addBizUrlImg=url=>{
-  if(!url||!url.startsWith('http'))return;
-  const limit=BIZ_IMG_LIMITS[currentBizPlan]||1;
-  if(uploadedBizImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
-  if(!uploadedBizImgs.includes(url)){uploadedBizImgs.push(url);renderBizImgGrid();document.getElementById('bImgDirect').value='';}
-};
-window.uploadBizImg=async input=>{
-  const f=input.files[0];if(!f)return;
-  if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
-  const limit=BIZ_IMG_LIMITS[currentBizPlan]||1;
-  if(uploadedBizImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
-  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
-  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
-  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_biz');
-  try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
-    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
-    const data=await res.json();clearInterval(iv);
-    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedBizImgs.push(data.secure_url);renderBizImgGrid();setTimeout(()=>bar.style.display='none',1000);}
-    else throw new Error(data.error?.message||'Failed');
-  }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}
-};
-window.getCoords=()=>{if(!navigator.geolocation){showToast('⚠️ Not available');return;}navigator.geolocation.getCurrentPosition(p=>{document.getElementById('bLat').value=p.coords.latitude.toFixed(6);document.getElementById('bLng').value=p.coords.longitude.toFixed(6);showToast('📍 Location detected!');},()=>showToast('❌ Could not detect location'));};
+// ════════ BUSINESSES ════════
+window.selBizPlan=(plan,el)=>{curBizPlan=plan;document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');const note=document.getElementById('planNote');note.textContent=BPN[plan];note.style.display='block';const limit=BIL[plan];document.getElementById('imgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} for ${plan}`;if(plan!=='basic'){const exp=new Date();exp.setDate(exp.getDate()+30);document.getElementById('bExpiry').value=exp.toISOString().split('T')[0];}else document.getElementById('bExpiry').value='';renderBizImgGrid();};
+function renderBizImgGrid(){const limit=BIL[curBizPlan]||1,grid=document.getElementById('imgGrid');let html=upBizImgs.map((img,i)=>`<div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeBizImg(${i})">×</button></div>`).join('');if(upBizImgs.length<limit)html+=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadBizImg(this)"><span>📷</span><span>Add</span></div>`;grid.innerHTML=html;const bar=document.getElementById('imgLimitBar');bar.className='img-limit-bar'+(upBizImgs.length>=limit?' maxed':'');document.getElementById('imgCountLabel').textContent=`${upBizImgs.length} / ${limit} photo${limit!==1?'s':''}`;}
+window.removeBizImg=idx=>{upBizImgs.splice(idx,1);renderBizImgGrid();};
+window.addBizUrlImg=url=>{if(!url||!url.startsWith('http'))return;const limit=BIL[curBizPlan]||1;if(upBizImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}if(!upBizImgs.includes(url)){upBizImgs.push(url);renderBizImgGrid();document.getElementById('bImgDirect').value='';}};
+window.uploadBizImg=async input=>{const f=input.files[0];if(!f)return;if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}const limit=BIL[curBizPlan]||1;if(upBizImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UP);fd.append('folder','citylinkgh_biz');try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);const res=await fetch(`https://api.cloudinary.com/v1_1/${CN}/image/upload`,{method:'POST',body:fd});const data=await res.json();clearInterval(iv);if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';upBizImgs.push(data.secure_url);renderBizImgGrid();setTimeout(()=>bar.style.display='none',1000);}else throw new Error(data.error?.message||'Failed');}catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}};
+window.getCoords=()=>{if(!navigator.geolocation){showToast('⚠️ Not available');return;}navigator.geolocation.getCurrentPosition(p=>{document.getElementById('bLat').value=p.coords.latitude.toFixed(6);document.getElementById('bLng').value=p.coords.longitude.toFixed(6);showToast('📍 Detected!');},()=>showToast('❌ Could not detect'));};
 window.setRating=v=>{selRating=v;document.querySelectorAll('.star').forEach(s=>s.classList.toggle('active',Number(s.dataset.v)<=v));};
-async function fetchAll(){
-  try{const snap=await getDocs(query(collection(db,'businesses'),orderBy('createdAt','desc')));allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));updateBizStats();renderBizList();}
-  catch(e){document.getElementById('bizList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
-}
-window.saveBiz=async()=>{
-  const name=document.getElementById('bName').value.trim(),cat=document.getElementById('bCat').value,city=document.getElementById('bCity').value;
-  if(!name){showToast('⚠️ Name required');return;}if(!cat){showToast('⚠️ Category required');return;}if(!city){showToast('⚠️ City required');return;}
-  const btn=document.getElementById('subBtn');btn.disabled=true;btn.textContent='Saving…';
-  const editId=document.getElementById('editId').value;
-  const flags=BIZ_PLAN_FLAGS[currentBizPlan];
-  const expiry=document.getElementById('bExpiry').value;
-  const data={name,category:cat,city,desc:document.getElementById('bDesc').value.trim(),location:document.getElementById('bLoc').value.trim(),lat:parseFloat(document.getElementById('bLat').value)||null,lng:parseFloat(document.getElementById('bLng').value)||null,phone:document.getElementById('bPhone').value.trim(),whatsapp:document.getElementById('bWa').value.trim(),email:document.getElementById('bEmail').value.trim(),website:document.getElementById('bWeb').value.trim(),tags:document.getElementById('bTags').value.trim(),openTime:document.getElementById('bOpen').value,closeTime:document.getElementById('bClose').value,rating:selRating||null,images:uploadedBizImgs,imageUrl:uploadedBizImgs[0]||'',plan:currentBizPlan,verified:flags.verified,featured:flags.featured,approved:document.getElementById('togApp').classList.contains('on'),expiresAt:expiry?Timestamp.fromDate(new Date(expiry)):null};
-  try{if(editId){await updateDoc(doc(db,'businesses',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Updated!');}
-    else{data.createdAt=serverTimestamp();data.source='admin';await addDoc(collection(db,'businesses'),data);showToast('✅ Business added!');}
-    clearBizForm();await fetchAll();
-  }catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Business';}
-};
-window.deleteBiz=async id=>{if(!confirm('Delete this business permanently?'))return;try{await deleteDoc(doc(db,'businesses',id));showToast('🗑 Deleted');await fetchAll();}catch(e){showToast('❌ '+e.message);}};
+async function fetchAll(){try{const snap=await getDocs(query(collection(db,'businesses'),orderBy('createdAt','desc')));allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));updateBizStats();renderBizList();}catch(e){document.getElementById('bizList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}}
+window.saveBiz=async()=>{const name=document.getElementById('bName').value.trim(),cat=document.getElementById('bCat').value,city=document.getElementById('bCity').value;if(!name){showToast('⚠️ Name required');return;}if(!cat){showToast('⚠️ Category required');return;}if(!city){showToast('⚠️ City required');return;}const btn=document.getElementById('subBtn');btn.disabled=true;btn.textContent='Saving…';const editId=document.getElementById('editId').value,flags=BPF[curBizPlan],expiry=document.getElementById('bExpiry').value;const data={name,category:cat,city,desc:document.getElementById('bDesc').value.trim(),location:document.getElementById('bLoc').value.trim(),lat:parseFloat(document.getElementById('bLat').value)||null,lng:parseFloat(document.getElementById('bLng').value)||null,phone:document.getElementById('bPhone').value.trim(),whatsapp:document.getElementById('bWa').value.trim(),email:document.getElementById('bEmail').value.trim(),website:document.getElementById('bWeb').value.trim(),tags:document.getElementById('bTags').value.trim(),openTime:document.getElementById('bOpen').value,closeTime:document.getElementById('bClose').value,rating:selRating||null,images:upBizImgs,imageUrl:upBizImgs[0]||'',plan:curBizPlan,verified:flags.verified,featured:flags.featured,approved:document.getElementById('togApp').classList.contains('on'),expiresAt:expiry?Timestamp.fromDate(new Date(expiry)):null};try{if(editId){await updateDoc(doc(db,'businesses',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Updated!');}else{data.createdAt=serverTimestamp();data.source='admin';await addDoc(collection(db,'businesses'),data);showToast('✅ Business added!');}clearBizForm();await fetchAll();}catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Business';}};
+window.deleteBiz=async id=>{if(!confirm('Delete?'))return;try{await deleteDoc(doc(db,'businesses',id));showToast('🗑 Deleted');await fetchAll();}catch(e){showToast('❌ '+e.message);}};
 window.toggleApprove=async id=>{const b=allBiz.find(x=>x.id===id);if(!b)return;await updateDoc(doc(db,'businesses',id),{approved:!b.approved});showToast(b.approved?'⏸ Unpublished':'✅ Now Live!');await fetchAll();};
-window.sendRenewalReminders=async()=>{showToast('⚠️ Set Arkesel key first');};
-window.bulkApprovePending=async()=>{
-  const pending=allBiz.filter(b=>!b.approved);
-  if(!pending.length){showToast('No pending listings');return;}
-  if(!confirm(`Approve all ${pending.length} pending listings?`))return;
-  try{await Promise.all(pending.map(b=>updateDoc(doc(db,'businesses',b.id),{approved:true})));showToast(`✅ ${pending.length} listings approved!`);await fetchAll();}catch(e){showToast('❌ '+e.message);}
-};
-window.editBiz=id=>{
-  const b=allBiz.find(x=>x.id===id);if(!b)return;
-  document.getElementById('editId').value=id;document.getElementById('bName').value=b.name||'';document.getElementById('bDesc').value=b.desc||'';document.getElementById('bCat').value=b.category||'';document.getElementById('bCity').value=b.city||'';document.getElementById('bLoc').value=b.location||'';document.getElementById('bLat').value=b.lat||'';document.getElementById('bLng').value=b.lng||'';document.getElementById('bPhone').value=b.phone||'';document.getElementById('bWa').value=b.whatsapp||'';document.getElementById('bEmail').value=b.email||'';document.getElementById('bWeb').value=b.website||'';document.getElementById('bTags').value=b.tags||'';document.getElementById('bOpen').value=b.openTime||'';document.getElementById('bClose').value=b.closeTime||'';
-  if(b.expiresAt){const d=b.expiresAt.toDate?b.expiresAt.toDate():new Date(b.expiresAt);document.getElementById('bExpiry').value=d.toISOString().split('T')[0];}
-  uploadedBizImgs=b.images||(b.imageUrl?[b.imageUrl]:[]);
-  if(b.rating)setRating(b.rating);
-  document.getElementById('togApp').classList.toggle('on',!!b.approved);
-  const plan=b.plan||'basic';currentBizPlan=plan;
-  document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===plan)o.classList.add('selected');});
-  document.getElementById('planNote').textContent=BIZ_PLAN_NOTES[plan];document.getElementById('planNote').style.display='block';
-  renderBizImgGrid();document.getElementById('subBtn').textContent='💾 Update Business';
-  document.querySelectorAll('.sec-tab')[0].click();window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+b.name);
-};
-window.clearBizForm=()=>{
-  ['editId','bName','bDesc','bLoc','bPhone','bWa','bEmail','bWeb','bTags','bLat','bLng','bExpiry'].forEach(i=>document.getElementById(i).value='');
-  ['bCat','bCity'].forEach(i=>document.getElementById(i).value='');
-  document.getElementById('bOpen').value='';document.getElementById('bClose').value='';
-  document.getElementById('togApp').classList.add('on');selRating=0;currentBizPlan='basic';uploadedBizImgs=[];
-  document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='basic')o.classList.add('selected');});
-  document.getElementById('planNote').style.display='none';document.getElementById('bImgDirect').value='';
-  renderBizImgGrid();document.getElementById('subBtn').textContent='📤 Save Business';
-};
+window.sendRenewalReminders=async()=>showToast('⚠️ Set Arkesel key first');
+window.bulkApprovePending=async()=>{const pending=allBiz.filter(b=>!b.approved);if(!pending.length){showToast('No pending');return;}if(!confirm(`Approve all ${pending.length}?`))return;try{await Promise.all(pending.map(b=>updateDoc(doc(db,'businesses',b.id),{approved:true})));showToast(`✅ ${pending.length} approved!`);await fetchAll();}catch(e){showToast('❌ '+e.message);}};
+window.editBiz=id=>{const b=allBiz.find(x=>x.id===id);if(!b)return;document.getElementById('editId').value=id;document.getElementById('bName').value=b.name||'';document.getElementById('bDesc').value=b.desc||'';document.getElementById('bCat').value=b.category||'';document.getElementById('bCity').value=b.city||'';document.getElementById('bLoc').value=b.location||'';document.getElementById('bLat').value=b.lat||'';document.getElementById('bLng').value=b.lng||'';document.getElementById('bPhone').value=b.phone||'';document.getElementById('bWa').value=b.whatsapp||'';document.getElementById('bEmail').value=b.email||'';document.getElementById('bWeb').value=b.website||'';document.getElementById('bTags').value=b.tags||'';document.getElementById('bOpen').value=b.openTime||'';document.getElementById('bClose').value=b.closeTime||'';if(b.expiresAt){const d=b.expiresAt.toDate?b.expiresAt.toDate():new Date(b.expiresAt);document.getElementById('bExpiry').value=d.toISOString().split('T')[0];}upBizImgs=b.images||(b.imageUrl?[b.imageUrl]:[]);if(b.rating)setRating(b.rating);document.getElementById('togApp').classList.toggle('on',!!b.approved);const plan=b.plan||'basic';curBizPlan=plan;document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===plan)o.classList.add('selected');});document.getElementById('planNote').textContent=BPN[plan];document.getElementById('planNote').style.display='block';renderBizImgGrid();document.getElementById('subBtn').textContent='💾 Update Business';document.querySelectorAll('.sec-tab')[0].click();window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+b.name);};
+window.clearBizForm=()=>{['editId','bName','bDesc','bLoc','bPhone','bWa','bEmail','bWeb','bTags','bLat','bLng','bExpiry'].forEach(i=>document.getElementById(i).value='');['bCat','bCity'].forEach(i=>document.getElementById(i).value='');document.getElementById('bOpen').value='';document.getElementById('bClose').value='';document.getElementById('togApp').classList.add('on');selRating=0;curBizPlan='basic';upBizImgs=[];document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));document.querySelectorAll('#panel-businesses .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='basic')o.classList.add('selected');});document.getElementById('planNote').style.display='none';document.getElementById('bImgDirect').value='';renderBizImgGrid();document.getElementById('subBtn').textContent='📤 Save Business';};
 window.setBizTab=(tab,el)=>{bizTab=tab;document.querySelectorAll('#panel-businesses .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderBizList();};
-window.renderBizList=()=>{
-  const q=(document.getElementById('asearch').value||'').toLowerCase(),now=Date.now();
-  let list=[...allBiz].filter(b=>!q||(b.name||'').toLowerCase().includes(q)||(b.category||'').toLowerCase().includes(q)||(b.city||'').toLowerCase().includes(q));
-  if(bizTab==='live')list=list.filter(b=>b.approved);else if(bizTab==='pending')list=list.filter(b=>!b.approved);else if(bizTab==='premium')list=list.filter(b=>b.plan==='premium');
-  else if(bizTab==='expiring')list=list.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return exp>now&&(exp-now)<7*86400000;});
-  const el=document.getElementById('bizList');
-  if(!list.length){el.innerHTML='<div class="empty">📭 No businesses found</div>';return;}
-  el.innerHTML=list.map(b=>{
-    const plan=b.plan||'basic',exp=b.expiresAt?.toDate?b.expiresAt.toDate():b.expiresAt?new Date(b.expiresAt):null,days=exp?Math.ceil((exp.getTime()-now)/86400000):null,imgCount=(b.images||[]).length||(b.imageUrl?1:0);
-    return `<div class="biz-row plan-${plan}"><div class="biz-row-thumb">${b.imageUrl||b.images?.[0]?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:catEmoji(b.category)}</div><div class="biz-row-body"><div class="biz-row-name">${esc(b.name)}</div><div class="biz-row-meta"><span class="badge bc">${esc(b.city||'—')}</span><span class="badge b${plan}">${plan==='premium'?'👑':plan==='featured'?'⭐':plan==='standard'?'✓':''} ${plan}</span>${b.verified?'<span class="badge bverified">✓ Ver</span>':''}${b.approved?'<span class="badge blive">● Live</span>':'<span class="badge bpend">⏳ Pending</span>'}${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d</span>`:''}<span class="badge bc">📷 ${imgCount}</span></div><div class="biz-row-loc">📍 ${esc(b.location||'')} ${esc(b.city||'')}${exp?` · Exp ${exp.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`:''}</div></div><div class="row-acts"><button class="ibtn" onclick="editBiz('${b.id}')">✏️</button><button class="ibtn" onclick="toggleApprove('${b.id}')">${b.approved?'⏸':'✅'}</button><button class="ibtn del" onclick="deleteBiz('${b.id}')">🗑</button></div></div>`;
-  }).join('');
-};
-function updateBizStats(){
-  const now=Date.now();
-  document.getElementById('sTotal').textContent=allBiz.length;document.getElementById('sLive').textContent=allBiz.filter(b=>b.approved).length;
-  const pend=allBiz.filter(b=>!b.approved).length;document.getElementById('sPend').textContent=pend;
-  document.getElementById('sExp').textContent=allBiz.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const t=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return t>now&&(t-now)<7*86400000;}).length;
-  document.getElementById('psPremium').textContent=allBiz.filter(b=>b.plan==='premium').length;document.getElementById('psFeatured').textContent=allBiz.filter(b=>b.plan==='featured').length;document.getElementById('psStandard').textContent=allBiz.filter(b=>b.plan==='standard').length;document.getElementById('psBasic').textContent=allBiz.filter(b=>!b.plan||b.plan==='basic').length;
-  const paid=allBiz.filter(b=>b.approved&&b.plan&&b.plan!=='basic');const rev=paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);
-  document.getElementById('revAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('revSub').textContent=`${paid.length} active paid listing${paid.length!==1?'s':''}`;
-  const pb=document.getElementById('pendBanner');pb.style.display=pend?'flex':'none';document.getElementById('pendCount').textContent=pend;
-}
+window.renderBizList=()=>{const q=(document.getElementById('asearch').value||'').toLowerCase(),now=Date.now();let list=[...allBiz].filter(b=>!q||(b.name||'').toLowerCase().includes(q)||(b.category||'').toLowerCase().includes(q)||(b.city||'').toLowerCase().includes(q));if(bizTab==='live')list=list.filter(b=>b.approved);else if(bizTab==='pending')list=list.filter(b=>!b.approved);else if(bizTab==='premium')list=list.filter(b=>b.plan==='premium');else if(bizTab==='expiring')list=list.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return exp>now&&(exp-now)<7*86400000;});const el=document.getElementById('bizList');if(!list.length){el.innerHTML='<div class="empty">📭 No businesses found</div>';return;}el.innerHTML=list.map(b=>{const plan=b.plan||'basic',exp=b.expiresAt?.toDate?b.expiresAt.toDate():b.expiresAt?new Date(b.expiresAt):null,days=exp?Math.ceil((exp.getTime()-now)/86400000):null,imgCount=(b.images||[]).length||(b.imageUrl?1:0);return `<div class="biz-row plan-${plan}"><div class="biz-row-thumb">${b.imageUrl||b.images?.[0]?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:catEmoji(b.category)}</div><div class="biz-row-body"><div class="biz-row-name">${esc(b.name)}</div><div class="biz-row-meta"><span class="badge bc">${esc(b.city||'—')}</span><span class="badge b${plan}">${plan==='premium'?'👑':plan==='featured'?'⭐':plan==='standard'?'✓':''} ${plan}</span>${b.verified?'<span class="badge bverified">✓ Ver</span>':''}${b.approved?'<span class="badge blive">● Live</span>':'<span class="badge bpend">⏳ Pending</span>'}${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d</span>`:''}<span class="badge bc">📷 ${imgCount}</span></div><div class="biz-row-loc">📍 ${esc(b.location||'')} ${esc(b.city||'')}${exp?` · Exp ${exp.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`:''}</div></div><div class="row-acts"><button class="ibtn" onclick="editBiz('${b.id}')">✏️</button><button class="ibtn" onclick="toggleApprove('${b.id}')">${b.approved?'⏸':'✅'}</button><button class="ibtn del" onclick="deleteBiz('${b.id}')">🗑</button></div></div>`;}).join('');};
+function updateBizStats(){const now=Date.now();document.getElementById('sTotal').textContent=allBiz.length;document.getElementById('sLive').textContent=allBiz.filter(b=>b.approved).length;const pend=allBiz.filter(b=>!b.approved).length;document.getElementById('sPend').textContent=pend;document.getElementById('sExp').textContent=allBiz.filter(b=>{if(!b.expiresAt||b.plan==='basic')return false;const t=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return t>now&&(t-now)<7*86400000;}).length;document.getElementById('psPremium').textContent=allBiz.filter(b=>b.plan==='premium').length;document.getElementById('psFeatured').textContent=allBiz.filter(b=>b.plan==='featured').length;document.getElementById('psStandard').textContent=allBiz.filter(b=>b.plan==='standard').length;document.getElementById('psBasic').textContent=allBiz.filter(b=>!b.plan||b.plan==='basic').length;const paid=allBiz.filter(b=>b.approved&&b.plan&&b.plan!=='basic');const rev=paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);document.getElementById('revAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('revSub').textContent=`${paid.length} active paid listing${paid.length!==1?'s':''}`;const pb=document.getElementById('pendBanner');pb.style.display=pend?'flex':'none';document.getElementById('pendCount').textContent=pend;}
 
-// ════════════════════════════════════
-// JOBS
-// ════════════════════════════════════
-window.selJobPlan=el=>{currentJobPlan=el.dataset.plan;currentJobPrice=Number(el.dataset.price);document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
-async function fetchJobs(){
-  try{const snap=await getDocs(query(collection(db,'jobs'),orderBy('createdAt','desc')));allJobs=snap.docs.map(d=>({id:d.id,...d.data()}));updateJobStats();renderJobList();}
-  catch(e){document.getElementById('jobList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
-}
-window.saveJob=async()=>{
-  const title=document.getElementById('jTitle').value.trim(),company=document.getElementById('jCompany').value.trim(),city=document.getElementById('jCity').value,type=document.getElementById('jType').value,phone=document.getElementById('jPhone').value.trim();
-  if(!title){showToast('⚠️ Job title required');return;}if(!company){showToast('⚠️ Company required');return;}if(!city){showToast('⚠️ City required');return;}if(!type){showToast('⚠️ Job type required');return;}if(!phone){showToast('⚠️ Phone required');return;}
-  const btn=document.getElementById('jSubBtn');btn.disabled=true;btn.textContent='Saving…';
-  const editId=document.getElementById('jEditId').value;
-  const expiry=new Date(Date.now()+(JOB_PLAN_DAYS[currentJobPlan]||30)*86400000);
-  const data={jobTitle:title,company,city,jobType:type,industry:document.getElementById('jIndustry').value,salary:document.getElementById('jSalary').value.trim(),experience:document.getElementById('jExp').value,desc:document.getElementById('jDesc').value.trim(),requirements:document.getElementById('jReqs').value.trim(),howToApply:document.getElementById('jApply').value.trim(),tags:document.getElementById('jTags').value.trim(),phone,whatsapp:document.getElementById('jWa').value.trim(),email:document.getElementById('jEmail').value.trim(),deadline:document.getElementById('jDeadline').value,logoUrl:document.getElementById('jLogoUrl').value.trim(),plan:currentJobPlan,paid:currentJobPrice>0,views:0,expiresAt:Timestamp.fromDate(expiry),source:'admin'};
-  try{if(editId){await updateDoc(doc(db,'jobs',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Job updated!');}
-    else{data.createdAt=serverTimestamp();await addDoc(collection(db,'jobs'),data);showToast('✅ Job posted!');}
-    clearJobForm();await fetchJobs();
-  }catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Job';}
-};
-window.deleteJob=async id=>{if(!confirm('Delete this job permanently?'))return;try{await deleteDoc(doc(db,'jobs',id));showToast('🗑 Deleted');await fetchJobs();}catch(e){showToast('❌ '+e.message);}};
-window.editJob=id=>{
-  const j=allJobs.find(x=>x.id===id);if(!j)return;
-  document.getElementById('jEditId').value=id;document.getElementById('jTitle').value=j.jobTitle||'';document.getElementById('jCompany').value=j.company||'';document.getElementById('jCity').value=j.city||'';document.getElementById('jType').value=j.jobType||'';document.getElementById('jIndustry').value=j.industry||'';document.getElementById('jSalary').value=j.salary||'';document.getElementById('jExp').value=j.experience||'No experience';document.getElementById('jDeadline').value=j.deadline||'';document.getElementById('jDesc').value=j.desc||'';document.getElementById('jReqs').value=j.requirements||'';document.getElementById('jApply').value=j.howToApply||'';document.getElementById('jTags').value=j.tags||'';document.getElementById('jPhone').value=j.phone||'';document.getElementById('jWa').value=j.whatsapp||'';document.getElementById('jEmail').value=j.email||'';document.getElementById('jLogoUrl').value=j.logoUrl||'';
-  currentJobPlan=j.plan||'free';document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===currentJobPlan)o.classList.add('selected');});
-  document.getElementById('jSubBtn').textContent='💾 Update Job';window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+j.jobTitle);
-};
-window.clearJobForm=()=>{
-  ['jEditId','jTitle','jCompany','jSalary','jDeadline','jDesc','jReqs','jApply','jTags','jPhone','jWa','jEmail','jLogoUrl'].forEach(i=>document.getElementById(i).value='');
-  ['jCity','jType','jIndustry'].forEach(i=>document.getElementById(i).value='');document.getElementById('jExp').value='No experience';
-  currentJobPlan='free';currentJobPrice=0;document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='free')o.classList.add('selected');});
-  document.getElementById('jSubBtn').textContent='📤 Save Job';
-};
+// ════════ JOBS ════════
+window.selJobPlan=el=>{curJobPlan=el.dataset.plan;curJobPrice=Number(el.dataset.price);document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
+async function fetchJobs(){try{const snap=await getDocs(query(collection(db,'jobs'),orderBy('createdAt','desc')));allJobs=snap.docs.map(d=>({id:d.id,...d.data()}));updateJobStats();renderJobList();}catch(e){document.getElementById('jobList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}}
+window.saveJob=async()=>{const title=document.getElementById('jTitle').value.trim(),company=document.getElementById('jCompany').value.trim(),city=document.getElementById('jCity').value,type=document.getElementById('jType').value,phone=document.getElementById('jPhone').value.trim();if(!title){showToast('⚠️ Job title required');return;}if(!company){showToast('⚠️ Company required');return;}if(!city){showToast('⚠️ City required');return;}if(!type){showToast('⚠️ Type required');return;}if(!phone){showToast('⚠️ Phone required');return;}const btn=document.getElementById('jSubBtn');btn.disabled=true;btn.textContent='Saving…';const editId=document.getElementById('jEditId').value,expiry=new Date(Date.now()+(JPD[curJobPlan]||30)*86400000);const data={jobTitle:title,company,city,jobType:type,industry:document.getElementById('jIndustry').value,salary:document.getElementById('jSalary').value.trim(),experience:document.getElementById('jExp').value,desc:document.getElementById('jDesc').value.trim(),requirements:document.getElementById('jReqs').value.trim(),howToApply:document.getElementById('jApply').value.trim(),tags:document.getElementById('jTags').value.trim(),phone,whatsapp:document.getElementById('jWa').value.trim(),email:document.getElementById('jEmail').value.trim(),deadline:document.getElementById('jDeadline').value,logoUrl:document.getElementById('jLogoUrl').value.trim(),plan:curJobPlan,paid:curJobPrice>0,views:0,expiresAt:Timestamp.fromDate(expiry),source:'admin'};try{if(editId){await updateDoc(doc(db,'jobs',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Job updated!');}else{data.createdAt=serverTimestamp();await addDoc(collection(db,'jobs'),data);showToast('✅ Job posted!');}clearJobForm();await fetchJobs();}catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Job';}};
+window.deleteJob=async id=>{if(!confirm('Delete?'))return;try{await deleteDoc(doc(db,'jobs',id));showToast('🗑 Deleted');await fetchJobs();}catch(e){showToast('❌ '+e.message);}};
+window.editJob=id=>{const j=allJobs.find(x=>x.id===id);if(!j)return;document.getElementById('jEditId').value=id;document.getElementById('jTitle').value=j.jobTitle||'';document.getElementById('jCompany').value=j.company||'';document.getElementById('jCity').value=j.city||'';document.getElementById('jType').value=j.jobType||'';document.getElementById('jIndustry').value=j.industry||'';document.getElementById('jSalary').value=j.salary||'';document.getElementById('jExp').value=j.experience||'No experience';document.getElementById('jDeadline').value=j.deadline||'';document.getElementById('jDesc').value=j.desc||'';document.getElementById('jReqs').value=j.requirements||'';document.getElementById('jApply').value=j.howToApply||'';document.getElementById('jTags').value=j.tags||'';document.getElementById('jPhone').value=j.phone||'';document.getElementById('jWa').value=j.whatsapp||'';document.getElementById('jEmail').value=j.email||'';document.getElementById('jLogoUrl').value=j.logoUrl||'';curJobPlan=j.plan||'free';document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===curJobPlan)o.classList.add('selected');});document.getElementById('jSubBtn').textContent='💾 Update Job';window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+j.jobTitle);};
+window.clearJobForm=()=>{['jEditId','jTitle','jCompany','jSalary','jDeadline','jDesc','jReqs','jApply','jTags','jPhone','jWa','jEmail','jLogoUrl'].forEach(i=>document.getElementById(i).value='');['jCity','jType','jIndustry'].forEach(i=>document.getElementById(i).value='');document.getElementById('jExp').value='No experience';curJobPlan='free';curJobPrice=0;document.querySelectorAll('#panel-jobs .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='free')o.classList.add('selected');});document.getElementById('jSubBtn').textContent='📤 Save Job';};
 window.setJobTab=(tab,el)=>{jobTab=tab;document.querySelectorAll('#panel-jobs .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderJobList();};
-window.renderJobList=()=>{
-  const q=(document.getElementById('jsearch').value||'').toLowerCase(),now=Date.now();
-  let list=[...allJobs].filter(j=>!q||(j.jobTitle||'').toLowerCase().includes(q)||(j.company||'').toLowerCase().includes(q)||(j.city||'').toLowerCase().includes(q));
-  if(jobTab==='urgent')list=list.filter(j=>j.plan==='urgent');else if(jobTab==='featured')list=list.filter(j=>j.plan==='featured');else if(jobTab==='free')list=list.filter(j=>!j.plan||j.plan==='free');
-  else if(jobTab==='expiring')list=list.filter(j=>{if(!j.expiresAt)return false;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now&&(exp-now)<7*86400000;});
-  const el=document.getElementById('jobList');
-  if(!list.length){el.innerHTML='<div class="empty">📭 No jobs found</div>';return;}
-  el.innerHTML=list.map(j=>{
-    const plan=j.plan||'free',exp=j.expiresAt?.toDate?j.expiresAt.toDate():j.expiresAt?new Date(j.expiresAt):null,days=exp?Math.ceil((exp.getTime()-now)/86400000):null;
-    return `<div class="biz-row plan-${plan}"><div class="biz-row-thumb">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'💼'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(j.jobTitle||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(j.company||'—')}</span><span class="badge bc">${esc(j.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${j.jobType?`<span class="badge bc">${esc(j.jobType)}</span>`:''}${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d left</span>`:''}</div><div class="biz-row-loc">💰 ${esc(j.salary||'Not stated')} · 👁 ${j.views||0} views</div></div><div class="row-acts"><button class="ibtn" onclick="editJob('${j.id}')">✏️</button><button class="ibtn del" onclick="deleteJob('${j.id}')">🗑</button></div></div>`;
-  }).join('');
-};
-function updateJobStats(){
-  const now=Date.now(),active=allJobs.filter(j=>{if(!j.expiresAt)return true;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now;});
-  document.getElementById('jTotal').textContent=allJobs.length;document.getElementById('jActive').textContent=active.length;document.getElementById('jFeatured').textContent=allJobs.filter(j=>j.plan==='featured').length;document.getElementById('jUrgent').textContent=allJobs.filter(j=>j.plan==='urgent').length;
-  const paid=allJobs.filter(j=>j.paid),rev=paid.reduce((s,j)=>s+(j.plan==='urgent'?100:j.plan==='featured'?60:30),0);
-  document.getElementById('jRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('jRevSub').textContent=`${paid.length} paid job listing${paid.length!==1?'s':''}`;
-}
+window.renderJobList=()=>{const q=(document.getElementById('jsearch').value||'').toLowerCase(),now=Date.now();let list=[...allJobs].filter(j=>!q||(j.jobTitle||'').toLowerCase().includes(q)||(j.company||'').toLowerCase().includes(q)||(j.city||'').toLowerCase().includes(q));if(jobTab==='urgent')list=list.filter(j=>j.plan==='urgent');else if(jobTab==='featured')list=list.filter(j=>j.plan==='featured');else if(jobTab==='free')list=list.filter(j=>!j.plan||j.plan==='free');else if(jobTab==='expiring')list=list.filter(j=>{if(!j.expiresAt)return false;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now&&(exp-now)<7*86400000;});const el=document.getElementById('jobList');if(!list.length){el.innerHTML='<div class="empty">📭 No jobs found</div>';return;}el.innerHTML=list.map(j=>{const plan=j.plan||'free',exp=j.expiresAt?.toDate?j.expiresAt.toDate():j.expiresAt?new Date(j.expiresAt):null,days=exp?Math.ceil((exp.getTime()-now)/86400000):null;return `<div class="biz-row plan-${plan}"><div class="biz-row-thumb">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'💼'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(j.jobTitle||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(j.company||'—')}</span><span class="badge bc">${esc(j.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${j.jobType?`<span class="badge bc">${esc(j.jobType)}</span>`:''}${days!==null&&days<=7?`<span class="badge bexpiring">⚠️ ${days}d left</span>`:''}</div><div class="biz-row-loc">💰 ${esc(j.salary||'Not stated')} · 👁 ${j.views||0} views</div></div><div class="row-acts"><button class="ibtn" onclick="editJob('${j.id}')">✏️</button><button class="ibtn del" onclick="deleteJob('${j.id}')">🗑</button></div></div>`;}).join('');};
+function updateJobStats(){const now=Date.now(),active=allJobs.filter(j=>{if(!j.expiresAt)return true;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now;});document.getElementById('jTotal').textContent=allJobs.length;document.getElementById('jActive').textContent=active.length;document.getElementById('jFeatured').textContent=allJobs.filter(j=>j.plan==='featured').length;document.getElementById('jUrgent').textContent=allJobs.filter(j=>j.plan==='urgent').length;const paid=allJobs.filter(j=>j.paid),rev=paid.reduce((s,j)=>s+(j.plan==='urgent'?100:j.plan==='featured'?60:30),0);document.getElementById('jRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('jRevSub').textContent=`${paid.length} paid job listing${paid.length!==1?'s':''}`;}
 
-// ════════════════════════════════════
-// ROOMS
-// ════════════════════════════════════
-window.selRoomPlan=el=>{
-  currentRoomPlan=el.dataset.plan;currentRoomPrice=Number(el.dataset.price);
-  document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
-  const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;document.getElementById('rImgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} (${currentRoomPlan})`;
-  renderRoomImgGrid();
-};
-function renderRoomImgGrid(){
-  const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1,grid=document.getElementById('rImgGrid');
-  let html=uploadedRoomImgs.map((img,i)=>`<div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeRoomImg(${i})">×</button></div>`).join('');
-  if(uploadedRoomImgs.length<limit)html+=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadRoomImg(this)"><span>📷</span><span>Add</span></div>`;
- grid.innerHTML=html;
-  const bar=document.getElementById('rImgLimitBar');bar.className='img-limit-bar'+(uploadedRoomImgs.length>=limit?' maxed':'');
-  document.getElementById('rImgCountLabel').textContent=`${uploadedRoomImgs.length} / ${limit} photo${limit!==1?'s':''}`;
-}
-window.removeRoomImg=idx=>{uploadedRoomImgs.splice(idx,1);renderRoomImgGrid();};
-window.addRoomUrlImg=url=>{
-  if(!url||!url.startsWith('http'))return;const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;
-  if(uploadedRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
-  if(!uploadedRoomImgs.includes(url)){uploadedRoomImgs.push(url);renderRoomImgGrid();document.getElementById('rImgDirect').value='';}
-};
-window.uploadRoomImg=async input=>{
-  const f=input.files[0];if(!f)return;if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
-  const limit=ROOM_IMG_LIMITS[currentRoomPlan]||1;if(uploadedRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}
-  const bar=document.getElementById('rUbar'),fill=document.getElementById('rUfill'),stat=document.getElementById('rUstat');
-  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
-  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_rooms');
-  try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
-    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
-    const data=await res.json();clearInterval(iv);
-    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedRoomImgs.push(data.secure_url);renderRoomImgGrid();setTimeout(()=>bar.style.display='none',1000);}
-    else throw new Error(data.error?.message||'Failed');
-  }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}
-};
-async function fetchRooms(){
-  try{const snap=await getDocs(query(collection(db,'rooms'),orderBy('createdAt','desc')));allRooms=snap.docs.map(d=>({id:d.id,...d.data()}));updateRoomStats();renderRoomList();}
-  catch(e){document.getElementById('roomList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
-}
-window.saveRoom=async()=>{
-  const title=document.getElementById('rTitle').value.trim(),city=document.getElementById('rCity').value,type=document.getElementById('rType').value,price=document.getElementById('rPrice').value,phone=document.getElementById('rPhone').value.trim();
-  if(!title){showToast('⚠️ Title required');return;}if(!city){showToast('⚠️ City required');return;}if(!type){showToast('⚠️ Type required');return;}if(!price){showToast('⚠️ Price required');return;}if(!phone){showToast('⚠️ Phone required');return;}
-  const btn=document.getElementById('rSubBtn');btn.disabled=true;btn.textContent='Saving…';
-  const editId=document.getElementById('rEditId').value;
-  const data={title,city,type,price:Number(price),period:document.getElementById('rPeriod').value,district:document.getElementById('rDistrict').value.trim(),beds:document.getElementById('rBeds').value,baths:document.getElementById('rBaths').value,desc:document.getElementById('rDesc').value.trim(),phone,whatsapp:document.getElementById('rWa').value.trim(),poster:document.getElementById('rPoster').value.trim(),images:uploadedRoomImgs,imageUrl:uploadedRoomImgs[0]||'',plan:currentRoomPlan,paid:currentRoomPrice>0,available:document.getElementById('togAvail').classList.contains('on'),views:0,source:'admin'};
-  try{if(editId){await updateDoc(doc(db,'rooms',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Room updated!');}
-    else{data.createdAt=serverTimestamp();await addDoc(collection(db,'rooms'),data);showToast('✅ Room posted!');}
-    clearRoomForm();await fetchRooms();
-  }catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Room';}
-};
-window.deleteRoom=async id=>{if(!confirm('Delete this room permanently?'))return;try{await deleteDoc(doc(db,'rooms',id));showToast('🗑 Deleted');await fetchRooms();}catch(e){showToast('❌ '+e.message);}};
-window.toggleRoomAvail=async id=>{const r=allRooms.find(x=>x.id===id);if(!r)return;await updateDoc(doc(db,'rooms',id),{available:!r.available});showToast(r.available?'🔴 Marked Unavailable':'✅ Marked Available');await fetchRooms();};
-window.editRoom=id=>{
-  const r=allRooms.find(x=>x.id===id);if(!r)return;
-  document.getElementById('rEditId').value=id;document.getElementById('rTitle').value=r.title||'';document.getElementById('rCity').value=r.city||'';document.getElementById('rType').value=r.type||'';document.getElementById('rPrice').value=r.price||'';document.getElementById('rPeriod').value=r.period||'per year';document.getElementById('rDistrict').value=r.district||'';document.getElementById('rBeds').value=r.beds||'1';document.getElementById('rBaths').value=r.baths||'1';document.getElementById('rDesc').value=r.desc||'';document.getElementById('rPhone').value=r.phone||'';document.getElementById('rWa').value=r.whatsapp||'';document.getElementById('rPoster').value=r.poster||'';
-  uploadedRoomImgs=r.images||(r.imageUrl?[r.imageUrl]:[]);
-  document.getElementById('togAvail').classList.toggle('on',r.available!==false);
-  currentRoomPlan=r.plan||'free';document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===currentRoomPlan)o.classList.add('selected');});
-  renderRoomImgGrid();document.getElementById('rSubBtn').textContent='💾 Update Room';window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+r.title);
-};
-window.clearRoomForm=()=>{
-  ['rEditId','rTitle','rDistrict','rPrice','rDesc','rPhone','rWa','rPoster','rImgDirect'].forEach(i=>document.getElementById(i).value='');
-  ['rCity','rType'].forEach(i=>document.getElementById(i).value='');document.getElementById('rPeriod').value='per year';document.getElementById('rBeds').value='1';document.getElementById('rBaths').value='1';
-  document.getElementById('togAvail').classList.add('on');currentRoomPlan='free';currentRoomPrice=0;uploadedRoomImgs=[];
-  document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='free')o.classList.add('selected');});
-  renderRoomImgGrid();document.getElementById('rSubBtn').textContent='📤 Save Room';
-};
+// ════════ ROOMS ════════
+window.selRoomPlan=el=>{curRoomPlan=el.dataset.plan;curRoomPrice=Number(el.dataset.price);document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');const limit=RIL[curRoomPlan]||1;document.getElementById('rImgLimitLabel').textContent=`max ${limit} photo${limit!==1?'s':''} (${curRoomPlan})`;renderRoomImgGrid();};
+function renderRoomImgGrid(){const limit=RIL[curRoomPlan]||1,grid=document.getElementById('rImgGrid');let html=upRoomImgs.map((img,i)=>`<div class="img-slot"><img src="${esc(img)}" alt=""><button class="img-slot-del" onclick="removeRoomImg(${i})">×</button></div>`).join('');if(upRoomImgs.length<limit)html+=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadRoomImg(this)"><span>📷</span><span>Add</span></div>`;grid.innerHTML=html;const bar=document.getElementById('rImgLimitBar');bar.className='img-limit-bar'+(upRoomImgs.length>=limit?' maxed':'');document.getElementById('rImgCountLabel').textContent=`${upRoomImgs.length} / ${limit} photo${limit!==1?'s':''}`;}
+window.removeRoomImg=idx=>{upRoomImgs.splice(idx,1);renderRoomImgGrid();};
+window.addRoomUrlImg=url=>{if(!url||!url.startsWith('http'))return;const limit=RIL[curRoomPlan]||1;if(upRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}if(!upRoomImgs.includes(url)){upRoomImgs.push(url);renderRoomImgGrid();document.getElementById('rImgDirect').value='';}};
+window.uploadRoomImg=async input=>{const f=input.files[0];if(!f)return;if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}const limit=RIL[curRoomPlan]||1;if(upRoomImgs.length>=limit){showToast('❌ Max '+limit+' photos');return;}const bar=document.getElementById('rUbar'),fill=document.getElementById('rUfill'),stat=document.getElementById('rUstat');bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UP);fd.append('folder','citylinkgh_rooms');try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);const res=await fetch(`https://api.cloudinary.com/v1_1/${CN}/image/upload`,{method:'POST',body:fd});const data=await res.json();clearInterval(iv);if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';upRoomImgs.push(data.secure_url);renderRoomImgGrid();setTimeout(()=>bar.style.display='none',1000);}else throw new Error(data.error?.message||'Failed');}catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}};
+async function fetchRooms(){try{const snap=await getDocs(query(collection(db,'rooms'),orderBy('createdAt','desc')));allRooms=snap.docs.map(d=>({id:d.id,...d.data()}));updateRoomStats();renderRoomList();}catch(e){document.getElementById('roomList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}}
+window.saveRoom=async()=>{const title=document.getElementById('rTitle').value.trim(),city=document.getElementById('rCity').value,type=document.getElementById('rType').value,price=document.getElementById('rPrice').value,phone=document.getElementById('rPhone').value.trim();if(!title){showToast('⚠️ Title required');return;}if(!city){showToast('⚠️ City required');return;}if(!type){showToast('⚠️ Type required');return;}if(!price){showToast('⚠️ Price required');return;}if(!phone){showToast('⚠️ Phone required');return;}const btn=document.getElementById('rSubBtn');btn.disabled=true;btn.textContent='Saving…';const editId=document.getElementById('rEditId').value;const data={title,city,type,price:Number(price),period:document.getElementById('rPeriod').value,district:document.getElementById('rDistrict').value.trim(),beds:document.getElementById('rBeds').value,baths:document.getElementById('rBaths').value,desc:document.getElementById('rDesc').value.trim(),phone,whatsapp:document.getElementById('rWa').value.trim(),poster:document.getElementById('rPoster').value.trim(),images:upRoomImgs,imageUrl:upRoomImgs[0]||'',plan:curRoomPlan,paid:curRoomPrice>0,available:document.getElementById('togAvail').classList.contains('on'),views:0,source:'admin'};try{if(editId){await updateDoc(doc(db,'rooms',editId),{...data,updatedAt:serverTimestamp()});showToast('✅ Room updated!');}else{data.createdAt=serverTimestamp();await addDoc(collection(db,'rooms'),data);showToast('✅ Room posted!');}clearRoomForm();await fetchRooms();}catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent='📤 Save Room';}};
+window.deleteRoom=async id=>{if(!confirm('Delete?'))return;try{await deleteDoc(doc(db,'rooms',id));showToast('🗑 Deleted');await fetchRooms();}catch(e){showToast('❌ '+e.message);}};
+window.toggleRoomAvail=async id=>{const r=allRooms.find(x=>x.id===id);if(!r)return;await updateDoc(doc(db,'rooms',id),{available:!r.available});showToast(r.available?'🔴 Unavailable':'✅ Available');await fetchRooms();};
+window.editRoom=id=>{const r=allRooms.find(x=>x.id===id);if(!r)return;document.getElementById('rEditId').value=id;document.getElementById('rTitle').value=r.title||'';document.getElementById('rCity').value=r.city||'';document.getElementById('rType').value=r.type||'';document.getElementById('rPrice').value=r.price||'';document.getElementById('rPeriod').value=r.period||'per year';document.getElementById('rDistrict').value=r.district||'';document.getElementById('rBeds').value=r.beds||'1';document.getElementById('rBaths').value=r.baths||'1';document.getElementById('rDesc').value=r.desc||'';document.getElementById('rPhone').value=r.phone||'';document.getElementById('rWa').value=r.whatsapp||'';document.getElementById('rPoster').value=r.poster||'';upRoomImgs=r.images||(r.imageUrl?[r.imageUrl]:[]);document.getElementById('togAvail').classList.toggle('on',r.available!==false);curRoomPlan=r.plan||'free';document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan===curRoomPlan)o.classList.add('selected');});renderRoomImgGrid();document.getElementById('rSubBtn').textContent='💾 Update Room';window.scrollTo({top:0,behavior:'smooth'});showToast('✏️ Editing: '+r.title);};
+window.clearRoomForm=()=>{['rEditId','rTitle','rDistrict','rPrice','rDesc','rPhone','rWa','rPoster','rImgDirect'].forEach(i=>document.getElementById(i).value='');['rCity','rType'].forEach(i=>document.getElementById(i).value='');document.getElementById('rPeriod').value='per year';document.getElementById('rBeds').value='1';document.getElementById('rBaths').value='1';document.getElementById('togAvail').classList.add('on');curRoomPlan='free';curRoomPrice=0;upRoomImgs=[];document.querySelectorAll('#panel-rooms .plan-opt').forEach(o=>{o.classList.remove('selected');if(o.dataset.plan==='free')o.classList.add('selected');});renderRoomImgGrid();document.getElementById('rSubBtn').textContent='📤 Save Room';};
 window.setRoomTab=(tab,el)=>{roomTab=tab;document.querySelectorAll('#panel-rooms .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderRoomList();};
-window.renderRoomList=()=>{
-  const q=(document.getElementById('rsearch').value||'').toLowerCase();
-  let list=[...allRooms].filter(r=>!q||(r.title||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q));
-  if(roomTab==='available')list=list.filter(r=>r.available!==false);else if(roomTab==='featured')list=list.filter(r=>r.plan==='featured');else if(roomTab==='urgent')list=list.filter(r=>r.plan==='urgent');else if(roomTab==='free')list=list.filter(r=>!r.plan||r.plan==='free');
-  const el=document.getElementById('roomList');
-  if(!list.length){el.innerHTML='<div class="empty">📭 No rooms found</div>';return;}
-  el.innerHTML=list.map(r=>{
-    const plan=r.plan||'free',avail=r.available!==false;
-    return `<div class="biz-row plan-${plan==='featured'?'featured-r':plan}"><div class="biz-row-thumb">${r.imageUrl||r.images?.[0]?`<img src="${esc(r.imageUrl||r.images[0])}" alt="">`:'🏠'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(r.title||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(r.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${avail?'<span class="badge blive">● Available</span>':'<span class="badge bpend">Unavailable</span>'}${r.type?`<span class="badge bc">${esc(r.type)}</span>`:''}<span class="badge bc">📷 ${(r.images||[]).length||(r.imageUrl?1:0)}</span></div><div class="biz-row-loc">💰 GHS ${Number(r.price||0).toLocaleString()} ${r.period||''} · 📍 ${esc(r.district||'')} ${esc(r.city||'')} · 👁 ${r.views||0}</div></div><div class="row-acts"><button class="ibtn" onclick="editRoom('${r.id}')">✏️</button><button class="ibtn" onclick="toggleRoomAvail('${r.id}')">${avail?'🔴':'✅'}</button><button class="ibtn del" onclick="deleteRoom('${r.id}')">🗑</button></div></div>`;
-  }).join('');
-};
-function updateRoomStats(){
-  document.getElementById('rTotal').textContent=allRooms.length;document.getElementById('rAvail').textContent=allRooms.filter(r=>r.available!==false).length;document.getElementById('rFeatured').textContent=allRooms.filter(r=>r.plan==='featured'||r.plan==='urgent').length;document.getElementById('rCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
-  const paid=allRooms.filter(r=>r.paid),rev=paid.reduce((s,r)=>s+(r.plan==='urgent'?100:r.plan==='featured'?60:30),0);
-  document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;
-}
+window.renderRoomList=()=>{const q=(document.getElementById('rsearch').value||'').toLowerCase();let list=[...allRooms].filter(r=>!q||(r.title||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q));if(roomTab==='available')list=list.filter(r=>r.available!==false);else if(roomTab==='featured')list=list.filter(r=>r.plan==='featured');else if(roomTab==='urgent')list=list.filter(r=>r.plan==='urgent');else if(roomTab==='free')list=list.filter(r=>!r.plan||r.plan==='free');const el=document.getElementById('roomList');if(!list.length){el.innerHTML='<div class="empty">📭 No rooms found</div>';return;}el.innerHTML=list.map(r=>{const plan=r.plan||'free',avail=r.available!==false;return `<div class="biz-row plan-${plan==='featured'?'featured-r':plan}"><div class="biz-row-thumb">${r.imageUrl||r.images?.[0]?`<img src="${esc(r.imageUrl||r.images[0])}" alt="">`:'🏠'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(r.title||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(r.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${avail?'<span class="badge blive">● Available</span>':'<span class="badge bpend">Unavailable</span>'}${r.type?`<span class="badge bc">${esc(r.type)}</span>`:''}<span class="badge bc">📷 ${(r.images||[]).length||(r.imageUrl?1:0)}</span></div><div class="biz-row-loc">💰 GHS ${Number(r.price||0).toLocaleString()} ${r.period||''} · 📍 ${esc(r.district||'')} ${esc(r.city||'')} · 👁 ${r.views||0}</div></div><div class="row-acts"><button class="ibtn" onclick="editRoom('${r.id}')">✏️</button><button class="ibtn" onclick="toggleRoomAvail('${r.id}')">${avail?'🔴':'✅'}</button><button class="ibtn del" onclick="deleteRoom('${r.id}')">🗑</button></div></div>`;}).join('');};
+function updateRoomStats(){document.getElementById('rTotal').textContent=allRooms.length;document.getElementById('rAvail').textContent=allRooms.filter(r=>r.available!==false).length;document.getElementById('rFeatured').textContent=allRooms.filter(r=>r.plan==='featured'||r.plan==='urgent').length;document.getElementById('rCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;const paid=allRooms.filter(r=>r.paid),rev=paid.reduce((s,r)=>s+(r.plan==='urgent'?100:r.plan==='featured'?60:30),0);document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;}
 
 // ── HELPERS ──
 const catEmoji=c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
@@ -950,25 +767,9 @@ window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.
 
 // ── ANALYTICS ──
 let chartsLoaded=false;
-async function loadAnalytics(){
-  if(chartsLoaded)return;chartsLoaded=true;
-  await new Promise(res=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';s.onload=res;document.head.appendChild(s);});
-  if(!allBiz.length)await fetchAll();
-  const now=Date.now(),paid=allBiz.filter(b=>b.plan&&b.plan!=='basic'&&b.approved),rev=paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);
-  document.getElementById('anTotalBiz').textContent=allBiz.length;document.getElementById('anRevenue').textContent='GHS '+rev.toLocaleString();
-  document.getElementById('anJobs').textContent=allJobs.filter(j=>{if(!j.expiresAt)return true;const e=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return e>now;}).length;
-  document.getElementById('anRooms').textContent=allRooms.filter(r=>r.available!==false).length;
-  const cd={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Epilogue',size:11},boxWidth:12}}}};
-  const plans=['basic','standard','featured','premium'],planCounts=plans.map(p=>allBiz.filter(b=>(b.plan||'basic')===p).length);
-  new Chart(document.getElementById('planChart'),{type:'doughnut',data:{labels:['Basic','Standard','Featured','Premium'],datasets:[{data:planCounts,backgroundColor:['#E2D9C8','#1A6B3C','#D4A017','#9B59B6'],borderWidth:0}]},options:cd});
-  const cityMap={};allBiz.forEach(b=>{if(b.city)cityMap[b.city]=(cityMap[b.city]||0)+1;});const cities=Object.entries(cityMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  new Chart(document.getElementById('cityChart'),{type:'bar',data:{labels:cities.map(x=>x[0]),datasets:[{data:cities.map(x=>x[1]),backgroundColor:'#1A6B3C',borderRadius:6}]},options:{...cd,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
-  const catMap={};allBiz.forEach(b=>{if(b.category)catMap[b.category]=(catMap[b.category]||0)+1;});const cats=Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  new Chart(document.getElementById('catChart'),{type:'bar',data:{labels:cats.map(x=>x[0]),datasets:[{data:cats.map(x=>x[1]),backgroundColor:'#D4A017',borderRadius:6}]},options:{...cd,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}});
-  new Chart(document.getElementById('revChart'),{type:'doughnut',data:{labels:['Basic (Free)','Standard GHS 50','Featured GHS 100','Premium GHS 200'],datasets:[{data:[0,allBiz.filter(b=>b.plan==='standard'&&b.approved).length*50,allBiz.filter(b=>b.plan==='featured'&&b.approved).length*100,allBiz.filter(b=>b.plan==='premium'&&b.approved).length*200],backgroundColor:['#E2D9C8','#1A6B3C','#D4A017','#9B59B6'],borderWidth:0}]},options:cd});
-}
-const _origSwitch=window.switchSection;
-window.switchSection=(name,el)=>{_origSwitch(name,el);if(name==='analytics')loadAnalytics();if(name==='jobs'&&!allJobs.length)fetchJobs();if(name==='rooms'&&!allRooms.length)fetchRooms();};
+async function loadAnalytics(){if(chartsLoaded)return;chartsLoaded=true;await new Promise(res=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';s.onload=res;document.head.appendChild(s);});if(!allBiz.length)await fetchAll();const now=Date.now(),paid=allBiz.filter(b=>b.plan&&b.plan!=='basic'&&b.approved),rev=paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);document.getElementById('anTotalBiz').textContent=allBiz.length;document.getElementById('anRevenue').textContent='GHS '+rev.toLocaleString();document.getElementById('anJobs').textContent=allJobs.filter(j=>{if(!j.expiresAt)return true;const e=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return e>now;}).length;document.getElementById('anRooms').textContent=allRooms.filter(r=>r.available!==false).length;const cd={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Epilogue',size:11},boxWidth:12}}}};const plans=['basic','standard','featured','premium'],planCounts=plans.map(p=>allBiz.filter(b=>(b.plan||'basic')===p).length);new Chart(document.getElementById('planChart'),{type:'doughnut',data:{labels:['Basic','Standard','Featured','Premium'],datasets:[{data:planCounts,backgroundColor:['#E2D9C8','#1A6B3C','#D4A017','#9B59B6'],borderWidth:0}]},options:cd});const cityMap={};allBiz.forEach(b=>{if(b.city)cityMap[b.city]=(cityMap[b.city]||0)+1;});const cities=Object.entries(cityMap).sort((a,b)=>b[1]-a[1]).slice(0,6);new Chart(document.getElementById('cityChart'),{type:'bar',data:{labels:cities.map(x=>x[0]),datasets:[{data:cities.map(x=>x[1]),backgroundColor:'#1A6B3C',borderRadius:6}]},options:{...cd,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});const catMap={};allBiz.forEach(b=>{if(b.category)catMap[b.category]=(catMap[b.category]||0)+1;});const cats=Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,8);new Chart(document.getElementById('catChart'),{type:'bar',data:{labels:cats.map(x=>x[0]),datasets:[{data:cats.map(x=>x[1]),backgroundColor:'#D4A017',borderRadius:6}]},options:{...cd,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}});new Chart(document.getElementById('revChart'),{type:'doughnut',data:{labels:['Basic','Standard GHS 50','Featured GHS 100','Premium GHS 200'],datasets:[{data:[0,allBiz.filter(b=>b.plan==='standard'&&b.approved).length*50,allBiz.filter(b=>b.plan==='featured'&&b.approved).length*100,allBiz.filter(b=>b.plan==='premium'&&b.approved).length*200],backgroundColor:['#E2D9C8','#1A6B3C','#D4A017','#9B59B6'],borderWidth:0}]},options:cd});}
+const _orig=window.switchSection;
+window.switchSection=(name,el)=>{_orig(name,el);if(name==='analytics')loadAnalytics();if(name==='jobs'&&!allJobs.length)fetchJobs();if(name==='rooms'&&!allRooms.length)fetchRooms();};
 </script>
 </body>
 </html>

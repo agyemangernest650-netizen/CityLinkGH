@@ -2,6 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
+<link rel="canonical" href="https://citylinkgh.vercel.app/rooms.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Find affordable rooms, self contained, apartments and houses for rent across Ghana.">
 <meta name="keywords" content="Ghana business directory, rooms Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
@@ -26,6 +27,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <link rel="stylesheet" href="room.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Rooms & Houses for Rent — CityLinkGH","url":"https://citylinkgh.vercel.app/rooms.html","description":"Find affordable rooms, apartments and houses for rent across Ghana.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
+</script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -147,7 +151,6 @@
 </div>
 
 <div class="spacer"></div>
-
 <!--footer-->
 <footer class="footer">
   <div class="footer-container">
@@ -195,8 +198,6 @@
     <p>
       © 2026 CityLink Ghana. All Rights Reserved.
     </p>
-  </div>
-</footer>
   </div>
 </footer>
 
@@ -364,6 +365,7 @@ const CLOUD_NAME    = "dulnujvm7";
 const UPLOAD_PRESET = "ernest";
 const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
 const ARKESEL_KEY   = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
+const ADMIN_EMAIL   = "agyemangernest650@gmail.com"; // ← put your email here
 
 const IMG_LIMITS = {free:1, standard:5, featured:8, urgent:10};
 
@@ -388,19 +390,6 @@ async function fetchRooms(){
     document.getElementById('roomsGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
   }
 }
-
-// ── DARK MODE ──
-window.toggleDark = () => {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme', isDark?'light':'dark');
-};
-// Restore theme
-const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
-
 
 // ── FILTERS ──
 window.filterType = el => {
@@ -437,6 +426,19 @@ window.applyFilters = () => {
   document.getElementById('listLabel').textContent=`${list.length} listing${list.length!==1?'s':''}`;
   renderRooms(list);
 };
+
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
 
 // ── RENDER ──
 function renderRooms(list){

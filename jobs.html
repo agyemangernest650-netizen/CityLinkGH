@@ -2,6 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
+<link rel="canonical" href="https://citylinkgh.vercel.app/jobs.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Find full time, part time, remote and internship jobs across Ghana. Post a job free.">
 <meta name="keywords" content="Ghana business directory, jobs Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
@@ -24,8 +25,11 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Jobs in Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://js.paystack.co/v1/inline.js"></script>
 <link rel="stylesheet" href="jobs.css">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Jobs in Ghana — CityLinkGH","url":"https://citylinkgh.vercel.app/jobs.html","description":"Find full time, part time, remote and internship jobs across Ghana.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
+</script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -144,7 +148,6 @@
 
 <div class="spacer"></div>
 
-
 <!--footer-->
 <footer class="footer">
   <div class="footer-container">
@@ -218,8 +221,8 @@
         <div class="plan-opt featured" data-plan="featured" data-price="20" onclick="selectPlan(this)">
           <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 20 · Top listing</div>
         </div>
-        <div class="plan-opt urgent" data-plan="urgent" data-price="40" onclick="selectPlan(this)">
-          <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 40 · #1 + urgent</div>
+        <div class="plan-opt urgent" data-plan="urgent" data-price="30" onclick="selectPlan(this)">
+          <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 30 · #1 + urgent</div>
         </div>
       </div>
     </div>
@@ -314,6 +317,7 @@ import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/fire
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
   authDomain: "citylinkgh-48ee0.firebaseapp.com",
@@ -367,19 +371,6 @@ async function fetchJobs(){
   }
 }
 
-// ── DARK MODE ──
-window.toggleDark = () => {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme', isDark?'light':'dark');
-};
-// Restore theme
-const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
-
-
 // ── FILTERS ──
 window.filterType=el=>{activeType=el.dataset.type;document.querySelectorAll('[data-type]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
 window.filterIndustry=el=>{activeIndustry=el.dataset.industry;document.querySelectorAll('[data-industry]').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
@@ -402,6 +393,20 @@ window.applyFilters=()=>{
   renderJobs(list);
 };
 
+// ── DARK MODE ──
+window.toggleDark = () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme', isDark?'light':'dark');
+};
+// Restore theme
+const saved = localStorage.getItem('clTheme');
+if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+
+
+
 // ── RENDER ──
 function renderJobs(list){
   const grid=document.getElementById('jobsGrid');
@@ -420,8 +425,14 @@ function renderJobs(list){
     <a class="job-card ${isFeatured?'featured':''} ${isUrgent?'urgent':''}" href="#" onclick="viewJob('${j.id}');return false;">
       <div class="job-top-strip strip-${stripClass}"></div>
       <div class="job-body">
+        <div class="job-banner">
+          ${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.3;">`:'' }
+          <div class="job-logo">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'💼'}</div>
+          ${isUrgent?'<div style="position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;">🔴 URGENT</div>':''}
+          ${isFeatured&&!isUrgent?'<div style="position:absolute;top:8px;left:8px;background:var(--blue);color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;">🌟 FEATURED</div>':''}
+        </div>
         <div class="job-header">
-          <div class="job-logo">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'🏢'}</div>
+          <div style="display:none;">
           <div>
             <div class="job-company">${esc(j.company||'Company')}</div>
             <div class="job-title">${esc(j.jobTitle)}</div>
@@ -487,7 +498,7 @@ window.viewJob=async id=>{
       ${j.tags?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">${(j.tags||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span style="background:var(--mist);font-size:12px;font-weight:500;padding:4px 10px;border-radius:8px;">${esc(t)}</span>`).join('')}</div>`:''}
       <div style="display:flex;flex-direction:column;gap:8px;position:sticky;bottom:18px;">
         ${j.phone?`<a href="tel:${esc(j.phone)}" style="background:var(--green);color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">📞 Call to Apply</a>`:''}
-        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' listed on GhanaList.')}" target="_blank" style="background:#25D366;color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp to Apply</a>`:''}
+        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' listed on CityLinkGH.')}" target="_blank" style="background:#25D366;color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp to Apply</a>`:''}
         ${j.email?`<a href="mailto:${esc(j.email)}?subject=Application for ${encodeURIComponent(j.jobTitle)}" style="background:var(--blue);color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">✉️ Email Application</a>`:''}
       </div>
     </div>`;
@@ -504,7 +515,7 @@ window.selectPlan=el=>{
   document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');
   document.getElementById('paySection').style.display=selPrice>0?'block':'none';
   document.getElementById('paySummaryLbl').textContent=`${el.querySelector('.po-name').textContent} — ${el.querySelector('.po-price').textContent}`;
-  document.getElementById('paySummaryAmt').textContent=`GHS ${selPrice}`;
+  document.getElementById('paySummaryAmt').textContent='Free';
   document.getElementById('submitTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Job Free';
 };
 
@@ -559,7 +570,7 @@ window.submitJob=async()=>{
     plan:selPlan,views:0,
     expiresAt:expiry,
     createdAt:serverTimestamp(),
-    source:'public'
+    paid:selPrice>0,source:'public'
   };
 
   if(selPrice>0){
@@ -597,7 +608,7 @@ async function saveJob(data){
 
 // ── ARKESEL SMS ──
 async function sendSMS(to,message){
-  if(!ARKESEL_KEY||ARKESEL_KEY==='your-arkesel-api-key'){console.warn('SMS skipped: Arkesel key not configured');return;}
+  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY'){console.warn('SMS skipped: Arkesel key not configured');return;}
   let num=to.replace(/\D/g,'');if(num.startsWith('0'))num='233'+num.slice(1);if(!num.startsWith('233'))num='233'+num;
   try{await fetch('https://sms.arkesel.com/api/v2/sms/send',{method:'POST',headers:{'api-key':ARKESEL_KEY,'Content-Type':'application/json'},body:JSON.stringify({sender:'CityLinkGH',message,recipients:[num]})});}
   catch(e){console.log('SMS:',e.message);}
@@ -636,6 +647,14 @@ document.querySelectorAll('.drawer-link').forEach(a => {
   if(a.href === window.location.href) a.classList.add('active');
 });
 </script>
+<datalist id="ghJobDistricts">
+  <option value="Osu, Accra"><option value="Labone, Accra"><option value="East Legon, Accra">
+  <option value="Spintex, Accra"><option value="Tema, Greater Accra"><option value="Madina, Accra">
+  <option value="Lapaz, Accra"><option value="Achimota, Accra"><option value="Dansoman, Accra">
+  <option value="Adum, Kumasi"><option value="Bantama, Kumasi"><option value="Asokwa, Kumasi">
+  <option value="Sekondi, Takoradi"><option value="Tamale Central"><option value="Cape Coast Central">
+  <option value="Sunyani, Bono Region"><option value="Ho, Volta Region"><option value="Remote (Work from Home)">
+</datalist>
 </body>
 </html>
 <!-- Google Analytics -->

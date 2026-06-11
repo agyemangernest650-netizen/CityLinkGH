@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="canonical" href="https://citylinkgh.vercel.app/business.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="View business details, contact info, photos and book appointments on CityLinkGH.">
 <meta name="keywords" content="Ghana business directory, business Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
@@ -25,6 +26,9 @@
 <title>CityLinkGH — Business</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="business.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Business Details — CityLinkGH","url":"https://citylinkgh.vercel.app/business.html","description":"View business details, photos and book appointments on CityLinkGH.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
+</script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -61,7 +65,7 @@
   </div>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&loading=async&callback=Function.prototype" async defer>
 // ── LIGHTBOX ──
 let lbImages=[], lbIndex=0;
 window.openLightbox=(idx)=>{
@@ -198,7 +202,9 @@ function fmt12(t){if(!t)return '';const[h,m]=t.split(':').map(Number);return`${h
 function isOpen(o,c){if(!o||!c)return null;const now=new Date(),cur=now.getHours()*60+now.getMinutes();const[oh,om]=o.split(':').map(Number),[ch,cm]=c.split(':').map(Number);return cur>=oh*60+om&&cur<=ch*60+cm;}
 function daysLeft(b){if(!b.expiresAt||b.plan==='basic')return null;const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();return Math.ceil((exp-Date.now())/86400000);}
 
-let curBiz; window._curBiz=null, revRating=0;
+let curBiz = null;
+window._curBiz = null;
+let revRating = 0;
 let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);};
 
@@ -355,7 +361,6 @@ async function init(){
 
       ${b.tags?`<div class="section"><div class="sec-t">Tags</div><div class="tag-cloud">${(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>`:''}
 
-      
       <div class="section">
         <div class="sec-t">Reviews</div>
         <div id="revsList"></div>

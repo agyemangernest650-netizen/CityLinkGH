@@ -25,8 +25,8 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Jobs in Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="jobs.css">
 <script src="https://js.paystack.co/v1/inline.js"></script>
+<link rel="stylesheet" href="jobs.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Jobs in Ghana — CityLinkGH","url":"https://citylinkgh.vercel.app/jobs.html","description":"Find full time, part time, remote and internship jobs across Ghana.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
 </script>
@@ -221,8 +221,8 @@
         <div class="plan-opt featured" data-plan="featured" data-price="20" onclick="selectPlan(this)">
           <div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 20 · Top listing</div>
         </div>
-        <div class="plan-opt urgent" data-plan="urgent" data-price="30" onclick="selectPlan(this)">
-          <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 30 · #1 + urgent</div>
+        <div class="plan-opt urgent" data-plan="urgent" data-price="40" onclick="selectPlan(this)">
+          <div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 40 · #1 + urgent</div>
         </div>
       </div>
     </div>
@@ -317,7 +317,6 @@ import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/fire
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
   authDomain: "citylinkgh-48ee0.firebaseapp.com",
@@ -406,7 +405,6 @@ const saved = localStorage.getItem('clTheme');
 if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
 
 
-
 // ── RENDER ──
 function renderJobs(list){
   const grid=document.getElementById('jobsGrid');
@@ -423,16 +421,14 @@ function renderJobs(list){
     const stripClass=isUrgent?'urgent':isFeatured?'featured':'basic';
     return `
     <a class="job-card ${isFeatured?'featured':''} ${isUrgent?'urgent':''}" href="#" onclick="viewJob('${j.id}');return false;">
-      <div class="job-top-strip strip-${stripClass}"></div>
-      <div class="job-body">
-        <div class="job-banner">
+      <div class="job-banner">
           ${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.3;">`:'' }
           <div class="job-logo">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="">`:'💼'}</div>
           ${isUrgent?'<div style="position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;">🔴 URGENT</div>':''}
           ${isFeatured&&!isUrgent?'<div style="position:absolute;top:8px;left:8px;background:var(--blue);color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;">🌟 FEATURED</div>':''}
-        </div>
+      </div>
+      <div class="job-body">
         <div class="job-header">
-          <div style="display:none;">
           <div>
             <div class="job-company">${esc(j.company||'Company')}</div>
             <div class="job-title">${esc(j.jobTitle)}</div>
@@ -455,7 +451,7 @@ function renderJobs(list){
           ${j.phone?`<a class="job-btn jbtn-call" href="tel:${esc(j.phone)}">📞 Call</a>`:''}
           ${waNum?`<a class="job-btn jbtn-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' on CityLinkGH.')}" target="_blank">💬 Apply</a>`:''}
           <button class="job-btn jbtn-view" onclick="event.stopPropagation();viewJob('${j.id}')">View →</button>
-          <button class="job-btn" style="flex:0 0 auto;background:${j.filled?'#f0fff6':'#fde8e8'};color:${j.filled?'var(--green)':'var(--red)'};border:1.5px solid ${j.filled?'#b8f0d0':'#f5c6c6'};" onclick="event.stopPropagation();toggleJobFilled('${j.id}',${!!j.filled})" title="${j.filled?'Re-open Job':'Mark as Filled'}">${j.filled?'✅ Filled':'🔴 Open'}</button>
+${j.filled?'<span style="font-size:9px;font-weight:800;color:var(--red);padding:2px 5px;background:#fde8e8;border-radius:6px;">FILLED</span>':''  }
         </div>
       </div>
       <div class="job-footer">
@@ -501,9 +497,85 @@ window.viewJob=async id=>{
         ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' listed on CityLinkGH.')}" target="_blank" style="background:#25D366;color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp to Apply</a>`:''}
         ${j.email?`<a href="mailto:${esc(j.email)}?subject=Application for ${encodeURIComponent(j.jobTitle)}" style="background:var(--blue);color:#fff;padding:13px;border-radius:11px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">✉️ Email Application</a>`:''}
       </div>
+
+      <!-- SHARE + SAVE + REPORT ROW -->
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button onclick="shareJob('${j.id}','${esc(j.jobTitle)}','${esc(j.company||'')}','${esc(j.city||'')}')" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">📤 Share</button>
+        <button onclick="saveJob('${j.id}','${esc(j.jobTitle)}')" id="saveBtn_${j.id}" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🔖 Save</button>
+        <button onclick="reportJob('${j.id}','${esc(j.jobTitle)}')" style="flex:1;background:#fde8e8;border:1px solid #f5c6c6;padding:11px;border-radius:10px;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🚩 Report</button>
+      </div>
+
+      <!-- SIMILAR JOBS -->
+      <div style="margin-top:20px;">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="width:3px;height:14px;background:var(--blue);border-radius:2px;display:block;"></span>Similar Jobs</div>
+        <div id="similarJobs" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
     </div>`;
   document.getElementById('detailModal').classList.add('show');
+  // Load similar jobs
+  setTimeout(()=>{
+    const sim = allJobs.filter(x=>x.id!==j.id&&(x.industry===j.industry||x.city===j.city)&&!x.filled).slice(0,3);
+    const simEl = document.getElementById('similarJobs');
+    if(!simEl) return;
+    if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar jobs found.</div>';return;}
+    simEl.innerHTML = sim.map(s=>`
+      <div onclick="closeDetailModal();setTimeout(()=>viewJob('${s.id}'),200)" style="background:var(--mist);border-radius:11px;padding:11px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid var(--border);">
+        <div style="width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden;">${s.logoUrl?`<img src="${esc(s.logoUrl)}" style="width:100%;height:100%;object-fit:cover;">`:'💼'}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.jobTitle)}</div>
+          <div style="font-size:11px;color:var(--gray);">${esc(s.company||'')} · ${esc(s.city||'')}</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray);">›</div>
+      </div>`).join('');
+  },100);
 };
+
+// ── SHARE JOB ──
+window.shareJob=(id,title,company,city)=>{
+  const url=window.location.origin+'/jobs.html';
+  const text=`💼 ${title} at ${company}\n📍 ${city}\n\nApply on CityLinkGH: ${url}`;
+  if(navigator.share) navigator.share({title,text,url});
+  else {
+    const wa='https://wa.me/?text='+encodeURIComponent(text);
+    window.open(wa,'_blank');
+  }
+};
+
+// ── SAVE JOB ──
+window.saveJob=(id,title)=>{
+  const saved=JSON.parse(localStorage.getItem('clSavedJobs')||'[]');
+  const idx=saved.indexOf(id);
+  const btn=document.getElementById('saveBtn_'+id);
+  if(idx>-1){
+    saved.splice(idx,1);
+    if(btn){btn.textContent='🔖 Save';btn.style.background='var(--mist)';}
+    showToast('Removed from saved');
+  } else {
+    saved.push(id);
+    if(btn){btn.textContent='✅ Saved';btn.style.background='#f0fff6';}
+    showToast('✅ Job saved!');
+  }
+  localStorage.setItem('clSavedJobs',JSON.stringify(saved));
+};
+
+// ── REPORT JOB ──
+window.reportJob=(id,title)=>{
+  const reason=prompt(`Report "${title}"\n\nReason (scam, fake, duplicate, inappropriate):`);
+  if(!reason) return;
+  // Store report in localStorage until Firebase is ready
+  const reports=JSON.parse(localStorage.getItem('clReports')||'[]');
+  reports.push({id,title,reason,type:'job',date:new Date().toISOString()});
+  localStorage.setItem('clReports',JSON.stringify(reports));
+  showToast('🚩 Reported. Thank you!');
+};
+
+// Check saved state on page load
+(()=>{
+  const saved=JSON.parse(localStorage.getItem('clSavedJobs')||'[]');
+  if(saved.length>0) console.log('Saved jobs:',saved.length);
+})();
+
 window.closeDetailModal=()=>document.getElementById('detailModal').classList.remove('show');
 
 // ── POST MODAL ──

@@ -1,4 +1,4 @@
-:root{--gold:#D4A017;--green:#1A6B3C;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--purple:#9B59B6;--blue:#2980B9;--card:#fff;--bg:#FDFAF3;--text:#0D0D0D;}
+  :root{--gold:#D4A017;--green:#1A6B3C;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--purple:#9B59B6;--blue:#2980B9;--card:#fff;--bg:#FDFAF3;--text:#0D0D0D;}
   [data-theme="dark"]{--card:#1E1E2E;--bg:#12121C;--text:#F0EBE0;--mist:#2A2A3E;--border:#3A3A5E;--gray:#9A9AB0;--cream:#1E1E2E;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);}
@@ -12,7 +12,7 @@
   .hbtn.gold{background:var(--gold);color:var(--ink);}
   .hbtn.ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.12);}
   .hbtn.ghost:hover{color:#fff;}
-.dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
+   .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
 
   /* HERO */
   .hero{background:linear-gradient(135deg,#1a3a6e,#0d2044);padding:16px 14px 22px;position:relative;overflow:hidden;}
@@ -168,6 +168,16 @@
   }
 
   body{padding-bottom:env(safe-area-inset-bottom,0px);}
+
+  @media(max-width:390px){
+    .rooms-grid{grid-template-columns:1fr;}
+    .room-imgs{height:180px;}
+    .room-price{font-size:16px;}
+    .room-btn{font-size:10px;padding:7px 4px;}
+    .modal-overlay .detail-modal{max-height:95vh;}
+    .detail-gallery{height:200px;}
+  }
+  .detail-modal{padding-bottom:env(safe-area-inset-bottom,20px);}
   /* HAMBURGER MENU */
 .hamburger{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;gap:5px;justify-content:center;}
 .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .3s;}

@@ -151,6 +151,7 @@
 </div>
 
 <div class="spacer"></div>
+
 <!--footer-->
 <footer class="footer">
   <div class="footer-container">
@@ -228,10 +229,10 @@
           <div class="po-name">Featured</div>
           <div class="po-price">GHS 20 · Top listing</div>
         </div>
-        <div class="plan-opt" data-plan="urgent" data-price="30" onclick="selectPlan(this)">
+        <div class="plan-opt" data-plan="urgent" data-price="40" onclick="selectPlan(this)">
           <div class="po-ico">🔴</div>
           <div class="po-name">Urgent</div>
-          <div class="po-price">GHS 30 · #1 + urgent badge</div>
+          <div class="po-price">GHS 40 · #1 + urgent badge</div>
         </div>
       </div>
     </div>
@@ -528,12 +529,58 @@ window.viewRoom = async id => {
         ${r.phone?`<a href="tel:${esc(r.phone)}" style="flex:1;background:var(--green);color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">📞 Call</a>`:''}
         ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank" style="flex:1;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp</a>`:''}
       </div>
+
+      <!-- SHARE + SAVE + REPORT ROW -->
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button onclick="shareRoom('${r.id}','${esc(r.title)}','${esc(r.district||r.city||'')}','${r.price||0}')" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">📤 Share</button>
+        <button onclick="saveRoom('${r.id}','${esc(r.title)}')" id="saveRoomBtn_${r.id}" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🔖 Save</button>
+        <button onclick="reportRoom('${r.id}','${esc(r.title)}')" style="flex:1;background:#fde8e8;border:1px solid #f5c6c6;padding:11px;border-radius:10px;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🚩 Report</button>
+      </div>
+
+      <!-- MAP LINK -->
+      ${(r.district||r.city)?`
+      <a href="https://www.google.com/maps/search/${encodeURIComponent((r.district||'')+' '+(r.city||'')+' Ghana')}" target="_blank"
+         style="display:flex;align-items:center;gap:10px;background:var(--mist);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:10px;text-decoration:none;color:var(--text);">
+        <span style="font-size:22px;">🗺️</span>
+        <div><div style="font-size:13px;font-weight:700;">View on Google Maps</div><div style="font-size:11px;color:var(--gray);">${esc((r.district||'')+', '+(r.city||''))}</div></div>
+        <span style="margin-left:auto;color:var(--gray);">›</span>
+      </a>`:''}
+
+      <!-- SIMILAR ROOMS -->
+      <div style="margin-top:18px;">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="width:3px;height:14px;background:var(--gold);border-radius:2px;display:block;"></span>Similar Rooms</div>
+        <div id="similarRooms" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
     </div>`;
 
   // Store images for gallery navigation
   window._detailImgs = imgs;
   window._detailIdx  = 0;
   document.getElementById('detailModal').classList.add('show');
+  // Load similar rooms
+  setTimeout(()=>{
+    const sim=allRooms.filter(x=>x.id!==r.id&&x.available!==false&&(x.city===r.city||x.type===r.type)).slice(0,3);
+    const simEl=document.getElementById('similarRooms');
+    if(!simEl) return;
+    if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar rooms found.</div>';return;}
+    simEl.innerHTML=sim.map(s=>{
+      const si=(s.images||(s.imageUrl?[s.imageUrl]:[]))[0]||'';
+      return `<div onclick="closeDetailModal();setTimeout(()=>viewRoom('${s.id}'),200)" style="background:var(--mist);border-radius:11px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid var(--border);">
+        <div style="width:54px;height:46px;border-radius:8px;background:var(--mist);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;">${si?`<img src="${esc(si)}" style="width:100%;height:100%;object-fit:cover;">`:'🏠'}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.title||s.type||'Room')}</div>
+          <div style="font-size:11px;color:var(--green);font-weight:700;">GHS ${Number(s.price||0).toLocaleString()}</div>
+          <div style="font-size:10px;color:var(--gray);">📍 ${esc(s.district||s.city||'')}</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray);">›</div>
+      </div>`;
+    }).join('');
+  },100);
+  // Check saved state
+  const savedRooms=JSON.parse(localStorage.getItem('clSavedRooms')||'[]');
+  const saveBtn=document.getElementById('saveRoomBtn_'+r.id);
+  if(saveBtn&&savedRooms.includes(r.id)){saveBtn.textContent='✅ Saved';saveBtn.style.background='#f0fff6';}
 };
 
 window.detailShowImg = idx => {
@@ -542,6 +589,42 @@ window.detailShowImg = idx => {
   const el   = document.getElementById('detailMainImg');
   if(el&&imgs[idx]) el.src=imgs[idx];
   document.querySelectorAll('.gn-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+};
+
+
+// ── SHARE ROOM ──
+window.shareRoom=(id,title,location,price)=>{
+  const url=window.location.origin+'/rooms.html';
+  const text=`🏠 ${title}\n📍 ${location}\n💰 GHS ${Number(price).toLocaleString()}\n\nSee on CityLinkGH: ${url}`;
+  if(navigator.share) navigator.share({title,text,url});
+  else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+};
+
+// ── SAVE ROOM ──
+window.saveRoom=(id,title)=>{
+  const saved=JSON.parse(localStorage.getItem('clSavedRooms')||'[]');
+  const idx=saved.indexOf(id);
+  const btn=document.getElementById('saveRoomBtn_'+id);
+  if(idx>-1){
+    saved.splice(idx,1);
+    if(btn){btn.textContent='🔖 Save';btn.style.background='var(--mist)';}
+    showToast('Removed from saved');
+  } else {
+    saved.push(id);
+    if(btn){btn.textContent='✅ Saved';btn.style.background='#f0fff6';}
+    showToast('✅ Room saved!');
+  }
+  localStorage.setItem('clSavedRooms',JSON.stringify(saved));
+};
+
+// ── REPORT ROOM ──
+window.reportRoom=(id,title)=>{
+  const reason=prompt(`Report "${title}"\n\nReason (scam, wrong info, unavailable, duplicate):`);
+  if(!reason) return;
+  const reports=JSON.parse(localStorage.getItem('clReports')||'[]');
+  reports.push({id,title,reason,type:'room',date:new Date().toISOString()});
+  localStorage.setItem('clReports',JSON.stringify(reports));
+  showToast('🚩 Reported. Thank you!');
 };
 
 window.closeDetailModal=()=>document.getElementById('detailModal').classList.remove('show');

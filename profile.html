@@ -4,43 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Manage your listings, bookings and profile on CityLinkGH.">
-<meta name="keywords" content="Ghana business directory, profile Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
-<meta name="author" content="CityLinkGH">
 <meta name="theme-color" content="#0D0D0D">
-<!-- Open Graph / WhatsApp / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://citylinkgh.vercel.app/profile.html">
 <meta property="og:title" content="My Profile — CityLinkGH">
 <meta property="og:description" content="Manage your listings, bookings and profile on CityLinkGH.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
 <meta property="og:site_name" content="CityLinkGH">
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="My Profile — CityLinkGH">
-<meta name="twitter:description" content="Manage your listings, bookings and profile on CityLinkGH.">
-<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — My Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="profile.css">
-<style>
-/* ── PROFILE MOBILE POLISH ── */
-@media(max-width:430px){
-  header { padding: 10px 14px !important; }
-  .logo  { font-size: 16px !important; }
-  .prof-card { padding: 14px 12px !important; }
-  .prof-avatar { width: 72px !important; height: 72px !important; font-size:28px !important; }
-  .prof-name { font-size: 18px !important; }
-  .setting-item { padding: 11px 12px !important; }
-  .bk-card { padding: 10px !important; }
-  .bk-acts { flex-wrap: wrap !important; }
-  .bk-btn  { font-size: 10px !important; padding: 7px 5px !important; }
-  .bottom-nav { padding: 6px 0 env(safe-area-inset-bottom,14px) !important; }
-  .si-ico { width: 34px !important; height: 34px !important; }
-}
-</style>
+<!-- Paystack -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -50,7 +27,9 @@
   <a href="home.html" class="hbtn">← Home</a>
 </header>
 
-<!-- AUTH SCREEN -->
+<!-- ══════════════════════════════════════
+     AUTH SCREEN  (unchanged)
+══════════════════════════════════════ -->
 <div class="auth-wrap" id="authWrap">
   <div class="auth-hero">
     <div class="aico">👤</div>
@@ -99,8 +78,10 @@
   <div class="spacer"></div>
 </div>
 
-<!-- PROFILE SCREEN -->
-<div class="profile-wrap" id="profileWrap">
+<!-- ══════════════════════════════════════
+     PROFILE SCREEN
+══════════════════════════════════════ -->
+<div class="profile-wrap" id="profileWrap" style="display:none;">
 
   <!-- HERO -->
   <div class="phero">
@@ -115,7 +96,7 @@
     <button class="edit-btn" onclick="showToast('✏️ Edit profile — coming soon!')">✏️ Edit Profile</button>
   </div>
 
-  <!-- PLAN CARD (owner only) -->
+  <!-- PLAN CARD (owner) -->
   <div id="planCardWrap" style="display:none;">
     <div class="plan-card" id="planCard">
       <div class="pc-top"><div class="pc-name" id="pcName">—</div><span class="pc-badge" id="pcBadge">—</span></div>
@@ -125,12 +106,13 @@
     </div>
   </div>
 
-  <!-- STATS (owner) -->
+  <!-- OWNER STATS (business + buy & sell combined) -->
   <div id="ownerStats" style="display:none;">
     <div class="stats-row">
-      <div class="sbox"><div class="sn" id="stListings">—</div><div class="sl">Listings</div></div>
+      <div class="sbox"><div class="sn" id="stListings">—</div><div class="sl">Biz Listings</div></div>
       <div class="sbox"><div class="sn" id="stBookings" style="color:var(--blue);">—</div><div class="sl">Bookings</div></div>
       <div class="sbox"><div class="sn" id="stRevs" style="color:var(--gold);">—</div><div class="sl">Reviews</div></div>
+      <div class="sbox"><div class="sn" id="stBsListings" style="color:#E84D2A;">—</div><div class="sl">Buy&amp;Sell</div></div>
     </div>
   </div>
 
@@ -148,10 +130,10 @@
     </div>
   </div>
 
-  <!-- MY LISTINGS (owner) -->
+  <!-- MY BUSINESS LISTINGS (owner) -->
   <div id="listingsSection" style="display:none;">
     <div class="sec-hd">
-      <div class="sec-t">My Listings</div>
+      <div class="sec-t">My Business Listings</div>
       <a href="submit.html" class="sec-lnk">+ Add New</a>
     </div>
     <div class="listing-list" id="myListings">
@@ -170,9 +152,82 @@
     </div>
   </div>
 
-  <!-- SMS NOTIFICATIONS (owner) -->
+  <!-- ══════════════════════════════════════
+       BUY & SELL SECTION
+  ══════════════════════════════════════ -->
+  <div id="bsSectionWrap" style="display:none;">
+
+    <!-- Quick post shortcut -->
+    <div class="bs-quick-post">
+      <div class="bs-quick-post-text">
+        <h4>🛒 Buy &amp; Sell Marketplace</h4>
+        <p>Post items to sell or find what you need</p>
+      </div>
+      <button class="bs-quick-post-btn" onclick="window.location='buy-sell.html'">Browse →</button>
+    </div>
+
+    <!-- B&S Stats -->
+    <div class="bs-stats">
+      <div class="bs-sbox">
+        <div class="bs-sn" id="bsStat-active">—</div>
+        <div class="bs-sl">Active</div>
+      </div>
+      <div class="bs-sbox">
+        <div class="bs-sn" style="color:var(--bs-green);" id="bsStat-sold">—</div>
+        <div class="bs-sl">Sold</div>
+      </div>
+      <div class="bs-sbox">
+        <div class="bs-sn" style="color:var(--bs-blue);" id="bsStat-views">—</div>
+        <div class="bs-sl">Total Views</div>
+      </div>
+      <div class="bs-sbox">
+        <div class="bs-sn" style="color:var(--bs-gold);" id="bsStat-contacts">—</div>
+        <div class="bs-sl">Contacts</div>
+      </div>
+    </div>
+
+    <!-- My B&S listings list -->
+    <div class="bs-sec-hd">
+      <div class="bs-sec-t">My Buy &amp; Sell Listings</div>
+      <a class="bs-sec-lnk" onclick="window.location='buy-sell.html'">+ Post Item</a>
+    </div>
+    <div id="bsMyListings">
+      <div class="loading" style="padding:24px 16px;"><div class="spinner"></div> Loading…</div>
+    </div>
+
+    <!-- B&S SMS notification settings -->
+    <div style="margin:8px 16px 0;background:#fff;border-radius:12px;border:1.5px solid var(--bs-border);overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--bs-border);">
+        <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--bs-muted);">📱 Buy &amp; Sell SMS Alerts</div>
+      </div>
+      <div class="bs-sms-row">
+        <div>
+          <div class="bs-sms-lbl">Buyer Contact Alert</div>
+          <div class="bs-sms-sub">SMS when someone taps WhatsApp on your listing</div>
+        </div>
+        <button class="toggle on" id="bsTogContact" onclick="this.classList.toggle('on');saveBSSMSPrefs()"></button>
+      </div>
+      <div class="bs-sms-row">
+        <div>
+          <div class="bs-sms-lbl">Listing Expiry Warning</div>
+          <div class="bs-sms-sub">7 days before your listing expires</div>
+        </div>
+        <button class="toggle on" id="bsTogExpiry" onclick="this.classList.toggle('on');saveBSSMSPrefs()"></button>
+      </div>
+      <div class="bs-sms-row" style="border:none;">
+        <div>
+          <div class="bs-sms-lbl">Listing Live Confirmation</div>
+          <div class="bs-sms-sub">SMS when your listing goes live</div>
+        </div>
+        <button class="toggle on" id="bsTogLive" onclick="this.classList.toggle('on');saveBSSMSPrefs()"></button>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+
+  <!-- SMS NOTIFICATIONS (owner — existing bookings SMS) -->
   <div id="smsSection" style="display:none;margin-top:8px;">
-    <div class="sec-hd" style="padding-bottom:8px;"><div class="sec-t">SMS Notifications</div></div>
+    <div class="sec-hd" style="padding-bottom:8px;"><div class="sec-t">Booking SMS Notifications</div></div>
     <div class="sms-box">
       <div class="sms-title">📱 Get SMS when someone books you</div>
       <div class="sms-row">
@@ -209,7 +264,6 @@
   <!-- SETTINGS -->
   <div class="sec-hd" style="margin-top:8px;"><div class="sec-t">Settings</div></div>
   <div class="settings-wrap">
-
     <div class="sec-hd" style="padding:10px 16px 4px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);">List Something</div></div>
     <div class="setting-item" onclick="window.location='submit.html'">
       <div class="si-left"><div class="si-ico" style="background:#f0fff6;">🏪</div><div><div class="si-lbl">List a Business</div><div class="si-sub">Add your business to CityLinkGH</div></div></div>
@@ -223,6 +277,11 @@
       <div class="si-left"><div class="si-ico" style="background:#fff8e8;">🏠</div><div><div class="si-lbl">Post a Room / House</div><div class="si-sub">List your property for rent</div></div></div>
       <span class="si-arr">›</span>
     </div>
+    <!-- NEW: Buy & Sell shortcut -->
+    <div class="setting-item" onclick="window.location='buy-sell.html'">
+      <div class="si-left"><div class="si-ico" style="background:#fff0ec;">🛒</div><div><div class="si-lbl">Buy &amp; Sell Marketplace</div><div class="si-sub">Post items or find deals near you</div></div></div>
+      <span class="si-arr">›</span>
+    </div>
 
     <div class="sec-hd" style="padding:10px 16px 4px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);">Account</div></div>
     <div class="setting-item" onclick="window.location='bookingdash.html'">
@@ -230,7 +289,7 @@
       <span class="si-arr">›</span>
     </div>
     <div class="setting-item" onclick="window.location='about.html'">
-      <div class="si-left"><div class="si-ico" style="background:var(--mist);">ℹ️</div><div><div class="si-lbl">About CityLinkGH</div><div class="si-sub">Version 3.0</div></div></div>
+      <div class="si-left"><div class="si-ico" style="background:var(--mist);">ℹ️</div><div><div class="si-lbl">About CityLinkGH</div><div class="si-sub">Version 3.1</div></div></div>
       <span class="si-arr">›</span>
     </div>
   </div>
@@ -242,25 +301,43 @@
   <div class="spacer"></div>
 </div>
 
+<!-- ══ BUMP MODAL ══ -->
+<div class="bs-modal-overlay" id="bsBumpModal" onclick="if(event.target===this)closeBumpModal()">
+  <div class="bs-modal">
+    <div class="bs-modal-handle"></div>
+    <div class="bs-modal-hd">
+      <h3>Bump Listing</h3>
+      <button class="bs-modal-close" onclick="closeBumpModal()">✕</button>
+    </div>
+    <input type="hidden" id="bsBumpId"/>
+    <p style="font-size:13px;color:#6b6b6b;margin-bottom:16px;line-height:1.5;">
+      Move <strong id="bsBumpTitle"></strong> to the top of the grid for 30 days.<br>
+      <strong style="color:#E84D2A;">GH₵1.99</strong> — paid securely via Paystack.
+    </p>
+    <div class="bs-field">
+      <label>Your Email (for receipt)</label>
+      <input type="email" id="bsBumpEmail" placeholder="you@email.com" inputmode="email"/>
+    </div>
+    <button class="bs-modal-btn" onclick="payBump()">Pay GH₵1.99 &amp; Bump to Top</button>
+  </div>
+</div>
+
 <!--footer-->
 <footer class="footer">
   <div class="footer-container">
-    <!--logo & about-->
     <div class="footer-box">
       <div class="logo"><img src="City link.jpeg" width="150" height="60"> CityLink<span>GH</span></div>
     </div>
-    <!-- Quick Links -->
     <div class="footer-box">
       <h3>Quick Links</h3>
       <ul>
         <li><a href="home.html">Home</a></li>
         <li><a href="room.html">Apartment/House for rent</a></li>
         <li><a href="jobs.html">Jobs</a></li>
+        <li><a href="buy-sell.html">Buy &amp; Sell</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
     </div>
-
-    <!-- Categories -->
     <div class="footer-box">
       <h3>Top Categories</h3>
       <ul>
@@ -270,18 +347,14 @@
         <li><a href="home.html">Mechanics</a></li>
       </ul>
     </div>
-
-    <!-- Contact -->
     <div class="footer-box">
       <h3>Contact</h3>
       <p>Email: agyemangernest650@gmail.com</p>
       <p>Phone: +233 53 736 1543</p>
-
       <div class="socials">
         <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
       </div>
     </div>
-
   </div>
   <div class="footer-bottom">
     <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
@@ -300,6 +373,9 @@ import {
   signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+/* ══════════════════════════════════════════
+   🔧 CONFIG  — uses YOUR real keys from profile
+══════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
   authDomain: "citylinkgh-48ee0.firebaseapp.com",
@@ -309,15 +385,22 @@ const firebaseConfig = {
   appId: "1:807811031269:web:167b22e23f49992136340c"
 };
 
-// Cloudinary
 const CLOUD_NAME    = "dulnujvm7";
 const UPLOAD_PRESET = "ernest";
-
-// Arkesel SMS (Ghana) — Register at https://arkesel.com
-const ARKESEL_API_KEY = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4"; // ← replace with your key
+const ARKESEL_API_KEY = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
 const ARKESEL_SENDER  = "CityLinkGH";
+const PAYSTACK_KEY    = "YOUR_PAYSTACK_PUBLIC_KEY"; // 🔧 replace
 
-// Plan image limits
+/* ══════════════════════════════════════════
+   BUY & SELL PLAN DEFINITIONS
+   Keep in sync with buy-sell.html
+══════════════════════════════════════════ */
+const BS_PLANS = {
+  basic:    { name:"Basic",    price:0,    paystackAmount:0,   photos:1,  duration:30, featured:false, color:"#6B6B6B", border:"#E0E0E0" },
+  standard: { name:"Standard", price:4.99, paystackAmount:499, photos:5,  duration:60, featured:false, color:"#3B7EF6", border:"#3B7EF6" },
+  premium:  { name:"Premium",  price:9.99, paystackAmount:999, photos:10, duration:90, featured:true,  color:"#E84D2A", border:"#E84D2A" }
+};
+
 const IMG_LIMITS = { basic:1, standard:3, featured:5, premium:10 };
 
 const app  = initializeApp(firebaseConfig);
@@ -329,7 +412,9 @@ let currentUser = null, userProfile = null, selRole = 'customer';
 
 const catEmoji = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
 
-// ── AUTH STATE ──
+/* ══════════════════════════════════════════
+   AUTH STATE
+══════════════════════════════════════════ */
 onAuthStateChanged(auth, async user => {
   if (user) {
     currentUser = user;
@@ -343,7 +428,7 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-// ── AUTH HELPERS ──
+/* ── AUTH HELPERS ── */
 window.swTab = t => {
   document.getElementById('loginForm').style.display = t==='login'?'block':'none';
   document.getElementById('regForm').style.display   = t==='register'?'block':'none';
@@ -359,7 +444,7 @@ window.doLogin = async () => {
   const e=document.getElementById('lemail').value.trim(), p=document.getElementById('lpwd').value;
   const err=document.getElementById('lerr'); err.style.display='none';
   try { await signInWithEmailAndPassword(auth,e,p); }
-  catch(ex) { err.textContent=ex.code==='auth/invalid-credential'?'Wrong email or password.':ex.message; err.style.display='block'; }
+  catch(ex){ err.textContent=ex.code==='auth/invalid-credential'?'Wrong email or password.':ex.message; err.style.display='block'; }
 };
 window.doRegister = async () => {
   const name=document.getElementById('rname').value.trim();
@@ -373,28 +458,34 @@ window.doRegister = async () => {
     await updateProfile(cred.user,{displayName:name});
     await setDoc(doc(db,'users',cred.user.uid),{
       name,email,phone,role:selRole,
-      savedBusinesses:[],
-      smsEnabled:true,
-      smsPhone:phone,
+      savedBusinesses:[],smsEnabled:true,smsPhone:phone,
+      bsSmsContact:true,bsSmsExpiry:true,bsSmsLive:true,
       createdAt:serverTimestamp()
     });
-  } catch(ex) { err.textContent=ex.message; err.style.display='block'; }
+  } catch(ex){ err.textContent=ex.message; err.style.display='block'; }
 };
 window.doGoogle = async () => {
   try {
     const r=await signInWithPopup(auth,gp);
     const uRef=doc(db,'users',r.user.uid);
     const uSnap=await getDoc(uRef);
-    if(!uSnap.exists()) await setDoc(uRef,{name:r.user.displayName||'User',email:r.user.email,role:'customer',savedBusinesses:[],smsEnabled:false,createdAt:serverTimestamp()});
+    if(!uSnap.exists()) await setDoc(uRef,{
+      name:r.user.displayName||'User',email:r.user.email,role:'customer',
+      savedBusinesses:[],smsEnabled:false,
+      bsSmsContact:true,bsSmsExpiry:true,bsSmsLive:true,
+      createdAt:serverTimestamp()
+    });
   } catch(ex){showToast('❌ '+ex.message);}
 };
 window.doSignOut = async () => {
   await signOut(auth);
   showToast('👋 Signed out');
-  setTimeout(()=>window.location.reload(), 800);
+  setTimeout(()=>window.location.reload(),800);
 };
 
-// ── LOAD PROFILE ──
+/* ══════════════════════════════════════════
+   LOAD PROFILE
+══════════════════════════════════════════ */
 async function loadProfile(user) {
   try {
     const snap=await getDoc(doc(db,'users',user.uid));
@@ -422,59 +513,236 @@ async function loadProfile(user) {
     document.getElementById('listingsSection').style.display='block';
     document.getElementById('bookingsSection').style.display='block';
     document.getElementById('smsSection').style.display='block';
+    document.getElementById('bsSectionWrap').style.display='block';
     document.getElementById('savedSection').style.display='none';
     await loadOwnerData(user.email);
+    await loadBSListings(user.uid);
     loadSMSPrefs();
+    loadBSSMSPrefs();
   } else {
+    // Customers also see Buy & Sell section
     document.getElementById('planCardWrap').style.display='none';
     document.getElementById('ownerStats').style.display='none';
     document.getElementById('imgLimitSection').style.display='none';
     document.getElementById('listingsSection').style.display='none';
     document.getElementById('bookingsSection').style.display='none';
     document.getElementById('smsSection').style.display='none';
+    document.getElementById('bsSectionWrap').style.display='block';
     document.getElementById('savedSection').style.display='block';
+    await loadBSListings(user.uid);
+    loadBSSMSPrefs();
     await loadSaved();
   }
 }
 
-// ── OWNER DATA ──
+/* ══════════════════════════════════════════
+   OWNER DATA (business listings, bookings)
+══════════════════════════════════════════ */
 async function loadOwnerData(email) {
   try {
     const q=query(collection(db,'businesses'),where('email','==',email));
     const snap=await getDocs(q);
     const listings=snap.docs.map(d=>({id:d.id,...d.data()}));
 
-    // Plan card
     const planOrder={premium:0,featured:1,standard:2,basic:3};
     const top=[...listings].sort((a,b)=>(planOrder[a.plan]||3)-(planOrder[b.plan]||3))[0];
     renderPlanCard(top);
 
-    // Image limit indicator
     const plan=(top?.plan)||'basic';
     const limit=IMG_LIMITS[plan]||1;
     document.getElementById('myImgLimit').textContent=limit;
     ['basic','standard','featured','premium'].forEach(p=>{
-      const el=document.getElementById('ipp-'+p);
-      el.classList.toggle('active-plan',p===plan);
+      document.getElementById('ipp-'+p).classList.toggle('active-plan',p===plan);
     });
 
-    // Stats
     const totalRevs=listings.reduce((s,b)=>s+(b.reviews||[]).length,0);
     document.getElementById('stListings').textContent=listings.length;
     document.getElementById('stRevs').textContent=totalRevs;
-
-    // Listings with images
     renderMyListings(listings);
-
-    // Bookings
     await loadMyBookings(listings.map(l=>l.id));
-
   } catch(e){
-    document.getElementById('myListings').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Error</h3><p>${e.message}</p></div>`;
+    document.getElementById('myListings').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>${e.message}</h3></div>`;
   }
 }
 
-// ── PLAN CARD ──
+/* ══════════════════════════════════════════
+   BUY & SELL LISTINGS (for current user)
+══════════════════════════════════════════ */
+async function loadBSListings(uid) {
+  const el=document.getElementById('bsMyListings');
+  try {
+    const q=query(collection(db,'buy_sell_listings'),where('uid','==',uid),orderBy('createdAt','desc'));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    // update combined stats
+    const active=items.filter(i=>i.status==='active').length;
+    const sold  =items.filter(i=>i.status==='sold').length;
+    const views =items.reduce((s,i)=>s+(i.views||0),0);
+    const contacts=items.reduce((s,i)=>s+(i.contacts_whatsapp||0)+(i.contacts_call||0),0);
+
+    document.getElementById('bsStat-active').textContent=active;
+    document.getElementById('bsStat-sold').textContent=sold;
+    document.getElementById('bsStat-views').textContent=views;
+    document.getElementById('bsStat-contacts').textContent=contacts;
+
+    // owner combined stat
+    const stBs=document.getElementById('stBsListings');
+    if(stBs) stBs.textContent=items.length;
+
+    if(!items.length){
+      el.innerHTML=`
+        <div class="bs-empty">
+          <div class="ei">🛒</div>
+          <h3>No listings yet</h3>
+          <p>Post your first item to the marketplace and start selling.</p>
+          <a href="buy-sell.html">+ Post Your First Item</a>
+        </div>`;
+      return;
+    }
+
+    el.innerHTML=items.map(item=>{
+      const plan=BS_PLANS[item.plan]||BS_PLANS.basic;
+      const isSold=item.status==='sold';
+      const expiresAt=item.expiresAt?.toDate?item.expiresAt.toDate():(item.expiresAt?new Date(item.expiresAt):null);
+      const daysLeft=expiresAt?Math.max(0,Math.ceil((expiresAt-new Date())/86400000)):plan.duration;
+      const expClass=daysLeft<=7?'soon':'';
+      const contacts=(item.contacts_whatsapp||0)+(item.contacts_call||0);
+
+      return `
+      <div class="bs-lcard plan-${item.plan||'basic'}">
+        <div class="bs-plan-strip"></div>
+        <div class="bs-lcard-inner">
+          <div class="bs-lcard-img" style="position:relative;">
+            ${item.imageUrl
+              ?`<img src="${esc(item.imageUrl)}" alt="${esc(item.title)}" onerror="this.style.display='none'">`
+              :`🛒`}
+            ${item.views?`<span class="bs-view-pill">👁 ${item.views}</span>`:''}
+          </div>
+          <div class="bs-lcard-body">
+            <div class="bs-lcard-title">${esc(item.title)}</div>
+            <div class="bs-lcard-meta">
+              <span class="bs-badge ${item.plan||'basic'}">${plan.name}</span>
+              <span class="bs-badge ${item.status||'active'}">${isSold?'Sold':item.status==='pending'?'Pending':'● Live'}</span>
+              ${item.condition?`<span class="bs-badge basic">${esc(item.condition)}</span>`:''}
+            </div>
+            <div class="bs-lcard-price">${item.price?`GH₵${parseFloat(item.price).toLocaleString()}`:'Negotiable'}</div>
+            <div class="bs-lcard-info">📍 ${esc(item.location||'Ghana')} · ${esc(item.category||'General')}</div>
+            <div class="bs-lcard-expiry ${expClass}">
+              ${expiresAt?`Expires in ${daysLeft} day${daysLeft!==1?'s':''}`:``}
+            </div>
+          </div>
+        </div>
+        <div class="bs-contact-stats">
+          <span>👁 ${item.views||0} views</span>
+          <span>💬 ${item.contacts_whatsapp||0} WA</span>
+          <span>📞 ${item.contacts_call||0} calls</span>
+          <span>📊 ${contacts} total contacts</span>
+        </div>
+        <div class="bs-lcard-acts">
+          <a class="bs-act-btn view" href="buy-sell.html">View on Marketplace</a>
+          ${!isSold?`<button class="bs-act-btn mark-sold" onclick="bsMarkSold('${item.id}')">✓ Mark Sold</button>`:''}
+          ${!isSold&&item.plan!=='premium'?`<button class="bs-act-btn bump" onclick="openBumpModal('${item.id}','${esc(item.title)}')">⬆️ Bump</button>`:''}
+          <button class="bs-act-btn del" onclick="bsDeleteListing('${item.id}')">🗑 Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+
+  } catch(e){
+    el.innerHTML=`<div class="bs-empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
+  }
+}
+
+/* ── Mark B&S listing as sold ── */
+window.bsMarkSold = async id => {
+  if(!confirm('Mark this item as sold?')) return;
+  try {
+    await updateDoc(doc(db,'buy_sell_listings',id),{status:'sold'});
+    showToast('✅ Marked as sold!');
+    await loadBSListings(currentUser.uid);
+  } catch(e){ showToast('❌ '+e.message); }
+};
+
+/* ── Delete B&S listing ── */
+window.bsDeleteListing = async id => {
+  if(!confirm('Permanently remove this listing?')) return;
+  try {
+    await deleteDoc(doc(db,'buy_sell_listings',id));
+    showToast('🗑 Listing removed');
+    await loadBSListings(currentUser.uid);
+  } catch(e){ showToast('❌ '+e.message); }
+};
+
+/* ══════════════════════════════════════════
+   BUMP MODAL (Paystack)
+══════════════════════════════════════════ */
+window.openBumpModal = (id, title) => {
+  document.getElementById('bsBumpId').value=id;
+  document.getElementById('bsBumpTitle').textContent=`"${title}"`;
+  document.getElementById('bsBumpModal').classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.closeBumpModal = () => {
+  document.getElementById('bsBumpModal').classList.remove('open');
+  document.body.style.overflow='';
+};
+window.payBump = () => {
+  const id=document.getElementById('bsBumpId').value;
+  const email=document.getElementById('bsBumpEmail').value.trim();
+  if(!email){ showToast('Enter your email to continue.'); return; }
+
+  const handler=PaystackPop.setup({
+    key:      PAYSTACK_KEY,
+    email,
+    amount:   199*100,   // GH₵1.99 in pesewas
+    currency: 'GHS',
+    ref:      'BUMP_'+Date.now(),
+    callback: async () => {
+      await updateDoc(doc(db,'buy_sell_listings',id),{
+        plan:'premium',
+        bumpedAt:serverTimestamp(),
+        expiresAt:new Date(Date.now()+30*86400000)
+      });
+      closeBumpModal();
+      showToast('🚀 Bumped to top for 30 days!');
+      if(currentUser) await loadBSListings(currentUser.uid);
+
+      // SMS confirmation
+      if(userProfile?.smsPhone){
+        await sendSMS(userProfile.smsPhone,'CityLinkGH: Your listing has been bumped to the top of the Buy & Sell marketplace for 30 days!');
+      }
+    },
+    onClose: ()=>showToast('Bump cancelled.')
+  });
+  handler.openIframe();
+};
+
+/* ══════════════════════════════════════════
+   B&S SMS PREFERENCES
+══════════════════════════════════════════ */
+function loadBSSMSPrefs(){
+  if(!userProfile) return;
+  if(userProfile.bsSmsContact!==false) document.getElementById('bsTogContact').classList.add('on');
+  if(userProfile.bsSmsExpiry!==false)  document.getElementById('bsTogExpiry').classList.add('on');
+  if(userProfile.bsSmsLive!==false)    document.getElementById('bsTogLive').classList.add('on');
+}
+window.saveBSSMSPrefs = async () => {
+  if(!currentUser) return;
+  const prefs={
+    bsSmsContact: document.getElementById('bsTogContact').classList.contains('on'),
+    bsSmsExpiry:  document.getElementById('bsTogExpiry').classList.contains('on'),
+    bsSmsLive:    document.getElementById('bsTogLive').classList.contains('on')
+  };
+  try {
+    await updateDoc(doc(db,'users',currentUser.uid),prefs);
+    userProfile={...userProfile,...prefs};
+    showToast('✅ SMS preferences saved!');
+  } catch(e){ showToast('❌ '+e.message); }
+};
+
+/* ══════════════════════════════════════════
+   PLAN CARD (business)
+══════════════════════════════════════════ */
 function renderPlanCard(listing) {
   if(!listing){
     document.getElementById('planCard').className='plan-card pc-basic';
@@ -515,7 +783,9 @@ function renderPlanCard(listing) {
     ${upgTo?`<a href="submit.html" class="pc-btn upgrade">⬆️ ${upgTo}</a>`:''}`;
 }
 
-// ── MY LISTINGS WITH IMAGE GALLERY ──
+/* ══════════════════════════════════════════
+   MY BUSINESS LISTINGS with image gallery
+══════════════════════════════════════════ */
 function renderMyListings(listings) {
   const el=document.getElementById('myListings');
   if(!listings.length){
@@ -525,26 +795,22 @@ function renderMyListings(listings) {
   el.innerHTML=listings.map(b=>{
     const plan=b.plan||'basic';
     const limit=IMG_LIMITS[plan]||1;
-    const images=b.images||( b.imageUrl?[b.imageUrl]:[] );
+    const images=b.images||(b.imageUrl?[b.imageUrl]:[]);
     const used=images.length;
     const maxed=used>=limit;
     const exp=b.expiresAt?.toDate?b.expiresAt.toDate():b.expiresAt?new Date(b.expiresAt):null;
     const days=exp?Math.ceil((exp.getTime()-Date.now())/86400000):null;
-
     const planClass={premium:'lcp',featured:'lcf',standard:'lcs',basic:'lcb'};
     const imgThumbsHtml=images.map((img,i)=>`
       <div class="limg-item">
         <img src="${esc(img)}" alt="" onerror="this.style.display='none'">
         <button class="limg-del" onclick="delImage('${b.id}',${i})" title="Remove photo">×</button>
       </div>`).join('');
-
     const addBtnHtml=!maxed?`
       <div class="limg-add" title="Add photo">
         <input type="file" accept="image/*" onchange="uploadListingImg(this,'${b.id}','${plan}',${limit})">
-        <span>📷</span>
-        <span>Add</span>
+        <span>📷</span><span>Add</span>
       </div>`:'' ;
-
     return `
     <div class="lcard ${planClass[plan]||'lcb'}">
       <div class="limg-gallery">${imgThumbsHtml}${addBtnHtml}</div>
@@ -573,8 +839,7 @@ function renderMyListings(listings) {
   }).join('');
 }
 
-// ── UPLOAD IMAGE TO LISTING ──
-window.uploadListingImg = async (input, bizId, plan, limit) => {
+window.uploadListingImg = async (input,bizId,plan,limit) => {
   const file=input.files[0]; if(!file) return;
   if(file.size>5*1024*1024){showToast('❌ Max 5MB');return;}
   showToast('⏳ Uploading…');
@@ -594,8 +859,7 @@ window.uploadListingImg = async (input, bizId, plan, limit) => {
   } catch(e){showToast('❌ Upload failed: '+e.message);}
 };
 
-// ── DELETE IMAGE ──
-window.delImage = async (bizId, idx) => {
+window.delImage = async (bizId,idx) => {
   if(!confirm('Remove this photo?')) return;
   try {
     const snap=await getDoc(doc(db,'businesses',bizId));
@@ -607,7 +871,6 @@ window.delImage = async (bizId, idx) => {
   } catch(e){showToast('❌ '+e.message);}
 };
 
-// ── DELETE LISTING ──
 window.deleteListing = async bizId => {
   if(!confirm('Delete this listing permanently?')) return;
   try {
@@ -617,7 +880,9 @@ window.deleteListing = async bizId => {
   } catch(e){showToast('❌ '+e.message);}
 };
 
-// ── LOAD BOOKINGS IN PROFILE ──
+/* ══════════════════════════════════════════
+   BOOKINGS
+══════════════════════════════════════════ */
 async function loadMyBookings(bizIds) {
   if(!bizIds.length){
     document.getElementById('myBookings').innerHTML=`<div class="empty"><div class="ei">📅</div><h3>No bookings yet</h3><p>Bookings will appear here when customers book your business.</p></div>`;
@@ -629,11 +894,6 @@ async function loadMyBookings(bizIds) {
     const snap=await getDocs(q);
     const bookings=snap.docs.map(d=>({id:d.id,...d.data()}));
     document.getElementById('stBookings').textContent=bookings.length;
-
-    // Show red dot if new pending bookings
-    const pending=bookings.filter(b=>b.status==='pending');
-    if(pending.length) document.getElementById('notifDot').style.display='block';
-
     renderProfileBookings(bookings);
   } catch(e){
     document.getElementById('myBookings').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>${e.message}</h3></div>`;
@@ -648,7 +908,6 @@ function renderProfileBookings(bookings) {
   }
   const TODAY=new Date().toISOString().split('T')[0];
   el.innerHTML=bookings.slice(0,10).map(b=>{
-    const isNew=b.status==='pending';
     const isToday=b.date===TODAY;
     const d=new Date(b.date+'T00:00:00');
     const dl=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
@@ -657,12 +916,12 @@ function renderProfileBookings(bookings) {
     const waMsg=encodeURIComponent(`Hi ${b.customerName}, your booking at ${b.businessName} is confirmed!\nRef: ${b.bookingRef}\nDate: ${dl} at ${b.time}`);
     return `
     <div class="bk-card bk-${b.status}">
-      ${isNew?'<div class="bk-new-badge">NEW</div>':''}
+      ${b.status==='pending'?'<div class="bk-new-badge">NEW</div>':''}
       <div class="bk-top">
-        <div class="bk-ref">${b.bookingRef} ${isToday?'<span style="background:var(--gold);color:var(--ink);font-size:9px;padding:2px 6px;border-radius:4px;margin-left:4px;">TODAY</span>':''}</div>
+        <div class="bk-ref">${b.bookingRef}${isToday?'<span style="background:var(--gold);color:var(--ink);font-size:9px;padding:2px 6px;border-radius:4px;margin-left:4px;">TODAY</span>':''}</div>
         <span class="bk-st st-${b.status}">${b.status}</span>
       </div>
-      <div class="bk-service">${esc(b.service)} · <span style="color:var(--gray);font-size:11px;font-weight:400;">${esc(b.businessName)}</span></div>
+      <div class="bk-service">${esc(b.service)} · <span style="color:var(--gray);font-size:11px;">${esc(b.businessName)}</span></div>
       <div class="bk-dt">📅 ${dl} · 🕐 ${b.time}</div>
       <div class="bk-cust">
         <div class="bk-cname">👤 ${esc(b.customerName)}</div>
@@ -681,27 +940,21 @@ function renderProfileBookings(bookings) {
   }).join('');
 }
 
-// ── UPDATE BOOKING ──
-window.updateBooking = async (id, status) => {
+window.updateBooking = async (id,status) => {
   try {
     await updateDoc(doc(db,'bookings',id),{status});
     showToast(status==='confirmed'?'✅ Confirmed!':status==='cancelled'?'❌ Cancelled':'✓ Completed');
-    // Send SMS if enabled
-    if(userProfile?.smsEnabled && userProfile?.smsPhone){
+    if(userProfile?.smsEnabled&&userProfile?.smsPhone){
       const snap=await getDoc(doc(db,'bookings',id));
       const bk=snap.data();
       await sendSMS(userProfile.smsPhone,`CityLinkGH: Booking ${bk?.bookingRef} ${status}. Customer: ${bk?.customerName}, ${bk?.date} at ${bk?.time}.`);
     }
-    const userSnap=await getDoc(doc(db,'users',currentUser.uid));
-    const bizIds2=(userSnap.data()?.savedBusinesses)||[];
-    await loadMyBookings(bizIds2);
     await loadOwnerData(currentUser.email);
   } catch(e){showToast('❌ '+e.message);}
 };
 
-// ── DELETE BOOKING (clear message) ──
 window.deleteBooking = async id => {
-  if(!confirm('Remove this booking from your view?')) return;
+  if(!confirm('Remove this booking?')) return;
   try {
     await deleteDoc(doc(db,'bookings',id));
     showToast('🗑 Booking removed');
@@ -709,8 +962,10 @@ window.deleteBooking = async id => {
   } catch(e){showToast('❌ '+e.message);}
 };
 
-// ── SMS PREFERENCES ──
-function loadSMSPrefs() {
+/* ══════════════════════════════════════════
+   SMS PREFERENCES (bookings)
+══════════════════════════════════════════ */
+function loadSMSPrefs(){
   if(!userProfile) return;
   if(userProfile.smsEnabled!==false) document.getElementById('togNewBk').classList.add('on');
   else document.getElementById('togNewBk').classList.remove('on');
@@ -719,7 +974,6 @@ function loadSMSPrefs() {
   if(userProfile.smsPhone) document.getElementById('smsPhone').value=userProfile.smsPhone;
   document.getElementById('smsPhoneField').style.display='block';
 }
-
 window.saveSMSPrefs = async () => {
   if(!currentUser) return;
   const phone=document.getElementById('smsPhone').value.trim();
@@ -736,31 +990,27 @@ window.saveSMSPrefs = async () => {
   } catch(e){showToast('❌ '+e.message);}
 };
 
-// ── SEND SMS via Arkesel ──
+/* ══════════════════════════════════════════
+   ARKESEL SMS
+══════════════════════════════════════════ */
 async function sendSMS(to, message) {
-  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='your-arkesel-api-key'){console.warn('SMS skipped: Arkesel key not configured');return;}
-  let num = to.replace(/\D/g,'');
-  if (num.startsWith('0')) num = '233' + num.slice(1);
-  if (!num.startsWith('233')) num = '233' + num;
-
+  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='your-arkesel-api-key'){console.warn('SMS skipped');return;}
+  let num=to.replace(/\D/g,'');
+  if(num.startsWith('0')) num='233'+num.slice(1);
+  if(!num.startsWith('233')) num='233'+num;
   try {
-    await fetch('https://sms.arkesel.com/api/v2/sms/send', {
-      method: 'POST',
-      headers: {
-        'api-key': ARKESEL_API_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        sender:     ARKESEL_SENDER,
-        message:    message,
-        recipients: [num]
-      })
+    await fetch('https://sms.arkesel.com/api/v2/sms/send',{
+      method:'POST',
+      headers:{'api-key':ARKESEL_API_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({sender:ARKESEL_SENDER,message,recipients:[num]})
     });
-  } catch(e) { console.log('SMS failed:', e.message); }
+  } catch(e){console.log('SMS failed:',e.message);}
 }
 
-// ── SAVED BUSINESSES (customer) ──
-async function loadSaved() {
+/* ══════════════════════════════════════════
+   SAVED BUSINESSES (customer)
+══════════════════════════════════════════ */
+async function loadSaved(){
   const saved=userProfile?.savedBusinesses||[];
   const el=document.getElementById('savedList');
   if(!saved.length){
@@ -783,7 +1033,7 @@ async function loadSaved() {
         </div>
         <div class="sv-del" onclick="event.preventDefault();unsave('${b.id}')">×</div>
       </a>`).join('');
-  } catch(e){ el.innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3></div>`; }
+  } catch(e){el.innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3></div>`;}
 }
 
 window.unsave = async bizId => {
@@ -794,6 +1044,7 @@ window.unsave = async bizId => {
   showToast('🗑 Removed from saved');
 };
 
+/* ── Utilities ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};

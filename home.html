@@ -449,14 +449,23 @@ function renderCard(b) {
         ${b.rating ? `<div style="position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;">★ ${Number(b.rating).toFixed(1)}</div>` : ''}
       </div>
       <div class="biz-body">
-        ${dealHtml}
-        <div class="biz-name">${esc(b.name)}</div>
-        <div style="display:flex;align-items:center;gap:5px;margin:2px 0;">
-          <span class="biz-cat" style="font-size:10px;">${esc(b.category)}</span>
-          ${dist}
-        </div>
-        <div class="biz-loc">📍 ${esc(b.location || b.city || '')}</div>
-        ${tags ? `<div class="biz-tags">${tags}</div>` : ''}
+  ${dealHtml}
+
+  <div class="biz-name">${esc(b.name)}</div>
+
+  <div style="display:flex;align-items:center;gap:5px;margin:2px 0;">
+    <span class="biz-cat">${esc(b.category)}</span>
+    ${dist}
+  </div>
+
+  <div class="biz-loc">📍 ${esc(b.location || b.city || '')}</div>
+
+  <!-- DESCRIPTION HERE -->
+  <div class="biz-desc">
+    ${esc(b.description || '')}
+  </div>
+
+  ${tags ? `<div class="biz-tags">${tags}</div>` : ''}
         <div class="biz-acts">
           ${b.phone ? `<a class="biz-btn btn-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>` : ''}
           ${waNum ? `<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>` : ''}

@@ -410,6 +410,66 @@ function calcDist(lat1,lng1,lat2,lng2){
 function fmtDist(km){ return km<1?`${Math.round(km*1000)}m away`:`${km.toFixed(1)}km away`; }
 
 // ── FETCH ──
+// ── TIME AGO ──
+function fmtAgo(date) {
+  if (!date) return '';
+  const d = date instanceof Date ? date : new Date(date);
+  if (isNaN(d)) return '';
+  const sec = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (sec < 60) return 'Just now';
+  if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
+  if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
+  if (sec < 2592000) return `${Math.floor(sec / 86400)}d ago`;
+  if (sec < 31536000) return `${Math.floor(sec / 2592000)}mo ago`;
+  return `${Math.floor(sec / 31536000)}y ago`;
+}
+
+// ── RENDER CARD (used by pagination) ──
+function renderCard(b) {
+  const plan = b.plan || 'basic';
+  const openS = isOpen(b.openTime, b.closeTime);
+  const imgUrl = b.imageUrl || (b.images?.[0]) || '';
+  const rawWa = (b.whatsapp || b.phone || '').replace(/\D/g, '');
+  const waNum = rawWa.startsWith('233') ? rawWa.slice(3) : rawWa.startsWith('0') ? rawWa.slice(1) : rawWa;
+  const tags = (b.tags || '').split(',').map(t => t.trim()).filter(Boolean).slice(0, 2).map(t => `<span class="biz-tag">${esc(t)}</span>`).join('');
+  const stripHtml = plan !== 'basic' ? `<div class="pstrip ${plan === 'standard' ? 'standard' : plan}"></div>` : '';
+  const badgeHtml = plan === 'premium' ? `<div class="plan-badge pb-premium">👑</div>` : plan === 'featured' ? `<div class="plan-badge pb-featured">⭐</div>` : plan === 'standard' ? `<div class="plan-badge pb-standard">✓</div>` : '';
+  const dist = userLat && b.lat && b.lng ? `<div class="dist-badge">📍 ${fmtDist(calcDist(userLat, userLng, Number(b.lat), Number(b.lng)))}</div>` : '';
+  const dealHtml = b.deal?.active && new Date(b.deal.expiresAt) > new Date() ? `<div style="background:#fde8e8;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-bottom:5px;">🔥 ${b.deal.discount}</div>` : '';
+  return `
+    <a class="biz-card plan-${plan}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
+      ${stripHtml}
+      <div class="biz-thumb">
+        ${imgUrl
+          ? `<img src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\'font-size:44px\'>${catEmoji(b.category)}</span>'">`
+          : `<span style="font-size:44px;">${catEmoji(b.category)}</span>`}
+        ${badgeHtml}
+        ${b.verified ? '<div class="ver-dot">✓</div>' : ''}
+        ${openS !== null ? `<div style="position:absolute;top:7px;left:7px;background:${openS ? '#1A6B3C' : '#C0392B'};color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;">${openS ? '● Open' : '● Closed'}</div>` : ''}
+        ${b.rating ? `<div style="position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;">★ ${Number(b.rating).toFixed(1)}</div>` : ''}
+      </div>
+      <div class="biz-body">
+        ${dealHtml}
+        <div class="biz-name">${esc(b.name)}</div>
+        <div style="display:flex;align-items:center;gap:5px;margin:2px 0;">
+          <span class="biz-cat" style="font-size:10px;">${esc(b.category)}</span>
+          ${dist}
+        </div>
+        <div class="biz-loc">📍 ${esc(b.location || b.city || '')}</div>
+        ${tags ? `<div class="biz-tags">${tags}</div>` : ''}
+        <div class="biz-acts">
+          ${b.phone ? `<a class="biz-btn btn-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>` : ''}
+          ${waNum ? `<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>` : ''}
+          <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
+          <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 ' + b.name + ' on CityLinkGH📍 ' + (b.location || b.city || 'Ghana') + '📞 ' + (b.phone || '') + '👉 ' + location.origin + '/business.html?id=' + b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
+        </div>
+      </div>
+      <div class="biz-footer">
+        <span>📍 ${esc(b.city || '')}</span>
+        <span style="color:var(--gray);font-size:10px;">${fmtAgo(b.createdAt?.toDate ? b.createdAt.toDate() : b.createdAt)}</span>
+      </div>
+    </a>`;
+}
 async function fetchBiz(){
   try{
     const snap=await getDocs(query(collection(db,'businesses'),where('approved','==',true)));

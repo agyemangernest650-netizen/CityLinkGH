@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Buy & Sell – Local Marketplace</title>
+  <meta name="description" content="Buy and sell locally in Ghana. Post items for sale, find deals near you on CityLinkGH Marketplace.">
+<meta property="og:title" content="CityLinkGH — Buy & Sell Marketplace">
+<meta property="og:description" content="Ghana's local buy and sell marketplace. Find phones, furniture, cars and more.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:url" content="https://citylinkgh.vercel.app/buy.html">
+<meta name="theme-color" content="#0D0D0D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+<link rel="canonical" href="https://citylinkgh.vercel.app/buy.html">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <title>CityLinkGH — Buy &amp; Sell Marketplace</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="buy.css">
   <!-- Paystack -->
@@ -23,6 +34,7 @@
     ══════════════════════════════════════════ */
     const FC={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
     const CN="dulnujvm7",UP="ernest";
+    const CLOUDINARY_CLOUD_NAME=CN, CLOUDINARY_UPLOAD_PRESET=UP;
     /* ══════════════════════════════════════════
        🔧 PAYSTACK CONFIG
        – Use test key (pk_test_...) during dev
@@ -51,14 +63,14 @@
         perks:["1 photo","30 days live","Standard display","WhatsApp & Call button"]
       },
       standard: {
-        name:"Standard", price:4.99, paystackAmount:499,   // in pesewas/kobo
+        name:"Standard", price:10, paystackAmount:499,   // in pesewas/kobo
         color:"#3B7EF6", bg:"#EBF2FF", border:"#3B7EF6",
         photos:5, duration:60, featured:false,
         badge:true, highlight:true, bold_title:false,
         perks:["5 photos","60 days live","Blue badge + border","SMS confirmation","Priority search"]
       },
       premium: {
-        name:"Premium", price:9.99, paystackAmount:999,
+        name:"Premium", price:20, paystackAmount:999,
         color:"#E84D2A", bg:"#FFF0EC", border:"#E84D2A",
         photos:10, duration:90, featured:true,
         badge:true, highlight:true, bold_title:true,
@@ -67,7 +79,7 @@
     };
 
     /* ── init ── */
-    const app  = initializeApp(firebaseConfig);
+    const app  = initializeApp(FC);
     const db   = getFirestore(app);
     const auth = getAuth(app);
     let currentUser  = null;
@@ -81,14 +93,13 @@
        ARKESEL SMS  – sends via REST API v2
     ══════════════════════════════════════════ */
     async function sendSMS(to, message) {
-      // ⚠️  In production move this to a Firebase Cloud Function
-      //     to keep your API key server-side.
+      if(!ARKESEL_KEY){console.warn("SMS skipped: no key");return;}
       try {
         const phone = to.replace(/\s/g,"");
         await fetch("https://sms.arkesel.com/api/v2/sms/send", {
           method: "POST",
           headers: {
-            "api-key": ARKESEL_API_KEY,
+            "api-key": ARKESEL_KEY,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -108,7 +119,7 @@
       if (p.price === 0) { onSuccess({ reference: "free_" + Date.now() }); return; }
 
       const handler = PaystackPop.setup({
-        key:       PAYSTACK_PUBLIC_KEY,
+        key:       PAYSTACK_KEY,
         email:     email || "buyer@marketplace.com",
         amount:    p.paystackAmount * 100, // Paystack uses lowest currency unit
         currency:  "GHS",                  // 🔧 change to NGN, USD etc as needed
@@ -119,7 +130,7 @@
             { display_name:"Phone", variable_name:"phone", value:phone  }
           ]
         },
-        callback: response => onSuccess(response),
+        onSuccess: response => onSuccess(response),
         onClose:  () => {
           document.getElementById("submit-btn").disabled = false;
           document.getElementById("submit-btn").textContent = "Post Listing";
@@ -608,6 +619,16 @@
   </script>
 </head>
 <body>
+
+<!-- BOTTOM NAV -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E2D9C8;display:flex;justify-content:space-around;padding:6px 0 env(safe-area-inset-bottom,14px);z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,.07);">
+  <a href="index.html" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:20px;">🏪</span><span style="font-size:10px;color:#7A7265;">Home</span></a>
+  <a href="jobs.html" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:20px;">💼</span><span style="font-size:10px;color:#7A7265;">Jobs</span></a>
+  <a href="rooms.html" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:20px;">🏠</span><span style="font-size:10px;color:#7A7265;">Rooms</span></a>
+  <a href="buy.html" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:20px;">🛍️</span><span style="font-size:10px;color:#D4A017;font-weight:700;">Buy&Sell</span></a>
+  <a href="profile.html" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:20px;">👤</span><span style="font-size:10px;color:#7A7265;">Profile</span></a>
+</div>
+<div style="height:60px;"></div>
 <div class="toast" id="toast"></div>
 
 <header>
@@ -622,8 +643,8 @@
 <nav class="nav-drawer" id="navDrawer">
   <button class="drawer-close" onclick="toggleDrawer()">✕</button>
   <div class="drawer-section">Navigate</div>
-  <a href="home.html" class="drawer-link"> Back to home</a>
-  <a href="business.html" class="drawer-link"><span class="di">🏪</span> Buy and Sell</a>
+  <a href="index.html" class="drawer-link"> Back to home</a>
+  <a href="buy.html" class="drawer-link"><span class="di">🏪</span> Buy and Sell</a>
   <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
   <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
   <div class="drawer-section">List Something</div>
@@ -942,6 +963,7 @@
   </div>
 </div>
 
+<div style="height:60px;"></div>
 <div class="toast" id="toast"></div>
 <!--footer-->
 <footer class="footer">
@@ -955,7 +977,7 @@
     <div class="footer-box">
       <h3>Quick Links</h3>
       <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="home.html">Home</a></li>
         <li><a href="room.html">Apartment/House for rent</a></li>
         <li><a href="jobs.html">Jobs</a></li>
         <li><a href="buy.html">Buy and Sell</a></li>
@@ -967,10 +989,10 @@
     <div class="footer-box">
       <h3>Top Categories</h3>
       <ul>
-        <li><a href="index.html">Churches</a></li>
-        <li><a href="index.html">Hotels</a></li>
-        <li><a href="index.html">Salons</a></li>
-        <li><a href="index.html">Mechanics</a></li>
+        <li><a href="home.html">Churches</a></li>
+        <li><a href="home.html">Hotels</a></li>
+        <li><a href="home.html">Salons</a></li>
+        <li><a href="home.html">Mechanics</a></li>
       </ul>
     </div>
 
@@ -992,8 +1014,6 @@
     <p>
       © 2026 CityLink Ghana. All Rights Reserved.
     </p>
-  </div>
-</footer>
   </div>
 </footer>
 

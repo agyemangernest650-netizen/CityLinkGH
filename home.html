@@ -61,7 +61,7 @@
   <button class="drawer-close" onclick="toggleDrawer()">✕</button>
   <div class="drawer-section">Navigate</div>
   <a href="index.html" class="drawer-link"> Back to home</a>
-  <a href="buy.html" class="drawer-link"><span class="di">🏪</span> Buy and Sell</a>
+  <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy and Sell</a>
   <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
   <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
   <div class="drawer-section">List Something</div>
@@ -74,7 +74,6 @@
   <a href="about.html" class="drawer-link"><span class="di"> ℹ️</span> About</a>
 </nav>
 </header>
-
 <!-- HERO -->
 <div class="hero">
   <div class="flag"><div class="f1"></div><div class="f2"></div><div class="f3"></div></div>
@@ -85,7 +84,7 @@
     <div class="autocomplete-wrap"><input type="text" id="searchInput" autocomplete="off" placeholder="Search businesses, services…" oninput="doSearch(this.value)"></div>
     <button class="near-me-btn" onclick="findNearMe()">📍 Near Me</button>
     <button class="search-go" onclick="doSearch(document.getElementById('searchInput').value)">Go</button>
-  </div>
+</div>
 
 <!-- STATS -->
 <div class="stats">
@@ -131,7 +130,7 @@
   <div style="display:flex;gap:7px;">
     <a href="submit.html" style="flex:1;background:var(--gold);color:var(--ink);padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">＋ List Business</a>
     <a href="jobs.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">💼 Find Jobs</a>
-    <a href="rooms.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🏠 Rooms</a>
+    <a href="room.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🏠 Rooms</a>
   </div>
 </div>
 <div class="city-section">
@@ -234,6 +233,7 @@
   <button class="load-more-btn" onclick="loadMore()">Load More →</button>
 </div>
 
+
 <!--footer-->
 <footer class="footer">
   <div class="footer-container">
@@ -287,30 +287,6 @@
 </footer>
   </div>
 </footer>
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div class="nav-item active">
-    <div class="ni"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div>
-    <div class="nl">Home</div>
-  </div>
-  <div class="nav-item" onclick="document.getElementById('searchInput').focus()">
-    <div class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></div>
-    <div class="nl">Search</div>
-  </div>
-  <div class="nav-item" onclick="switchView('map')">
-    <div class="ni"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
-    <div class="nl">Map</div>
-  </div>
-  <div class="nav-item" onclick="window.location='profile.html'">
-    <div class="ni"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
-    <div class="nl">Saved</div>
-  </div>
-  <div class="nav-item" onclick="window.location='profile.html'">
-    <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-    <div class="nl">Profile</div>
-  </div>
-</div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
 
@@ -410,75 +386,6 @@ function calcDist(lat1,lng1,lat2,lng2){
 function fmtDist(km){ return km<1?`${Math.round(km*1000)}m away`:`${km.toFixed(1)}km away`; }
 
 // ── FETCH ──
-// ── TIME AGO ──
-function fmtAgo(date) {
-  if (!date) return '';
-  const d = date instanceof Date ? date : new Date(date);
-  if (isNaN(d)) return '';
-  const sec = Math.floor((Date.now() - d.getTime()) / 1000);
-  if (sec < 60) return 'Just now';
-  if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
-  if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
-  if (sec < 2592000) return `${Math.floor(sec / 86400)}d ago`;
-  if (sec < 31536000) return `${Math.floor(sec / 2592000)}mo ago`;
-  return `${Math.floor(sec / 31536000)}y ago`;
-}
-
-// ── RENDER CARD (used by pagination) ──
-function renderCard(b) {
-  const plan = b.plan || 'basic';
-  const openS = isOpen(b.openTime, b.closeTime);
-  const imgUrl = b.imageUrl || (b.images?.[0]) || '';
-  const rawWa = (b.whatsapp || b.phone || '').replace(/\D/g, '');
-  const waNum = rawWa.startsWith('233') ? rawWa.slice(3) : rawWa.startsWith('0') ? rawWa.slice(1) : rawWa;
-  const tags = (b.tags || '').split(',').map(t => t.trim()).filter(Boolean).slice(0, 2).map(t => `<span class="biz-tag">${esc(t)}</span>`).join('');
-  const stripHtml = plan !== 'basic' ? `<div class="pstrip ${plan === 'standard' ? 'standard' : plan}"></div>` : '';
-  const badgeHtml = plan === 'premium' ? `<div class="plan-badge pb-premium">👑</div>` : plan === 'featured' ? `<div class="plan-badge pb-featured">⭐</div>` : plan === 'standard' ? `<div class="plan-badge pb-standard">✓</div>` : '';
-  const dist = userLat && b.lat && b.lng ? `<div class="dist-badge">📍 ${fmtDist(calcDist(userLat, userLng, Number(b.lat), Number(b.lng)))}</div>` : '';
-  const dealHtml = b.deal?.active && new Date(b.deal.expiresAt) > new Date() ? `<div style="background:#fde8e8;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-bottom:5px;">🔥 ${b.deal.discount}</div>` : '';
-  return `
-    <a class="biz-card plan-${plan}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
-      ${stripHtml}
-      <div class="biz-thumb">
-        ${imgUrl
-          ? `<img src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\'font-size:44px\'>${catEmoji(b.category)}</span>'">`
-          : `<span style="font-size:44px;">${catEmoji(b.category)}</span>`}
-        ${badgeHtml}
-        ${b.verified ? '<div class="ver-dot">✓</div>' : ''}
-        ${openS !== null ? `<div style="position:absolute;top:7px;left:7px;background:${openS ? '#1A6B3C' : '#C0392B'};color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;">${openS ? '● Open' : '● Closed'}</div>` : ''}
-        ${b.rating ? `<div style="position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;">★ ${Number(b.rating).toFixed(1)}</div>` : ''}
-      </div>
-      <div class="biz-body">
-  ${dealHtml}
-
-  <div class="biz-name">${esc(b.name)}</div>
-
-  <div style="display:flex;align-items:center;gap:5px;margin:2px 0;">
-    <span class="biz-cat">${esc(b.category)}</span>
-    ${dist}
-  </div>
-
-  <div class="biz-loc">📍 ${esc(b.location || b.city || '')}</div>
-
-  <!-- DESCRIPTION HERE -->
-  <div class="biz-desc">
-    ${esc(b.description || '')}
-  </div>
-
-  ${tags ? `<div class="biz-tags">${tags}</div>` : ''}
-        <div class="biz-acts">
-          ${b.phone ? `<a class="biz-btn btn-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>` : ''}
-          ${waNum ? `<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>` : ''}
-          <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
-          <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 ' + b.name + ' on CityLinkGH📍 ' + (b.location || b.city || 'Ghana') + '📞 ' + (b.phone || '') + '👉 ' + location.origin + '/business.html?id=' + b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
-        </div>
-      </div>
-      <div class="biz-footer">
-        <span>📍 ${esc(b.city || '')}</span>
-        <span style="color:var(--gray);font-size:10px;">${fmtAgo(b.createdAt?.toDate ? b.createdAt.toDate() : b.createdAt)}</span>
-      </div>
-    </a>`;
-}
 async function fetchBiz(){
   try{
     const snap=await getDocs(query(collection(db,'businesses'),where('approved','==',true)));
@@ -702,8 +609,14 @@ function renderGrid(list){
           </div>
         </div>
         <div class="biz-footer">
-          <span>📍 ${esc(b.city||'')}</span>
-          <span style="color:var(--gray);font-size:10px;">${fmtAgo(b.createdAt?.toDate?b.createdAt.toDate():b.createdAt)}</span>
+          <span style="display:flex;align-items:center;gap:4px;">
+            <span style="font-size:11px;">👤</span>
+            <span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(b.city||'')}</span>
+          </span>
+          <span style="display:flex;align-items:center;gap:8px;">
+            <span>${fmtAgo(b.createdAt?.toDate?b.createdAt.toDate():b.createdAt)}</span>
+            <span style="display:flex;align-items:center;gap:2px;">👁 ${b.views||0}</span>
+          </span>
         </div>
       </a>`;
   }).join('');
@@ -712,7 +625,7 @@ function renderGrid(list){
 // ── TRACK VIEW + RECENTLY VIEWED ──
 window.trackView=async bizId=>{
   const b=allBiz.find(x=>x.id===bizId);
-  if(b){ addRecent(b); renderRecent(); }
+  if(b){ addRecent(b); renderRecent(); b.views=(b.views||0)+1; }
   // Increment view count in Firebase
   try{ await updateDoc(doc(db,'businesses',bizId),{views:increment(1)}); }catch(_){}
 };
@@ -934,7 +847,6 @@ window.addEventListener('appinstalled', () => {
   document.getElementById('installBanner').style.display='none';
   console.log('CityLinkGH installed!');
 });
-
 // ── HAMBURGER MENU ──
 window.toggleDrawer = () => {
   const h = document.getElementById('hamburger');

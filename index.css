@@ -172,7 +172,7 @@
   .fbb{background:var(--gold);color:var(--ink);border:none;padding:8px 12px;border-radius:8px;font-family:'Epilogue',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap;}
 
   /* BUSINESS CARDS */
-  .biz-grid{padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .biz-grid{padding:10px 12px;display:grid;grid-template-columns:1fr;gap:15px;}
   .biz-card{background:var(--card);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;animation:su .4s ease both;position:relative;border:1px solid var(--border);}
   .biz-card:active{transform:scale(.98);}
   @keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -184,7 +184,7 @@
   .pstrip.premium{background:linear-gradient(90deg,var(--purple),#FFD700);}
   .pstrip.featured{background:linear-gradient(90deg,var(--gold),#FFA500);}
   .pstrip.standard{background:var(--green);}
-  .biz-thumb{width:100%;height:120px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;overflow:hidden;flex-shrink:0;}
+  .biz-thumb{width:100%;height:180px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;overflow:hidden;flex-shrink:0;}
   .biz-thumb img{width:100%;height:100%;object-fit:cover;}
   .plan-badge{position:absolute;top:7px;left:0;font-size:8px;font-weight:800;padding:2px 6px;letter-spacing:.05em;z-index:3;clip-path:polygon(0 0,100% 0,calc(100% - 5px) 100%,0 100%);}
   .pb-premium{background:linear-gradient(90deg,var(--purple),#c39bd3);color:#fff;}

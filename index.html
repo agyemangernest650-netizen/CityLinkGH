@@ -3,221 +3,692 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CityLinkGH — Find Trusted Businesses, Jobs & Rooms in Ghana</title>
-<meta name="description" content="Ghana's #1 local directory. Find verified businesses, jobs and housing across Accra, Kumasi, Takoradi and all Ghana cities.">
+<title>CityLinkGH — Find Businesses, Jobs, Rooms & Deals in Ghana</title>
+<meta name="description" content="Ghana's #1 local directory. Find verified businesses, jobs, housing and buy & sell deals across Accra, Kumasi, Takoradi and all Ghana cities.">
 <meta property="og:title" content="CityLinkGH — Ghana's Local Directory">
-<meta property="og:description" content="Find businesses, jobs and rooms across Ghana. List your business free.">
+<meta property="og:description" content="Find businesses, jobs, rooms and great deals across Ghana. List your business free.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta name="theme-color" content="#0D0D0D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
+/* ─── RESET & TOKENS ─── */
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--gold:#D4A017;--green:#1A6B3C;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;}
-body{font-family:'Epilogue',sans-serif;background:#fff;color:var(--ink);overflow-x:hidden;}
+:root{
+  --gold:#D4A017;--gold-lt:#FFF9E6;--gold-dim:rgba(212,160,23,.15);
+  --green:#1A6B3C;--green-lt:#E8F5EE;
+  --ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;
+  --blue:#3B7EF6;--red:#E84D2A;
+  --surface:#fff;--radius:14px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Epilogue',sans-serif;background:#fff;color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,13,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.07);}
-.nav-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;text-decoration:none;}
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,13,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06);transition:padding .3s;}
+nav.scrolled{padding:8px 20px;background:rgba(13,13,13,.98);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#fff;text-decoration:none;display:flex;align-items:center;gap:7px;}
+.nav-logo-icon{width:28px;height:28px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;}
 .nav-logo span{color:var(--gold);}
-.nav-btns{display:flex;gap:8px;}
-.nav-btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;font-family:'Epilogue',sans-serif;}
-.nb-ghost{color:rgba(255,255,255,.6);background:none;border:1px solid rgba(255,255,255,.15);}
-.nb-gold{background:var(--gold);color:var(--ink);}
+.nav-links{display:none;gap:4px;}
+@media(min-width:640px){.nav-links{display:flex;}}
+.nav-link{padding:7px 11px;border-radius:7px;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s,background .15s;}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.07);}
+.nav-link.active{color:var(--gold);}
+.nav-btns{display:flex;gap:8px;align-items:center;}
+.nb-ghost{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;color:rgba(255,255,255,.6);background:none;border:1px solid rgba(255,255,255,.14);text-decoration:none;font-family:'Epilogue',sans-serif;cursor:pointer;transition:border-color .15s,color .15s;}
+.nb-ghost:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+.nb-gold{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:var(--gold);color:var(--ink);text-decoration:none;font-family:'Epilogue',sans-serif;cursor:pointer;transition:opacity .15s;}
+.nb-gold:hover{opacity:.88;}
 
-/* HERO */
-.hero{background:linear-gradient(160deg,#0d0d0d 0%,#1a3a00 60%,#0d2a00 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px 60px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 60%, rgba(212,160,23,.08) 0%, transparent 60%),radial-gradient(circle at 80% 20%, rgba(26,107,60,.1) 0%, transparent 50%);}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,160,23,.12);border:1px solid rgba(212,160,23,.3);border-radius:20px;padding:5px 13px;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;}
-.hero h1{font-family:'Syne',sans-serif;font-size:38px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;max-width:400px;}
-.hero h1 span{color:var(--gold);}
-.hero p{font-size:15px;color:rgba(255,255,255,.65);line-height:1.7;max-width:360px;margin-bottom:28px;}
-.hero-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;}
-.hb-main{background:var(--gold);color:var(--ink);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;text-decoration:none;display:block;text-align:center;}
-.hb-sec{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;text-decoration:none;display:block;text-align:center;}
-.hero-stats{display:flex;gap:24px;margin-top:36px;}
-.hs{text-align:center;}
-.hs-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;}
-.hs-l{font-size:11px;color:rgba(255,255,255,.45);}
+/* ─── HERO ─── */
+.hero{background:linear-gradient(160deg,#0d0d0d 0%,#0e2800 55%,#091a00 100%);min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 20px 60px;text-align:center;position:relative;overflow:hidden;}
+/* Decorative orbs */
+.hero::before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,.11) 0%,transparent 70%);top:-60px;right:-80px;pointer-events:none;}
+.hero::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(26,107,60,.15) 0%,transparent 70%);bottom:40px;left:-80px;pointer-events:none;}
+/* Animated grid lines */
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);}
 
-/* CATEGORIES */
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,160,23,.13);border:1px solid rgba(212,160,23,.35);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;position:relative;z-index:1;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(34px,8vw,56px);font-weight:900;color:#fff;line-height:1.07;margin-bottom:14px;max-width:420px;position:relative;z-index:1;letter-spacing:-.01em;}
+.hero h1 .line-gold{color:var(--gold);display:block;}
+.hero h1 .line-outline{-webkit-text-stroke:1.5px rgba(255,255,255,.35);color:transparent;display:block;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.58);line-height:1.75;max-width:340px;margin-bottom:30px;position:relative;z-index:1;}
+
+/* Search bar */
+.hero-search{display:flex;width:100%;max-width:380px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);border-radius:12px;overflow:hidden;margin-bottom:20px;position:relative;z-index:1;transition:border-color .2s,background .2s;}
+.hero-search:focus-within{border-color:rgba(212,160,23,.5);background:rgba(255,255,255,.1);}
+.hero-search input{flex:1;background:none;border:none;outline:none;padding:13px 14px;font-size:14px;font-family:'Epilogue',sans-serif;color:#fff;min-width:0;}
+.hero-search input::placeholder{color:rgba(255,255,255,.35);}
+.hero-search-btn{background:var(--gold);border:none;padding:0 18px;cursor:pointer;font-size:18px;flex-shrink:0;transition:opacity .15s;}
+.hero-search-btn:hover{opacity:.88;}
+
+.hero-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:28px;position:relative;z-index:1;}
+.hero-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 12px;font-size:11px;color:rgba(255,255,255,.6);cursor:pointer;text-decoration:none;transition:background .15s,color .15s,border-color .15s;}
+.hero-chip:hover{background:rgba(212,160,23,.15);border-color:rgba(212,160,23,.35);color:var(--gold);}
+
+.hero-actions{display:flex;gap:10px;flex-direction:column;width:100%;max-width:300px;position:relative;z-index:1;}
+.hb-main{background:var(--gold);color:var(--ink);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;text-align:center;transition:opacity .15s,transform .15s;}
+.hb-main:hover{opacity:.9;transform:translateY(-1px);}
+.hb-sec{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;text-align:center;transition:background .15s;}
+.hb-sec:hover{background:rgba(255,255,255,.13);}
+
+/* Redirect timer */
+.redirect-box{margin-top:28px;text-align:center;position:relative;z-index:1;}
+.redirect-label{font-size:12px;color:rgba(255,255,255,.38);margin-bottom:8px;}
+.redirect-bar-wrap{width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin:0 auto 8px;}
+.redirect-bar{height:100%;background:var(--gold);width:100%;border-radius:2px;transition:width 1s linear;}
+.redirect-skip{font-size:12px;color:rgba(255,255,255,.38);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:'Epilogue',sans-serif;}
+.redirect-skip:hover{color:var(--gold);}
+
+/* Hero stats */
+.hero-stats{display:flex;gap:0;margin-top:40px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;overflow:hidden;position:relative;z-index:1;width:100%;max-width:380px;}
+.hs{flex:1;text-align:center;padding:14px 10px;border-right:1px solid rgba(255,255,255,.09);}
+.hs:last-child{border-right:none;}
+.hs-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;}
+.hs-l{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;}
+
+/* ─── MARQUEE TICKER ─── */
+.ticker-wrap{background:var(--gold);padding:9px 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-flex;animation:ticker 28s linear infinite;}
+.ticker-inner:hover{animation-play-state:paused;}
+.ticker-item{padding:0 32px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.04em;}
+.ticker-dot{color:rgba(13,13,13,.35);}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ─── SERVICES STRIP ─── */
+.services-strip{padding:28px 20px;background:var(--cream);border-bottom:1px solid var(--border);}
+.strip-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:14px;text-align:center;}
+.strip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(min-width:480px){.strip-grid{grid-template-columns:repeat(4,1fr);}}
+.strip-card{border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;text-decoration:none;color:var(--ink);transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;align-items:center;gap:7px;border:1.5px solid var(--border);background:#fff;}
+.strip-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.strip-card:active{transform:scale(.97);}
+.strip-card-icon{font-size:26px;line-height:1;}
+.strip-card-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;}
+.strip-card-count{font-size:10px;color:var(--gray);}
+.strip-card.new-badge::after{content:'NEW';position:absolute;top:8px;right:8px;background:var(--red);color:#fff;font-size:8px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:20px;}
+.strip-card{position:relative;}
+
+/* ─── FEATURED SECTION ─── */
 .section{padding:50px 20px;}
-.sec-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.sec-h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:8px;}
-.sec-sub{font-size:14px;color:var(--gray);margin-bottom:28px;line-height:1.6;}
+.sec-eyebrow{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.sec-h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,28px);font-weight:800;margin-bottom:8px;line-height:1.2;}
+.sec-sub{font-size:14px;color:var(--gray);margin-bottom:28px;line-height:1.65;}
+.sec-link{font-size:13px;font-weight:700;color:var(--green);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:28px;}
+.sec-link::after{content:'→';transition:transform .15s;}
+.sec-link:hover::after{transform:translateX(3px);}
+
+/* ─── CATEGORY GRID ─── */
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.cat-card{background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:all .2s;}
-.cat-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+@media(min-width:480px){.cat-grid{grid-template-columns:repeat(4,1fr);}}
+.cat-card{background:var(--cream);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 8px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:border-color .18s,transform .18s,box-shadow .18s;}
+.cat-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,160,23,.12);}
 .cat-card:active{transform:scale(.97);}
-.cc-ico{font-size:28px;margin-bottom:6px;}
+.cc-ico{font-size:26px;margin-bottom:6px;display:block;}
 .cc-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;}
+.cc-count{font-size:10px;color:var(--gray);margin-top:2px;}
 
-/* HOW IT WORKS */
-.how-section{background:var(--cream);padding:50px 20px;}
-.step{display:flex;gap:14px;margin-bottom:22px;align-items:flex-start;}
-.step-num{width:38px;height:38px;border-radius:50%;background:var(--gold);color:var(--ink);font-family:'Syne',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.step-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;}
-.step-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+/* ─── MARKETPLACE PREVIEW ─── */
+.market-section{background:linear-gradient(160deg,#0d0d0d,#1a2a0d);padding:50px 20px;}
+.market-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+@media(min-width:480px){.market-cards{grid-template-columns:repeat(3,1fr);}}
+.market-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .18s,border-color .18s;text-decoration:none;color:#fff;}
+.market-card:hover{transform:translateY(-3px);border-color:rgba(212,160,23,.4);}
+.mc-img{height:100px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:36px;border-bottom:1px solid rgba(255,255,255,.06);}
+.mc-body{padding:10px;}
+.mc-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);margin-bottom:4px;}
+.mc-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;line-height:1.3;margin-bottom:5px;}
+.mc-price{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--red);}
+.market-cta{display:flex;gap:10px;flex-direction:column;}
+@media(min-width:400px){.market-cta{flex-direction:row;}}
+.mc-btn-main{flex:1;background:var(--gold);color:var(--ink);padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;transition:opacity .15s;}
+.mc-btn-main:hover{opacity:.88;}
+.mc-btn-sec{flex:1;background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.14);padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;transition:background .15s;}
+.mc-btn-sec:hover{background:rgba(255,255,255,.12);}
 
-/* PRICING */
-.pricing-section{padding:50px 20px;}
+/* ─── JOBS PREVIEW ─── */
+.jobs-section{padding:50px 20px;background:var(--cream);}
+.job-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;text-decoration:none;color:var(--ink);transition:border-color .18s,box-shadow .18s;}
+.job-card:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(26,107,60,.1);}
+.jc-logo{width:42px;height:42px;border-radius:10px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.jc-body{flex:1;min-width:0;}
+.jc-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:3px;}
+.jc-company{font-size:12px;color:var(--gray);}
+.jc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.jc-tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--mist);color:var(--gray);}
+.jc-tag.remote{background:#E8F5EE;color:var(--green);}
+.jc-tag.full{background:#EBF2FF;color:var(--blue);}
+.jc-salary{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--green);white-space:nowrap;}
+
+/* ─── ROOMS PREVIEW ─── */
+.rooms-section{padding:50px 20px;}
+.rooms-grid{display:grid;gap:12px;}
+@media(min-width:480px){.rooms-grid{grid-template-columns:1fr 1fr;}}
+.room-card{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;text-decoration:none;color:var(--ink);transition:transform .18s,box-shadow .18s;}
+.room-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.rc-img{height:130px;background:linear-gradient(135deg,var(--mist),var(--border));display:flex;align-items:center;justify-content:center;font-size:48px;}
+.rc-body{padding:14px;}
+.rc-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:4px;}
+.rc-location{font-size:11px;color:var(--gray);margin-bottom:8px;display:flex;align-items:center;gap:4px;}
+.rc-price{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--green);}
+.rc-price span{font-size:11px;font-weight:400;color:var(--gray);}
+.rc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.rc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--mist);color:var(--gray);}
+
+/* ─── HOW IT WORKS ─── */
+.how-section{background:var(--ink);padding:50px 20px;}
+.how-steps{display:grid;gap:0;position:relative;}
+.how-steps::before{content:'';position:absolute;left:18px;top:20px;bottom:20px;width:2px;background:rgba(255,255,255,.08);border-radius:2px;}
+.how-step{display:flex;gap:16px;padding:0 0 28px;align-items:flex-start;position:relative;}
+.how-step:last-child{padding-bottom:0;}
+.hs-num{width:38px;height:38px;border-radius:50%;background:var(--gold);color:var(--ink);font-family:'Syne',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;}
+.hs-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:5px;}
+.hs-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;}
+
+/* ─── PLANS COMPARISON ─── */
+.pricing-section{padding:50px 20px;background:var(--cream);}
 .plan-grid{display:grid;gap:12px;}
-.plan-card{border-radius:16px;border:2px solid var(--border);padding:18px;position:relative;overflow:hidden;}
-.plan-card.featured-plan{border-color:var(--gold);background:linear-gradient(135deg,#fffbf0,#fff);}
-.plan-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;letter-spacing:.05em;}
-.plan-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:4px;}
-.plan-price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green);margin-bottom:10px;}
-.plan-price span{font-size:13px;color:var(--gray);font-family:'Epilogue',sans-serif;font-weight:400;}
-.plan-feat{font-size:12px;color:var(--gray);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
-.plan-btn{display:block;width:100%;background:var(--green);color:#fff;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;margin-top:14px;}
-.plan-card.featured-plan .plan-btn{background:var(--gold);color:var(--ink);}
+@media(min-width:600px){.plan-grid{grid-template-columns:repeat(3,1fr);}}
+.plan-card{border-radius:16px;border:2px solid var(--border);padding:20px;position:relative;background:#fff;transition:transform .18s,box-shadow .18s;}
+.plan-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.08);}
+.plan-card.featured-plan{border-color:var(--gold);background:linear-gradient(160deg,#fffdf5,#fff);}
+.plan-top-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:3px 12px;border-radius:20px;letter-spacing:.05em;white-space:nowrap;}
+.plan-icon{font-size:24px;margin-bottom:8px;}
+.plan-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px;}
+.plan-price{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--green);line-height:1;margin-bottom:4px;}
+.plan-price span{font-size:14px;color:var(--gray);font-family:'Epilogue',sans-serif;font-weight:400;}
+.plan-period{font-size:11px;color:var(--gray);margin-bottom:14px;}
+.plan-divider{height:1px;background:var(--border);margin:14px 0;}
+.plan-feat{font-size:12px;color:var(--gray);margin-bottom:7px;display:flex;align-items:center;gap:8px;line-height:1.4;}
+.plan-feat .ck{color:var(--green);font-weight:700;flex-shrink:0;}
+.plan-feat .no{color:#ddd;}
+.plan-btn{display:block;width:100%;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;margin-top:16px;transition:opacity .15s,transform .15s;border:none;cursor:pointer;}
+.plan-btn:hover{opacity:.88;transform:translateY(-1px);}
+.plan-btn-green{background:var(--green);color:#fff;}
+.plan-btn-gold{background:var(--gold);color:var(--ink);}
+.plan-btn-outline{background:none;border:2px solid var(--border);color:var(--ink);}
+.plan-btn-outline:hover{border-color:var(--ink);opacity:1;}
 
-/* TESTIMONIALS */
+/* Marketplace plan note */
+.plan-note{text-align:center;margin-top:20px;padding:14px;background:var(--mist);border-radius:10px;border:1px solid var(--border);}
+.plan-note p{font-size:12px;color:var(--gray);line-height:1.6;}
+.plan-note a{color:var(--green);font-weight:700;text-decoration:none;}
+
+/* ─── TESTIMONIALS ─── */
 .testi-section{background:var(--ink);padding:50px 20px;}
-.testi-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:12px;}
-.testi-text{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:12px;}
+.testi-grid{display:grid;gap:12px;}
+@media(min-width:600px){.testi-grid{grid-template-columns:1fr 1fr 1fr;}}
+.testi-card{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;transition:border-color .18s;}
+.testi-card:hover{border-color:rgba(212,160,23,.3);}
+.testi-stars{color:var(--gold);font-size:14px;margin-bottom:10px;letter-spacing:2px;}
+.testi-text{font-size:13px;color:rgba(255,255,255,.72);line-height:1.75;margin-bottom:14px;}
 .testi-author{display:flex;align-items:center;gap:10px;}
-.ta-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--ink);}
+.ta-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--ink);flex-shrink:0;}
 .ta-name{font-size:13px;font-weight:700;color:#fff;}
-.ta-role{font-size:11px;color:rgba(255,255,255,.4);}
+.ta-role{font-size:11px;color:rgba(255,255,255,.38);}
 
-/* CTA */
-.cta-section{background:linear-gradient(135deg,var(--green),#0d4a26);padding:50px 20px;text-align:center;}
-.cta-section h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;}
-.cta-section p{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:24px;line-height:1.6;}
+/* ─── CITIES ─── */
+.cities-section{padding:50px 20px;background:var(--mist);}
+.cities-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+@media(min-width:480px){.cities-grid{grid-template-columns:repeat(3,1fr);}}
+.city-card{border-radius:12px;padding:14px;border:1.5px solid var(--border);background:#fff;cursor:pointer;text-decoration:none;color:var(--ink);transition:border-color .18s,transform .18s;display:flex;align-items:center;gap:10px;}
+.city-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.city-flag{font-size:22px;flex-shrink:0;}
+.city-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;}
+.city-count{font-size:10px;color:var(--gray);}
+
+/* ─── NEWSLETTER ─── */
+.nl-section{background:linear-gradient(135deg,var(--green),#0d4a26);padding:50px 20px;text-align:center;}
+.nl-section h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,28px);font-weight:800;color:#fff;margin-bottom:8px;}
+.nl-section p{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:22px;line-height:1.65;}
+.nl-form{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:0 auto;}
+@media(min-width:400px){.nl-form{flex-direction:row;}}
+.nl-input{flex:1;padding:13px 14px;border-radius:10px;border:none;font-size:14px;font-family:'Epilogue',sans-serif;outline:none;background:rgba(255,255,255,.95);}
+.nl-btn{padding:13px 20px;border-radius:10px;background:var(--gold);color:var(--ink);font-family:'Syne',sans-serif;font-size:13px;font-weight:800;border:none;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+.nl-btn:hover{opacity:.88;}
+.nl-note{font-size:11px;color:rgba(255,255,255,.35);margin-top:10px;}
+
+/* ─── CTA ─── */
+.cta-section{background:var(--cream);padding:60px 20px;text-align:center;}
+.cta-section h2{font-family:'Syne',sans-serif;font-size:clamp(24px,5vw,32px);font-weight:900;color:var(--ink);margin-bottom:8px;line-height:1.15;}
+.cta-section h2 span{color:var(--green);}
+.cta-section p{font-size:14px;color:var(--gray);margin-bottom:26px;line-height:1.65;}
 .cta-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
-.cta-btn-main{background:#fff;color:var(--green);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;}
-.cta-btn-sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;}
+.cta-btn-main{background:var(--green);color:#fff;padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;transition:opacity .15s,transform .15s;}
+.cta-btn-main:hover{opacity:.88;transform:translateY(-1px);}
+.cta-btn-sec{background:var(--mist);color:var(--ink);border:1.5px solid var(--border);padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;transition:background .15s;}
+.cta-btn-sec:hover{background:var(--border);}
 
-/* FOOTER */
-footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:30px 20px;text-align:center;}
-.footer-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:12px;}
+/* ─── FOOTER ─── */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:40px 20px 24px;}
+.footer-top{display:grid;grid-template-columns:1fr;gap:28px;margin-bottom:32px;}
+@media(min-width:600px){.footer-top{grid-template-columns:1.5fr 1fr 1fr 1fr;}}
+.footer-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .footer-logo span{color:var(--gold);}
-.footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
-.footer-links a{font-size:12px;color:rgba(255,255,255,.45);text-decoration:none;}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.4);line-height:1.7;}
+.footer-col h4{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;margin-bottom:9px;transition:color .15s;}
+.footer-col a:hover{color:var(--gold);}
+.footer-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:20px;}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.25);}
+.footer-socials{display:flex;gap:10px;}
+.footer-social{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:14px;text-decoration:none;transition:background .15s;}
+.footer-social:hover{background:rgba(255,255,255,.14);}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ─── FLOATING WA ─── */
+.wa-float{position:fixed;bottom:22px;right:16px;background:#25D366;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 18px rgba(37,211,102,.4);z-index:400;text-decoration:none;animation:waPulse 2.5s infinite;}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.4);}50%{box-shadow:0 4px 28px rgba(37,211,102,.7);}}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:transform .3s;z-index:500;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">CityLink<span>GH</span></a>
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon"><img src="City link.jpeg" width="40" height="50" alt="CityLinkGH" style="border-radius:6px;"></div>
+   <div> CityLink<span>GH</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="home.html" class="nav-link">Businesses</a>
+    <a href="jobs.html" class="nav-link">Jobs</a>
+    <a href="room.html" class="nav-link">Rooms</a>
+    <a href="buy.html" class="nav-link">Buy &amp; Sell</a>
+  </div>
   <div class="nav-btns">
-    <a href="home.html" class="nav-btn nb-ghost">Browse</a>
-    <a href="submit.html" class="nav-btn nb-gold">List Free</a>
+    <a href="home.html" class="nb-ghost">Browse</a>
+    <a href="submit.html" class="nb-gold">List Free</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-grid"></div>
   <div class="hero-badge">🇬🇭 Ghana's #1 Local Directory</div>
-  <h1>Find Trusted Businesses <span>Near You</span></h1>
-  <p>Discover verified restaurants, hospitals, salons and more across Accra, Kumasi, Takoradi and all Ghana cities.</p>
-  <div class="hero-btns">
-    <div style="margin-top:28px;text-align:center;">
-  <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:8px;">
-    Redirecting to directory in <span id="redirectTimer">40</span>s
+  <h1>
+    Find Trusted<br>
+    <span class="line-gold">Businesses</span>
+    <span class="line-outline">Near You</span>
+  </h1>
+  <p class="hero-sub">Discover verified restaurants, hospitals, salons and more — plus jobs, rooms and great deals — across every Ghana city.</p>
+
+  <!-- Search -->
+  <div class="hero-search">
+    <input type="text" id="heroSearch" placeholder="Search businesses, services…" autocomplete="off"/>
+    <button class="hero-search-btn" onclick="doSearch()">🔍</button>
   </div>
-  <div style="width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin:0 auto;overflow:hidden;">
-    <div id="timerBar" style="height:100%;background:var(--gold);width:100%;transition:width 1s linear;"></div>
+  <div class="hero-chips">
+    <a href="home.html?cat=Restaurants" class="hero-chip">🍽 Restaurants</a>
+    <a href="home.html?cat=Hospitals" class="hero-chip">🏥 Hospitals</a>
+    <a href="jobs.html" class="hero-chip">💼 Jobs</a>
+    <a href="buy.html" class="hero-chip">🛍️ Buy &amp; Sell</a>
+    <a href="room.html" class="hero-chip">🏠 Rooms</a>
   </div>
-  <a href="home.html" style="display:inline-block;margin-top:10px;font-size:12px;color:rgba(255,255,255,.4);text-decoration:underline;">Skip →</a>
-</div>
+
+  <div class="hero-actions">
     <a href="home.html" class="hb-main">🔍 Browse Businesses</a>
     <a href="submit.html" class="hb-sec">＋ List Your Business Free</a>
   </div>
+
+  <!-- Redirect timer -->
+  <div class="redirect-box">
+    <div class="redirect-label">Redirecting to directory in <span id="redirectTimer">40</span>s</div>
+    <div class="redirect-bar-wrap"><div class="redirect-bar" id="timerBar"></div></div>
+    <button class="redirect-skip" onclick="skipRedirect()">Skip now →</button>
+  </div>
+
+  <!-- Stats -->
   <div class="hero-stats">
     <div class="hs"><div class="hs-n" id="lsBiz">500+</div><div class="hs-l">Businesses</div></div>
     <div class="hs"><div class="hs-n" id="lsJobs">200+</div><div class="hs-l">Jobs</div></div>
     <div class="hs"><div class="hs-n" id="lsRooms">150+</div><div class="hs-l">Rooms</div></div>
+    <div class="hs"><div class="hs-n" id="lsDeals">80+</div><div class="hs-l">Deals</div></div>
   </div>
 </div>
 
-<!-- CATEGORIES -->
-<div class="section">
-  <div class="sec-label">Browse by Category</div>
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item">🍽️ Restaurants &amp; Chop Bars</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🏥 Hospitals &amp; Clinics</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🏨 Hotels &amp; Guest Houses</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">💇 Salons &amp; Barbershops</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🔧 Auto Mechanics</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🎓 Schools &amp; Tutors</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">💼 Job Listings</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🏠 Rooms for Rent</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🛍️ Buy &amp; Sell</span><span class="ticker-dot">·</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">🍽️ Restaurants &amp; Chop Bars</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🏥 Hospitals &amp; Clinics</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🏨 Hotels &amp; Guest Houses</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">💇 Salons &amp; Barbershops</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🔧 Auto Mechanics</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🎓 Schools &amp; Tutors</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">💼 Job Listings</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🏠 Rooms for Rent</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">🛍️ Buy &amp; Sell</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<!-- SERVICES STRIP -->
+<div class="services-strip">
+  <div class="strip-label">Everything in one place</div>
+  <div class="strip-grid">
+    <a href="home.html" class="strip-card">
+      <div class="strip-card-icon">🏢</div>
+      <div class="strip-card-name">Businesses</div>
+      <div class="strip-card-count" id="sc-biz">500+ listed</div>
+    </a>
+    <a href="jobs.html" class="strip-card">
+      <div class="strip-card-icon">💼</div>
+      <div class="strip-card-name">Jobs</div>
+      <div class="strip-card-count" id="sc-jobs">200+ open</div>
+    </a>
+    <a href="room.html" class="strip-card">
+      <div class="strip-card-icon">🏠</div>
+      <div class="strip-card-name">Rooms</div>
+      <div class="strip-card-count" id="sc-rooms">150+ available</div>
+    </a>
+    <a href="buy.html" class="strip-card new-badge">
+      <div class="strip-card-icon">🛍️</div>
+      <div class="strip-card-name">Buy &amp; Sell</div>
+      <div class="strip-card-count" id="sc-deals">80+ listings</div>
+    </a>
+  </div>
+</div>
+
+<!-- BROWSE BY CATEGORY -->
+<div class="section reveal">
+  <div class="sec-eyebrow">Browse by Category</div>
   <div class="sec-h2">What are you looking for?</div>
   <div class="sec-sub">From restaurants to hospitals — find any local business across Ghana.</div>
   <div class="cat-grid">
-    <a href="home.html" class="cat-card"><div class="cc-ico">🍽️</div><div class="cc-name">Restaurants</div></a>
-    <a href="home.html" class="cat-card"><div class="cc-ico">🏥</div><div class="cc-name">Hospitals</div></a>
-    <a href="home.html" class="cat-card"><div class="cc-ico">🏨</div><div class="cc-name">Hotels</div></a>
-    <a href="home.html" class="cat-card"><div class="cc-ico">💇</div><div class="cc-name">Salons</div></a>
-    <a href="home.html" class="cat-card"><div class="cc-ico">🔧</div><div class="cc-name">Mechanics</div></a>
-    <a href="home.html" class="cat-card"><div class="cc-ico">🎓</div><div class="cc-name">Schools</div></a>
-    <a href="jobs.html" class="cat-card"><div class="cc-ico">💼</div><div class="cc-name">Jobs</div></a>
-    <a href="room.html" class="cat-card"><div class="cc-ico">🏠</div><div class="cc-name">Rooms</div></a>
-    <a href="home.html" class="cat-card"><div class="cc-ico">🏢</div><div class="cc-name">More →</div></a>
+    <a href="home.html?cat=Restaurants" class="cat-card"><span class="cc-ico">🍽️</span><div class="cc-name">Restaurants</div></a>
+    <a href="home.html?cat=Hospitals" class="cat-card"><span class="cc-ico">🏥</span><div class="cc-name">Hospitals</div></a>
+    <a href="home.html?cat=Hotels" class="cat-card"><span class="cc-ico">🏨</span><div class="cc-name">Hotels</div></a>
+    <a href="home.html?cat=Salons" class="cat-card"><span class="cc-ico">💇</span><div class="cc-name">Salons</div></a>
+    <a href="home.html?cat=Mechanics" class="cat-card"><span class="cc-ico">🔧</span><div class="cc-name">Mechanics</div></a>
+    <a href="home.html?cat=Schools" class="cat-card"><span class="cc-ico">🎓</span><div class="cc-name">Schools</div></a>
+    <a href="jobs.html" class="cat-card"><span class="cc-ico">💼</span><div class="cc-name">Jobs</div></a>
+    <a href="room.html" class="cat-card"><span class="cc-ico">🏠</span><div class="cc-name">Rooms</div></a>
+    <a href="home.html" class="cat-card"><span class="cc-ico">🏢</span><div class="cc-name">More →</div></a>
   </div>
+</div>
+
+<!-- BUY & SELL MARKETPLACE PREVIEW -->
+<div class="market-section">
+  <div style="position:relative;z-index:1;">
+    <div class="sec-eyebrow" style="color:var(--gold);">Marketplace — NEW</div>
+    <div class="sec-h2" style="color:#fff;margin-bottom:8px;">Buy &amp; Sell Locally</div>
+    <div class="sec-sub" style="color:rgba(255,255,255,.55);margin-bottom:20px;">Turn clutter into cash or find a great deal — with WhatsApp contact on every listing.</div>
+    <!-- Sample listing previews -->
+    <div class="market-cards">
+      <a href="buy.html" class="market-card">
+        <div class="mc-img">📱</div>
+        <div class="mc-body">
+          <div class="mc-tag">Electronics</div>
+          <div class="mc-title">Samsung Galaxy A54 — Like New</div>
+          <div class="mc-price">GH₵1,200</div>
+        </div>
+      </a>
+      <a href="buy.html" class="market-card">
+        <div class="mc-img">🛋️</div>
+        <div class="mc-body">
+          <div class="mc-tag">Furniture</div>
+          <div class="mc-title">3-Seater Sofa Set — Good Condition</div>
+          <div class="mc-price">GH₵850</div>
+        </div>
+      </a>
+      <a href="buy.html" class="market-card" style="display:none;" id="mc3">
+        <div class="mc-img">🚗</div>
+        <div class="mc-body">
+          <div class="mc-tag">Vehicles</div>
+          <div class="mc-title">Toyota Corolla 2014 — Manual</div>
+          <div class="mc-price">GH₵52,000</div>
+        </div>
+      </a>
+    </div>
+    <!-- Plan highlight -->
+    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:24px;flex-shrink:0;">⭐</span>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;">Post for Free or boost for GH₵10–20</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.45);">Basic is always free · Standard GH₵10 · Premium GH₵20 · Pay via Paystack</div>
+      </div>
+    </div>
+    <div class="market-cta">
+      <a href="buy.html" class="mc-btn-main">🛍️ Browse All Listings</a>
+      <a href="buy.html" class="mc-btn-sec" onclick="event.preventDefault();window.location='buy.html';setTimeout(()=>{if(window.openModal)openModal();},400);">+ Post a Listing</a>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS PREVIEW -->
+<div class="jobs-section reveal">
+  <div class="sec-eyebrow">Latest Jobs</div>
+  <div class="sec-h2">Open Positions in Ghana</div>
+  <div class="sec-sub">Fresh job listings updated daily from businesses across Accra, Kumasi, and beyond.</div>
+  <a href="jobs.html" class="job-card">
+    <div class="jc-logo">🏦</div>
+    <div class="jc-body">
+      <div class="jc-title">Customer Service Officer</div>
+      <div class="jc-company">First National Bank · Accra</div>
+      <div class="jc-tags">
+        <span class="jc-tag full">Full-time</span>
+        <span class="jc-tag">GH₵2,500/mo</span>
+      </div>
+    </div>
+    <div class="jc-salary">GH₵2.5k</div>
+  </a>
+  <a href="jobs.html" class="job-card">
+    <div class="jc-logo">💻</div>
+    <div class="jc-body">
+      <div class="jc-title">Software Developer (React)</div>
+      <div class="jc-company">TechHub Ghana · Kumasi</div>
+      <div class="jc-tags">
+        <span class="jc-tag remote">Remote OK</span>
+        <span class="jc-tag full">Full-time</span>
+      </div>
+    </div>
+    <div class="jc-salary">GH₵5k+</div>
+  </a>
+  <a href="jobs.html" class="job-card">
+    <div class="jc-logo">🍽️</div>
+    <div class="jc-body">
+      <div class="jc-title">Restaurant Manager</div>
+      <div class="jc-company">Golden Fork Restaurant · Takoradi</div>
+      <div class="jc-tags">
+        <span class="jc-tag full">Full-time</span>
+        <span class="jc-tag">Experience required</span>
+      </div>
+    </div>
+    <div class="jc-salary">GH₵3k</div>
+  </a>
+  <a href="jobs.html" style="display:block;background:var(--green);color:#fff;padding:13px;border-radius:12px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;margin-top:8px;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">See All Job Listings →</a>
+</div>
+
+<!-- ROOMS PREVIEW -->
+<div class="rooms-section reveal">
+  <div class="sec-eyebrow">Rooms &amp; Housing</div>
+  <div class="sec-h2">Find a Place to Stay</div>
+  <div class="sec-sub">Self-contained, bedsitters and shared rooms across Ghana cities.</div>
+  <div class="rooms-grid">
+    <a href="room.html" class="room-card">
+      <div class="rc-img">🏠</div>
+      <div class="rc-body">
+        <div class="rc-title">Self-Contained Room — East Legon</div>
+        <div class="rc-location">📍 Accra, East Legon</div>
+        <div class="rc-price">GH₵800 <span>/month</span></div>
+        <div class="rc-tags"><span class="rc-tag">Self-contained</span><span class="rc-tag">Water included</span></div>
+      </div>
+    </a>
+    <a href="room.html" class="room-card">
+      <div class="rc-img">🏢</div>
+      <div class="rc-body">
+        <div class="rc-title">2-Bedroom Apartment — Kumasi</div>
+        <div class="rc-location">📍 Kumasi, Adum</div>
+        <div class="rc-price">GH₵1,200 <span>/month</span></div>
+        <div class="rc-tags"><span class="rc-tag">2 Bedroom</span><span class="rc-tag">Furnished</span></div>
+      </div>
+    </a>
+  </div>
+  <a href="room.html" style="display:block;background:var(--mist);color:var(--ink);border:1.5px solid var(--border);padding:13px;border-radius:12px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;text-align:center;margin-top:12px;transition:background .15s;" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--mist)'">See All Rooms →</a>
 </div>
 
 <!-- HOW IT WORKS -->
 <div class="how-section">
-  <div class="sec-label">How It Works</div>
-  <div class="sec-h2">Simple & Fast</div>
-  <div class="sec-sub">Get your business in front of thousands of Ghanaians in minutes.</div>
-  <div class="step"><div class="step-num">1</div><div><div class="step-title">Create Your Listing</div><div class="step-desc">Fill in your business details, add photos and choose your plan. Basic listing is completely free.</div></div></div>
-  <div class="step"><div class="step-num">2</div><div><div class="step-title">Get Discovered</div><div class="step-desc">Your business appears in search results across Ghana. Customers find you by city, category or name.</div></div></div>
-  <div class="step"><div class="step-num">3</div><div><div class="step-title">Receive Bookings</div><div class="step-desc">Customers book appointments directly. You get SMS notifications and manage everything from your dashboard.</div></div></div>
-  <a href="submit.html" style="display:block;background:var(--green);color:#fff;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;text-align:center;margin-top:8px;">Get Started Free →</a>
+  <div class="sec-eyebrow" style="color:var(--gold);">How It Works</div>
+  <div class="sec-h2" style="color:#fff;margin-bottom:6px;">Get listed in minutes</div>
+  <div class="sec-sub" style="color:rgba(255,255,255,.45);margin-bottom:28px;">No tech skills needed. Just fill in your details and you're live.</div>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="hs-num">1</div>
+      <div>
+        <div class="hs-title">Create Your Listing</div>
+        <div class="hs-desc">Fill in your business details, add photos and choose your plan. Basic listing is completely free — no credit card needed.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="hs-num">2</div>
+      <div>
+        <div class="hs-title">Get Discovered</div>
+        <div class="hs-desc">Your business appears in search results across Ghana instantly. Customers find you by city, category or name.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="hs-num">3</div>
+      <div>
+        <div class="hs-title">Receive Enquiries</div>
+        <div class="hs-desc">Customers contact you directly via WhatsApp or call. Premium sellers get SMS notifications every time someone reaches out.</div>
+      </div>
+    </div>
+  </div>
+  <a href="submit.html" style="display:block;background:var(--gold);color:var(--ink);padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;text-align:center;margin-top:28px;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Get Started Free →</a>
 </div>
 
 <!-- PRICING -->
-<div class="pricing-section">
-  <div class="sec-label">Pricing</div>
-  <div class="sec-h2">Simple & Transparent</div>
+<div class="pricing-section reveal">
+  <div class="sec-eyebrow">Pricing</div>
+  <div class="sec-h2">Simple &amp; Transparent</div>
   <div class="sec-sub">Start free. Upgrade when you're ready to grow.</div>
   <div class="plan-grid">
+    <!-- Basic -->
     <div class="plan-card">
-      <div class="plan-name">📋 Basic</div>
+      <div class="plan-icon">📋</div>
+      <div class="plan-name">Basic</div>
       <div class="plan-price">Free <span>forever</span></div>
-      <div class="plan-feat">✅ 1 photo</div>
-      <div class="plan-feat">✅ Phone & WhatsApp link</div>
-      <div class="plan-feat">✅ Standard placement</div>
-      <a href="submit.html" class="plan-btn" style="background:var(--mist);color:var(--ink);">Get Started</a>
+      <div class="plan-period">No credit card required</div>
+      <div class="plan-divider"></div>
+      <div class="plan-feat"><span class="ck">✓</span> 1 photo</div>
+      <div class="plan-feat"><span class="ck">✓</span> Phone &amp; WhatsApp link</div>
+      <div class="plan-feat"><span class="ck">✓</span> Standard placement</div>
+      <div class="plan-feat"><span class="ck">✓</span> 30 days listing</div>
+      <div class="plan-feat"><span class="no">✗</span> No verified badge</div>
+      <div class="plan-feat"><span class="no">✗</span> No priority placement</div>
+      <a href="submit.html" class="plan-btn plan-btn-outline">Get Started Free</a>
     </div>
+    <!-- Featured -->
     <div class="plan-card featured-plan">
-      <div class="plan-badge">POPULAR</div>
-      <div class="plan-name">⭐ Featured</div>
-      <div class="plan-price">GHS 20 <span>/month</span></div>
-      <div class="plan-feat">✅ 5 photos</div>
-      <div class="plan-feat">✅ Verified badge</div>
-      <div class="plan-feat">✅ Top of results</div>
-      <div class="plan-feat">✅ Gold border highlight</div>
-      <a href="submit.html?plan=featured" class="plan-btn">Choose Featured</a>
+      <div class="plan-top-badge">⭐ MOST POPULAR</div>
+      <div class="plan-icon">⭐</div>
+      <div class="plan-name">Featured</div>
+      <div class="plan-price">GH₵20 <span>/month</span></div>
+      <div class="plan-period">Billed monthly via Paystack</div>
+      <div class="plan-divider"></div>
+      <div class="plan-feat"><span class="ck">✓</span> 5 photos</div>
+      <div class="plan-feat"><span class="ck">✓</span> Verified badge</div>
+      <div class="plan-feat"><span class="ck">✓</span> Top of search results</div>
+      <div class="plan-feat"><span class="ck">✓</span> Gold border highlight</div>
+      <div class="plan-feat"><span class="ck">✓</span> SMS enquiry alerts</div>
+      <div class="plan-feat"><span class="ck">✓</span> 60 days listing</div>
+      <a href="submit.html?plan=featured" class="plan-btn plan-btn-gold">Choose Featured — GH₵20</a>
     </div>
+    <!-- Premium -->
     <div class="plan-card">
-      <div class="plan-name">👑 Premium</div>
-      <div class="plan-price">GHS 50 <span>/month</span></div>
-      <div class="plan-feat">✅ 10 photos</div>
-      <div class="plan-feat">✅ #1 placement</div>
-      <div class="plan-feat">✅ Spotlight banner</div>
-      <div class="plan-feat">✅ Priority support</div>
-      <a href="submit.html?plan=premium" class="plan-btn">Choose Premium</a>
+      <div class="plan-icon">👑</div>
+      <div class="plan-name">Premium</div>
+      <div class="plan-price">GH₵50 <span>/month</span></div>
+      <div class="plan-period">Billed monthly via Paystack</div>
+      <div class="plan-divider"></div>
+      <div class="plan-feat"><span class="ck">✓</span> 10 photos</div>
+      <div class="plan-feat"><span class="ck">✓</span> #1 placement</div>
+      <div class="plan-feat"><span class="ck">✓</span> Spotlight homepage banner</div>
+      <div class="plan-feat"><span class="ck">✓</span> Priority support</div>
+      <div class="plan-feat"><span class="ck">✓</span> 90 days listing</div>
+      <div class="plan-feat"><span class="ck">✓</span> Analytics dashboard</div>
+      <a href="submit.html?plan=premium" class="plan-btn plan-btn-green">Choose Premium — GH₵50</a>
     </div>
+  </div>
+  <!-- Buy & Sell note -->
+  <div class="plan-note">
+    <p>🛍️ <strong>Selling something?</strong> Post on the Buy &amp; Sell marketplace — <strong>Free</strong> basic listing, or boost for <strong>GH₵10</strong> (Standard) or <strong>GH₵20</strong> (Premium). <a href="buy.html">Go to marketplace →</a></p>
   </div>
 </div>
 
 <!-- TESTIMONIALS -->
 <div class="testi-section">
-  <div class="sec-label" style="color:var(--gold);">What People Say</div>
+  <div class="sec-eyebrow" style="color:var(--gold);">What People Say</div>
   <div class="sec-h2" style="color:#fff;margin-bottom:20px;">Trusted by Ghanaians</div>
-  <div class="testi-card">
-    <div class="testi-text">"CityLinkGH brought me 3 new customers in my first week. The WhatsApp button makes it so easy for people to reach me directly."</div>
-    <div class="testi-author"><div class="ta-avatar">A</div><div><div class="ta-name">Abena Mensah</div><div class="ta-role">Salon Owner, Kumasi</div></div></div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"CityLinkGH brought me 3 new customers in my first week. The WhatsApp button makes it so easy for people to reach me directly."</div>
+      <div class="testi-author"><div class="ta-avatar">A</div><div><div class="ta-name">Abena Mensah</div><div class="ta-role">Salon Owner, Kumasi</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"I found my current job through CityLinkGH. The listings are always fresh and the site is easy to use even on mobile data."</div>
+      <div class="testi-author"><div class="ta-avatar">K</div><div><div class="ta-name">Kwame Asante</div><div class="ta-role">Job Seeker, Accra</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Sold my old TV in 2 days using the Buy &amp; Sell section. Got 5 WhatsApp messages the same day I posted. Incredible!"</div>
+      <div class="testi-author"><div class="ta-avatar">E</div><div><div class="ta-name">Emmanuel Darko</div><div class="ta-role">Seller, Takoradi</div></div></div>
+    </div>
   </div>
-  <div class="testi-card">
-    <div class="testi-text">"I found my current job through CityLinkGH. The listings are always fresh and the site is easy to use even on mobile data."</div>
-    <div class="testi-author"><div class="ta-avatar">K</div><div><div class="ta-name">Kwame Asante</div><div class="ta-role">Job Seeker, Accra</div></div></div>
+</div>
+
+<!-- CITIES -->
+<div class="cities-section reveal">
+  <div class="sec-eyebrow">Browse by City</div>
+  <div class="sec-h2">We cover all of Ghana</div>
+  <div class="sec-sub" style="margin-bottom:20px;">Find businesses, jobs and rooms in every major city.</div>
+  <div class="cities-grid">
+    <a href="home.html?city=Accra" class="city-card"><div class="city-flag">🏙️</div><div><div class="city-name">Accra</div><div class="city-count">200+ listings</div></div></a>
+    <a href="home.html?city=Kumasi" class="city-card"><div class="city-flag">🌿</div><div><div class="city-name">Kumasi</div><div class="city-count">120+ listings</div></div></a>
+    <a href="home.html?city=Takoradi" class="city-card"><div class="city-flag">⛽</div><div><div class="city-name">Takoradi</div><div class="city-count">80+ listings</div></div></a>
+    <a href="home.html?city=Cape+Coast" class="city-card"><div class="city-flag">🏰</div><div><div class="city-name">Cape Coast</div><div class="city-count">50+ listings</div></div></a>
+    <a href="home.html?city=Tamale" class="city-card"><div class="city-flag">🌾</div><div><div class="city-name">Tamale</div><div class="city-count">40+ listings</div></div></a>
+    <a href="home.html" class="city-card"><div class="city-flag">🗺️</div><div><div class="city-name">All Cities</div><div class="city-count">Browse all →</div></div></a>
   </div>
-  <div class="testi-card">
-    <div class="testi-text">"Listed my restaurant for free and upgraded to Featured after seeing the difference. Best GHS 100 I've spent on marketing."</div>
-    <div class="testi-author"><div class="ta-avatar">E</div><div><div class="ta-name">Emmanuel Darko</div><div class="ta-role">Restaurant Owner, Takoradi</div></div></div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="nl-section">
+  <h2>Stay in the Loop</h2>
+  <p>Get the latest jobs, new business listings and deals delivered to your inbox.</p>
+  <div class="nl-form">
+    <input class="nl-input" type="email" id="nlEmail" placeholder="your@email.com" autocomplete="email"/>
+    <button class="nl-btn" onclick="subscribeNewsletter()">Subscribe</button>
   </div>
+  <div class="nl-note">No spam. Unsubscribe any time.</div>
 </div>
 
 <!-- CTA -->
 <div class="cta-section">
-  <h2>Ready to Get Found?</h2>
-  <p>Join hundreds of businesses already on CityLinkGH. Start for free — no credit card needed.</p>
+  <h2>Ready to <span>Get Found</span>?</h2>
+  <p>Join hundreds of businesses already on CityLinkGH. Start for free — no credit card, no setup fee.</p>
   <div class="cta-btns">
     <a href="submit.html" class="cta-btn-main">＋ List Your Business Free</a>
     <a href="home.html" class="cta-btn-sec">🔍 Browse First</a>
@@ -226,58 +697,126 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">CityLink<span>GH</span></div>
-  <div class="footer-links">
-    <a href="home.html">Businesses</a>
-    <a href="jobs.html">Jobs</a>
-    <a href="rooms.html">Rooms</a>
-    <a href="about.html">About</a>
-    <a href="terms.html">Terms</a>
-    <a href="privacy.html">Privacy</a>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">🏙️ CityLink<span>GH</span></div>
+      <div class="footer-desc">Ghana's #1 local directory for businesses, jobs, rooms and deals. Connecting communities across every city.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Directory</h4>
+      <a href="home.html">Browse Businesses</a>
+      <a href="jobs.html">Job Listings</a>
+      <a href="room.html">Rooms for Rent</a>
+      <a href="buy.html">Buy &amp; Sell</a>
+    </div>
+    <div class="footer-col">
+      <h4>List With Us</h4>
+      <a href="submit.html">List a Business</a>
+      <a href="jobs.html">Post a Job</a>
+      <a href="room.html">Post a Room</a>
+      <a href="buy.html">Sell Something</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="terms.html">Terms</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:agyemangernest650@gmail.com">Contact</a>
+    </div>
   </div>
-  <div class="footer-copy">© 2026 CityLink Ghana. All Rights Reserved. Made with ❤️ in Ghana.</div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 CityLink Ghana · Made with ❤️ in Ghana</div>
+    <div class="footer-socials">
+      <a href="https://wa.me/233537361543" target="_blank" rel="noopener" class="footer-social" aria-label="WhatsApp">💬</a>
+    </div>
+  </div>
 </footer>
 
 <!-- Floating WhatsApp -->
-<a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank"
-   style="position:fixed;bottom:20px;right:16px;background:#25D366;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 16px rgba(37,211,102,.4);z-index:400;text-decoration:none;animation:pulse 2s infinite;">
-  💬
-</a>
-<style>@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(37,211,102,.4);}50%{box-shadow:0 4px 24px rgba(37,211,102,.8);}}</style>
+<a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">💬</a>
 
+<div class="toast" id="toast"></div>
+
+<!-- Firebase counts -->
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,collection,getCountFromServer}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
-  authDomain: "citylinkgh-48ee0.firebaseapp.com",
-  projectId: "citylinkgh-48ee0",
-  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
-  messagingSenderId: "807811031269",
-  appId: "1:807811031269:web:167b22e23f49992136340c"
-};
+const fc={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
 const db=getFirestore(initializeApp(fc));
 (async()=>{
   try{
-    const[b,j,r]=await Promise.all([getCountFromServer(collection(db,'businesses')),getCountFromServer(collection(db,'jobs')),getCountFromServer(collection(db,'rooms'))]);
-    document.getElementById('lsBiz').textContent=b.data().count+'+';
-    document.getElementById('lsJobs').textContent=j.data().count+'+';
-    document.getElementById('lsRooms').textContent=r.data().count+'+';
+    const[b,j,r,d]=await Promise.all([
+      getCountFromServer(collection(db,'businesses')),
+      getCountFromServer(collection(db,'jobs')),
+      getCountFromServer(collection(db,'rooms')),
+      getCountFromServer(collection(db,'buy_sell_listings'))
+    ]);
+    const fmt=n=>n>0?n+'+':'—';
+    document.getElementById('lsBiz').textContent=fmt(b.data().count);
+    document.getElementById('lsJobs').textContent=fmt(j.data().count);
+    document.getElementById('lsRooms').textContent=fmt(r.data().count);
+    document.getElementById('lsDeals').textContent=fmt(d.data().count);
+    document.getElementById('sc-biz').textContent=b.data().count+' listed';
+    document.getElementById('sc-jobs').textContent=j.data().count+' open';
+    document.getElementById('sc-rooms').textContent=r.data().count+' available';
+    document.getElementById('sc-deals').textContent=d.data().count+' listings';
   }catch(_){}
 })();
 </script>
+
 <script>
-// ── AUTO REDIRECT after 60 seconds ──
-let countdown = 40;
-const timer = setInterval(() => {
-  countdown--;
-  const el = document.getElementById('redirectTimer');
-  if(el) el.textContent = countdown;
-  if(countdown <= 0) {
-    clearInterval(timer);
-    window.location = 'home.html';
-  }
-}, 1000);
+/* ── REDIRECT TIMER ── */
+let countdown=40, timerInterval;
+const startRedirect=()=>{
+  timerInterval=setInterval(()=>{
+    countdown--;
+    const el=document.getElementById('redirectTimer');
+    if(el) el.textContent=countdown;
+    const bar=document.getElementById('timerBar');
+    if(bar) bar.style.width=(countdown/40*100)+'%';
+    if(countdown<=0){ clearInterval(timerInterval); window.location='home.html'; }
+  },1000);
+};
+startRedirect();
+function skipRedirect(){ clearInterval(timerInterval); window.location='home.html'; }
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);
+},{passive:true});
+
+/* ── SEARCH ── */
+function doSearch(){
+  const q=document.getElementById('heroSearch').value.trim();
+  if(q) window.location='home.html?search='+encodeURIComponent(q);
+  else window.location='home.html';
+}
+document.getElementById('heroSearch').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+/* ── NEWSLETTER ── */
+function subscribeNewsletter(){
+  const email=document.getElementById('nlEmail').value.trim();
+  if(!email||!email.includes('@')){ showToast('Please enter a valid email.'); return; }
+  showToast('🎉 You\'re subscribed! Welcome to CityLinkGH.');
+  document.getElementById('nlEmail').value='';
+}
+
+/* ── TOAST ── */
+function showToast(msg,dur=3200){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+/* ── SCROLL REVEAL ── */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* ── SHOW 3rd MARKET CARD on wider screens ── */
+if(window.innerWidth>=480) document.getElementById('mc3').style.display='block';
 </script>
 </body>
 </html>

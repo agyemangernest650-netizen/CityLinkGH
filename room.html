@@ -34,32 +34,33 @@
 <body>
 <div class="toast" id="toast"></div>
 
+<!-- HEADER -->
 <header>
-  <div class="logo"><img src="City link.jpeg" width="200" height="70"><br> CityLink<span>GH</span></div>
+  <div class="logo">
+    <img src="City link.jpeg" width="80" height="50" alt="CityLinkGH" style="border-radius:6px;">
+    CityLink<span>GH</span>
+  </div>
   <div class="hbtns">
-    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
-    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn" aria-label="Toggle dark mode">🌙</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
-<nav class="nav-drawer" id="navDrawer">
-  <button class="drawer-close" onclick="toggleDrawer()">✕</button>
-  <div class="drawer-section">Navigate</div>
-  <a href="home.html" class="drawer-link"> Back to home</a>
-  <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy and Sell
-  </a>
-  <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
-  <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
-  <div class="drawer-section">List Something</div>
-  <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
-  <a href="jobs.html" class="drawer-link" onclick="setTimeout(openPostModal,300)"><span class="di">📋</span> Post a Job</a>
-  <li  class="drawer-link" onclick="openPostModal();setTimeout(openPostModal,300)"><span class="di">🏡</span> Post a Room</li>
-  <div class="drawer-section">Account</div>
-  <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
-  <a href="bookingdash.html" class="drawer-link"><span class="di">📅</span> My Bookings</a>
-  <a href="about.html" class="drawer-link"><span class="di"> ℹ️</span> About</a>
-</nav>
+  <nav class="nav-drawer" id="navDrawer">
+    <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+    <div class="drawer-section">Navigate</div>
+    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Home</a>
+    <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
+    <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
+    <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+    <div class="drawer-section">List Something</div>
+    <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
+    <li class="drawer-link" onclick="openPostModal();setTimeout(openModal,300)"><span class="di"></span>🏡 Post a Listing</li>
+    <div class="drawer-section">Account</div>
+    <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
+    <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
+  </nav>
 </header>
 
 <!-- HERO -->
@@ -153,56 +154,56 @@
 
 <div class="spacer"></div>
 
-<!--footer-->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-container">
-    <!--logo & about-->
     <div class="footer-box">
-      <div class="logo"><img src="City link.jpeg" width="150" height="60"><br> CityLink<span>GH</span></div>
-  
+      <div class="footer-logo">💼 CityLink<span>GH</span></div>
+     <h5>Find <em>Jobs</em> in Ghana</h5>
+  <p>Full time, part time, remote, internships & attachments across all cities.</p>
     </div>
-    <!-- Quick Links -->
     <div class="footer-box">
-      <h3>Quick Links</h3>
+      <h3>Directory</h3>
       <ul>
-        <li><a href="home.html">Home</a></li>
-        <li><a href="room.html">Apartment/House for rent</a></li>
-        <li><a href="jobs.html">Jobs</a></li>
-        <li><a href="buy.html">Buy and Sell</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="home.html">Browse Businesses</a></li>
+        <li><a href="room.html">Rooms for Rent</a></li>
+        <li><a href="jobs.html">Jobs for listing</a></li>
+        <li><a href="buy.html">Buy &amp; Sell</a></li>
+      </ul>
+    </div>
+    <div class="footer-box">
+      <h3>List With Us</h3>
+      <ul>
+        <li><a href="submit.html">List a Business</a></li>
+        <li><a href="jobs.html">Post a Job</a></li>
+        <li><a href="room.html">Post a Room</a><li>
+        <li> <a href="buy.html">Sell Something</a><li>
       </ul>
     </div>
 
-    <!-- Categories -->
     <div class="footer-box">
-      <h3>Top Categories</h3>
-      <ul>
-        <li><a href="home.html">Churches</a></li>
-        <li><a href="home.html">Hotels</a></li>
-        <li><a href="home.html">Salons</a></li>
-        <li><a href="home.html">Mechanics</a></li>
-      </ul>
+      <h3>Company</h3>
+    <ul>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
+    </ul>
     </div>
-
-    <!-- Contact -->
-    <div class="footer-box">
-      <h3>Contact</h3>
-      <p>Email: agyemangernest650@gmail.com</p>
-      <p>Phone: +233 53 736 1543</p>
-
-      <div class="socials">
-        <a href="https://wa.me/233537361543?text=Hello%20CityLinkGH!" target="_blank">WhatsApp</a>
-      </div>
-    </div>
-
   </div>
-
   <div class="footer-bottom">
-    <p>
-      © 2026 CityLink Ghana. All Rights Reserved.
-    </p>
+    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
   </div>
 </footer>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="index.html"><span>🏪</span><span>Home</span></a>
+  <a href="jobs.html"><span>💼</span><span>Jobs</span></a>
+  <a href="room.html"><span>🏠</span><span>Rooms</span></a>
+  <a href="buy.html" class="active"><span>🛍️</span><span>Buy&Sell</span></a>
+  <a href="profile.html"><span>👤</span><span>Profile</span></a>
+</nav>
 
 <!-- POST ROOM MODAL -->
 <div class="modal-overlay" id="postModal">

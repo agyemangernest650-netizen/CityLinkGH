@@ -8,19 +8,16 @@
 <meta name="keywords" content="Ghana business directory, rooms Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
 <meta name="author" content="CityLinkGH">
 <meta name="theme-color" content="#0D0D0D">
-<!-- Open Graph / WhatsApp / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://citylinkgh.vercel.app/rooms.html">
 <meta property="og:title" content="Rooms & Houses for Rent — CityLinkGH">
 <meta property="og:description" content="Find affordable rooms, self contained, apartments and houses for rent across Ghana.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
 <meta property="og:site_name" content="CityLinkGH">
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rooms & Houses for Rent — CityLinkGH">
 <meta name="twitter:description" content="Find affordable rooms, self contained, apartments and houses for rent across Ghana.">
 <meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Rooms & Houses for Rent</title>
@@ -36,6 +33,10 @@
 
 <!-- HEADER -->
 <header>
+  <!-- ① GREETING BAR + LIVE VIEWERS -->
+  <div class="greeting-bar" style="position:absolute;top:0;left:0;right:0;display:block;" id="greetingBar">
+    <!-- rendered inline inside header is tricky; moved below header -->
+  </div>
   <div class="logo">
     <img src="City link.jpeg" width="80" height="50" alt="CityLinkGH" style="border-radius:6px;">
     CityLink<span>GH</span>
@@ -49,28 +50,56 @@
   <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
   <nav class="nav-drawer" id="navDrawer">
     <button class="drawer-close" onclick="toggleDrawer()">✕</button>
-    <div class="drawer-section">Navigate</div>
+   <div class="drawer-brand">CityLink<span>GH</span></div>
+    <div class="drawer-section">Explore</div>
     <a href="home.html" class="drawer-link"><span class="di">🏪</span> Home</a>
     <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
     <div class="drawer-section">List Something</div>
     <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
-    <li class="drawer-link" onclick="openPostModal();setTimeout(openModal,300)"><span class="di"></span>🏡 Post a Listing</li>
+    <li class="drawer-link" onclick="openPostModal();setTimeout(openModal,300)"><span class="di">🏡</span> Post a Listing</li>
     <div class="drawer-section">Account</div>
+    <a href="saved-jobs.html" class="drawer-link" id="drawerSavedLink">
+      <span class="di">🔖</span> Saved Jobs
+      <span id="drawerSavedCount" class="saved-jobs-badge" style="display:none;"></span>
+    </a>
     <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
     <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
   </nav>
 </header>
 
+<!-- ① GREETING BAR (outside header so it shows below) -->
+<div class="greeting-bar" id="greetingBarMain">
+  <div class="greeting-text">
+    <span id="greetEmoji">👋</span>
+    <span id="greetMsg"><strong>Welcome</strong> — find your next home</span>
+  </div>
+  <div class="live-viewers">
+    <div class="live-dot"></div>
+    <span id="liveCount">—</span> browsing
+  </div>
+</div>
+
 <!-- HERO -->
 <div class="hero">
   <h1>Find <em>Rooms & Houses</em><br>for Rent in Ghana</h1>
   <p>Self-contained, chambers, apartments, houses — across all cities. No agent fees on basic listings.</p>
-  <div class="search-wrap">
+  <div class="search-wrap" style="position:relative;">
     <span>🔍</span>
-    <input type="text" id="searchInput" placeholder="Search area, district, city…" oninput="applyFilters()">
-    <button class="search-go" onclick="applyFilters()">Search</button>
+    <input type="text" id="searchInput" placeholder="Search area, district, city…"
+      oninput="applyFilters()"
+      onfocus="showSearchHistory()"
+      onblur="setTimeout(hideSearchHistory,200)"
+      onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}">
+    <!-- ② VOICE SEARCH -->
+    <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()" title="Voice search">🎙️</button>
+    <button class="search-go" onclick="commitSearch()">Search</button>
+  </div>
+  <!-- ③ SEARCH HISTORY -->
+  <div class="search-history-wrap" id="searchHistoryWrap">
+    <div class="sh-label">Recent Searches <button class="sh-clear" onclick="clearSearchHistory()">Clear</button></div>
+    <div class="sh-chips" id="searchHistoryChips"></div>
   </div>
 </div>
 
@@ -79,6 +108,32 @@
   <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">LISTINGS</div></div>
   <div><div class="stat-n" id="statAvail">—</div><div class="stat-l">AVAILABLE</div></div>
   <div><div class="stat-n" id="statCities">—</div><div class="stat-l">CITIES</div></div>
+</div>
+
+<!-- ⑥ AVAILABLE NOW BANNER -->
+<div class="avail-banner" id="availBanner" style="display:none;">
+  <div class="avail-banner-inner">
+    <div>
+      <div class="avail-num" id="availCount">—</div>
+      <div class="avail-lbl">Available Right Now</div>
+    </div>
+  </div>
+  <button class="avail-filter-btn" onclick="filterAvailNow()">Show Available →</button>
+</div>
+
+<!-- ④ TRENDING SEARCHES -->
+<div class="trending-section" id="trendingSection">
+  <div class="trending-label">🔥 Trending Searches</div>
+  <div class="trend-track" id="trendTrack"></div>
+</div>
+
+<!-- ⑤ NEW THIS WEEK -->
+<div class="new-week-section" id="newWeekSection" style="display:none;">
+  <div class="new-week-hd">
+    <div class="new-week-title"><div class="new-week-dot"></div>🆕 New This Week</div>
+    <button class="new-week-see" onclick="filterNewThisWeek()">See all →</button>
+  </div>
+  <div class="new-week-track" id="newWeekTrack"></div>
 </div>
 
 <!-- TYPE FILTERS -->
@@ -95,6 +150,8 @@
     <div class="filter-chip" data-type="House" onclick="filterType(this)">🏗 Full House</div>
     <div class="filter-chip" data-type="Office Space" onclick="filterType(this)">💼 Office Space</div>
     <div class="filter-chip" data-type="Shop" onclick="filterType(this)">🏪 Shop/Store</div>
+    <!-- ⑦ SAVED filter chip -->
+    <div class="filter-chip" id="savedChip" data-type="saved" onclick="filterSaved(this)">🔖 Saved</div>
   </div>
 
   <!-- PRICE RANGE -->
@@ -129,6 +186,7 @@
     <option value="price_low">Price: Low to High</option>
     <option value="price_high">Price: High to Low</option>
     <option value="featured">Featured First</option>
+    <option value="available">Available Only</option>
   </select>
 </div>
 
@@ -152,58 +210,78 @@
   </div>
 </div>
 
-<div class="spacer"></div>
+<!-- ⑧ INFINITE SCROLL SENTINEL -->
+<div class="scroll-sentinel" id="scrollSentinel">
+  <div class="spinner"></div>
+</div>
 
-<!-- FOOTER -->
+<div class="spacer"></div>
+<!-- ═══ FOOTER ═══ -->
 <footer class="footer">
-  <div class="footer-container">
-    <div class="footer-box">
-      <div class="footer-logo">💼 CityLink<span>GH</span></div>
-     <h5>Find <em>Jobs</em> in Ghana</h5>
-  <p>Full time, part time, remote, internships & attachments across all cities.</p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">CityLink<span>GH</span></div>
+      <h5>Find <em>Rooms</em> in Ghana</h5>
+      <p>Self-contained, apartments, houses and offices across all cities.</p>
     </div>
-    <div class="footer-box">
-      <h3>Directory</h3>
+    <div class="footer-col">
+      <h4>Directory</h4>
       <ul>
         <li><a href="home.html">Browse Businesses</a></li>
         <li><a href="room.html">Rooms for Rent</a></li>
-        <li><a href="jobs.html">Jobs for listing</a></li>
+        <li><a href="jobs.html">Job Listings</a></li>
         <li><a href="buy.html">Buy &amp; Sell</a></li>
       </ul>
     </div>
-    <div class="footer-box">
-      <h3>List With Us</h3>
+    <div class="footer-col">
+      <h4>List With Us</h4>
       <ul>
         <li><a href="submit.html">List a Business</a></li>
         <li><a href="jobs.html">Post a Job</a></li>
-        <li><a href="room.html">Post a Room</a><li>
-        <li> <a href="buy.html">Sell Something</a><li>
+        <li><a href="room.html">Post a Room</a></li>
+        <li><a href="buy.html">Sell Something</a></li>
       </ul>
     </div>
-
-    <div class="footer-box">
-      <h3>Company</h3>
-    <ul>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="terms.html">Terms</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
-    </ul>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
+    <span>© 2026 CityLinkGH · All Rights Reserved</span>
+    <div class="footer-flag" aria-label="Ghana flag">🇬🇭</div>
   </div>
 </footer>
 
-<!-- BOTTOM NAV -->
+<!-- ═══ BOTTOM NAV ═══ -->
 <nav class="bottom-nav">
-  <a href="index.html"><span>🏪</span><span>Home</span></a>
-  <a href="jobs.html"><span>💼</span><span>Jobs</span></a>
-  <a href="room.html"><span>🏠</span><span>Rooms</span></a>
-  <a href="buy.html" class="active"><span>🛍️</span><span>Buy&Sell</span></a>
-  <a href="profile.html"><span>👤</span><span>Profile</span></a>
+  <a href="home.html" class="bn-item active">
+    <span class="bn-ico">🏪</span>
+    <span class="bn-lbl">Home</span>
+  </a>
+  <a href="jobs.html" class="bn-item">
+    <span class="bn-ico">💼</span>
+    <span class="bn-lbl">Jobs</span>
+  </a>
+  <a href="room.html" class="bn-item">
+    <span class="bn-ico">🏠</span>
+    <span class="bn-lbl">Rooms</span>
+  </a>
+  <a href="profile.html" class="bn-item" id="profileNavItem" style="position:relative;">
+    <span class="bn-ico">👤</span>
+    <span class="bn-lbl">Profile</span>
+    <span class="saved-count-badge" id="savedNavBadge" style="display:none;"></span>
+  </a>
 </nav>
+
+
+<!-- ⑨ BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
 <!-- POST ROOM MODAL -->
 <div class="modal-overlay" id="postModal">
@@ -213,7 +291,6 @@
       <button class="modal-close" onclick="closePostModal()">✕</button>
     </div>
 
-    <!-- PLAN -->
     <div style="margin-bottom:14px;">
       <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Choose Listing Plan</div>
       <div class="plan-opts">
@@ -289,7 +366,6 @@
       </div>
     </div>
 
-    <!-- AMENITIES -->
     <div class="field">
       <label>Amenities (select all that apply)</label>
       <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;" id="amenitiesGrid">
@@ -323,7 +399,6 @@
       </div>
     </div>
 
-    <!-- PHOTOS -->
     <div class="field">
       <label>Photos — <span id="photoLimitTxt">max 1 (free plan)</span></label>
       <div class="img-upload-grid" id="imgUpGrid"></div>
@@ -331,7 +406,6 @@
       <div style="font-size:11px;color:var(--gray);margin-top:4px;" id="ustat"></div>
     </div>
 
-    <!-- PAYSTACK (for paid plans) -->
     <div id="paySection" style="display:none;background:var(--mist);border-radius:12px;padding:13px;margin-bottom:4px;">
       <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:8px;">💳 Pay to Boost Listing</div>
       <div style="font-size:13px;color:var(--gray);margin-bottom:10px;">Your listing will appear at the top and get more views.</div>
@@ -347,8 +421,7 @@
 
 <!-- DETAIL MODAL -->
 <div class="modal-overlay" id="detailModal">
-  <div class="modal" id="detailContent" style="padding:0;border-radius:20px 20px 0 0;overflow:hidden;">
-  </div>
+  <div class="modal" id="detailContent" style="padding:0;border-radius:20px 20px 0 0;overflow:hidden;"></div>
 </div>
 
 <script type="module">
@@ -364,31 +437,247 @@ const firebaseConfig = {
   appId: "1:807811031269:web:167b22e23f49992136340c"
 };
 
-// Cloudinary
 const CLOUD_NAME    = "dulnujvm7";
 const UPLOAD_PRESET = "ernest";
 const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
 const ARKESEL_KEY   = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
-const ADMIN_EMAIL   = "agyemangernest650@gmail.com"; // ← put your email here
-
-const IMG_LIMITS = {free:1, standard:5, featured:8, urgent:10};
+const IMG_LIMITS    = {free:1, standard:5, featured:8, urgent:10};
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 let allRooms=[], activeType='all', activeCity='all', selPlan='free', selPrice=0, uploadedImgs=[], listerType='owner';
+let showSavedOnly = false;
+
+// ══════════════════════════════════════
+// ① GREETING + TIME OF DAY
+// ══════════════════════════════════════
+(function initGreeting(){
+  const h = new Date().getHours();
+  let emoji='☀️', msg='Good morning';
+  if(h>=12&&h<17){emoji='🌤️';msg='Good afternoon';}
+  else if(h>=17&&h<21){emoji='🌇';msg='Good evening';}
+  else if(h>=21||h<5){emoji='🌙';msg='Good night';}
+  document.getElementById('greetEmoji').textContent=emoji;
+  document.getElementById('greetMsg').innerHTML=`<strong>${msg}</strong> — find your next home in Ghana`;
+})();
+
+// ══════════════════════════════════════
+// LIVE VIEWER SIMULATION
+// ══════════════════════════════════════
+(function initLive(){
+  const seed=Math.floor(Date.now()/30000);
+  let base=12+(seed%35);
+  document.getElementById('liveCount').textContent=base;
+  setInterval(()=>{
+    const delta=Math.floor(Math.random()*5)-2;
+    base=Math.max(5,Math.min(base+delta,80));
+    const el=document.getElementById('liveCount');
+    if(el)el.textContent=base;
+  },12000);
+})();
+
+// ══════════════════════════════════════
+// ② VOICE SEARCH
+// ══════════════════════════════════════
+let voiceRec=null;
+window.startVoiceSearch=()=>{
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){showToast('⚠️ Voice search not supported');return;}
+  if(!voiceRec){
+    voiceRec=new SR();
+    voiceRec.lang='en-GH';
+    voiceRec.continuous=false;
+    voiceRec.interimResults=false;
+    voiceRec.onresult=e=>{
+      const t=e.results[0][0].transcript;
+      document.getElementById('searchInput').value=t;
+      saveSearchHistory(t);
+      applyFilters();
+      showToast(`🎙️ "${t}"`);
+    };
+    voiceRec.onend=()=>{
+      document.getElementById('voiceBtn').classList.remove('listening');
+      document.getElementById('voiceBtn').textContent='🎙️';
+    };
+    voiceRec.onerror=()=>{
+      showToast('❌ Could not hear. Try again.');
+      document.getElementById('voiceBtn').classList.remove('listening');
+      document.getElementById('voiceBtn').textContent='🎙️';
+    };
+  }
+  const btn=document.getElementById('voiceBtn');
+  btn.classList.add('listening');btn.textContent='⏹️';
+  voiceRec.start();
+  showToast('🎙️ Listening…');
+};
+
+// ══════════════════════════════════════
+// ③ SEARCH HISTORY
+// ══════════════════════════════════════
+function getSearchHistory(){try{return JSON.parse(localStorage.getItem('clRoomSearchHist')||'[]');}catch{return[];}}
+function saveSearchHistory(q){
+  if(!q||q.length<2)return;
+  let hist=getSearchHistory().filter(h=>h.toLowerCase()!==q.toLowerCase());
+  hist.unshift(q);
+  hist=hist.slice(0,5);
+  localStorage.setItem('clRoomSearchHist',JSON.stringify(hist));
+}
+window.clearSearchHistory=()=>{
+  localStorage.removeItem('clRoomSearchHist');
+  document.getElementById('searchHistoryWrap').classList.remove('visible');
+};
+window.showSearchHistory=()=>{
+  const hist=getSearchHistory();
+  const wrap=document.getElementById('searchHistoryWrap');
+  if(!hist.length){wrap.classList.remove('visible');return;}
+  document.getElementById('searchHistoryChips').innerHTML=hist.map(h=>`
+    <div class="sh-chip" onclick="applySearchHist('${esc(h)}')"><span>🕐</span>${esc(h)}</div>`).join('');
+  wrap.classList.add('visible');
+};
+window.hideSearchHistory=()=>document.getElementById('searchHistoryWrap').classList.remove('visible');
+window.applySearchHist=q=>{
+  document.getElementById('searchInput').value=q;
+  applyFilters();
+  hideSearchHistory();
+};
+window.commitSearch=()=>{
+  const q=document.getElementById('searchInput').value;
+  saveSearchHistory(q);
+  applyFilters();
+};
+
+// ══════════════════════════════════════
+// ④ TRENDING SEARCHES
+// ══════════════════════════════════════
+const TRENDING=[
+  {q:'Self Contained Accra',ico:'🚿',count:'1.8k'},
+  {q:'Single Room Kumasi',ico:'🛏',count:'1.4k'},
+  {q:'2 Bedroom Takoradi',ico:'🏠',count:'980'},
+  {q:'Apartment East Legon',ico:'🏢',count:'860'},
+  {q:'Chamber Hall Tamale',ico:'🛋',count:'640'},
+  {q:'Furnished Apartment',ico:'🛋',count:'520'},
+  {q:'Office Space Accra',ico:'💼',count:'410'},
+  {q:'House Spintex',ico:'🏘',count:'380'},
+];
+(function renderTrending(){
+  document.getElementById('trendTrack').innerHTML=TRENDING.map(t=>`
+    <div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">
+      <span>${t.ico}</span>${esc(t.q)}<span class="trend-num">${t.count}</span>
+    </div>`).join('');
+})();
+window.applyTrend=q=>{
+  document.getElementById('searchInput').value=q;
+  saveSearchHistory(q);
+  applyFilters();
+  showToast(`🔍 "${q}"`);
+  document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+// ══════════════════════════════════════
+// ⑦ SAVED ROOMS
+// ══════════════════════════════════════
+function getSaved(){try{return JSON.parse(localStorage.getItem('clSavedRooms')||'[]');}catch{return[];}}
+function isRoomSaved(id){return getSaved().includes(id);}
+window.toggleRoomSave=(e,id)=>{
+  e.preventDefault();e.stopPropagation();
+  let saved=getSaved();
+  const btn=document.querySelector(`.room-bm-btn[data-id="${id}"]`);
+  if(saved.includes(id)){
+    saved=saved.filter(s=>s!==id);
+    if(btn){btn.textContent='🔖';btn.classList.remove('saved');}
+    showToast('Removed from saved');
+  } else {
+    saved.push(id);
+    if(btn){btn.textContent='🏷️';btn.classList.add('saved');}
+    showToast('✅ Room saved!');
+  }
+  localStorage.setItem('clSavedRooms',JSON.stringify(saved));
+  updateSavedBadge();
+};
+function updateSavedBadge(){
+  const count=getSaved().length;
+  const nb=document.getElementById('savedNavBadge');
+  const db2=document.getElementById('drawerSavedCount');
+  if(nb){nb.textContent=count;nb.style.display=count>0?'inline-flex':'none';}
+  if(db2){db2.textContent=count;db2.style.display=count>0?'inline-flex':'none';}
+}
+window.filterSaved=el=>{
+  showSavedOnly=!showSavedOnly;
+  document.querySelectorAll('#typeFilters .filter-chip').forEach(c=>c.classList.remove('active'));
+  if(showSavedOnly){el.classList.add('active');}
+  else{
+    document.querySelector('#typeFilters .filter-chip[data-type="all"]').classList.add('active');
+  }
+  applyFilters();
+};
+
+// ══════════════════════════════════════
+// ⑤ NEW THIS WEEK
+// ══════════════════════════════════════
+function renderNewThisWeek(){
+  const now=new Date();
+  const weekAgo=new Date(now.getTime()-7*24*60*60*1000);
+  const fresh=allRooms.filter(r=>{
+    const created=r.createdAt?.toDate?.()||new Date(r.createdAt||0);
+    return created>=weekAgo&&r.available!==false;
+  }).sort((a,b)=>{
+    const da=a.createdAt?.toDate?.()||new Date(a.createdAt||0);
+    const db2=b.createdAt?.toDate?.()||new Date(b.createdAt||0);
+    return db2-da;
+  }).slice(0,10);
+  const sec=document.getElementById('newWeekSection');
+  if(!fresh.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('newWeekTrack').innerHTML=fresh.map(r=>{
+    const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);
+    const img=imgs[0]||'';
+    return `<div class="nw-card" onclick="viewRoom('${r.id}')">
+      <div class="nw-img">
+        ${img?`<img src="${esc(img)}" alt="" loading="lazy">`:'🏠'}
+        <div class="nw-new-badge">NEW</div>
+      </div>
+      <div class="nw-info">
+        <div class="nw-price">GHS ${Number(r.price||0).toLocaleString()}</div>
+        <div class="nw-type">${esc(r.type||'Room')}</div>
+        <div class="nw-loc">📍 ${esc(r.district||r.city||'Ghana')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+window.filterNewThisWeek=()=>{
+  document.getElementById('sortSel').value='newest';
+  applyFilters();
+  document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+// ⑥ AVAILABLE NOW filter shortcut
+window.filterAvailNow=()=>{
+  document.getElementById('sortSel').value='available';
+  applyFilters();
+  document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});
+  showToast('✅ Showing available rooms only');
+};
 
 // ── FETCH ──
 async function fetchRooms(){
   try{
-    const snap = await getDocs(query(collection(db,'rooms'), orderBy('createdAt','desc')));
-    allRooms   = snap.docs.map(d=>({id:d.id,...d.data()}));
-    // Filter expired (listings older than 60 days auto-expire)
-    const cutoff = Date.now() - 60*24*60*60*1000;
-    allRooms = allRooms.filter(r=>r.createdAt?.toDate?r.createdAt.toDate().getTime()>cutoff:true);
-    document.getElementById('statTotal').textContent  = allRooms.length;
-    document.getElementById('statAvail').textContent  = allRooms.filter(r=>r.available!==false).length;
-    document.getElementById('statCities').textContent = [...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
+    const snap=await getDocs(query(collection(db,'rooms'),orderBy('createdAt','desc')));
+    allRooms=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const cutoff=Date.now()-60*24*60*60*1000;
+    allRooms=allRooms.filter(r=>r.createdAt?.toDate?r.createdAt.toDate().getTime()>cutoff:true);
+    document.getElementById('statTotal').textContent=allRooms.length;
+    const availCount=allRooms.filter(r=>r.available!==false).length;
+    document.getElementById('statAvail').textContent=availCount;
+    document.getElementById('statCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
+
+    // ⑥ Available Now banner
+    const banner=document.getElementById('availBanner');
+    document.getElementById('availCount').textContent=availCount;
+    if(availCount>0) banner.style.display='flex';
+
+    renderNewThisWeek();
+    updateSavedBadge();
     applyFilters();
   }catch(e){
     document.getElementById('roomsGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
@@ -396,27 +685,29 @@ async function fetchRooms(){
 }
 
 // ── FILTERS ──
-window.filterType = el => {
-  activeType = el.dataset.type;
+window.filterType=el=>{
+  activeType=el.dataset.type;
+  showSavedOnly=false;
   document.querySelectorAll('#typeFilters .filter-chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   applyFilters();
 };
-window.filterCity = el => {
-  activeCity = el.dataset.city;
+window.filterCity=el=>{
+  activeCity=el.dataset.city;
   document.querySelectorAll('#cityScroll .city-pill').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   applyFilters();
 };
 
-window.applyFilters = () => {
-  const q       = (document.getElementById('searchInput').value||'').toLowerCase();
-  const minP    = Number(document.getElementById('priceMin').value)||0;
-  const maxP    = Number(document.getElementById('priceMax').value)||Infinity;
-  const sort    = document.getElementById('sortSel').value;
-  let list      = [...allRooms];
+window.applyFilters=()=>{
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const minP=Number(document.getElementById('priceMin').value)||0;
+  const maxP=Number(document.getElementById('priceMax').value)||Infinity;
+  const sort=document.getElementById('sortSel').value;
+  let list=[...allRooms];
 
-  if(activeType!=='all') list=list.filter(r=>r.type===activeType);
+  if(showSavedOnly) list=list.filter(r=>isRoomSaved(r.id));
+  else if(activeType!=='all'&&activeType!=='saved') list=list.filter(r=>r.type===activeType);
   if(activeCity!=='all') list=list.filter(r=>r.city===activeCity);
   if(q) list=list.filter(r=>(r.title||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));
   if(minP) list=list.filter(r=>Number(r.price)>=minP);
@@ -425,89 +716,120 @@ window.applyFilters = () => {
   if(sort==='price_low') list=[...list].sort((a,b)=>Number(a.price)-Number(b.price));
   else if(sort==='price_high') list=[...list].sort((a,b)=>Number(b.price)-Number(a.price));
   else if(sort==='featured') list=[...list].sort((a,b)=>(a.plan==='urgent'?-2:a.plan==='featured'?-1:0)-(b.plan==='urgent'?-2:b.plan==='featured'?-1:0));
+  else if(sort==='available') list=list.filter(r=>r.available!==false);
   else list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
 
   document.getElementById('listLabel').textContent=`${list.length} listing${list.length!==1?'s':''}`;
   renderRooms(list);
 };
 
-// ── DARK MODE ──
-window.toggleDark = () => {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent = isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme', isDark?'light':'dark');
-};
-// Restore theme
-const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+// ══════════════════════════════════════
+// ⑧ INFINITE SCROLL + RENDER
+// ══════════════════════════════════════
+const PAGE_SIZE=10;
+let currentPage=1, currentList=[], infiniteObserver=null;
 
-
-// ── RENDER ──
 function renderRooms(list){
-  const grid = document.getElementById('roomsGrid');
+  currentList=list;currentPage=1;
+  const grid=document.getElementById('roomsGrid');
+  const sentinel=document.getElementById('scrollSentinel');
   if(!list.length){
     grid.innerHTML=`<div class="empty"><div class="ei">🏠</div><h3>No listings found</h3><p>Try different filters or <button onclick="openPostModal()" style="color:var(--green);font-weight:700;border:none;background:none;cursor:pointer;font-size:13px;">post your room</button>.</p></div>`;
+    sentinel.classList.remove('loading');
     return;
   }
-  grid.innerHTML = list.map(r=>{
-    const imgs   = r.images||(r.imageUrl?[r.imageUrl]:[]);
-    const imgHtml= imgs.length?`<img src="${esc(imgs[0])}" alt="" onerror="this.style.display='none'">`:'🏠';
-    const ams    = (r.amenities||[]).slice(0,4).join(' · ');
-    const isNew  = r.createdAt&&(Date.now()-new Date(r.createdAt?.toDate?.()??r.createdAt).getTime())<3*24*60*60*1000;
-    const rawWa  = (r.whatsapp||r.phone||'').replace(/\D/g,'');
-    const waNum  = rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-    const timeAgo= r.createdAt?fmtAgo(r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt)):'Recently';
-    return `
-    <div class="room-card ${r.plan==='featured'||r.plan==='urgent'?'featured':''} ${r.plan==='urgent'?'urgent':''}"
-         onclick="viewRoom('${r.id}')">
-      <div class="room-imgs">
-        ${imgHtml}
-        ${imgs.length>1?`<div class="room-imgs-count">📷 ${imgs.length}</div>`:''}
-        ${r.plan==='urgent'?'<div class="room-badge badge-urgent">🔴 URGENT</div>':''}
-        ${r.plan==='featured'?'<div class="room-badge badge-featured">⭐ FEATURED</div>':''}
-        ${isNew?'<div class="room-badge badge-new" style="top:10px;right:10px;left:auto;">NEW</div>':''}
-        ${r.listerType==='agent'?'<div class="room-badge badge-agent" style="bottom:10px;left:10px;top:auto;">🤝 Agent</div>':''}
-      </div>
-      <div class="room-body">
-        <div class="room-price">GHS ${Number(r.price).toLocaleString()} <span>${r.period||'per year'}</span></div>
-        <div class="room-title">${esc(r.title)}</div>
-        <div class="room-loc">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
-        <div class="room-features">
-          ${r.type?`<div class="room-feat">🏠 ${esc(r.type)}</div>`:''}
-          ${r.beds?`<div class="room-feat">🛏 ${r.beds} bed${r.beds!=='1'?'s':''}</div>`:''}
-          ${r.baths?`<div class="room-feat">🚿 ${r.baths} bath</div>`:''}
-          ${ams?`<div class="room-feat">${ams}</div>`:''}
-        </div>
-        ${r.desc?`<div class="room-desc">${esc(r.desc)}</div>`:''}
-        <div class="room-acts" onclick="event.stopPropagation()">
-          ${r.phone?`<a class="room-btn rbtn-call" href="tel:${esc(r.phone)}">📞 Call</a>`:''}
-          ${waNum?`<a class="room-btn rbtn-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank">💬 Chat</a>`:''}
-          <button class="room-btn rbtn-view" onclick="event.stopPropagation();viewRoom('${r.id}')">View →</button>
-          <button class="room-btn" style="flex:0 0 auto;background:${r.available!==false?'#fde8e8':'#f0fff6'};color:${r.available!==false?'var(--red)':'var(--green)'};border:1.5px solid ${r.available!==false?'#f5c6c6':'#b8f0d0'};" onclick="event.stopPropagation();toggleRoomAvail('${r.id}',${r.available!==false})" title="${r.available!==false?'Mark as Rented':'Mark as Available'}">${r.available!==false?'🔴 Rented':'✅ Free'}</button>
-        </div>
-      </div>
-      <div class="room-footer">
-        <span class="room-poster">👤 ${esc(r.poster||'Owner')}</span>
-        <span class="room-date">${timeAgo}</span>
-        <span class="room-views">👁 ${r.views||0}</span>
-      </div>
-    </div>`;
-  }).join('');
+  grid.innerHTML=list.slice(0,PAGE_SIZE).map(r=>renderRoomCard(r)).join('');
+  if(list.length<=PAGE_SIZE){sentinel.classList.remove('loading');return;}
+  if(infiniteObserver) infiniteObserver.disconnect();
+  infiniteObserver=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&currentPage*PAGE_SIZE<currentList.length){
+      sentinel.classList.add('loading');
+      setTimeout(()=>{
+        currentPage++;
+        grid.innerHTML=currentList.slice(0,currentPage*PAGE_SIZE).map(r=>renderRoomCard(r)).join('');
+        if(currentPage*PAGE_SIZE>=currentList.length){
+          sentinel.classList.remove('loading');
+          infiniteObserver.disconnect();
+        } else {
+          sentinel.classList.remove('loading');
+        }
+      },400);
+    }
+  },{rootMargin:'200px'});
+  infiniteObserver.observe(sentinel);
 }
 
+function renderRoomCard(r){
+  const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);
+  const imgHtml=imgs.length?`<img src="${esc(imgs[0])}" alt="" onerror="this.style.display='none'">`:'🏠';
+  const ams=(r.amenities||[]).slice(0,4).join(' · ');
+  const isNew=r.createdAt&&(Date.now()-new Date(r.createdAt?.toDate?.()??r.createdAt).getTime())<3*24*60*60*1000;
+  const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');
+  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+  const timeAgo=r.createdAt?fmtAgo(r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt)):'Recently';
+  // ⑦ bookmark state
+  const saved=isRoomSaved(r.id);
+  const bmBtn=`<button class="room-bm-btn${saved?' saved':''}" data-id="${r.id}" onclick="toggleRoomSave(event,'${r.id}')" title="${saved?'Saved':'Save'}">${saved?'🏷️':'🔖'}</button>`;
+  return `
+  <div class="room-card ${r.plan==='featured'||r.plan==='urgent'?'featured':''} ${r.plan==='urgent'?'urgent':''}"
+       onclick="viewRoom('${r.id}')">
+    <div class="room-imgs" style="position:relative;">
+      ${imgHtml}
+      ${imgs.length>1?`<div class="room-imgs-count">📷 ${imgs.length}</div>`:''}
+      ${r.plan==='urgent'?'<div class="room-badge badge-urgent">🔴 URGENT</div>':''}
+      ${r.plan==='featured'?'<div class="room-badge badge-featured">⭐ FEATURED</div>':''}
+      ${isNew?'<div class="room-badge badge-new" style="top:10px;right:46px;left:auto;">NEW</div>':''}
+      ${r.listerType==='agent'?'<div class="room-badge badge-agent" style="bottom:10px;left:10px;top:auto;">🤝 Agent</div>':''}
+      ${bmBtn}
+    </div>
+    <div class="room-body">
+      <div class="room-price">GHS ${Number(r.price).toLocaleString()} <span>${r.period||'per year'}</span></div>
+      <div class="room-title">${esc(r.title)}</div>
+      <div class="room-loc">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
+      <div class="room-features">
+        ${r.type?`<div class="room-feat">🏠 ${esc(r.type)}</div>`:''}
+        ${r.beds?`<div class="room-feat">🛏 ${r.beds} bed${r.beds!=='1'?'s':''}</div>`:''}
+        ${r.baths?`<div class="room-feat">🚿 ${r.baths} bath</div>`:''}
+        ${ams?`<div class="room-feat">${ams}</div>`:''}
+      </div>
+      ${r.desc?`<div class="room-desc">${esc(r.desc)}</div>`:''}
+      <div class="room-acts" onclick="event.stopPropagation()">
+        ${r.phone?`<a class="room-btn rbtn-call" href="tel:${esc(r.phone)}">📞 Call</a>`:''}
+        ${waNum?`<a class="room-btn rbtn-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank">💬 Chat</a>`:''}
+        <button class="room-btn rbtn-view" onclick="event.stopPropagation();viewRoom('${r.id}')">View →</button>
+        <button class="room-btn" style="flex:0 0 auto;background:${r.available!==false?'#fde8e8':'#f0fff6'};color:${r.available!==false?'var(--red)':'var(--green)'};border:1.5px solid ${r.available!==false?'#f5c6c6':'#b8f0d0'};" onclick="event.stopPropagation();toggleRoomAvail('${r.id}',${r.available!==false})" title="${r.available!==false?'Mark as Rented':'Mark as Available'}">${r.available!==false?'🔴 Rented':'✅ Free'}</button>
+      </div>
+    </div>
+    <div class="room-footer">
+      <span class="room-poster">👤 ${esc(r.poster||'Owner')}</span>
+      <span class="room-date">${timeAgo}</span>
+      <span class="room-views">👁 ${r.views||0}</span>
+    </div>
+  </div>`;
+}
+
+// ── DARK MODE ──
+window.toggleDark=()=>{
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';
+  localStorage.setItem('clTheme',isDark?'light':'dark');
+};
+const savedTheme=localStorage.getItem('clTheme');
+if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';}
+
 // ── VIEW ROOM DETAIL ──
-window.viewRoom = async id => {
-  const r = allRooms.find(x=>x.id===id);
-  if(!r) return;
-  // Increment views
-  try{ await updateDoc(doc(db,'rooms',id),{views:increment(1)}); }catch(_){}
+window.viewRoom=async id=>{
+  const r=allRooms.find(x=>x.id===id);
+  if(!r)return;
+  try{await updateDoc(doc(db,'rooms',id),{views:increment(1)});}catch(_){}
   const imgs=(r.images||(r.imageUrl?[r.imageUrl]:[]));
   const ams=(r.amenities||[]).map(a=>`<span style="background:var(--mist);padding:4px 10px;border-radius:8px;font-size:12px;">${a}</span>`).join('');
   const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');
   const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
   const dotsHtml=imgs.length>1?`<div class="gallery-nav">${imgs.map((_,i)=>`<div class="gn-dot${i===0?' active':''}" onclick="detailShowImg(${i})"></div>`).join('')}</div>`:'';
+  const isSaved=isRoomSaved(r.id);
   document.getElementById('detailContent').innerHTML=`
     <div style="position:relative;">
       <div class="detail-gallery" id="detailGallery">
@@ -525,6 +847,7 @@ window.viewRoom = async id => {
         ${r.beds?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🛏 ${r.beds} Bed</span>`:''}
         ${r.baths?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🚿 ${r.baths} Bath</span>`:''}
         ${r.listerType==='agent'?`<span style="background:var(--purple);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🤝 Agent</span>`:`<span style="background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🏠 Owner</span>`}
+        <span style="background:${r.available!==false?'#f0fff6':'#fde8e8'};color:${r.available!==false?'#15803D':'#B91C1C'};font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">${r.available!==false?'✅ Available':'🔴 Rented'}</span>
       </div>
       ${ams?`<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">Amenities</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${ams}</div></div>`:''}
       ${r.desc?`<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Description</div><div style="font-size:14px;color:var(--gray);line-height:1.7;">${esc(r.desc)}</div></div>`:''}
@@ -532,15 +855,11 @@ window.viewRoom = async id => {
         ${r.phone?`<a href="tel:${esc(r.phone)}" style="flex:1;background:var(--green);color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">📞 Call</a>`:''}
         ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank" style="flex:1;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp</a>`:''}
       </div>
-
-      <!-- SHARE + SAVE + REPORT ROW -->
       <div style="display:flex;gap:8px;margin-top:12px;">
         <button onclick="shareRoom('${r.id}','${esc(r.title)}','${esc(r.district||r.city||'')}','${r.price||0}')" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">📤 Share</button>
-        <button onclick="saveRoom('${r.id}','${esc(r.title)}')" id="saveRoomBtn_${r.id}" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🔖 Save</button>
+        <button onclick="saveRoomFromDetail('${r.id}','${esc(r.title)}')" id="saveRoomBtn_${r.id}" style="flex:1;background:${isSaved?'#f0fff6':'var(--mist)'};border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">${isSaved?'✅ Saved':'🔖 Save'}</button>
         <button onclick="reportRoom('${r.id}','${esc(r.title)}')" style="flex:1;background:#fde8e8;border:1px solid #f5c6c6;padding:11px;border-radius:10px;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🚩 Report</button>
       </div>
-
-      <!-- MAP LINK -->
       ${(r.district||r.city)?`
       <a href="https://www.google.com/maps/search/${encodeURIComponent((r.district||'')+' '+(r.city||'')+' Ghana')}" target="_blank"
          style="display:flex;align-items:center;gap:10px;background:var(--mist);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:10px;text-decoration:none;color:var(--text);">
@@ -548,24 +867,17 @@ window.viewRoom = async id => {
         <div><div style="font-size:13px;font-weight:700;">View on Google Maps</div><div style="font-size:11px;color:var(--gray);">${esc((r.district||'')+', '+(r.city||''))}</div></div>
         <span style="margin-left:auto;color:var(--gray);">›</span>
       </a>`:''}
-
-      <!-- SIMILAR ROOMS -->
       <div style="margin-top:18px;">
         <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="width:3px;height:14px;background:var(--gold);border-radius:2px;display:block;"></span>Similar Rooms</div>
         <div id="similarRooms" style="display:flex;flex-direction:column;gap:8px;"></div>
       </div>
-
     </div>`;
-
-  // Store images for gallery navigation
-  window._detailImgs = imgs;
-  window._detailIdx  = 0;
+  window._detailImgs=imgs;window._detailIdx=0;
   document.getElementById('detailModal').classList.add('show');
-  // Load similar rooms
   setTimeout(()=>{
     const sim=allRooms.filter(x=>x.id!==r.id&&x.available!==false&&(x.city===r.city||x.type===r.type)).slice(0,3);
     const simEl=document.getElementById('similarRooms');
-    if(!simEl) return;
+    if(!simEl)return;
     if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar rooms found.</div>';return;}
     simEl.innerHTML=sim.map(s=>{
       const si=(s.images||(s.imageUrl?[s.imageUrl]:[]))[0]||'';
@@ -580,50 +892,46 @@ window.viewRoom = async id => {
       </div>`;
     }).join('');
   },100);
-  // Check saved state
-  const savedRooms=JSON.parse(localStorage.getItem('clSavedRooms')||'[]');
-  const saveBtn=document.getElementById('saveRoomBtn_'+r.id);
-  if(saveBtn&&savedRooms.includes(r.id)){saveBtn.textContent='✅ Saved';saveBtn.style.background='#f0fff6';}
 };
 
-window.detailShowImg = idx => {
-  window._detailIdx = idx;
-  const imgs = window._detailImgs||[];
-  const el   = document.getElementById('detailMainImg');
-  if(el&&imgs[idx]) el.src=imgs[idx];
+window.detailShowImg=idx=>{
+  window._detailIdx=idx;
+  const imgs=window._detailImgs||[];
+  const el=document.getElementById('detailMainImg');
+  if(el&&imgs[idx])el.src=imgs[idx];
   document.querySelectorAll('.gn-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
 };
 
-
-// ── SHARE ROOM ──
 window.shareRoom=(id,title,location,price)=>{
   const url=window.location.origin+'/rooms.html';
   const text=`🏠 ${title}\n📍 ${location}\n💰 GHS ${Number(price).toLocaleString()}\n\nSee on CityLinkGH: ${url}`;
-  if(navigator.share) navigator.share({title,text,url});
+  if(navigator.share)navigator.share({title,text,url});
   else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
 };
 
-// ── SAVE ROOM ──
-window.saveRoom=(id,title)=>{
-  const saved=JSON.parse(localStorage.getItem('clSavedRooms')||'[]');
-  const idx=saved.indexOf(id);
+// Save from detail modal (syncs with card button)
+window.saveRoomFromDetail=(id,title)=>{
+  let saved=getSaved();
   const btn=document.getElementById('saveRoomBtn_'+id);
-  if(idx>-1){
-    saved.splice(idx,1);
+  const cardBtn=document.querySelector(`.room-bm-btn[data-id="${id}"]`);
+  if(saved.includes(id)){
+    saved=saved.filter(s=>s!==id);
     if(btn){btn.textContent='🔖 Save';btn.style.background='var(--mist)';}
+    if(cardBtn){cardBtn.textContent='🔖';cardBtn.classList.remove('saved');}
     showToast('Removed from saved');
   } else {
     saved.push(id);
     if(btn){btn.textContent='✅ Saved';btn.style.background='#f0fff6';}
+    if(cardBtn){cardBtn.textContent='🏷️';cardBtn.classList.add('saved');}
     showToast('✅ Room saved!');
   }
   localStorage.setItem('clSavedRooms',JSON.stringify(saved));
+  updateSavedBadge();
 };
 
-// ── REPORT ROOM ──
 window.reportRoom=(id,title)=>{
   const reason=prompt(`Report "${title}"\n\nReason (scam, wrong info, unavailable, duplicate):`);
-  if(!reason) return;
+  if(!reason)return;
   const reports=JSON.parse(localStorage.getItem('clReports')||'[]');
   reports.push({id,title,reason,type:'room',date:new Date().toISOString()});
   localStorage.setItem('clReports',JSON.stringify(reports));
@@ -633,37 +941,33 @@ window.reportRoom=(id,title)=>{
 window.closeDetailModal=()=>document.getElementById('detailModal').classList.remove('show');
 
 // ── POST MODAL ──
-window.openPostModal=()=>{ document.getElementById('postModal').classList.add('show'); renderImgGrid(); };
+window.openPostModal=()=>{document.getElementById('postModal').classList.add('show');renderImgGrid();};
 window.closePostModal=()=>document.getElementById('postModal').classList.remove('show');
 
 window.selectPlan=el=>{
-  selPlan=el.dataset.plan; selPrice=Number(el.dataset.price);
-  document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel');
+  selPlan=el.dataset.plan;selPrice=Number(el.dataset.price);
+  document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');
   document.getElementById('photoLimitTxt').textContent=`max ${IMG_LIMITS[selPlan]} photo${IMG_LIMITS[selPlan]!==1?'s':''} (${selPlan} plan)`;
   document.getElementById('paySection').style.display=selPrice>0?'block':'none';
   document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';
   renderImgGrid();
 };
-
 window.toggleAmenity=el=>el.classList.toggle('active');
-
 window.setListerType=type=>{
   listerType=type;
   ['owner','agent','caretaker'].forEach(t=>document.getElementById(t+'Pill').classList.remove('active'));
   document.getElementById(type+'Pill').classList.add('active');
 };
 
-// ── IMG GRID ──
 function renderImgGrid(){
   const limit=IMG_LIMITS[selPlan]||1;
   const grid=document.getElementById('imgUpGrid');
   let html=uploadedImgs.map((img,i)=>`<div class="img-up-slot"><img src="${esc(img)}" alt=""><button class="img-up-del" onclick="removeImg(${i})">×</button></div>`).join('');
-  if(uploadedImgs.length<limit) html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
+  if(uploadedImgs.length<limit)html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
   grid.innerHTML=html;
 }
 window.removeImg=idx=>{uploadedImgs.splice(idx,1);renderImgGrid();};
 
-// ── CLOUDINARY UPLOAD ──
 window.uploadImg=async input=>{
   const f=input.files[0];if(!f)return;
   if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
@@ -681,7 +985,6 @@ window.uploadImg=async input=>{
   }catch(e){stat.textContent='❌ Failed';fill.style.width='0%';}
 };
 
-// ── SUBMIT ROOM ──
 window.submitRoom=async()=>{
   const title=document.getElementById('rTitle').value.trim();
   const city=document.getElementById('rCity').value;
@@ -693,9 +996,7 @@ window.submitRoom=async()=>{
   if(!type){showToast('⚠️ Type required');return;}
   if(!price){showToast('⚠️ Price required');return;}
   if(!phone){showToast('⚠️ Phone required');return;}
-
   const amenities=[...document.querySelectorAll('#amenitiesGrid .filter-chip.active')].map(el=>el.textContent.trim());
-
   const roomData={
     title,city,type,price:Number(price),
     period:document.getElementById('rPeriod').value,
@@ -703,57 +1004,43 @@ window.submitRoom=async()=>{
     beds:document.getElementById('rBeds').value,
     baths:document.getElementById('rBaths').value,
     desc:document.getElementById('rDesc').value.trim(),
-    phone,
-    whatsapp:document.getElementById('rWa').value.trim(),
+    phone,whatsapp:document.getElementById('rWa').value.trim(),
     poster:document.getElementById('rPoster').value.trim(),
-    listerType,amenities,
-    images:uploadedImgs,
-    imageUrl:uploadedImgs[0]||'',
-    plan:selPlan,
-    available:true,
-    views:0,
-    createdAt:serverTimestamp()
+    listerType,amenities,images:uploadedImgs,imageUrl:uploadedImgs[0]||'',
+    plan:selPlan,available:true,views:0,createdAt:serverTimestamp()
   };
-
   if(selPrice>0){
     const email=document.getElementById('payEmail').value.trim();
     if(!email){showToast('⚠️ Email required for payment');return;}
-    // Paystack payment
     const handler=PaystackPop.setup({
-      key:PAYSTACK_KEY,email,
-      amount:selPrice*100,currency:'GHS',
-      ref:'ROOM-'+Date.now(),
+      key:PAYSTACK_KEY,email,amount:selPrice*100,currency:'GHS',ref:'ROOM-'+Date.now(),
       onSuccess:async response=>{
-        roomData.paid=true; roomData.payRef=response.reference;
-        await saveRoom(roomData);
-        // SMS to poster
+        roomData.paid=true;roomData.payRef=response.reference;
+        await doSaveRoom(roomData);
         await sendSMS(phone,`CityLinkGH: Your ${type} listing in ${city} is now live! Ref: ${response.reference}`);
       },
       onClose:()=>showToast('⚠️ Payment cancelled')
     });
     handler.openIframe();
   } else {
-    await saveRoom(roomData);
+    await doSaveRoom(roomData);
   }
 };
 
-async function saveRoom(data){
+async function doSaveRoom(data){
   const btn=document.getElementById('submitRoomBtn');
-  btn.disabled=true;
-  document.getElementById('submitRoomTxt').textContent='Posting…';
+  btn.disabled=true;document.getElementById('submitRoomTxt').textContent='Posting…';
   try{
     await addDoc(collection(db,'rooms'),data);
     showToast('✅ Room posted successfully!');
-    closePostModal();
-    uploadedImgs=[];
+    closePostModal();uploadedImgs=[];
     await fetchRooms();
   }catch(e){showToast('❌ '+e.message);}
   finally{btn.disabled=false;document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';}
 }
 
-// ── ARKESEL SMS ──
 async function sendSMS(to,message){
-  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY'){console.warn('SMS skipped: Arkesel key not configured');return;}
+  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY')return;
   let num=to.replace(/\D/g,'');
   if(num.startsWith('0'))num='233'+num.slice(1);
   if(!num.startsWith('233'))num='233'+num;
@@ -761,22 +1048,6 @@ async function sendSMS(to,message){
   catch(e){console.log('SMS:',e.message);}
 }
 
-// ── HELPERS ──
-function fmtAgo(date){
-  if(!date) return 'Recently';
-  const diff=Date.now()-new Date(date).getTime();
-  if(isNaN(diff)) return 'Recently';
-  const m=Math.floor(diff/60000);
-  if(m<60)return `${m}m ago`;
-  const h=Math.floor(m/60);
-  if(h<24)return `${h}h ago`;
-  return `${Math.floor(h/24)}d ago`;
-}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-let toastT;
-window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
-
-// ── FEATURE 8: MARK ROOM AS RENTED / AVAILABLE ──
 window.toggleRoomAvail=async(id,currentlyAvail)=>{
   try{
     await updateDoc(doc(db,'rooms',id),{available:!currentlyAvail});
@@ -785,27 +1056,52 @@ window.toggleRoomAvail=async(id,currentlyAvail)=>{
   }catch(e){showToast('❌ '+e.message);}
 };
 
-// Close modals on overlay click
 document.getElementById('postModal').addEventListener('click',e=>{if(e.target===document.getElementById('postModal'))closePostModal();});
 document.getElementById('detailModal').addEventListener('click',e=>{if(e.target===document.getElementById('detailModal'))closeDetailModal();});
+
+function fmtAgo(date){
+  if(!date)return'Recently';
+  const diff=Date.now()-new Date(date).getTime();
+  if(isNaN(diff))return'Recently';
+  const m=Math.floor(diff/60000);
+  if(m<60)return`${m}m ago`;
+  const h=Math.floor(m/60);
+  if(h<24)return`${h}h ago`;
+  return`${Math.floor(h/24)}d ago`;
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
 
 fetchRooms();
 renderImgGrid();
 
-// ── HAMBURGER MENU ──
-window.toggleDrawer = () => {
-  const h = document.getElementById('hamburger');
-  const d = document.getElementById('navDrawer');
-  const o = document.getElementById('navOverlay');
-  h.classList.toggle('open');
-  d.classList.toggle('open');
-  o.classList.toggle('open');
-  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+window.toggleDrawer=()=>{
+  const h=document.getElementById('hamburger');
+  const d=document.getElementById('navDrawer');
+  const o=document.getElementById('navOverlay');
+  h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');
+  document.body.style.overflow=d.classList.contains('open')?'hidden':'';
 };
-// Mark active link
-document.querySelectorAll('.drawer-link').forEach(a => {
-  if(a.href === window.location.href) a.classList.add('active');
-});
+document.querySelectorAll('.drawer-link').forEach(a=>{if(a.href===window.location.href)a.classList.add('active');});
+</script>
+
+<script>
+// ⑨ BACK TO TOP
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('backTop');
+  if(window.scrollY>400)btn.classList.add('visible');
+  else btn.classList.remove('visible');
+},{passive:true});
+
+// Swipe to close detail modal
+let touchStartY=0;
+document.getElementById('detailModal').addEventListener('touchstart',e=>{touchStartY=e.touches[0].clientY;},{passive:true});
+document.getElementById('detailModal').addEventListener('touchend',e=>{
+  if(e.changedTouches[0].clientY-touchStartY>80){
+    document.getElementById('detailModal').classList.remove('show');
+  }
+},{passive:true});
 </script>
 </body>
 </html>

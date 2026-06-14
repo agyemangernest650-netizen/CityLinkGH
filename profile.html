@@ -18,10 +18,11 @@
 <link rel="stylesheet" href="profile.css">
 <!-- Paystack -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 </head>
 <body>
-<div class="toast" id="toast"></div>
-
 <header>
   <div class="logo">CityLink<span>GH</span></div>
   <a href="home.html" class="hbtn">← Home</a>
@@ -93,7 +94,26 @@
         <div class="prole" id="prole">—</div>
       </div>
     </div>
-    <button class="edit-btn" onclick="showToast('✏️ Edit profile — coming soon!')">✏️ Edit Profile</button>
+    <button class="edit-btn" onclick="openEditProfile()">✏️ Edit Profile</button>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="editProfileModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-end;justify-content:center;">
+  <div style="background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:500px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;">Edit Profile</div>
+      <button onclick="closeEditProfile()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#999;">✕</button>
+    </div>
+    <div class="field" style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;">Full Name</label><input type="text" id="editName" style="width:100%;padding:11px;border:1.5px solid #E2D9C8;border-radius:10px;font-size:14px;outline:none;"></div>
+    <div class="field" style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;">Phone Number</label><input type="tel" id="editPhone" placeholder="024 000 0000" style="width:100%;padding:11px;border:1.5px solid #E2D9C8;border-radius:10px;font-size:14px;outline:none;"></div>
+    <div class="field" style="margin-bottom:16px;"><label style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;">I am a…</label>
+      <div style="display:flex;gap:8px;">
+        <div id="epRoleCustomer" onclick="epRole('customer')" style="flex:1;padding:10px;border-radius:10px;border:2px solid #E2D9C8;text-align:center;cursor:pointer;font-weight:700;font-size:13px;">🛍️ Customer</div>
+        <div id="epRoleOwner" onclick="epRole('owner')" style="flex:1;padding:10px;border-radius:10px;border:2px solid #E2D9C8;text-align:center;cursor:pointer;font-weight:700;font-size:13px;">🏪 Owner</div>
+      </div>
+    </div>
+    <button onclick="saveEditProfile()" style="width:100%;background:#1A6B3C;color:#fff;border:none;padding:13px;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer;">💾 Save Changes</button>
+  </div>
+</div>
   </div>
 
   <!-- PLAN CARD (owner) -->
@@ -113,6 +133,7 @@
       <div class="sbox"><div class="sn" id="stBookings" style="color:var(--blue);">—</div><div class="sl">Bookings</div></div>
       <div class="sbox"><div class="sn" id="stRevs" style="color:var(--gold);">—</div><div class="sl">Reviews</div></div>
       <div class="sbox"><div class="sn" id="stBsListings" style="color:#E84D2A;">—</div><div class="sl">Buy&amp;Sell</div></div>
+      <div class="sbox"><div class="sn" id="stViews" style="color:var(--purple);">—</div><div class="sl">Total Views</div></div>
     </div>
   </div>
 
@@ -163,7 +184,7 @@
         <h4>🛒 Buy &amp; Sell Marketplace</h4>
         <p>Post items to sell or find what you need</p>
       </div>
-      <button class="bs-quick-post-btn" onclick="window.location='buy-sell.html'">Browse →</button>
+      <button class="bs-quick-post-btn" onclick="window.location='buy.html'">Browse →</button>
     </div>
 
     <!-- B&S Stats -->
@@ -189,7 +210,7 @@
     <!-- My B&S listings list -->
     <div class="bs-sec-hd">
       <div class="bs-sec-t">My Buy &amp; Sell Listings</div>
-      <a class="bs-sec-lnk" onclick="window.location='buy-sell.html'">+ Post Item</a>
+      <a class="bs-sec-lnk" onclick="window.location='buy.html'">+ Post Item →</a>
     </div>
     <div id="bsMyListings">
       <div class="loading" style="padding:24px 16px;"><div class="spinner"></div> Loading…</div>
@@ -261,6 +282,28 @@
     </div>
   </div>
 
+  <!-- SAVED JOBS -->
+  <div id="savedJobsSection" style="display:none;">
+    <div class="sec-hd">
+      <div class="sec-t">Saved Jobs</div>
+      <a href="jobs.html" class="sec-lnk">Browse →</a>
+    </div>
+    <div class="saved-list" id="savedJobsList">
+      <div class="loading"><div class="spinner"></div> Loading…</div>
+    </div>
+  </div>
+
+  <!-- SAVED ROOMS -->
+  <div id="savedRoomsSection" style="display:none;">
+    <div class="sec-hd">
+      <div class="sec-t">Saved Rooms</div>
+      <a href="room.html" class="sec-lnk">Browse →</a>
+    </div>
+    <div class="saved-list" id="savedRoomsList">
+      <div class="loading"><div class="spinner"></div> Loading…</div>
+    </div>
+  </div>
+
   <!-- SETTINGS -->
   <div class="sec-hd" style="margin-top:8px;"><div class="sec-t">Settings</div></div>
   <div class="settings-wrap">
@@ -278,13 +321,13 @@
       <span class="si-arr">›</span>
     </div>
     <!-- NEW: Buy & Sell shortcut -->
-    <div class="setting-item" onclick="window.location='buy-sell.html'">
+    <div class="setting-item" onclick="window.location='buy.html'">
       <div class="si-left"><div class="si-ico" style="background:#fff0ec;">🛒</div><div><div class="si-lbl">Buy &amp; Sell Marketplace</div><div class="si-sub">Post items or find deals near you</div></div></div>
       <span class="si-arr">›</span>
     </div>
 
     <div class="sec-hd" style="padding:10px 16px 4px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);">Account</div></div>
-    <div class="setting-item" onclick="window.location='bookingdash.html'">
+    <div class="setting-item" onclick="window.location='bookings-dashboard.html'">
       <div class="si-left"><div class="si-ico" style="background:#e8f4ff;">📅</div><div><div class="si-lbl">All Bookings</div><div class="si-sub">Full bookings dashboard</div></div></div>
       <span class="si-arr">›</span>
     </div>
@@ -321,46 +364,44 @@
     <button class="bs-modal-btn" onclick="payBump()">Pay GH₵1.99 &amp; Bump to Top</button>
   </div>
 </div>
-
-<!-- FOOTER -->
+<!-- ═══ FOOTER ═══ -->
 <footer class="footer">
-  <div class="footer-container">
-    <div class="footer-box">
-      <div class="footer-logo">💼 CityLink<span>GH</span></div>
-     <h5>Find <em>Jobs</em> in Ghana</h5>
-  <p>Full time, part time, remote, internships & attachments across all cities.</p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">CityLink<span>GH</span></div>
+      <p>Ghana's most trusted local business directory. Find verified businesses, jobs and housing across every city.</p>
     </div>
-    <div class="footer-box">
-      <h3>Directory</h3>
+    <div class="footer-col">
+      <h4>Directory</h4>
       <ul>
         <li><a href="home.html">Browse Businesses</a></li>
         <li><a href="room.html">Rooms for Rent</a></li>
-        <li><a href="jobs.html">Jobs for listing</a></li>
+        <li><a href="jobs.html">Job Listings</a></li>
         <li><a href="buy.html">Buy &amp; Sell</a></li>
       </ul>
     </div>
-    <div class="footer-box">
-      <h3>List With Us</h3>
+    <div class="footer-col">
+      <h4>List With Us</h4>
       <ul>
         <li><a href="submit.html">List a Business</a></li>
         <li><a href="jobs.html">Post a Job</a></li>
-        <li><a href="room.html">Post a Room</a><li>
-        <li> <a href="buy.html">Sell Something</a><li>
+        <li><a href="room.html">Post a Room</a></li>
+        <li><a href="buy.html">Sell Something</a></li>
       </ul>
     </div>
-
-    <div class="footer-box">
-      <h3>Company</h3>
-    <ul>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="terms.html">Terms</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
-    </ul>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
+    <span>© 2026 CityLinkGH · All Rights Reserved</span>
+    <div class="footer-flag" aria-label="Ghana flag">🇬🇭</div>
   </div>
 </footer>
 
@@ -369,7 +410,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getFirestore, collection, query, where, getDocs,
   doc, getDoc, setDoc, updateDoc, deleteDoc,
-  arrayUnion, arrayRemove, serverTimestamp, orderBy, limit
+  arrayUnion, arrayRemove, serverTimestamp, orderBy, limit, increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import {
   getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
@@ -535,6 +576,14 @@ async function loadProfile(user) {
     await loadBSListings(user.uid);
     loadBSSMSPrefs();
     await loadSaved();
+    document.getElementById('savedJobsSection').style.display='block';
+    document.getElementById('savedRoomsSection').style.display='block';
+    await loadSavedJobs();
+    await loadSavedRooms();
+    await loadSavedJobs();
+    await loadSavedRooms();
+    document.getElementById('savedJobsSection').style.display='block';
+    document.getElementById('savedRoomsSection').style.display='block';
   }
 }
 
@@ -563,6 +612,7 @@ async function loadOwnerData(email) {
     document.getElementById('stRevs').textContent=totalRevs;
     renderMyListings(listings);
     await loadMyBookings(listings.map(l=>l.id));
+    await loadTotalViews(listings);
   } catch(e){
     document.getElementById('myListings').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>${e.message}</h3></div>`;
   }
@@ -574,7 +624,7 @@ async function loadOwnerData(email) {
 async function loadBSListings(uid) {
   const el=document.getElementById('bsMyListings');
   try {
-    const q=query(collection(db,'buy_sell_listings'),where('uid','==',uid),orderBy('createdAt','desc'));
+    const q=query(collection(db,'listings'),where('uid','==',uid),orderBy('createdAt','desc'));
     const snap=await getDocs(q);
     const items=snap.docs.map(d=>({id:d.id,...d.data()}));
 
@@ -599,7 +649,7 @@ async function loadBSListings(uid) {
           <div class="ei">🛒</div>
           <h3>No listings yet</h3>
           <p>Post your first item to the marketplace and start selling.</p>
-          <a href="buy-sell.html">+ Post Your First Item</a>
+          <a href="buy.html">+ Post Your First Item</a>
         </div>`;
       return;
     }
@@ -643,7 +693,7 @@ async function loadBSListings(uid) {
           <span>📊 ${contacts} total contacts</span>
         </div>
         <div class="bs-lcard-acts">
-          <a class="bs-act-btn view" href="buy-sell.html">View on Marketplace</a>
+          <a class="bs-act-btn view" href="buy.html">View on Marketplace</a>
           ${!isSold?`<button class="bs-act-btn mark-sold" onclick="bsMarkSold('${item.id}')">✓ Mark Sold</button>`:''}
           ${!isSold&&item.plan!=='premium'?`<button class="bs-act-btn bump" onclick="openBumpModal('${item.id}','${esc(item.title)}')">⬆️ Bump</button>`:''}
           <button class="bs-act-btn del" onclick="bsDeleteListing('${item.id}')">🗑 Remove</button>
@@ -1047,6 +1097,113 @@ window.unsave = async bizId => {
   showToast('🗑 Removed from saved');
 };
 
+
+// ── EDIT PROFILE ──
+let epSelRole = 'customer';
+window.openEditProfile = () => {
+  document.getElementById('editName').value = userProfile?.name || currentUser?.displayName || '';
+  document.getElementById('editPhone').value = userProfile?.phone || userProfile?.smsPhone || '';
+  epSelRole = userProfile?.role || 'customer';
+  epRole(epSelRole);
+  const modal = document.getElementById('editProfileModal');
+  modal.style.display = 'flex';
+};
+window.closeEditProfile = () => { document.getElementById('editProfileModal').style.display = 'none'; };
+window.epRole = role => {
+  epSelRole = role;
+  document.getElementById('epRoleCustomer').style.borderColor = role==='customer'?'#D4A017':'#E2D9C8';
+  document.getElementById('epRoleOwner').style.borderColor = role==='owner'?'#D4A017':'#E2D9C8';
+};
+window.saveEditProfile = async () => {
+  const name = document.getElementById('editName').value.trim();
+  const phone = document.getElementById('editPhone').value.trim();
+  if(!name){ showToast('⚠️ Name required'); return; }
+  try {
+    await updateDoc(doc(db,'users',currentUser.uid),{name,phone,smsPhone:phone,role:epSelRole,updatedAt:serverTimestamp()});
+    await updateProfile(currentUser,{displayName:name});
+    userProfile = {...userProfile,name,phone,smsPhone:phone,role:epSelRole};
+    document.getElementById('pname').textContent = name;
+    document.getElementById('prole').textContent = epSelRole==='owner'?'🏪 Business Owner':'🛍️ Customer';
+    closeEditProfile();
+    showToast('✅ Profile updated!');
+  } catch(e){ showToast('❌ '+e.message); }
+};
+
+// ── SAVED JOBS (from localStorage) ──
+async function loadSavedJobs() {
+  const saved = JSON.parse(localStorage.getItem('clSavedJobs')||'[]');
+  const el = document.getElementById('savedJobsList');
+  if(!el) return;
+  if(!saved.length){
+    el.innerHTML='<div class="empty"><div class="ei">💼</div><h3>No saved jobs</h3><p>Tap 🔖 on any job to save it here.</p></div>';
+    return;
+  }
+  try {
+    const items = await Promise.all(saved.slice(0,10).map(async id=>{
+      const s=await getDoc(doc(db,'jobs',id));
+      return s.exists()?{id:s.id,...s.data()}:null;
+    }));
+    const valid = items.filter(Boolean);
+    el.innerHTML = valid.map(j=>`
+      <a class="sv-card" href="jobs.html" style="text-decoration:none;color:inherit;">
+        <div class="sv-thumb" style="background:#e8f4ff;font-size:20px;display:flex;align-items:center;justify-content:center;">${j.logoUrl?`<img src="${esc(j.logoUrl)}" alt="" style="width:100%;height:100%;object-fit:cover;">`:'💼'}</div>
+        <div class="sv-body">
+          <div class="sv-name">${esc(j.jobTitle||'Job')}</div>
+          <div class="sv-cat">${esc(j.company||'')}</div>
+          <div class="sv-loc">📍 ${esc(j.city||'Ghana')} · ${esc(j.jobType||'')}</div>
+        </div>
+        <div class="sv-del" onclick="event.preventDefault();unsaveJob('${j.id}')">×</div>
+      </a>`).join('');
+  } catch(e){ el.innerHTML='<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3></div>'; }
+}
+window.unsaveJob = id => {
+  const saved = JSON.parse(localStorage.getItem('clSavedJobs')||'[]');
+  localStorage.setItem('clSavedJobs', JSON.stringify(saved.filter(x=>x!==id)));
+  loadSavedJobs();
+  showToast('🗑 Removed from saved');
+};
+
+// ── SAVED ROOMS (from localStorage) ──
+async function loadSavedRooms() {
+  const saved = JSON.parse(localStorage.getItem('clSavedRooms')||'[]');
+  const el = document.getElementById('savedRoomsList');
+  if(!el) return;
+  if(!saved.length){
+    el.innerHTML='<div class="empty"><div class="ei">🏠</div><h3>No saved rooms</h3><p>Tap 🔖 on any room to save it here.</p></div>';
+    return;
+  }
+  try {
+    const items = await Promise.all(saved.slice(0,10).map(async id=>{
+      const s=await getDoc(doc(db,'rooms',id));
+      return s.exists()?{id:s.id,...s.data()}:null;
+    }));
+    const valid = items.filter(Boolean);
+    el.innerHTML = valid.map(r=>`
+      <a class="sv-card" href="rooms.html" style="text-decoration:none;color:inherit;">
+        <div class="sv-thumb" style="background:#fff8e8;font-size:20px;display:flex;align-items:center;justify-content:center;">${r.imageUrl||r.images?.[0]?`<img src="${esc(r.imageUrl||r.images[0])}" alt="" style="width:100%;height:100%;object-fit:cover;">`:'🏠'}</div>
+        <div class="sv-body">
+          <div class="sv-name">${esc(r.title||r.type||'Room')}</div>
+          <div class="sv-cat">GHS ${Number(r.price||0).toLocaleString()} ${r.period||''}</div>
+          <div class="sv-loc">📍 ${esc(r.district||r.city||'Ghana')}</div>
+        </div>
+        <div class="sv-del" onclick="event.preventDefault();unsaveRoom('${r.id}')">×</div>
+      </a>`).join('');
+  } catch(e){ el.innerHTML='<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3></div>'; }
+}
+window.unsaveRoom = id => {
+  const saved = JSON.parse(localStorage.getItem('clSavedRooms')||'[]');
+  localStorage.setItem('clSavedRooms', JSON.stringify(saved.filter(x=>x!==id)));
+  loadSavedRooms();
+  showToast('🗑 Removed from saved');
+};
+
+// ── TOTAL VIEWS on owner's listings ──
+async function loadTotalViews(listings) {
+  const totalViews = listings.reduce((s,b)=>s+(b.views||0),0);
+  const el = document.getElementById('stViews');
+  if(el) el.textContent = totalViews;
+}
+
 /* ── Utilities ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let toastT;
@@ -1054,11 +1211,3 @@ window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.
 </script>
 </body>
 </html>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer=window.dataLayer||[];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());
-  gtag('config','G-XXXXXXXXXX');
-</script>

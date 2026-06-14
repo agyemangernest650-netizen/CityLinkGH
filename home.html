@@ -11,289 +11,811 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CityLinkGH">
 <link rel="canonical" href="https://citylinkgh.vercel.app/">
-<meta name="theme-color" content="#0D0D0D">
-<!-- Open Graph / WhatsApp / Facebook -->
+<meta name="theme-color" content="#0A0F0D">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://citylinkgh.vercel.app/">
 <meta property="og:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
 <meta property="og:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
 <meta property="og:site_name" content="CityLinkGH">
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CityLinkGH — Find Trusted Businesses in Ghana">
 <meta name="twitter:description" content="Discover verified local businesses, jobs and rooms across Accra, Kumasi, Takoradi and all Ghana cities.">
 <meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
 <title>CityLinkGH — Find Local Businesses in Ghana</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="index.css">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "CityLinkGH",
-  "url": "https://citylinkgh.vercel.app",
-  "description": "Ghana's #1 local business directory. Find verified businesses, jobs and housing across all cities.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://citylinkgh.vercel.app/?search={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
+{"@context":"https://schema.org","@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app","description":"Ghana's #1 local business directory.","potentialAction":{"@type":"SearchAction","target":"https://citylinkgh.vercel.app/?search={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
+
+<style>
+/* ═══ NEW FEATURE STYLES ═══ */
+
+/* ── GREETING BANNER ── */
+.greeting-bar {
+  background: linear-gradient(90deg, rgba(26,107,60,.12), rgba(212,160,23,.08));
+  border-bottom: 1px solid rgba(212,160,23,.15);
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.greeting-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.75);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.greeting-text strong { color: var(--gold); font-family: 'Syne', sans-serif; }
+.live-viewers {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.55);
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: #22C55E;
+  border-radius: 50%;
+  animation: livePulse 2s ease infinite;
+  flex-shrink: 0;
+}
+@keyframes livePulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .5; transform: scale(.7); }
+}
+
+/* ── VOICE SEARCH BUTTON ── */
+.search-voice {
+  background: var(--mist);
+  border: none;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .15s;
+  position: relative;
+}
+.search-voice.listening {
+  background: rgba(192,57,43,.15);
+  animation: voicePulse 1s ease infinite;
+}
+@keyframes voicePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,.3); }
+  50%      { box-shadow: 0 0 0 8px rgba(192,57,43,0); }
+}
+
+/* ── SEARCH HISTORY CHIPS ── */
+.search-history-wrap {
+  padding: 12px 16px 0;
+  display: none;
+}
+.search-history-wrap.visible { display: block; }
+.sh-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sh-clear {
+  background: none;
+  border: none;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  cursor: pointer;
+  padding: 0;
+}
+.sh-chips {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.sh-chip {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.sh-chip:hover { border-color: var(--green); color: var(--green); }
+
+/* ── TRENDING SEARCHES ── */
+.trending-wrap {
+  padding: 14px 16px 0;
+}
+.trending-chips {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.trending-chips::-webkit-scrollbar { display: none; }
+.trend-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+}
+.trend-chip:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+.trend-ico { font-size: 14px; }
+.trend-num { font-size: 10px; color: var(--gray-lt); margin-left: 2px; }
+
+/* ── BOOKMARK BUTTON ── */
+.bm-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,.55);
+  border: none;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: transform .15s, background .2s;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.bm-btn:active { transform: scale(.88); }
+.bm-btn.saved { background: rgba(212,160,23,.85); }
+/* When rating badge exists, push bookmark left */
+.has-rating .bm-btn { right: 46px; }
+
+/* ── NEW THIS WEEK ── */
+.new-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.new-track::-webkit-scrollbar { display: none; }
+.new-card {
+  flex-shrink: 0;
+  width: 155px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .2s;
+  position: relative;
+}
+.new-card:hover { transform: translateY(-3px); }
+.new-img {
+  width: 100%;
+  height: 100px;
+  background: var(--mist);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  overflow: hidden;
+  position: relative;
+}
+.new-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--green);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 5px;
+  letter-spacing: .04em;
+}
+.new-info { padding: 9px 11px 11px; }
+.new-name { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 800; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.new-cat  { font-size: 10px; color: var(--green); font-weight: 700; text-transform: uppercase; }
+.new-city { font-size: 10px; color: var(--gray); margin-top: 2px; }
+
+/* ── BACK TO TOP BUTTON ── */
+.back-top {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  z-index: 250;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .3s, transform .3s;
+}
+.back-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-top:hover { background: var(--green); }
+
+/* ── SAVED PAGE LINK (profile) ── */
+.saved-count-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ── OPEN COUNT CHIP ── */
+.open-count-tag {
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(21,128,61,.15);
+  color: #15803D;
+  padding: 1px 6px;
+  border-radius: 6px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+[data-theme="dark"] .open-count-tag { background: rgba(21,128,61,.25); color: #4ADE80; }
+
+/* ── INFINITE SCROLL SENTINEL ── */
+.scroll-sentinel {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scroll-sentinel .spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+.scroll-sentinel.loading .spinner { display: block; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── CARD VIEWS BADGE ── */
+.views-chip {
+  font-size: 10px;
+  color: var(--gray-lt);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+</style>
 </head>
 <body>
+
 <div class="toast" id="toast"></div>
 
+<!-- ═══ HEADER ═══ -->
 <header>
   <div class="logo">
-    <img src="City link.jpeg" width="80" height="50" alt="CityLinkGH" style="border-radius:6px;">
+    <div class="logo-mark">
+      <span class="lm-g">G</span><span class="lm-h">H</span>
+    </div>
     CityLink<span>GH</span>
   </div>
-   <div class="hdr-right">
-    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
-    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+  <div class="hdr-right">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn" aria-label="Toggle dark mode">🌙</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
   <nav class="nav-drawer" id="navDrawer">
     <button class="drawer-close" onclick="toggleDrawer()">✕</button>
-    <div class="drawer-section">Navigate</div>
-    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Home</a>
+    <div class="drawer-brand">CityLink<span>GH</span></div>
+    <div class="drawer-section">Explore</div>
+    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Browse Businesses</a>
     <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
     <div class="drawer-section">List Something</div>
-    <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
+    <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
     <div class="drawer-section">Account</div>
     <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
     <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
   </nav>
 </header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="flag"><div class="f1"></div><div class="f2"></div><div class="f3"></div></div>
-  <h1>Find <em>Trusted</em><br>Businesses in Ghana</h1>
-  <p>Restaurants, salons, hospitals & more — verified & reviewed.</p>
-  <div class="search-wrap">
-    <span>🔍</span>
-    <div class="autocomplete-wrap"><input type="text" id="searchInput" autocomplete="off" placeholder="Search businesses, services…" oninput="doSearch(this.value)"></div>
-    <button class="near-me-btn" onclick="findNearMe()">📍 Near Me</button>
-    <button class="search-go" onclick="doSearch(document.getElementById('searchInput').value)">Go</button>
-</div>
-
-<!-- STATS -->
-<div class="stats">
-  <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">BUSINESSES</div></div>
-  <div><div class="stat-n" id="statDeals">—</div><div class="stat-l">LIVE DEALS</div></div>
-  <div><div class="stat-n" id="statCities">—</div><div class="stat-l">CITIES</div></div>
-</div>
-
-<!-- NEAR ME BANNER -->
-<div class="near-me-banner" id="nearMeBanner">
-  <div class="nmb-text"><h3>📍 Businesses Near You</h3><p id="nearMeSubtitle">Showing businesses closest to your location</p></div>
-  <button class="nmb-btn" onclick="clearNearMe()">✕ Clear</button>
-</div>
-
-<!-- FLASH DEALS -->
-<div class="deals-section" id="dealsSection" style="display:none;">
-  <div class="deals-hd">
-    <div class="deals-title">🔥 Flash Deals</div>
-    <span class="see-all" onclick="filterSort('featured',document.querySelector('.chip[onclick*=\'featured\']'))">See all →</span>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-kente" aria-hidden="true">
+    <div class="kente-stripe k1"></div>
+    <div class="kente-stripe k2"></div>
+    <div class="kente-stripe k3"></div>
+    <div class="kente-stripe k4"></div>
   </div>
-  <div class="deals-scroll" id="dealsScroll"></div>
-</div>
 
-<!-- BUSINESS OF THE WEEK -->
-<div id="botwWrap" style="display:none;margin-top:14px;"></div>
-
-<!-- RECENTLY VIEWED -->
-<div class="recently-section" id="recentlySection">
-  <div class="sec-hd" style="margin-bottom:9px;">
-    <h2 style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:7px;"><span style="width:4px;height:15px;background:var(--blue);border-radius:2px;display:block;"></span>Recently Viewed</h2>
-    <span class="see-all" onclick="clearRecent()">Clear</span>
+  <!-- ① GREETING + LIVE VIEWERS -->
+  <div class="greeting-bar">
+    <div class="greeting-text">
+      <span id="greetEmoji">👋</span>
+      <span id="greetMsg">Welcome to CityLinkGH</span>
+    </div>
+    <div class="live-viewers">
+      <div class="live-dot"></div>
+      <span id="liveCount">—</span> browsing
+    </div>
   </div>
-  <div class="recently-scroll" id="recentlyScroll"></div>
+
+  <div class="hero-inner">
+    <div class="hero-flag" aria-label="Ghana flag">
+      <div class="f-red"></div><div class="f-gold"></div><div class="f-green"></div>
+    </div>
+    <p class="hero-eyebrow">Ghana's #1 Local Directory</p>
+    <h1 class="hero-title">Find <em>Trusted</em><br>Businesses Near You</h1>
+    <p class="hero-sub">Restaurants · Hospitals · Hotels · Salons &amp; more — verified &amp; reviewed across every city.</p>
+
+    <div class="search-box">
+      <div class="search-icon">🔍</div>
+      <div class="autocomplete-wrap">
+        <input
+          type="text"
+          id="searchInput"
+          autocomplete="off"
+          placeholder="Search businesses, services, cities…"
+          oninput="doSearch(this.value); showAC(this.value)"
+          onfocus="showAC(this.value); showSearchHistory()"
+          onblur="setTimeout(()=>{hideAC();hideSearchHistory();},200)"
+          onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}"
+        >
+        <div class="autocomplete-list" id="acList"></div>
+      </div>
+      <!-- ② VOICE SEARCH -->
+      <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()" title="Voice search" aria-label="Voice search">🎙️</button>
+      <button class="search-near" onclick="findNearMe()" title="Near me">📍</button>
+      <button class="search-go" onclick="commitSearch()">Search</button>
+    </div>
+
+    <!-- ③ SEARCH HISTORY (shown on focus, hidden initially) -->
+    <div class="search-history-wrap" id="searchHistoryWrap">
+      <div class="sh-label">Recent Searches <button class="sh-clear" onclick="clearSearchHistory()">Clear all</button></div>
+      <div class="sh-chips" id="searchHistoryChips"></div>
+    </div>
+
+    <div class="hero-quick-links">
+      <a href="jobs.html" class="hql">💼 Jobs</a>
+      <a href="room.html" class="hql">🏠 Rooms</a>
+      <a href="buy.html" class="hql">🛍️ Buy &amp; Sell</a>
+      <a href="submit.html" class="hql hql-accent">＋ List Free</a>
+    </div>
+  </div>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-pill">
+      <span class="stat-num" id="statTotal">—</span>
+      <span class="stat-lbl">Businesses</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill">
+      <span class="stat-num" id="statDeals">—</span>
+      <span class="stat-lbl">Live Deals</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill">
+      <span class="stat-num" id="statCities">—</span>
+      <span class="stat-lbl">Cities</span>
+    </div>
+  </div>
+</section>
+
+<!-- ④ TRENDING SEARCHES -->
+<div class="trending-wrap" id="trendingWrap">
+  <div class="section-hd" style="margin-bottom:10px;">
+    <div class="section-title" style="font-size:13px;">🔥 Trending Searches</div>
+  </div>
+  <div class="trending-chips" id="trendingChips"></div>
 </div>
 
-<!-- CITY SELECTOR -->
+<!-- ═══ NEAR ME BANNER ═══ -->
+<div class="near-banner" id="nearMeBanner" style="display:none;">
+  <div class="near-banner-inner">
+    <span class="near-ico">📍</span>
+    <div>
+      <div class="near-title">Businesses Near You</div>
+      <div class="near-sub" id="nearMeSubtitle">Showing closest results</div>
+    </div>
+  </div>
+  <button class="near-clear" onclick="clearNearMe()">✕ Clear</button>
+</div>
 
-<!-- ONBOARDING BANNER (first visit only) -->
-<div id="onboardBanner" style="display:none;margin:12px 14px;background:linear-gradient(135deg,#1A6B3C,#0d4a26);border-radius:16px;padding:16px;position:relative;">
-  <button onclick="dismissOnboard()" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.15);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:12px;">✕</button>
-  <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">👋 Welcome to CityLinkGH!</div>
-  <div style="font-size:12px;color:rgba(255,255,255,.8);margin-bottom:12px;line-height:1.5;">Ghana's #1 directory for local businesses, jobs and housing. Browse by city or category below.</div>
-  <div style="display:flex;gap:7px;">
-    <a href="submit.html" style="flex:1;background:var(--gold);color:var(--ink);padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">＋ List Business</a>
-    <a href="jobs.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">💼 Find Jobs</a>
-    <a href="room.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🏠 Rooms</a>
-    <a href="buy.html" style="flex:1;background:rgba(255,255,255,.12);color:#fff;padding:9px;border-radius:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;text-decoration:none;text-align:center;">🛍️ Buy and Sell</a>
+<!-- ═══ FLASH DEALS ═══ -->
+<div class="section-block" id="dealsSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title">
+      <span class="section-dot red"></span>
+      🔥 Flash Deals
+    </div>
+    <button class="section-action" onclick="filterSort('featured',document.querySelector('.chip[onclick*=\'featured\']'))">See all</button>
+  </div>
+  <div class="deals-track" id="dealsScroll"></div>
+</div>
+
+<!-- ═══ BUSINESS OF THE WEEK ═══ -->
+<div id="botwWrap" style="display:none;"></div>
+
+<!-- ═══ RECENTLY VIEWED ═══ -->
+<div class="section-block" id="recentlySection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot blue"></span>Recently Viewed</div>
+    <button class="section-action" onclick="clearRecent()">Clear</button>
+  </div>
+  <div class="rv-track" id="recentlyScroll"></div>
+</div>
+
+<!-- ⑤ NEW THIS WEEK -->
+<div class="section-block" id="newThisWeekSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot green"></span>🆕 New This Week</div>
+    <button class="section-action" onclick="filterSort('new',document.querySelector('.chip[onclick*=\'new\']'))">See all →</button>
+  </div>
+  <div class="new-track" id="newThisWeekScroll"></div>
+</div>
+
+<!-- ═══ ONBOARDING ═══ -->
+<div id="onboardBanner" class="onboard-card" style="display:none;">
+  <button onclick="dismissOnboard()" class="onboard-close">✕</button>
+  <div class="onboard-emoji">👋</div>
+  <div class="onboard-title">Welcome to CityLinkGH!</div>
+  <div class="onboard-body">Ghana's #1 directory for local businesses, jobs and housing. Explore below or list your business for free.</div>
+  <div class="onboard-actions">
+    <a href="submit.html" class="ob-btn ob-gold">＋ List Business</a>
+    <a href="jobs.html" class="ob-btn ob-ghost">💼 Jobs</a>
+    <a href="room.html" class="ob-btn ob-ghost">🏠 Rooms</a>
+    <a href="buy.html" class="ob-btn ob-ghost">🛍️ Buy &amp; Sell</a>
   </div>
 </div>
-<div class="city-section">
-  <div class="city-hd">
-    <div class="city-title">Browse by City</div>
-    <span class="city-clear" id="cityClear" onclick="clearCity()">✕ Clear</span>
+
+<!-- ═══ CATEGORIES ═══ -->
+<div class="section-block">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot gold"></span>Categories</div>
+    <button class="section-action" onclick="filterCat('all',null)">All →</button>
+  </div>
+  <div class="cat-track">
+    <button class="cat-pill active" onclick="filterCat('all',this)" data-cat="all"><span>🏙️</span>All</button>
+    <button class="cat-pill" onclick="filterCat('Restaurant',this)" data-cat="Restaurant"><span>🍽️</span>Food</button>
+    <button class="cat-pill" onclick="filterCat('Hospital',this)" data-cat="Hospital"><span>🏥</span>Health</button>
+    <button class="cat-pill" onclick="filterCat('Hotel',this)" data-cat="Hotel"><span>🏨</span>Hotels</button>
+    <button class="cat-pill" onclick="filterCat('Salon',this)" data-cat="Salon"><span>💇</span>Salons</button>
+    <button class="cat-pill" onclick="filterCat('Pharmacy',this)" data-cat="Pharmacy"><span>💊</span>Pharma</button>
+    <button class="cat-pill" onclick="filterCat('School',this)" data-cat="School"><span>🎓</span>Schools</button>
+    <button class="cat-pill" onclick="filterCat('Mechanic',this)" data-cat="Mechanic"><span>🔧</span>Auto</button>
+    <button class="cat-pill" onclick="filterCat('Church',this)" data-cat="Church"><span>⛪</span>Church</button>
+    <button class="cat-pill" onclick="filterCat('Lawyer',this)" data-cat="Lawyer"><span>⚖️</span>Legal</button>
+    <button class="cat-pill" onclick="filterCat('Event Planner',this)" data-cat="Event Planner"><span>🎉</span>Events</button>
+    <button class="cat-pill" onclick="filterCat('Supermarket',this)" data-cat="Supermarket"><span>🛒</span>Shops</button>
+  </div>
+</div>
+
+<!-- ═══ CITY SELECTOR ═══ -->
+<div class="section-block">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot green"></span>Browse by City</div>
+    <button class="section-action city-clear-btn" id="cityClear" onclick="clearCity()" style="display:none;">✕ Clear</button>
   </div>
   <div class="city-grid" id="cityGrid">
-    <div class="city-card" data-city="Accra" onclick="pickCity(this)"><div class="city-name">Accra</div><div class="city-count" id="cc-Accra">—</div></div>
-    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)"><div class="city-name">Kumasi</div><div class="city-count" id="cc-Kumasi">—</div></div>
-    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)"><div class="city-name">Takoradi</div><div class="city-count" id="cc-Takoradi">—</div></div>
-    <div class="city-card" data-city="Tamale" onclick="pickCity(this)"><div class="city-name">Tamale</div><div class="city-count" id="cc-Tamale">—</div></div>
-    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)"><div class="city-name">Cape Coast</div><div class="city-count" id="cc-Cape-Coast">—</div></div>
-    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)"><div class="city-name">Sunyani</div><div class="city-count" id="cc-Sunyani">—</div></div>
-    <div class="city-card" data-city="Ho" onclick="pickCity(this)"><div class="city-name">Ho</div><div class="city-count" id="cc-Ho">—</div></div>
-    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)"><div class="city-name">Koforidua</div><div class="city-count" id="cc-Koforidua">—</div></div>
-    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)"><div class="city-name">Bolgatanga</div><div class="city-count" id="cc-Bolgatanga">—</div></div>
+    <div class="city-card" data-city="Accra" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Accra</div>
+      <div class="city-count" id="cc-Accra">—</div>
+    </div>
+    <div class="city-card" data-city="Kumasi" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Kumasi</div>
+      <div class="city-count" id="cc-Kumasi">—</div>
+    </div>
+    <div class="city-card" data-city="Takoradi" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Takoradi</div>
+      <div class="city-count" id="cc-Takoradi">—</div>
+    </div>
+    <div class="city-card" data-city="Tamale" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Tamale</div>
+      <div class="city-count" id="cc-Tamale">—</div>
+    </div>
+    <div class="city-card" data-city="Cape Coast" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Cape Coast</div>
+      <div class="city-count" id="cc-Cape-Coast">—</div>
+    </div>
+    <div class="city-card" data-city="Sunyani" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Sunyani</div>
+      <div class="city-count" id="cc-Sunyani">—</div>
+    </div>
+    <div class="city-card" data-city="Ho" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Ho</div>
+      <div class="city-count" id="cc-Ho">—</div>
+    </div>
+    <div class="city-card" data-city="Koforidua" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Koforidua</div>
+      <div class="city-count" id="cc-Koforidua">—</div>
+    </div>
+    <div class="city-card" data-city="Bolgatanga" onclick="pickCity(this)">
+      <div class="city-pin">📍</div>
+      <div class="city-name">Bolgatanga</div>
+      <div class="city-count" id="cc-Bolgatanga">—</div>
+    </div>
   </div>
 </div>
 
-<!-- VIEW TOGGLE -->
-<div class="view-toggle">
-  <button class="vt active" id="btnList" onclick="switchView('list')">☰ List</button>
-  <button class="vt" id="btnMap" onclick="switchView('map')">🗺️ Map</button>
-</div>
-
-<!-- CATEGORIES -->
-<div class="sp">
-  <div class="sec-hd"><h2>Categories</h2><span class="see-all" onclick="filterCat('all',null)">All →</span></div>
-  <div class="cat-grid">
-    <div class="cat-tile active" onclick="filterCat('all',this)"><div class="ce">🏙️</div><div class="cn">All</div></div>
-    <div class="cat-tile" onclick="filterCat('Restaurant',this)"><div class="ce">🍽️</div><div class="cn">Food</div></div>
-    <div class="cat-tile" onclick="filterCat('Hospital',this)"><div class="ce">🏥</div><div class="cn">Health</div></div>
-    <div class="cat-tile" onclick="filterCat('Hotel',this)"><div class="ce">🏨</div><div class="cn">Hotels</div></div>
-    <div class="cat-tile" onclick="filterCat('Salon',this)"><div class="ce">💇</div><div class="cn">Salons</div></div>
-    <div class="cat-tile" onclick="filterCat('Pharmacy',this)"><div class="ce">💊</div><div class="cn">Pharma</div></div>
-    <div class="cat-tile" onclick="filterCat('School',this)"><div class="ce">🎓</div><div class="cn">Schools</div></div>
-    <div class="cat-tile" onclick="filterCat('Mechanic',this)"><div class="ce">🔧</div><div class="cn">Mechanics</div></div>
-    <div class="cat-tile" onclick="filterCat('Church',this)"><div class="ce">⛪</div><div class="cn">Churches</div></div>
-    <div class="cat-tile" onclick="filterCat('Lawyer',this)"><div class="ce">⚖️</div><div class="cn">Lawyers</div></div>
-    <div class="cat-tile" onclick="filterCat('Event Planner',this)"><div class="ce">🎉</div><div class="cn">Events</div></div>
-    <div class="cat-tile" onclick="filterCat('Supermarket',this)"><div class="ce">🛒</div><div class="cn">Shops</div></div>
+<!-- ═══ SPONSORED ═══ -->
+<div class="section-block" id="sponsoredSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title sponsored-label">Sponsored</div>
   </div>
+  <div class="spon-track" id="sponsoredScroll"></div>
 </div>
 
-<!-- FILTER CHIPS -->
-<div class="fbar">
-  <div class="chip active" onclick="filterSort('all',this)">⭐ All</div>
-  <div class="chip" onclick="filterSort('premium',this)">👑 Premium</div>
-  <div class="chip" onclick="filterSort('featured',this)">🌟 Featured</div>
-  <div class="chip" onclick="filterSort('verified',this)">✅ Verified</div>
-  <div class="chip" onclick="filterSort('open',this)">🟢 Open Now</div>
-  <div class="chip" onclick="filterSort('top',this)">🏆 Top Rated</div>
-  <div class="chip" onclick="filterSort('near',this)">📍 Nearest</div>
-  <div class="chip" onclick="filterSort('new',this)">🆕 Newest</div>
+<!-- ═══ PREMIUM SPOTLIGHT ═══ -->
+<div class="section-block" id="premiumSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot purple"></span>👑 Premium Businesses</div>
+  </div>
+  <div class="premium-track" id="premiumScroll"></div>
 </div>
 
-<!-- ACTIVE FILTERS -->
-<div class="active-filters" id="activeFilters"></div>
-
-<!-- SPONSORED -->
-<div class="sponsored-section" id="sponsoredSection" style="display:none;">
-  <div class="sponsored-label">Sponsored</div>
-  <div class="sponsored-scroll" id="sponsoredScroll"></div>
+<!-- ═══ GROW BANNER ═══ -->
+<div class="grow-banner">
+  <div class="grow-text">
+    <div class="grow-title">Grow Your Business 🚀</div>
+    <div class="grow-sub">Reach thousands of Ghanaians daily — list for free.</div>
+  </div>
+  <a href="submit.html" class="grow-btn">List Now →</a>
 </div>
 
-<!-- PREMIUM SPOTLIGHT -->
-<div class="premium-section" id="premiumSection" style="display:none;">
-  <div class="premium-hd"><span>👑</span><div class="premium-hd-t">Premium Businesses</div></div>
-  <div class="pscroll" id="premiumScroll"></div>
-</div>
+<!-- ═══ LIST / MAP VIEW ═══ -->
+<div class="listings-header">
+  <div class="section-hd" style="margin-bottom:0;">
+    <div class="section-title"><span class="section-dot green"></span><span id="listTitle">All Businesses</span></div>
+    <span class="result-count" id="resultCount"></span>
+  </div>
 
-<div class="feat-banner">
-  <div><h3>Grow Your Business</h3><p>Reach thousands of Ghanaians daily.</p></div>
-  <a href="submit.html" class="fbb">List Now →</a>
+  <!-- FILTER CHIPS -->
+  <div class="fbar">
+    <div class="chip active" onclick="filterSort('all',this)">All</div>
+    <div class="chip" onclick="filterSort('premium',this)">👑 Premium</div>
+    <div class="chip" onclick="filterSort('featured',this)">⭐ Featured</div>
+    <div class="chip" onclick="filterSort('verified',this)">✅ Verified</div>
+    <!-- ⑥ OPEN NOW with live count -->
+    <div class="chip" id="openNowChip" onclick="filterSort('open',this)">🟢 Open Now</div>
+    <div class="chip" onclick="filterSort('top',this)">🏆 Top Rated</div>
+    <div class="chip" onclick="filterSort('near',this)">📍 Nearest</div>
+    <div class="chip" onclick="filterSort('new',this)">🆕 Newest</div>
+    <!-- ⑦ SAVED filter -->
+    <div class="chip" onclick="filterSort('saved',this)">🔖 Saved</div>
+  </div>
+
+  <!-- ACTIVE FILTERS -->
+  <div class="active-filters" id="activeFilters"></div>
+
+  <!-- VIEW TOGGLE -->
+  <div class="view-toggle">
+    <button class="vt active" id="btnList" onclick="switchView('list')">☰ List</button>
+    <button class="vt" id="btnMap" onclick="switchView('map')">🗺️ Map</button>
+  </div>
 </div>
 
 <!-- LIST VIEW -->
 <div id="listView">
-  <div class="sp" style="padding-bottom:5px;">
-    <div class="sec-hd"><h2 id="listTitle">All Businesses</h2><span class="see-all" id="resultCount"></span></div>
-  </div>
   <div class="biz-grid" id="bizGrid">
-    <div class="skel-card"><div class="skeleton" style="width:85px;flex-shrink:0;"></div><div style="flex:1;padding:11px;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:65%;"></div><div class="skeleton" style="height:11px;width:40%;"></div><div class="skeleton" style="height:11px;width:55%;"></div><div style="display:flex;gap:5px;margin-top:auto;"><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div></div></div></div>
-    <div class="skel-card"><div class="skeleton" style="width:85px;flex-shrink:0;"></div><div style="flex:1;padding:11px;display:flex;flex-direction:column;gap:6px;"><div class="skeleton" style="height:12px;width:70%;"></div><div class="skeleton" style="height:11px;width:35%;"></div><div class="skeleton" style="height:11px;width:50%;"></div><div style="display:flex;gap:5px;margin-top:auto;"><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div><div class="skeleton" style="height:26px;flex:1;border-radius:7px;"></div></div></div></div>
+    <!-- Skeletons -->
+    <div class="skel-card">
+      <div class="skel-img skeleton"></div>
+      <div class="skel-body">
+        <div class="skeleton" style="height:14px;width:70%;margin-bottom:8px;border-radius:6px;"></div>
+        <div class="skeleton" style="height:11px;width:40%;margin-bottom:6px;border-radius:6px;"></div>
+        <div class="skeleton" style="height:11px;width:55%;margin-bottom:14px;border-radius:6px;"></div>
+        <div style="display:flex;gap:6px;">
+          <div class="skeleton" style="height:30px;flex:1;border-radius:8px;"></div>
+          <div class="skeleton" style="height:30px;flex:1;border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-img skeleton"></div>
+      <div class="skel-body">
+        <div class="skeleton" style="height:14px;width:60%;margin-bottom:8px;border-radius:6px;"></div>
+        <div class="skeleton" style="height:11px;width:35%;margin-bottom:6px;border-radius:6px;"></div>
+        <div class="skeleton" style="height:11px;width:50%;margin-bottom:14px;border-radius:6px;"></div>
+        <div style="display:flex;gap:6px;">
+          <div class="skeleton" style="height:30px;flex:1;border-radius:8px;"></div>
+          <div class="skeleton" style="height:30px;flex:1;border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-img skeleton"></div>
+      <div class="skel-body">
+        <div class="skeleton" style="height:14px;width:75%;margin-bottom:8px;border-radius:6px;"></div>
+        <div class="skeleton" style="height:11px;width:45%;margin-bottom:6px;border-radius:6px;"></div>
+        <div class="skeleton" style="height:11px;width:60%;margin-bottom:14px;border-radius:6px;"></div>
+        <div style="display:flex;gap:6px;">
+          <div class="skeleton" style="height:30px;flex:1;border-radius:8px;"></div>
+          <div class="skeleton" style="height:30px;flex:1;border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ⑧ INFINITE SCROLL SENTINEL (replaces Load More button) -->
+  <div class="scroll-sentinel" id="scrollSentinel">
+    <div class="spinner"></div>
   </div>
 </div>
 
 <!-- MAP VIEW -->
-<div id="mapView">
+<div id="mapView" style="display:none;">
   <div id="map"></div>
   <div class="map-sidebar">
-    <div class="sec-hd" style="margin-bottom:7px;"><h2>On Map</h2><span class="see-all" id="mapCount"></span></div>
+    <div class="section-hd" style="margin-bottom:8px;padding:0 16px;">
+      <div class="section-title">On Map</div>
+      <span class="result-count" id="mapCount"></span>
+    </div>
     <div id="mapListEl"></div>
   </div>
 </div>
 
-<div class="spacer"></div>
-<div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
-  <button class="load-more-btn" onclick="loadMore()">Load More →</button>
-</div>
+<div class="page-spacer"></div>
 
-
-
-<!-- FOOTER -->
+<!-- ═══ FOOTER ═══ -->
 <footer class="footer">
-  <div class="footer-container">
-    <div class="footer-box">
-      <div class="footer-logo">💼 CityLink<span>GH</span></div>
-     <h5>Find <em>Jobs</em> in Ghana</h5>
-  <p>Full time, part time, remote, internships & attachments across all cities.</p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">CityLink<span>GH</span></div>
+      <p>Ghana's most trusted local business directory. Find verified businesses, jobs and housing across every city.</p>
     </div>
-    <div class="footer-box">
-      <h3>Directory</h3>
+    <div class="footer-col">
+      <h4>Directory</h4>
       <ul>
         <li><a href="home.html">Browse Businesses</a></li>
         <li><a href="room.html">Rooms for Rent</a></li>
-        <li><a href="jobs.html">Jobs for listing</a></li>
+        <li><a href="jobs.html">Job Listings</a></li>
         <li><a href="buy.html">Buy &amp; Sell</a></li>
       </ul>
     </div>
-    <div class="footer-box">
-      <h3>List With Us</h3>
+    <div class="footer-col">
+      <h4>List With Us</h4>
       <ul>
         <li><a href="submit.html">List a Business</a></li>
         <li><a href="jobs.html">Post a Job</a></li>
-        <li><a href="room.html">Post a Room</a><li>
-        <li> <a href="buy.html">Sell Something</a><li>
+        <li><a href="room.html">Post a Room</a></li>
+        <li><a href="buy.html">Sell Something</a></li>
       </ul>
     </div>
-
-    <div class="footer-box">
-      <h3>Company</h3>
-    <ul>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="terms.html">Terms</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
-    </ul>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
+    <span>© 2026 CityLinkGH · All Rights Reserved</span>
+    <div class="footer-flag" aria-label="Ghana flag">🇬🇭</div>
   </div>
 </footer>
 
-<!-- BOTTOM NAV -->
+<!-- ═══ BOTTOM NAV ═══ -->
 <nav class="bottom-nav">
-  <a href="index.html"><span>🏪</span><span>Home</span></a>
-  <a href="jobs.html"><span>💼</span><span>Jobs</span></a>
-  <a href="room.html"><span>🏠</span><span>Rooms</span></a>
-  <a href="buy.html" class="active"><span>🛍️</span><span>Buy&Sell</span></a>
-  <a href="profile.html"><span>👤</span><span>Profile</span></a>
+  <a href="home.html" class="bn-item active">
+    <span class="bn-ico">🏪</span>
+    <span class="bn-lbl">Home</span>
+  </a>
+  <a href="jobs.html" class="bn-item">
+    <span class="bn-ico">💼</span>
+    <span class="bn-lbl">Jobs</span>
+  </a>
+  <a href="submit.html" class="bn-item bn-center">
+    <span class="bn-plus">＋</span>
+  </a>
+  <a href="room.html" class="bn-item">
+    <span class="bn-ico">🏠</span>
+    <span class="bn-lbl">Rooms</span>
+  </a>
+  <a href="profile.html" class="bn-item" id="profileNavItem" style="position:relative;">
+    <span class="bn-ico">👤</span>
+    <span class="bn-lbl">Profile</span>
+    <span class="saved-count-badge" id="savedNavBadge" style="display:none;"></span>
+  </a>
 </nav>
 
+<!-- ⑨ BACK TO TOP BUTTON -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- ═══ INSTALL BANNER ═══ -->
+<div class="install-banner" id="installBanner">
+  <div class="install-left">
+    <span style="font-size:28px;">📲</span>
+    <div>
+      <div class="install-title">Add CityLinkGH to Home Screen</div>
+      <div class="install-sub">Quick access · Works offline</div>
+    </div>
+  </div>
+  <div class="install-actions">
+    <button class="ibtn-yes" onclick="doInstall()">Install</button>
+    <button class="ibtn-no" onclick="dismissInstall()">Later</button>
+  </div>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxVDEPMpSOEH4S-hYjx2ROXBlwd06f4O4&callback=Function.prototype" async defer></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
@@ -306,18 +828,192 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 const auth = getAuth(app);
-const ADMIN_EMAIL = "agyemangernest650@gmail.com"; // ← replace with your email
 let currentUser = null;
 onAuthStateChanged(auth, u => { currentUser = u; });
 
 const PLAN_ORDER = {premium:0,featured:1,standard:2,basic:3};
-const catEmoji   = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
+const catEmoji = c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
 
 let allBiz=[], activeCat='all', activeSort='all', activeCity='', searchQ='';
 let userLat=null, userLng=null, nearMode=false;
 let map, markers=[], infoWin;
 
+// ══════════════════════════════════════
+// ① GREETING + TIME OF DAY
+// ══════════════════════════════════════
+(function initGreeting(){
+  const h = new Date().getHours();
+  let emoji='☀️', msg='Good morning';
+  if(h >= 12 && h < 17){ emoji='🌤️'; msg='Good afternoon'; }
+  else if(h >= 17 && h < 21){ emoji='🌇'; msg='Good evening'; }
+  else if(h >= 21 || h < 5){ emoji='🌙'; msg='Good night'; }
+  document.getElementById('greetEmoji').textContent = emoji;
+  document.getElementById('greetMsg').innerHTML = `<strong>${msg}</strong> — explore Ghana's best businesses`;
+})();
+
+// ══════════════════════════════════════
+// LIVE VIEWER SIMULATION
+// ══════════════════════════════════════
+(function initLiveViewers(){
+  // Simulate a realistic live count using time-seeded randomness
+  const seed = Math.floor(Date.now() / 30000); // changes every 30s
+  let base = 18 + (seed % 47);
+  document.getElementById('liveCount').textContent = base;
+  setInterval(()=>{
+    const delta = Math.floor(Math.random()*5) - 2;
+    base = Math.max(8, Math.min(base + delta, 120));
+    const el = document.getElementById('liveCount');
+    if(el) el.textContent = base;
+  }, 12000);
+})();
+
+// ══════════════════════════════════════
+// ② VOICE SEARCH
+// ══════════════════════════════════════
+let voiceRecognition = null;
+window.startVoiceSearch = () => {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ showToast('⚠️ Voice search not supported on this browser'); return; }
+  if(!voiceRecognition){
+    voiceRecognition = new SpeechRecognition();
+    voiceRecognition.lang = 'en-GH';
+    voiceRecognition.continuous = false;
+    voiceRecognition.interimResults = false;
+    voiceRecognition.onresult = e => {
+      const transcript = e.results[0][0].transcript;
+      const input = document.getElementById('searchInput');
+      input.value = transcript;
+      doSearch(transcript);
+      saveSearchHistory(transcript);
+      showToast(`🎙️ "${transcript}"`);
+    };
+    voiceRecognition.onend = () => {
+      document.getElementById('voiceBtn').classList.remove('listening');
+      document.getElementById('voiceBtn').textContent = '🎙️';
+    };
+    voiceRecognition.onerror = () => {
+      showToast('❌ Could not hear you. Try again.');
+      document.getElementById('voiceBtn').classList.remove('listening');
+      document.getElementById('voiceBtn').textContent = '🎙️';
+    };
+  }
+  const btn = document.getElementById('voiceBtn');
+  btn.classList.add('listening');
+  btn.textContent = '⏹️';
+  voiceRecognition.start();
+  showToast('🎙️ Listening…');
+};
+
+// ══════════════════════════════════════
+// ③ SEARCH HISTORY
+// ══════════════════════════════════════
+function getSearchHistory(){ try{ return JSON.parse(localStorage.getItem('clSearchHist')||'[]'); }catch{ return []; } }
+function saveSearchHistory(q){
+  if(!q || q.length < 2) return;
+  let hist = getSearchHistory().filter(h=>h.toLowerCase()!==q.toLowerCase());
+  hist.unshift(q);
+  hist = hist.slice(0,5);
+  localStorage.setItem('clSearchHist', JSON.stringify(hist));
+}
+window.clearSearchHistory = () => {
+  localStorage.removeItem('clSearchHist');
+  document.getElementById('searchHistoryWrap').classList.remove('visible');
+};
+window.showSearchHistory = () => {
+  const hist = getSearchHistory();
+  const wrap = document.getElementById('searchHistoryWrap');
+  const chips = document.getElementById('searchHistoryChips');
+  if(!hist.length){ wrap.classList.remove('visible'); return; }
+  chips.innerHTML = hist.map(h=>`
+    <div class="sh-chip" onclick="applySearchHistory('${esc(h)}')">
+      <span>🕐</span>${esc(h)}
+    </div>`).join('');
+  wrap.classList.add('visible');
+};
+window.hideSearchHistory = () => {
+  document.getElementById('searchHistoryWrap').classList.remove('visible');
+};
+window.applySearchHistory = q => {
+  document.getElementById('searchInput').value = q;
+  searchQ = q;
+  applyFilters();
+  hideSearchHistory();
+};
+window.commitSearch = () => {
+  const q = document.getElementById('searchInput').value;
+  saveSearchHistory(q);
+  doSearch(q);
+};
+
+// ══════════════════════════════════════
+// ④ TRENDING SEARCHES
+// ══════════════════════════════════════
+const TRENDING = [
+  { q:'Restaurant', ico:'🍽️', count:'2.3k' },
+  { q:'Hospital near me', ico:'🏥', count:'1.8k' },
+  { q:'Hotel Accra', ico:'🏨', count:'1.2k' },
+  { q:'Mechanic Kumasi', ico:'🔧', count:'980' },
+  { q:'Pharmacy', ico:'💊', count:'870' },
+  { q:'Lawyer', ico:'⚖️', count:'650' },
+  { q:'Event Planner', ico:'🎉', count:'540' },
+  { q:'Salon Takoradi', ico:'💇', count:'430' },
+];
+(function renderTrending(){
+  const chips = document.getElementById('trendingChips');
+  chips.innerHTML = TRENDING.map(t=>`
+    <div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">
+      <span class="trend-ico">${t.ico}</span>
+      ${esc(t.q)}
+      <span class="trend-num">${t.count}</span>
+    </div>`).join('');
+})();
+window.applyTrend = q => {
+  document.getElementById('searchInput').value = q;
+  searchQ = q;
+  saveSearchHistory(q);
+  applyFilters();
+  showToast(`🔍 Showing results for "${q}"`);
+  document.getElementById('bizGrid').scrollIntoView({behavior:'smooth', block:'start'});
+};
+
+// ══════════════════════════════════════
+// ⑦ BOOKMARKS / SAVED BUSINESSES
+// ══════════════════════════════════════
+function getSaved(){ try{ return JSON.parse(localStorage.getItem('clSaved')||'[]'); }catch{ return []; } }
+function isSaved(id){ return getSaved().includes(id); }
+window.toggleSave = (e, id) => {
+  e.preventDefault(); e.stopPropagation();
+  let saved = getSaved();
+  const btn = document.querySelector(`.bm-btn[data-id="${id}"]`);
+  if(saved.includes(id)){
+    saved = saved.filter(s=>s!==id);
+    if(btn){ btn.textContent='🔖'; btn.classList.remove('saved'); btn.title='Save'; }
+    showToast('Removed from saved');
+  } else {
+    saved.push(id);
+    if(btn){ btn.textContent='🏷️'; btn.classList.add('saved'); btn.title='Saved!'; }
+    showToast('✅ Saved!');
+  }
+  localStorage.setItem('clSaved', JSON.stringify(saved));
+  updateSavedBadge();
+};
+function updateSavedBadge(){
+  const count = getSaved().length;
+  const badge = document.getElementById('savedNavBadge');
+  const drawerCount = document.getElementById('drawerSavedCount');
+  if(badge){
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  if(drawerCount){
+    drawerCount.textContent = count;
+    drawerCount.style.display = count > 0 ? 'inline-flex' : 'none';
+  }
+}
+
+// ══════════════════════════════════════
 // ── DARK MODE ──
+// ══════════════════════════════════════
 window.toggleDark = () => {
   const html = document.documentElement;
   const isDark = html.getAttribute('data-theme')==='dark';
@@ -325,9 +1021,8 @@ window.toggleDark = () => {
   document.getElementById('darkBtn').textContent = isDark?'🌙':'☀️';
   localStorage.setItem('clTheme', isDark?'light':'dark');
 };
-// Restore theme
 const saved = localStorage.getItem('clTheme');
-if(saved) { document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
+if(saved){ document.documentElement.setAttribute('data-theme',saved); document.getElementById('darkBtn').textContent=saved==='dark'?'☀️':'🌙'; }
 
 // ── RECENTLY VIEWED ──
 function getRecent(){ try{return JSON.parse(localStorage.getItem('ghRecent')||'[]');}catch{return[];} }
@@ -346,9 +1041,42 @@ function renderRecent(){
   sec.style.display='block';
   document.getElementById('recentlyScroll').innerHTML=list.map(b=>`
     <a class="rv-card" href="business.html?id=${b.id}">
-      <div class="rv-thumb">${b.imageUrl?`<img src="${esc(b.imageUrl)}" alt="">`:`${catEmoji(b.category)}`}</div>
-      <div class="rv-body"><div class="rv-name">${esc(b.name)}</div><div class="rv-cat">${esc(b.category)}</div></div>
+      <div class="rv-thumb">${b.imageUrl?`<img src="${esc(b.imageUrl)}" alt="" loading="lazy">`:`<span>${catEmoji(b.category)}</span>`}</div>
+      <div class="rv-info"><div class="rv-name">${esc(b.name)}</div><div class="rv-cat">${esc(b.category)}</div></div>
     </a>`).join('');
+}
+
+// ══════════════════════════════════════
+// ⑤ NEW THIS WEEK
+// ══════════════════════════════════════
+function renderNewThisWeek(){
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7*24*60*60*1000);
+  const fresh = allBiz.filter(b=>{
+    const created = b.createdAt?.toDate?.()||new Date(b.createdAt||0);
+    return created >= weekAgo;
+  }).sort((a,b)=>{
+    const da = a.createdAt?.toDate?.()||new Date(a.createdAt||0);
+    const db2 = b.createdAt?.toDate?.()||new Date(b.createdAt||0);
+    return db2 - da;
+  }).slice(0,10);
+  const sec = document.getElementById('newThisWeekSection');
+  if(!fresh.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  document.getElementById('newThisWeekScroll').innerHTML = fresh.map(b=>{
+    const img = b.imageUrl||(b.images?.[0])||'';
+    return `<a class="new-card" href="business.html?id=${b.id}">
+      <div class="new-img">
+        ${img?`<img src="${esc(img)}" alt="" loading="lazy">`:`<span>${catEmoji(b.category)}</span>`}
+        <div class="new-badge">NEW</div>
+      </div>
+      <div class="new-info">
+        <div class="new-name">${esc(b.name)}</div>
+        <div class="new-cat">${catEmoji(b.category)} ${esc(b.category)}</div>
+        <div class="new-city">📍 ${esc(b.city||'Ghana')}</div>
+      </div>
+    </a>`;
+  }).join('');
 }
 
 // ── NEAR ME ──
@@ -356,19 +1084,16 @@ window.findNearMe = () => {
   if(!navigator.geolocation){showToast('⚠️ Location not available on this device');return;}
   showToast('📍 Detecting your location…');
   navigator.geolocation.getCurrentPosition(pos=>{
-    userLat=pos.coords.latitude;
-    userLng=pos.coords.longitude;
-    nearMode=true;
-    activeSort='near';
+    userLat=pos.coords.latitude;userLng=pos.coords.longitude;
+    nearMode=true;activeSort='near';
     document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
     document.querySelector('.chip[onclick*="near"]').classList.add('active');
     document.getElementById('nearMeBanner').style.display='flex';
-    document.getElementById('nearMeSubtitle').textContent=`Showing businesses nearest to you`;
+    document.getElementById('nearMeSubtitle').textContent='Showing businesses nearest to you';
     applyFilters();
     showToast('✅ Showing businesses near you!');
-  },()=>showToast('❌ Could not detect location. Please allow location access.'));
+  },()=>showToast('❌ Could not detect location. Please allow access.'));
 };
-
 window.clearNearMe=()=>{
   nearMode=false;userLat=null;userLng=null;activeSort='all';
   document.getElementById('nearMeBanner').style.display='none';
@@ -376,97 +1101,119 @@ window.clearNearMe=()=>{
   document.querySelector('.chip[onclick*=\'"all"\']').classList.add('active');
   applyFilters();
 };
-
 function calcDist(lat1,lng1,lat2,lng2){
-  const R=6371, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
+  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
   const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
   return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
+function fmtDist(km){return km<1?`${Math.round(km*1000)}m away`:`${km.toFixed(1)}km away`;}
 
-function fmtDist(km){ return km<1?`${Math.round(km*1000)}m away`:`${km.toFixed(1)}km away`; }
+// ── TIME AGO ──
+function fmtAgo(date){
+  if(!date)return '';
+  const d=date instanceof Date?date:new Date(date);
+  if(isNaN(d))return '';
+  const sec=Math.floor((Date.now()-d.getTime())/1000);
+  if(sec<60)return 'Just now';
+  if(sec<3600)return `${Math.floor(sec/60)}m ago`;
+  if(sec<86400)return `${Math.floor(sec/3600)}h ago`;
+  if(sec<2592000)return `${Math.floor(sec/86400)}d ago`;
+  if(sec<31536000)return `${Math.floor(sec/2592000)}mo ago`;
+  return `${Math.floor(sec/31536000)}y ago`;
+}
+
+// ── RENDER CARD (with bookmark button) ──
+function renderCard(b){
+  const plan=b.plan||'basic';
+  const openS=isOpen(b.openTime,b.closeTime);
+  const imgUrl=b.imageUrl||(b.images?.[0])||'';
+  const rawWa=(b.whatsapp||b.phone||'').replace(/\D/g,'');
+  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+  const tags=(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,2).map(t=>`<span class="biz-tag">${esc(t)}</span>`).join('');
+  const dist=userLat&&b.lat&&b.lng?`<span class="dist-chip">📍 ${fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng)))}</span>`:'';
+  const dealHtml=b.deal?.active&&new Date(b.deal.expiresAt)>new Date()?`<div class="card-deal">🔥 ${esc(b.deal.discount)}</div>`:'';
+  const planClass=plan!=='basic'?`card-${plan}`:'';
+  const openBadge=openS!==null?`<div class="open-badge ${openS?'open':'closed'}">${openS?'● Open':'● Closed'}</div>`:'';
+  const hasRating = !!b.rating;
+  const ratingBadge=hasRating?`<div class="rating-badge">★ ${Number(b.rating).toFixed(1)}</div>`:'';
+  const verBadge=b.verified?'<div class="ver-badge">✓</div>':'';
+  const planBadge=plan==='premium'?'<div class="plan-ribbon ribbon-premium">👑 Premium</div>':plan==='featured'?'<div class="plan-ribbon ribbon-featured">⭐ Featured</div>':plan==='standard'?'<div class="plan-ribbon ribbon-standard">✓ Listed</div>':'';
+
+  // ⑦ BOOKMARK BUTTON
+  const bookmarked = isSaved(b.id);
+  const bmBtn = `<button class="bm-btn${bookmarked?' saved':''}" data-id="${b.id}" onclick="toggleSave(event,'${b.id}')" title="${bookmarked?'Saved':'Save'}">${bookmarked?'🏷️':'🔖'}</button>`;
+
+  return `
+  <a class="biz-card ${planClass}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
+    <div class="card-img-wrap${hasRating?' has-rating':''}">
+      ${imgUrl
+        ?`<img class="card-img" src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        :''}
+      <div class="card-img-fallback" style="${imgUrl?'display:none':''}">${catEmoji(b.category)}</div>
+      ${openBadge}
+      ${ratingBadge}
+      ${bmBtn}
+      ${verBadge}
+      ${planBadge}
+      ${dealHtml}
+    </div>
+    <div class="card-body">
+      <div class="card-name">${esc(b.name)}</div>
+      <div class="card-meta-row">
+        <span class="card-cat">${catEmoji(b.category)} ${esc(b.category)}</span>
+        ${dist}
+      </div>
+      <div class="card-loc">📍 ${esc(b.location||b.city||'Ghana')}</div>
+      ${tags?`<div class="card-tags">${tags}</div>`:''}
+    </div>
+    <div class="card-actions">
+      ${b.phone?`<a class="ca-btn ca-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
+      ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>`:''}
+      <a class="ca-btn ca-view" href="business.html?id=${b.id}">View →</a>
+      <a class="ca-btn ca-share" href="https://wa.me/?text=${encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n👉 '+location.origin+'/business.html?id='+b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
+    </div>
+    <div class="card-footer">
+      <span class="cf-city">📍 ${esc(b.city||'')}</span>
+      <span class="cf-meta">${fmtAgo(b.createdAt?.toDate?b.createdAt.toDate():b.createdAt)} · 👁 ${b.views||0}</span>
+    </div>
+  </a>`;
+}
 
 // ── FETCH ──
-// ── TIME AGO ──
-function fmtAgo(date) {
-  if (!date) return '';
-  const d = date instanceof Date ? date : new Date(date);
-  if (isNaN(d)) return '';
-  const sec = Math.floor((Date.now() - d.getTime()) / 1000);
-  if (sec < 60) return 'Just now';
-  if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
-  if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
-  if (sec < 2592000) return `${Math.floor(sec / 86400)}d ago`;
-  if (sec < 31536000) return `${Math.floor(sec / 2592000)}mo ago`;
-  return `${Math.floor(sec / 31536000)}y ago`;
-}
-
-// ── RENDER CARD (used by pagination) ──
-function renderCard(b) {
-  const plan = b.plan || 'basic';
-  const openS = isOpen(b.openTime, b.closeTime);
-  const imgUrl = b.imageUrl || (b.images?.[0]) || '';
-  const rawWa = (b.whatsapp || b.phone || '').replace(/\D/g, '');
-  const waNum = rawWa.startsWith('233') ? rawWa.slice(3) : rawWa.startsWith('0') ? rawWa.slice(1) : rawWa;
-  const tags = (b.tags || '').split(',').map(t => t.trim()).filter(Boolean).slice(0, 2).map(t => `<span class="biz-tag">${esc(t)}</span>`).join('');
-  const stripHtml = plan !== 'basic' ? `<div class="pstrip ${plan === 'standard' ? 'standard' : plan}"></div>` : '';
-  const badgeHtml = plan === 'premium' ? `<div class="plan-badge pb-premium">👑</div>` : plan === 'featured' ? `<div class="plan-badge pb-featured">⭐</div>` : plan === 'standard' ? `<div class="plan-badge pb-standard">✓</div>` : '';
-  const dist = userLat && b.lat && b.lng ? `<div class="dist-badge">📍 ${fmtDist(calcDist(userLat, userLng, Number(b.lat), Number(b.lng)))}</div>` : '';
-  const dealHtml = b.deal?.active && new Date(b.deal.expiresAt) > new Date() ? `<div style="background:#fde8e8;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-bottom:5px;">🔥 ${b.deal.discount}</div>` : '';
-  return `
-    <a class="biz-card plan-${plan}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
-      ${stripHtml}
-      <div class="biz-thumb">
-        ${imgUrl
-          ? `<img src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\'font-size:44px\'>${catEmoji(b.category)}</span>'">`
-          : `<span style="font-size:44px;">${catEmoji(b.category)}</span>`}
-        ${badgeHtml}
-        ${b.verified ? '<div class="ver-dot">✓</div>' : ''}
-        ${openS !== null ? `<div style="position:absolute;top:7px;left:7px;background:${openS ? '#1A6B3C' : '#C0392B'};color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;">${openS ? '● Open' : '● Closed'}</div>` : ''}
-        ${b.rating ? `<div style="position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;">★ ${Number(b.rating).toFixed(1)}</div>` : ''}
-      </div>
-      <div class="biz-body">
-        ${dealHtml}
-        <div class="biz-name">${esc(b.name)}</div>
-        <div style="display:flex;align-items:center;gap:5px;margin:2px 0;">
-          <span class="biz-cat" style="font-size:10px;">${esc(b.category)}</span>
-          ${dist}
-        </div>
-        <div class="biz-loc">📍 ${esc(b.location || b.city || '')}</div>
-        ${tags ? `<div class="biz-tags">${tags}</div>` : ''}
-        <div class="biz-acts">
-          ${b.phone ? `<a class="biz-btn btn-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>` : ''}
-          ${waNum ? `<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>` : ''}
-          <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
-          <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 ' + b.name + ' on CityLinkGH📍 ' + (b.location || b.city || 'Ghana') + '📞 ' + (b.phone || '') + '👉 ' + location.origin + '/business.html?id=' + b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
-        </div>
-      </div>
-      <div class="biz-footer">
-        <span>📍 ${esc(b.city || '')}</span>
-        <span style="color:var(--gray);font-size:10px;">${fmtAgo(b.createdAt?.toDate ? b.createdAt.toDate() : b.createdAt)}</span>
-      </div>
-    </a>`;
-}
 async function fetchBiz(){
   try{
     const snap=await getDocs(query(collection(db,'businesses'),where('approved','==',true)));
     allBiz=snap.docs.map(d=>({id:d.id,...d.data()}));
     const now=Date.now();
-    allBiz=allBiz.filter(b=>{ if(!b.expiresAt||b.plan==='basic')return true; const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime(); return exp>now; });
+    allBiz=allBiz.filter(b=>{
+      if(!b.expiresAt||b.plan==='basic')return true;
+      const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();
+      return exp>now;
+    });
     document.getElementById('statTotal').textContent=allBiz.length;
     const cities=[...new Set(allBiz.map(b=>b.city).filter(Boolean))].length;
     document.getElementById('statCities').textContent=Math.max(cities,1);
+    const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>new Date()).length;
+    document.getElementById('statDeals').textContent=deals||'—';
+
+    // ⑥ Update Open Now chip with live count
+    const openNow = allBiz.filter(b=>isOpen(b.openTime,b.closeTime)===true).length;
+    const chip = document.getElementById('openNowChip');
+    if(chip && openNow > 0){
+      chip.innerHTML = `🟢 Open Now <span class="open-count-tag">${openNow}</span>`;
+    }
+
     updateCityCounts();
     renderDeals();
     renderBOTW();
     renderSponsored();
     renderPremiumSpotlight();
     renderRecent();
+    renderNewThisWeek();  // ⑤ new feature
+    updateSavedBadge();   // ⑦ badge
     applyFilters();
-    // Count live deals
-    const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>new Date()).length;
-    document.getElementById('statDeals').textContent=deals||'—';
   }catch(e){
-    document.getElementById('bizGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
+    document.getElementById('bizGrid').innerHTML=`<div class="empty-state"><div class="es-ico">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
   }
 }
 
@@ -475,7 +1222,7 @@ function updateCityCounts(){
   ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga'].forEach(c=>{
     const count=allBiz.filter(b=>b.city===c).length;
     const el=document.getElementById('cc-'+c.replace(' ','-'));
-    if(el) el.textContent=count+'';
+    if(el) el.textContent=count+' listings';
   });
 }
 
@@ -485,12 +1232,17 @@ window.pickCity=el=>{
   document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('cityClear').style.display='block';
-  showActiveFilters();
-  applyFilters();
+  showActiveFilters();applyFilters();
   document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`;
   showToast(`📍 Showing ${activeCity}`);
 };
-window.clearCity=()=>{ activeCity=''; document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active')); document.getElementById('cityClear').style.display='none'; showActiveFilters(); applyFilters(); document.getElementById('listTitle').textContent='All Businesses'; };
+window.clearCity=()=>{
+  activeCity='';
+  document.querySelectorAll('.city-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('cityClear').style.display='none';
+  showActiveFilters();applyFilters();
+  document.getElementById('listTitle').textContent='All Businesses';
+};
 
 function showActiveFilters(){
   const wrap=document.getElementById('activeFilters');
@@ -498,10 +1250,11 @@ function showActiveFilters(){
   if(activeCity) tags.push(`<div class="af-tag">📍 ${activeCity}<button onclick="clearCity()">×</button></div>`);
   if(activeCat!=='all') tags.push(`<div class="af-tag">🏷 ${activeCat}<button onclick="filterCat('all',null)">×</button></div>`);
   if(nearMode) tags.push(`<div class="af-tag">📍 Near Me<button onclick="clearNearMe()">×</button></div>`);
-  wrap.innerHTML=tags.join(''); wrap.style.display=tags.length?'flex':'none';
+  wrap.innerHTML=tags.join('');
+  wrap.style.display=tags.length?'flex':'none';
 }
 
-// ── FILTERS ──
+// ── FILTERS (with saved filter added) ──
 function filtered(){
   let list=[...allBiz];
   if(activeCity) list=list.filter(b=>b.city===activeCity);
@@ -512,11 +1265,9 @@ function filtered(){
   else if(activeSort==='verified') list=list.filter(b=>b.verified);
   else if(activeSort==='open') list=list.filter(b=>isOpen(b.openTime,b.closeTime));
   else if(activeSort==='top') list=[...list].sort((a,b)=>(b.rating||0)-(a.rating||0));
-  else if(activeSort==='near'&&userLat){
-    list=list.filter(b=>b.lat&&b.lng);
-    list=[...list].sort((a,b)=>calcDist(userLat,userLng,Number(a.lat),Number(a.lng))-calcDist(userLat,userLng,Number(b.lat),Number(b.lng)));
-  }
+  else if(activeSort==='near'&&userLat){list=list.filter(b=>b.lat&&b.lng);list=[...list].sort((a,b)=>calcDist(userLat,userLng,Number(a.lat),Number(a.lng))-calcDist(userLat,userLng,Number(b.lat),Number(b.lng)));}
   else if(activeSort==='new') list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
+  else if(activeSort==='saved') list=list.filter(b=>isSaved(b.id)); // ⑦ saved filter
   else list=[...list].sort((a,b)=>(PLAN_ORDER[a.plan]||3)-(PLAN_ORDER[b.plan]||3)||(b.rating||0)-(a.rating||0));
   return list;
 }
@@ -529,8 +1280,21 @@ function applyFilters(){
 }
 
 window.doSearch=q=>{searchQ=q;applyFilters();};
-window.filterCat=(cat,el)=>{activeCat=cat;document.querySelectorAll('.cat-tile').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');if(cat!=='all')document.getElementById('listTitle').textContent=cat;showActiveFilters();applyFilters();};
-window.filterSort=(sort,el)=>{activeSort=sort;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');if(sort==='near')findNearMe();else applyFilters();};
+window.filterCat=(cat,el)=>{
+  activeCat=cat;
+  document.querySelectorAll('.cat-pill').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(cat!=='all') document.getElementById('listTitle').textContent=cat;
+  else document.getElementById('listTitle').textContent='All Businesses';
+  showActiveFilters();applyFilters();
+};
+window.filterSort=(sort,el)=>{
+  activeSort=sort;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(sort==='near') findNearMe();
+  else applyFilters();
+};
 
 // ── FLASH DEALS ──
 function renderDeals(){
@@ -545,19 +1309,17 @@ function renderDeals(){
     const hrs=Math.floor(mins/60),rem=mins%60;
     const timeStr=hrs>0?`${hrs}h ${rem}m`:mins>0?`${mins}m`:'Ending soon';
     const img=b.imageUrl||b.images?.[0]||'';
-    return `
-      <a class="deal-card" href="business.html?id=${b.id}">
-        <div class="deal-img">
-          ${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}
-          <div class="deal-badge">${b.deal.discount||'Special Deal'}</div>
-          <div class="deal-timer">⏰ ${timeStr}</div>
-        </div>
-        <div class="deal-body">
-          <div class="deal-biz">${esc(b.name)}</div>
-          <div class="deal-desc">${esc(b.deal.description||'')}</div>
-          <div class="deal-discount">${esc(b.deal.discount||'')}</div>
-        </div>
-      </a>`;
+    return `<a class="deal-card" href="business.html?id=${b.id}">
+      <div class="deal-img-wrap">
+        ${img?`<img src="${esc(img)}" alt="" loading="lazy">`:`<span>${catEmoji(b.category)}</span>`}
+        <div class="deal-badge">${esc(b.deal.discount||'Deal')}</div>
+        <div class="deal-timer">⏰ ${timeStr}</div>
+      </div>
+      <div class="deal-info">
+        <div class="deal-name">${esc(b.name)}</div>
+        <div class="deal-desc">${esc(b.deal.description||'')}</div>
+      </div>
+    </a>`;
   }).join('');
 }
 
@@ -568,19 +1330,18 @@ function renderBOTW(){
   if(!botw){wrap.style.display='none';return;}
   wrap.style.display='block';
   const img=botw.imageUrl||botw.images?.[0]||'';
-  wrap.innerHTML=`
-    <a class="botw" href="business.html?id=${botw.id}">
-      <div class="botw-img">
-        ${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(botw.category)}`}
-      </div>
-      <div class="botw-overlay"></div>
-      <div class="botw-crown">👑 BUSINESS OF THE WEEK</div>
-      <div class="botw-body">
-        <div class="botw-label">Featured This Week</div>
-        <div class="botw-name">${esc(botw.name)}</div>
-        <div class="botw-meta">📍 ${esc(botw.city||botw.location||'Ghana')} · ${esc(botw.category)}</div>
-      </div>
-    </a>`;
+  wrap.innerHTML=`<a class="botw-card" href="business.html?id=${botw.id}">
+    <div class="botw-img">
+      ${img?`<img src="${esc(img)}" alt="">`:`<span>${catEmoji(botw.category)}</span>`}
+      <div class="botw-scrim"></div>
+    </div>
+    <div class="botw-crown">👑 BUSINESS OF THE WEEK</div>
+    <div class="botw-body">
+      <div class="botw-eyebrow">Featured This Week</div>
+      <div class="botw-name">${esc(botw.name)}</div>
+      <div class="botw-sub">📍 ${esc(botw.city||botw.location||'Ghana')} · ${esc(botw.category)}</div>
+    </div>
+  </a>`;
 }
 
 // ── SPONSORED ──
@@ -591,15 +1352,11 @@ function renderSponsored(){
   sec.style.display='block';
   document.getElementById('sponsoredScroll').innerHTML=sponsored.map(b=>{
     const img=b.imageUrl||b.images?.[0]||'';
-    return `
-      <a class="spon-card" href="business.html?id=${b.id}">
-        <div class="spon-badge">AD</div>
-        <div class="spon-img">${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}</div>
-        <div class="spon-body">
-          <div class="spon-name">${esc(b.name)}</div>
-          <div class="spon-cat">${esc(b.category)}</div>
-        </div>
-      </a>`;
+    return `<a class="spon-card" href="business.html?id=${b.id}">
+      <div class="spon-ad-tag">AD</div>
+      <div class="spon-img">${img?`<img src="${esc(img)}" alt="">`:`<span>${catEmoji(b.category)}</span>`}</div>
+      <div class="spon-info"><div class="spon-name">${esc(b.name)}</div><div class="spon-cat">${esc(b.category)}</div></div>
+    </a>`;
   }).join('');
 }
 
@@ -611,84 +1368,159 @@ function renderPremiumSpotlight(){
   sec.style.display='block';
   document.getElementById('premiumScroll').innerHTML=premiums.map(b=>{
     const img=b.imageUrl||b.images?.[0]||'';
-    return `<div class="pcard-wrap"><a class="pcard" href="business.html?id=${b.id}"><div class="pcard-img">${img?`<img src="${esc(img)}" alt="">`:`${catEmoji(b.category)}`}</div><div class="pcard-ribbon">👑 PREMIUM</div><div class="pcard-body"><div class="pcard-name">${esc(b.name)}</div><div class="pcard-cat">${esc(b.category)} · ${esc(b.city||'')}</div></div></a></div>`;
+    return `<a class="prem-card" href="business.html?id=${b.id}">
+      <div class="prem-img">${img?`<img src="${esc(img)}" alt="">`:`<span>${catEmoji(b.category)}</span>`}</div>
+      <div class="prem-ribbon">👑 PREMIUM</div>
+      <div class="prem-info"><div class="prem-name">${esc(b.name)}</div><div class="prem-sub">${esc(b.category)} · ${esc(b.city||'')}</div></div>
+    </a>`;
   }).join('');
 }
 
-// ── RENDER GRID ──
+// ══════════════════════════════════════
+// ⑧ INFINITE SCROLL (replaces Load More)
+// ══════════════════════════════════════
+const PAGE_SIZE = 12;
+let currentPage = 1;
+let currentList = [];
+let infiniteObserver = null;
+
 function renderGrid(list){
-  const grid=document.getElementById('bizGrid');
+  currentList = list;
+  currentPage = 1;
+  const grid = document.getElementById('bizGrid');
+  const sentinel = document.getElementById('scrollSentinel');
   if(!list.length){
-    grid.innerHTML=`<div class="empty">
-      <div style="font-size:52px;margin-bottom:12px;">🔍</div>
-      <h3 style="font-size:16px;font-weight:800;margin-bottom:6px;">No businesses found</h3>
-      <p style="font-size:13px;margin-bottom:16px;">${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
-      <div style="display:flex;flex-direction:column;gap:8px;max-width:240px;margin:0 auto;">
-        <a href="submit.html" style="background:var(--green);color:#fff;padding:11px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;display:block;">＋ List Your Business</a>
-        <button onclick="clearFilters()" style="background:var(--mist);color:var(--text);padding:11px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;font-weight:600;border:1px solid var(--border);cursor:pointer;">🔄 Clear Filters</button>
-      </div>
-    </div>`;return;
+    grid.innerHTML=`<div class="empty-state">
+      <div class="es-ico">🔍</div>
+      <h3>No businesses found</h3>
+      <p>${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
+      <a href="submit.html" class="es-btn">＋ List Your Business</a>
+    </div>`;
+    if(sentinel) sentinel.classList.remove('loading');
+    return;
   }
-  grid.innerHTML=list.map(b=>{
-    const plan=b.plan||'basic';
-    const openS=isOpen(b.openTime,b.closeTime);
-    const imgUrl=b.imageUrl||(b.images?.[0])||'';
-    const rawWa=(b.whatsapp||b.phone||'').replace(/\D/g,'');
-    const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-    const tags=(b.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,2).map(t=>`<span class="biz-tag">${esc(t)}</span>`).join('');
-    const stripHtml=plan!=='basic'?`<div class="pstrip ${plan==='standard'?'standard':plan}"></div>`:'';
-    const badgeHtml=plan==='premium'?`<div class="plan-badge pb-premium">👑</div>`:plan==='featured'?`<div class="plan-badge pb-featured">⭐</div>`:plan==='standard'?`<div class="plan-badge pb-standard">✓</div>`:'';
-    const dist=userLat&&b.lat&&b.lng?`<div class="dist-badge">📍 ${fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng)))}</div>`:'';
-    const dealHtml=b.deal?.active&&new Date(b.deal.expiresAt)>new Date()?`<div style="background:#fde8e8;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-bottom:5px;">🔥 ${b.deal.discount}</div>`:'';
-    return `
-      <a class="biz-card plan-${plan}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
-        ${stripHtml}
-        <div class="biz-thumb">
-          ${imgUrl
-            ? `<img src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\'font-size:44px\'>${catEmoji(b.category)}</span>'">`
-            : `<span style="font-size:44px;">${catEmoji(b.category)}</span>`}
-          ${badgeHtml}
-          ${b.verified?'<div class="ver-dot">✓</div>':''}
-          ${openS!==null?`<div style="position:absolute;top:7px;left:7px;background:${openS?'#1A6B3C':'#C0392B'};color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;">${openS?'● Open':'● Closed'}</div>`:''}
-          ${b.rating?`<div style="position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;">★ ${Number(b.rating).toFixed(1)}</div>`:''}
-        </div>
-        <div class="biz-body">
-          ${dealHtml}
-          <div class="biz-name">${esc(b.name)}</div>
-          <div style="display:flex;align-items:center;gap:5px;margin:2px 0;">
-            <span class="biz-cat" style="font-size:10px;">${esc(b.category)}</span>
-            ${dist}
-          </div>
-          <div class="biz-loc">📍 ${esc(b.location||b.city||'')}</div>
-          ${tags?`<div class="biz-tags">${tags}</div>`:''}
-          <div class="biz-acts">
-            ${b.phone?`<a class="biz-btn btn-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
-            ${waNum?`<a class="biz-btn btn-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>`:''}
-            <a class="biz-btn btn-view" href="business.html?id=${b.id}">View →</a>
-            <a class="biz-btn btn-share" href="https://wa.me/?text=${encodeURIComponent('🏪 '+b.name+' on CityLinkGH📍 '+(b.location||b.city||'Ghana')+'📞 '+(b.phone||'')+'👉 '+location.origin+'/business.html?id='+b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
-          </div>
-        </div>
-        <div class="biz-footer">
-          <span style="display:flex;align-items:center;gap:4px;">
-            <span style="font-size:11px;">👤</span>
-            <span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(b.city||'')}</span>
-          </span>
-          <span style="display:flex;align-items:center;gap:8px;">
-            <span>${fmtAgo(b.createdAt?.toDate?b.createdAt.toDate():b.createdAt)}</span>
-            <span style="display:flex;align-items:center;gap:2px;">👁 ${b.views||0}</span>
-          </span>
-        </div>
-      </a>`;
-  }).join('');
+  grid.innerHTML = list.slice(0, PAGE_SIZE).map(b=>renderCard(b)).join('');
+  if(list.length <= PAGE_SIZE){
+    if(sentinel) sentinel.classList.remove('loading');
+    return;
+  }
+  // Setup IntersectionObserver for infinite scroll
+  if(infiniteObserver) infiniteObserver.disconnect();
+  infiniteObserver = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && currentPage * PAGE_SIZE < currentList.length){
+      sentinel.classList.add('loading');
+      setTimeout(()=>{
+        currentPage++;
+        const more = currentList.slice(0, currentPage * PAGE_SIZE);
+        grid.innerHTML = more.map(b=>renderCard(b)).join('');
+        if(currentPage * PAGE_SIZE >= currentList.length){
+          sentinel.classList.remove('loading');
+          infiniteObserver.disconnect();
+        } else {
+          sentinel.classList.remove('loading');
+        }
+      }, 400);
+    }
+  }, { rootMargin: '200px' });
+  if(sentinel) infiniteObserver.observe(sentinel);
 }
 
-// ── TRACK VIEW + RECENTLY VIEWED ──
+// ── TRACK VIEW ──
 window.trackView=async bizId=>{
   const b=allBiz.find(x=>x.id===bizId);
-  if(b){ addRecent(b); renderRecent(); b.views=(b.views||0)+1; }
-  // Increment view count in Firebase
-  try{ await updateDoc(doc(db,'businesses',bizId),{views:increment(1)}); }catch(_){}
+  if(b){addRecent(b);renderRecent();b.views=(b.views||0)+1;}
+  try{await updateDoc(doc(db,'businesses',bizId),{views:increment(1)});}catch(_){}
 };
+
+// ── MAP ──
+window.switchView=view=>{
+  document.getElementById('listView').style.display=view==='list'?'block':'none';
+  document.getElementById('mapView').style.display=view==='map'?'flex':'none';
+  document.getElementById('btnList').classList.toggle('active',view==='list');
+  document.getElementById('btnMap').classList.toggle('active',view==='map');
+  if(view==='map'&&!window._mapReady) initMap();
+};
+function initMap(){
+  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p=>{userLat=p.coords.latitude;userLng=p.coords.longitude;if(map)map.setCenter({lat:userLat,lng:userLng});});
+  map=new google.maps.Map(document.getElementById('map'),{center:{lat:userLat||5.6037,lng:userLng||-0.1870},zoom:12,mapTypeControl:false,streetViewControl:false,fullscreenControl:false});
+  infoWin=new google.maps.InfoWindow();
+  window._mapReady=true;
+  populateMap(filtered());
+}
+function populateMap(list){
+  markers.forEach(m=>m.setMap(null));markers=[];
+  const wc=list.filter(b=>b.lat&&b.lng);
+  document.getElementById('mapCount').textContent=`${wc.length} on map`;
+  const colors={premium:'#9B59B6',featured:'#D4A017',standard:'#1A6B3C',basic:'#7A7265'};
+  wc.forEach(b=>{
+    const mk=new google.maps.Marker({position:{lat:Number(b.lat),lng:Number(b.lng)},map,title:b.name,icon:{path:google.maps.SymbolPath.CIRCLE,scale:b.plan==='premium'?11:b.plan==='featured'?9:7,fillColor:colors[b.plan||'basic'],fillOpacity:1,strokeColor:'#fff',strokeWeight:2}});
+    mk.addListener('click',()=>{
+      const dist=userLat?calcDist(userLat,userLng,Number(b.lat),Number(b.lng)):null;
+      infoWin.setContent(`<div style="font-family:'Syne',sans-serif;max-width:180px;"><b style="font-size:12px;">${esc(b.name)}</b><div style="font-size:10px;color:#1A6B3C;text-transform:uppercase;font-weight:700;margin:3px 0;">${esc(b.category)}</div><div style="font-size:11px;color:#7A7265;margin-bottom:3px;">📍 ${esc(b.city||b.location||'')}</div>${dist?`<div style="font-size:11px;color:#2980B9;font-weight:600;margin-bottom:6px;">📍 ${fmtDist(dist)}</div>`:''}<a href="business.html?id=${b.id}" style="background:#1A6B3C;color:#fff;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:700;">View →</a></div>`);
+      infoWin.open(map,mk);
+    });
+    markers.push(mk);
+  });
+  document.getElementById('mapListEl').innerHTML=wc.length?wc.map(b=>{
+    const dist=userLat&&b.lat?fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng))):null;
+    return `<div class="map-item" onclick="window.location='business.html?id=${b.id}'">
+      <div class="map-thumb">${(b.imageUrl||b.images?.[0])?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:`<span>${catEmoji(b.category)}</span>`}</div>
+      <div><div class="map-name">${esc(b.name)}</div><div class="map-sub">📍 ${esc(b.city||b.location||'Ghana')}</div></div>
+      ${dist?`<div class="map-dist">${dist}</div>`:''}
+    </div>`;
+  }).join(''):`<div style="text-align:center;padding:20px;color:var(--gray);font-size:13px;">No coordinates set yet.</div>`;
+}
+
+function isOpen(o,c){if(!o||!c)return null;const now=new Date(),cur=now.getHours()*60+now.getMinutes();const[oh,om]=o.split(':').map(Number),[ch,cm]=c.split(':').map(Number);return cur>=oh*60+om&&cur<=ch*60+cm;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+fetchBiz();
+
+// ── PULL TO REFRESH ──
+let ptrStart=0,ptrActive=false;
+document.addEventListener('touchstart',e=>{if(window.scrollY===0){ptrStart=e.touches[0].clientY;ptrActive=true;}},{passive:true});
+document.addEventListener('touchend',e=>{if(ptrActive&&e.changedTouches[0].clientY-ptrStart>70){showToast('🔄 Refreshing…');setTimeout(()=>fetchBiz(),300);}ptrActive=false;ptrStart=0;},{passive:true});
+
+// ── AUTOCOMPLETE ──
+window.showAC=q=>{
+  const list=document.getElementById('acList');
+  if(!q||q.length<2){list.style.display='none';return;}
+  q=q.toLowerCase();
+  const cats=['Restaurant','Hospital','Hotel','Salon','Pharmacy','School','Mechanic','Lawyer','Supermarket','Photographer','Electrician','Tailor'];
+  const cities=['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga','Wa'];
+  let results=[];
+  allBiz.filter(b=>(b.name||'').toLowerCase().includes(q)||(b.category||'').toLowerCase().includes(q)).slice(0,4).forEach(b=>{
+    results.push({ico:catEmoji(b.category)||'🏢',name:b.name,sub:b.city||b.location||'',type:'biz',id:b.id});
+  });
+  cats.filter(c=>c.toLowerCase().includes(q)).slice(0,2).forEach(c=>results.push({ico:'🏷️',name:c,sub:'Browse category',type:'cat',val:c}));
+  cities.filter(c=>c.toLowerCase().includes(q)).slice(0,2).forEach(c=>results.push({ico:'📍',name:c,sub:'Browse city',type:'city',val:c}));
+  if(!results.length){list.style.display='none';return;}
+  list.innerHTML=results.map(r=>`<div class="ac-item" onclick="selectAC(${JSON.stringify(r).replace(/"/g,'&quot;')})"><span class="ac-ico">${r.ico}</span><div><div class="ac-name">${r.name}</div><div class="ac-sub">${r.sub}</div></div></div>`).join('');
+  list.style.display='block';
+};
+window.hideAC=()=>{const l=document.getElementById('acList');if(l)l.style.display='none';};
+window.selectAC=r=>{
+  hideAC();
+  document.getElementById('searchInput').value=r.name;
+  if(r.type==='biz') window.location='business.html?id='+r.id;
+  else if(r.type==='cat'){activeCat=r.val;applyFilters&&applyFilters();}
+  else if(r.type==='city'){activeCity=r.val;applyFilters&&applyFilters();}
+};
+
+// ── ONBOARDING ──
+if(!localStorage.getItem('clVisited')) document.getElementById('onboardBanner').style.display='block';
+window.dismissOnboard=()=>{document.getElementById('onboardBanner').style.display='none';localStorage.setItem('clVisited','1');};
+
+// ── URL PARAMS ──
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('city')){activeCity=p.get('city');document.querySelectorAll('.city-card').forEach(c=>{if(c.dataset.city===activeCity)c.classList.add('active');});document.getElementById('cityClear').style.display='block';document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`;}
+  if(p.get('category')){activeCat=p.get('category');}
+  if(p.get('search')){searchQ=p.get('search');const si=document.getElementById('searchInput');if(si)si.value=searchQ;}
+  if(p.get('sort')){activeSort=p.get('sort');}
+})();
 
 window.pickCityByName=city=>{
   if(!city)return;
@@ -701,234 +1533,54 @@ window.pickCityByName=city=>{
   showActiveFilters();applyFilters();
   showToast(`📍 Showing ${city}`);
 };
-
-// ── MAP ──
-window.switchView=view=>{
-  document.getElementById('listView').style.display=view==='list'?'block':'none';
-  document.getElementById('mapView').style.display=view==='map'?'flex':'none';
-  document.getElementById('btnList').classList.toggle('active',view==='list');
-  document.getElementById('btnMap').classList.toggle('active',view==='map');
-  if(view==='map'&&!window._mapReady) initMap();
-};
-
-function initMap(){
-  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p=>{userLat=p.coords.latitude;userLng=p.coords.longitude;if(map)map.setCenter({lat:userLat,lng:userLng});});
-  map=new google.maps.Map(document.getElementById('map'),{center:{lat:userLat||5.6037,lng:userLng||-0.1870},zoom:12,mapTypeControl:false,streetViewControl:false,fullscreenControl:false,styles:[{featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]}]});
-  infoWin=new google.maps.InfoWindow();
-  if(userLat) new google.maps.Marker({position:{lat:userLat,lng:userLng},map,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:'#1A6B3C',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},title:'You'});
-  window._mapReady=true;
-  populateMap(filtered());
-}
-
-function populateMap(list){
-  markers.forEach(m=>m.setMap(null));markers=[];
-  const wc=list.filter(b=>b.lat&&b.lng);
-  document.getElementById('mapCount').textContent=`${wc.length} on map`;
-  const colors={premium:'#9B59B6',featured:'#D4A017',standard:'#1A6B3C',basic:'#7A7265'};
-  wc.forEach(b=>{
-    const dist=userLat?calcDist(userLat,userLng,Number(b.lat),Number(b.lng)):null;
-    const mk=new google.maps.Marker({position:{lat:Number(b.lat),lng:Number(b.lng)},map,title:b.name,icon:{path:google.maps.SymbolPath.CIRCLE,scale:b.plan==='premium'?11:b.plan==='featured'?9:7,fillColor:colors[b.plan||'basic'],fillOpacity:1,strokeColor:'#fff',strokeWeight:2}});
-    mk.addListener('click',()=>{
-      infoWin.setContent(`<div style="font-family:'Syne',sans-serif;max-width:180px;"><b style="font-size:12px;">${esc(b.name)}</b><div style="font-size:10px;color:#1A6B3C;text-transform:uppercase;font-weight:700;margin:3px 0;">${esc(b.category)}</div><div style="font-size:11px;color:#7A7265;margin-bottom:3px;">📍 ${esc(b.city||b.location||'')}</div>${dist?`<div style="font-size:11px;color:#2980B9;font-weight:600;margin-bottom:6px;">📍 ${fmtDist(dist)}</div>`:''}<a href="business.html?id=${b.id}" style="background:#1A6B3C;color:#fff;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:700;">View →</a></div>`);
-      infoWin.open(map,mk);
-    });
-    markers.push(mk);
-  });
-  document.getElementById('mapListEl').innerHTML=wc.length?wc.map(b=>{
-    const dist=userLat&&b.lat?fmtDist(calcDist(userLat,userLng,Number(b.lat),Number(b.lng))):null;
-    return `<div class="map-item" onclick="window.location='business.html?id=${b.id}'">
-      <div class="map-thumb">${(b.imageUrl||b.images?.[0])?`<img src="${esc(b.imageUrl||b.images[0])}" alt="">`:`${catEmoji(b.category)}`}</div>
-      <div><div class="map-name">${esc(b.name)}</div><div class="map-sub">📍 ${esc(b.city||b.location||'Ghana')}</div></div>
-      ${dist?`<div class="map-dist">${dist}</div>`:''}
-    </div>`;
-  }).join(''):`<div style="text-align:center;padding:16px;color:var(--gray);font-size:13px;">No coordinates set yet.</div>`;
-}
-
-function isOpen(o,c){if(!o||!c)return null;const now=new Date(),cur=now.getHours()*60+now.getMinutes();const[oh,om]=o.split(':').map(Number),[ch,cm]=c.split(':').map(Number);return cur>=oh*60+om&&cur<=ch*60+cm;}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-let toastT;
-window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
-
-fetchBiz();
-
-// ── PAGINATION / LOAD MORE ──
-const PAGE_SIZE = 12;
-let currentPage = 1, currentList = [];
-
-const _origRenderGrid = window.renderGrid;
-window.renderGrid = list => {
-  currentList = list;
-  currentPage = 1;
-  const slice = list.slice(0, PAGE_SIZE);
-  _renderPage(slice);
-  const wrap = document.getElementById('loadMoreWrap');
-  if(wrap) wrap.style.display = list.length > PAGE_SIZE ? 'block' : 'none';
-};
-function _renderPage(slice){
-  const grid = document.getElementById('bizGrid');
-  if(!slice.length){
-    grid.innerHTML = `<div class="empty">
-      <div style="font-size:52px;margin-bottom:12px;">🔍</div>
-      <h3 style="font-size:16px;font-weight:800;margin-bottom:6px;">No businesses found</h3>
-      <p style="font-size:13px;margin-bottom:16px;">${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
-      <div style="display:flex;flex-direction:column;gap:8px;max-width:240px;margin:0 auto;">
-        <a href="submit.html" style="background:var(--green);color:#fff;padding:11px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;display:block;">＋ List Your Business</a>
-        <button onclick="clearFilters()" style="background:var(--mist);color:var(--text);padding:11px;border-radius:10px;font-family:'Epilogue',sans-serif;font-size:13px;font-weight:600;border:1px solid var(--border);cursor:pointer;">🔄 Clear Filters</button>
-      </div>
-    </div>`;
-    document.getElementById('loadMoreWrap').style.display='none';
-    return;
-  }
-  grid.innerHTML = slice.map(b => renderCard(b)).join('');
-}
-window.loadMore = () => {
-  currentPage++;
-  const slice = currentList.slice(0, currentPage * PAGE_SIZE);
-  document.getElementById('bizGrid').innerHTML = slice.map(b => renderCard(b)).join('');
-  if(slice.length >= currentList.length) document.getElementById('loadMoreWrap').style.display='none';
-};
-
-
-// ── PULL TO REFRESH ──
-let ptrStart=0, ptrActive=false;
-document.addEventListener('touchstart', e=>{
-  if(window.scrollY===0) { ptrStart=e.touches[0].clientY; ptrActive=true; }
-}, {passive:true});
-document.addEventListener('touchend', e=>{
-  if(ptrActive && e.changedTouches[0].clientY - ptrStart > 70) {
-    showToast('🔄 Refreshing…');
-    setTimeout(()=>fetchBiz(), 300);
-  }
-  ptrActive=false; ptrStart=0;
-}, {passive:true});
-
-
-// ── SEARCH AUTOCOMPLETE ──
-window.showAC = q => {
-  const list = document.getElementById('acList');
-  if(!q || q.length < 2){ list.style.display='none'; return; }
-  q = q.toLowerCase();
- const cats = ['Restaurant','Hospital','Hotel','Salon','Pharmacy','School','Mechanic','Lawyer','Supermarket','Photographer','Electrician','Tailor'];
-  const cities = ['Accra','Kumasi','Takoradi','Tamale','Cape Coast','Sunyani','Ho','Koforidua','Bolgatanga','Wa'];
-  let results = [];
-  // Match businesses
-  allBiz.filter(b => (b.name||'').toLowerCase().includes(q) || (b.category||'').toLowerCase().includes(q)).slice(0,4).forEach(b => {
-    results.push({ico:catEmoji(b.category)||'🏢', name:b.name, sub:b.city||b.location||'', type:'biz', id:b.id});
-  });
-  // Match categories
-  cats.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
-    results.push({ico:'🏷️', name:c, sub:'Browse category', type:'cat', val:c});
-  });
-  // Match cities
-  cities.filter(c => c.toLowerCase().includes(q)).slice(0,2).forEach(c => {
-    results.push({ico:'📍', name:c, sub:'Browse city', type:'city', val:c});
-  });
-  if(!results.length){ list.style.display='none'; return; }
-  list.innerHTML = results.map(r => `
-    <div class="ac-item" onclick="selectAC(${JSON.stringify(r).replace(/"/g,'&quot;')})">
-      <span class="ac-ico">${r.ico}</span>
-      <div><div class="ac-name">${r.name}</div><div class="ac-sub">${r.sub}</div></div>
-    </div>`).join('');
-  list.style.display = 'block';
-};
-window.hideAC = () => { const l=document.getElementById('acList'); if(l)l.style.display='none'; };
-window.selectAC = r => {
-  hideAC();
-  document.getElementById('searchInput').value = r.name;
-  if(r.type==='biz') window.location='business.html?id='+r.id;
-  else if(r.type==='cat'){ activeCat=r.val; applyFilters && applyFilters(); }
-  else if(r.type==='city'){ activeCity=r.val; applyFilters && applyFilters(); }
-};
-
-
-// ── ONBOARDING ──
-if(!localStorage.getItem('clVisited')){
-  document.getElementById('onboardBanner').style.display='block';
-}
-window.dismissOnboard=()=>{
-  document.getElementById('onboardBanner').style.display='none';
-  localStorage.setItem('clVisited','1');
-};
-
-
-// ── FEATURE 7: URL PARAM DEEP LINKS ──
-// Supports ?city=Accra&category=Restaurant&search=pizza&sort=open
-(function applyURLParams(){
-  const p=new URLSearchParams(window.location.search);
-  if(p.get('city'))    { activeCity=p.get('city'); document.querySelectorAll('.city-card').forEach(c=>{if(c.dataset.city===activeCity)c.classList.add('active');}); document.getElementById('cityClear').style.display='block'; document.getElementById('listTitle').textContent=`Businesses in ${activeCity}`; }
-  if(p.get('category')){ activeCat=p.get('category'); document.querySelectorAll('.cat-tile').forEach(t=>{if(t.dataset.cat===activeCat)t.classList.add('active');}); }
-  if(p.get('search'))  { searchQ=p.get('search'); const si=document.getElementById('searchInput'); if(si)si.value=searchQ; }
-  if(p.get('sort'))    { activeSort=p.get('sort'); }
-})();
 </script>
 
-<div class="install-banner" id="installBanner">
-  <div class="install-banner-inner">
-    <div class="install-ico">📲</div>
-    <div class="install-text">
-      <div class="install-title">Add CityLinkGH to Home Screen</div>
-      <div class="install-sub">Get quick access — works offline too!</div>
-    </div>
-  </div>
-  <div class="install-btns">
-    <button class="ibtn-yes" onclick="doInstall()">Install App</button>
-    <button class="ibtn-no" onclick="dismissInstall()">Not now</button>
-  </div>
-</div>
-
 <script>
-// ── PWA: Service Worker ──
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js').then(r=>console.log('SW registered')).catch(e=>console.log('SW error',e));
-}
-
-// ── PWA: Install Prompt ──
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if(!localStorage.getItem('clInstallDismissed')){
-    setTimeout(()=>document.getElementById('installBanner').style.display='block', 3000);
+// ══════════════════════════════════════
+// ⑨ BACK TO TOP BUTTON
+// ══════════════════════════════════════
+window.addEventListener('scroll', ()=>{
+  const btn = document.getElementById('backTop');
+  if(window.scrollY > 400){
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
   }
-});
-window.doInstall = async () => {
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const {outcome} = await deferredPrompt.userChoice;
-  if(outcome==='accepted') localStorage.setItem('clInstallDismissed','1');
-  deferredPrompt=null;
-  document.getElementById('installBanner').style.display='none';
-};
-window.dismissInstall = () => {
-  document.getElementById('installBanner').style.display='none';
-  localStorage.setItem('clInstallDismissed','1');
-};
-window.addEventListener('appinstalled', () => {
-  document.getElementById('installBanner').style.display='none';
-  console.log('CityLinkGH installed!');
-});
+}, {passive:true});
 
-// ── HAMBURGER MENU ──
-window.toggleDrawer = () => {
-  const h = document.getElementById('hamburger');
-  const d = document.getElementById('navDrawer');
-  const o = document.getElementById('navOverlay');
-  h.classList.toggle('open');
-  d.classList.toggle('open');
-  o.classList.toggle('open');
-  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
-};
-// Mark active link
-document.querySelectorAll('.drawer-link').forEach(a => {
-  if(a.href === window.location.href) a.classList.add('active');
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
+}
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  if(!localStorage.getItem('clInstallDismissed')) setTimeout(()=>document.getElementById('installBanner').style.display='flex',3000);
 });
+window.doInstall=async()=>{
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  const{outcome}=await deferredPrompt.userChoice;
+  if(outcome==='accepted') localStorage.setItem('clInstallDismissed','1');
+  deferredPrompt=null;document.getElementById('installBanner').style.display='none';
+};
+window.dismissInstall=()=>{document.getElementById('installBanner').style.display='none';localStorage.setItem('clInstallDismissed','1');};
+window.addEventListener('appinstalled',()=>{document.getElementById('installBanner').style.display='none';});
+
+window.toggleDrawer=()=>{
+  const h=document.getElementById('hamburger');
+  const d=document.getElementById('navDrawer');
+  const o=document.getElementById('navOverlay');
+  h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');
+  document.body.style.overflow=d.classList.contains('open')?'hidden':'';
+};
+document.querySelectorAll('.drawer-link').forEach(a=>{if(a.href===window.location.href)a.classList.add('active');});
 </script>
 </body>
 </html>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
-  window.dataLayer=window.dataLayer||[];
+ window.dataLayer=window.dataLayer||[];
   function gtag(){dataLayer.push(arguments);}
   gtag('js',new Date());
   gtag('config','G-XXXXXXXXXX');

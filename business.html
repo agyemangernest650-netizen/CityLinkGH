@@ -478,7 +478,7 @@ async function init(){
     ].filter(Boolean).join('');
 
     // Upgrade banner
-    const upgradeHtml = plan==='basic'?`<div class="upgrade-banner to-featured" onclick="window.location='submit.html'" style="display:block;"><div class="ub-title">⭐ Upgrade to Featured — GHS 100/mo</div><div class="ub-sub">Get gold border, top placement & verified badge. Tap to upgrade.</div></div>`:plan==='standard'?`<div class="upgrade-banner to-premium" onclick="window.location='submit.html'" style="display:block;"><div class="ub-title">👑 Upgrade to Premium — GHS 200/mo</div><div class="ub-sub">Get into the Premium Spotlight & #1 placement. Tap to upgrade.</div></div>`:'';
+    const upgradeHtml = plan==='basic'?`<div class="upgrade-banner to-featured" onclick="window.location='submit.html'" style="display:block;"><div class="ub-title">⭐ Upgrade to Featured — GHS 20/mo</div><div class="ub-sub">Get gold border, top placement & verified badge. Tap to upgrade.</div></div>`:plan==='standard'?`<div class="upgrade-banner to-premium" onclick="window.location='submit.html'" style="display:block;"><div class="ub-title">👑 Upgrade to Premium — GHS 50/mo</div><div class="ub-sub">Get into the Premium Spotlight & #1 placement. Tap to upgrade.</div></div>`:'';
 
     document.getElementById('content').innerHTML=`
       <div class="plan-strip strip-${plan}"></div>

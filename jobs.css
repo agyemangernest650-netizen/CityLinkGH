@@ -1,4 +1,4 @@
- :root{--gold:#D4A017;--green:#1A6B3C;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--blue:#2980B9;--purple:#9B59B6;--card:#fff;--bg:#FDFAF3;--text:#0D0D0D;}
+ :root{--gold:#D4A017;--green:#1A6B3C;--green-lt:#22883E;--red:#C0392B;--ink:#0D0D0D;--cream:#FDFAF3;--mist:#F0EBE0;--border:#E2D9C8;--gray:#7A7265;--blue:#2980B9;--purple:#9B59B6;--card:#fff;--bg:#FDFAF3;--text:#0D0D0D;}
   [data-theme="dark"]{--card:#1E1E2E;--bg:#12121C;--text:#F0EBE0;--mist:#2A2A3E;--border:#3A3A5E;--gray:#9A9AB0;--cream:#1E1E2E;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);}
@@ -400,9 +400,55 @@
     /* ── BOTTOM NAV ── */
     .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E2D9C8;display:flex;justify-content:space-around;padding:6px 0 env(safe-area-inset-bottom,14px);z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,.07);}
     .bottom-nav a{text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;}
-    .bottom-nav a span:first-child{font-size:20px;}
-    .bottom-nav a span:last-child{font-size:10px;color:#7A7265;}
-    .bottom-nav a.active span:last-child{color:#D4A017;font-weight:700;}
-    .bottom-nav-spacer{height:70px;}
+    .bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px;
+  position: relative;
+}
 
-    
+    /* ══════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════ */
+
+.bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px;
+  position: relative;
+}
+.bn-ico { font-size: 22px; }
+.bn-lbl { font-size: 10px; font-weight: 600; color: var(--gray); }
+.bn-item.active .bn-lbl { color: var(--green); font-weight: 800; }
+.bn-item.active::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 3px;
+  background: var(--green);
+  border-radius: 0 0 4px 4px;
+}
+
+/* Center plus button */
+.bn-center {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--green), var(--green-lt));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -18px;
+  box-shadow: 0 4px 16px rgba(26,107,60,.4);
+  border: 3px solid var(--bg);
+}
+.bn-plus { font-size: 24px; color: #fff; font-weight: 800; line-height: 1; }
+
+.page-spacer { height: 90px; }

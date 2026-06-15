@@ -399,7 +399,7 @@
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
     <div class="drawer-section">List Something</div>
     <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
-    <li class="drawer-link" onclick="openPostModal()"><span class="di">💼</span> Post a Job</li>
+    <li class="drawer-link" onclick="openPostModal();setTimeout(openModal,300)"><span class="di">💼</span> Post a Job</li>
     <div class="drawer-section">Account</div>
     <a href="saved-jobs.html" class="drawer-link" id="drawerSavedLink">
       <span class="di">🔖</span> Saved Jobs
@@ -627,6 +627,9 @@
     <span class="bn-ico">💼</span>
     <span class="bn-lbl">Jobs</span>
   </a>
+  <a class="bn-item bn-center" onclick="openPostModal();setTimeout(openModal,300)">
+    <span class="bn-plus">＋</span>
+  </a>
   <a href="room.html" class="bn-item">
     <span class="bn-ico">🏠</span>
     <span class="bn-lbl">Rooms</span>
@@ -637,6 +640,7 @@
     <span class="saved-count-badge" id="savedNavBadge" style="display:none;"></span>
   </a>
 </nav>
+
 
 
 <!-- ⑨ BACK TO TOP -->

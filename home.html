@@ -30,6 +30,372 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app","description":"Ghana's #1 local business directory.","potentialAction":{"@type":"SearchAction","target":"https://citylinkgh.vercel.app/?search={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
+
+<style>
+/* ═══ NEW FEATURE STYLES ═══ */
+
+/* ── GREETING BANNER ── */
+.greeting-bar {
+  background: linear-gradient(90deg, rgba(26,107,60,.12), rgba(212,160,23,.08));
+  border-bottom: 1px solid rgba(212,160,23,.15);
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.greeting-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.75);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.greeting-text strong { color: var(--gold); font-family: 'Syne', sans-serif; }
+.live-viewers {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.55);
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: #22C55E;
+  border-radius: 50%;
+  animation: livePulse 2s ease infinite;
+  flex-shrink: 0;
+}
+@keyframes livePulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .5; transform: scale(.7); }
+}
+
+/* ── VOICE SEARCH BUTTON ── */
+.search-voice {
+  background: var(--mist);
+  border: none;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .15s;
+  position: relative;
+}
+.search-voice.listening {
+  background: rgba(192,57,43,.15);
+  animation: voicePulse 1s ease infinite;
+}
+@keyframes voicePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,.3); }
+  50%      { box-shadow: 0 0 0 8px rgba(192,57,43,0); }
+}
+
+/* ── SEARCH HISTORY CHIPS ── */
+.search-history-wrap {
+  padding: 12px 16px 0;
+  display: none;
+}
+.search-history-wrap.visible { display: block; }
+.sh-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sh-clear {
+  background: none;
+  border: none;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  cursor: pointer;
+  padding: 0;
+}
+.sh-chips {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.sh-chip {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.sh-chip:hover { border-color: var(--green); color: var(--green); }
+
+/* ── TRENDING SEARCHES ── */
+.trending-wrap {
+  padding: 14px 16px 0;
+}
+.trending-chips {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.trending-chips::-webkit-scrollbar { display: none; }
+.trend-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+}
+.trend-chip:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+.trend-ico { font-size: 14px; }
+.trend-num { font-size: 10px; color: var(--gray-lt); margin-left: 2px; }
+
+/* ── BOOKMARK BUTTON ── */
+.bm-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,.55);
+  border: none;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: transform .15s, background .2s;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.bm-btn:active { transform: scale(.88); }
+.bm-btn.saved { background: rgba(212,160,23,.85); }
+/* When rating badge exists, push bookmark left */
+.has-rating .bm-btn { right: 46px; }
+
+/* ── CARD DESCRIPTION ── */
+.card-desc {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.55;
+  margin-bottom: 7px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── CARD LAYOUT: footer ABOVE actions ── */
+.biz-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.card-body   { flex: 1; }
+.card-footer { order: 3; border-top: 1px solid var(--border); padding: 7px 14px 8px; display: flex; align-items: center; justify-content: space-between; background: var(--mist); }
+.card-actions { order: 4; padding: 0 12px 12px; display: flex; gap: 6px; }
+.cf-city { font-size: 11px; color: var(--gray); }
+.cf-meta { font-size: 10px; color: var(--gray-lt); }
+
+/* Reduce image height slightly so card body content is more visible */
+.card-img-wrap { height: 150px !important; }
+
+/* Actions button sizing fix */
+.ca-btn {
+  flex: 1;
+  padding: 9px 4px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  white-space: nowrap;
+  min-width: 0;
+  transition: opacity .2s, transform .1s;
+  text-decoration: none;
+}
+.ca-btn:hover { opacity: .88; }
+.ca-btn:active { transform: scale(.96); }
+.ca-call  { background: var(--green); color: #fff; }
+.ca-wa    { background: #25D366; color: #fff; }
+.ca-view  { background: var(--mist); color: var(--text); border: 1px solid var(--border) !important; }
+.ca-share { flex: 0 0 36px; background: #128C7E; color: #fff; border-radius: 10px; }
+
+/* ── NEW THIS WEEK ── */
+.new-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.new-track::-webkit-scrollbar { display: none; }
+.new-card {
+  flex-shrink: 0;
+  width: 155px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .2s;
+  position: relative;
+}
+.new-card:hover { transform: translateY(-3px); }
+.new-img {
+  width: 100%;
+  height: 100px;
+  background: var(--mist);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  overflow: hidden;
+  position: relative;
+}
+.new-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--green);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 5px;
+  letter-spacing: .04em;
+}
+.new-info { padding: 9px 11px 11px; }
+.new-name { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 800; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.new-cat  { font-size: 10px; color: var(--green); font-weight: 700; text-transform: uppercase; }
+.new-city { font-size: 10px; color: var(--gray); margin-top: 2px; }
+
+/* ── BACK TO TOP BUTTON ── */
+.back-top {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  z-index: 250;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .3s, transform .3s;
+}
+.back-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-top:hover { background: var(--green); }
+
+/* ── SAVED PAGE LINK (profile) ── */
+.saved-count-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ── OPEN COUNT CHIP ── */
+.open-count-tag {
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(21,128,61,.15);
+  color: #15803D;
+  padding: 1px 6px;
+  border-radius: 6px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+[data-theme="dark"] .open-count-tag { background: rgba(21,128,61,.25); color: #4ADE80; }
+
+/* ── INFINITE SCROLL SENTINEL ── */
+.scroll-sentinel {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scroll-sentinel .spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+.scroll-sentinel.loading .spinner { display: block; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── CARD VIEWS BADGE ── */
+.views-chip {
+  font-size: 10px;
+  color: var(--gray-lt);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+</style>
 </head>
 <body>
 
@@ -62,6 +428,7 @@
     <div class="drawer-section">List Something</div>
     <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
     <div class="drawer-section">Account</div>
+    <a href="saved.html" class="drawer-link" id="drawerSavedLink"><span class="di">🔖</span> Saved Businesses <span id="drawerSavedCount" style="margin-left:auto;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;display:none;"></span></a>
     <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
     <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
   </nav>
@@ -75,6 +442,19 @@
     <div class="kente-stripe k3"></div>
     <div class="kente-stripe k4"></div>
   </div>
+
+  <!-- ① GREETING + LIVE VIEWERS -->
+  <div class="greeting-bar">
+    <div class="greeting-text">
+      <span id="greetEmoji">👋</span>
+      <span id="greetMsg">Welcome to CityLinkGH</span>
+    </div>
+    <div class="live-viewers">
+      <div class="live-dot"></div>
+      <span id="liveCount">—</span> browsing
+    </div>
+  </div>
+
   <div class="hero-inner">
     <div class="hero-flag" aria-label="Ghana flag">
       <div class="f-red"></div><div class="f-gold"></div><div class="f-green"></div>
@@ -92,13 +472,22 @@
           autocomplete="off"
           placeholder="Search businesses, services, cities…"
           oninput="doSearch(this.value); showAC(this.value)"
-          onfocus="showAC(this.value)"
-          onblur="setTimeout(hideAC,200)"
+          onfocus="showAC(this.value); showSearchHistory()"
+          onblur="setTimeout(()=>{hideAC();hideSearchHistory();},200)"
+          onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}"
         >
         <div class="autocomplete-list" id="acList"></div>
       </div>
+      <!-- ② VOICE SEARCH -->
+      <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()" title="Voice search" aria-label="Voice search">🎙️</button>
       <button class="search-near" onclick="findNearMe()" title="Near me">📍</button>
-      <button class="search-go" onclick="doSearch(document.getElementById('searchInput').value)">Search</button>
+      <button class="search-go" onclick="commitSearch()">Search</button>
+    </div>
+
+    <!-- ③ SEARCH HISTORY (shown on focus, hidden initially) -->
+    <div class="search-history-wrap" id="searchHistoryWrap">
+      <div class="sh-label">Recent Searches <button class="sh-clear" onclick="clearSearchHistory()">Clear all</button></div>
+      <div class="sh-chips" id="searchHistoryChips"></div>
     </div>
 
     <div class="hero-quick-links">
@@ -127,6 +516,14 @@
     </div>
   </div>
 </section>
+
+<!-- ④ TRENDING SEARCHES -->
+<div class="trending-wrap" id="trendingWrap">
+  <div class="section-hd" style="margin-bottom:10px;">
+    <div class="section-title" style="font-size:13px;">🔥 Trending Searches</div>
+  </div>
+  <div class="trending-chips" id="trendingChips"></div>
+</div>
 
 <!-- ═══ NEAR ME BANNER ═══ -->
 <div class="near-banner" id="nearMeBanner" style="display:none;">
@@ -162,6 +559,15 @@
     <button class="section-action" onclick="clearRecent()">Clear</button>
   </div>
   <div class="rv-track" id="recentlyScroll"></div>
+</div>
+
+<!-- ⑤ NEW THIS WEEK -->
+<div class="section-block" id="newThisWeekSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot green"></span>🆕 New This Week</div>
+    <button class="section-action" onclick="filterSort('new',document.querySelector('.chip[onclick*=\'new\']'))">See all →</button>
+  </div>
+  <div class="new-track" id="newThisWeekScroll"></div>
 </div>
 
 <!-- ═══ ONBOARDING ═══ -->
@@ -293,10 +699,13 @@
     <div class="chip" onclick="filterSort('premium',this)">👑 Premium</div>
     <div class="chip" onclick="filterSort('featured',this)">⭐ Featured</div>
     <div class="chip" onclick="filterSort('verified',this)">✅ Verified</div>
-    <div class="chip" onclick="filterSort('open',this)">🟢 Open Now</div>
+    <!-- ⑥ OPEN NOW with live count -->
+    <div class="chip" id="openNowChip" onclick="filterSort('open',this)">🟢 Open Now</div>
     <div class="chip" onclick="filterSort('top',this)">🏆 Top Rated</div>
     <div class="chip" onclick="filterSort('near',this)">📍 Nearest</div>
     <div class="chip" onclick="filterSort('new',this)">🆕 Newest</div>
+    <!-- ⑦ SAVED filter -->
+    <div class="chip" onclick="filterSort('saved',this)">🔖 Saved</div>
   </div>
 
   <!-- ACTIVE FILTERS -->
@@ -350,6 +759,10 @@
       </div>
     </div>
   </div>
+  <!-- ⑧ INFINITE SCROLL SENTINEL (replaces Load More button) -->
+  <div class="scroll-sentinel" id="scrollSentinel">
+    <div class="spinner"></div>
+  </div>
 </div>
 
 <!-- MAP VIEW -->
@@ -362,10 +775,6 @@
     </div>
     <div id="mapListEl"></div>
   </div>
-</div>
-
-<div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
-  <button class="load-more-btn" onclick="loadMore()">Load More →</button>
 </div>
 
 <div class="page-spacer"></div>
@@ -428,11 +837,15 @@
     <span class="bn-ico">🏠</span>
     <span class="bn-lbl">Rooms</span>
   </a>
-  <a href="profile.html" class="bn-item">
+  <a href="profile.html" class="bn-item" id="profileNavItem" style="position:relative;">
     <span class="bn-ico">👤</span>
     <span class="bn-lbl">Profile</span>
+    <span class="saved-count-badge" id="savedNavBadge" style="display:none;"></span>
   </a>
 </nav>
+
+<!-- ⑨ BACK TO TOP BUTTON -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
 <!-- ═══ INSTALL BANNER ═══ -->
 <div class="install-banner" id="installBanner">
@@ -478,7 +891,182 @@ let allBiz=[], activeCat='all', activeSort='all', activeCity='', searchQ='';
 let userLat=null, userLng=null, nearMode=false;
 let map, markers=[], infoWin;
 
+// ══════════════════════════════════════
+// ① GREETING + TIME OF DAY
+// ══════════════════════════════════════
+(function initGreeting(){
+  const h = new Date().getHours();
+  let emoji='☀️', msg='Good morning';
+  if(h >= 12 && h < 17){ emoji='🌤️'; msg='Good afternoon'; }
+  else if(h >= 17 && h < 21){ emoji='🌇'; msg='Good evening'; }
+  else if(h >= 21 || h < 5){ emoji='🌙'; msg='Good night'; }
+  document.getElementById('greetEmoji').textContent = emoji;
+  document.getElementById('greetMsg').innerHTML = `<strong>${msg}</strong> — explore Ghana's best businesses`;
+})();
+
+// ══════════════════════════════════════
+// LIVE VIEWER SIMULATION
+// ══════════════════════════════════════
+(function initLiveViewers(){
+  // Simulate a realistic live count using time-seeded randomness
+  const seed = Math.floor(Date.now() / 30000); // changes every 30s
+  let base = 18 + (seed % 47);
+  document.getElementById('liveCount').textContent = base;
+  setInterval(()=>{
+    const delta = Math.floor(Math.random()*5) - 2;
+    base = Math.max(8, Math.min(base + delta, 120));
+    const el = document.getElementById('liveCount');
+    if(el) el.textContent = base;
+  }, 12000);
+})();
+
+// ══════════════════════════════════════
+// ② VOICE SEARCH
+// ══════════════════════════════════════
+let voiceRecognition = null;
+window.startVoiceSearch = () => {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ showToast('⚠️ Voice search not supported on this browser'); return; }
+  if(!voiceRecognition){
+    voiceRecognition = new SpeechRecognition();
+    voiceRecognition.lang = 'en-GH';
+    voiceRecognition.continuous = false;
+    voiceRecognition.interimResults = false;
+    voiceRecognition.onresult = e => {
+      const transcript = e.results[0][0].transcript;
+      const input = document.getElementById('searchInput');
+      input.value = transcript;
+      doSearch(transcript);
+      saveSearchHistory(transcript);
+      showToast(`🎙️ "${transcript}"`);
+    };
+    voiceRecognition.onend = () => {
+      document.getElementById('voiceBtn').classList.remove('listening');
+      document.getElementById('voiceBtn').textContent = '🎙️';
+    };
+    voiceRecognition.onerror = () => {
+      showToast('❌ Could not hear you. Try again.');
+      document.getElementById('voiceBtn').classList.remove('listening');
+      document.getElementById('voiceBtn').textContent = '🎙️';
+    };
+  }
+  const btn = document.getElementById('voiceBtn');
+  btn.classList.add('listening');
+  btn.textContent = '⏹️';
+  voiceRecognition.start();
+  showToast('🎙️ Listening…');
+};
+
+// ══════════════════════════════════════
+// ③ SEARCH HISTORY
+// ══════════════════════════════════════
+function getSearchHistory(){ try{ return JSON.parse(localStorage.getItem('clSearchHist')||'[]'); }catch{ return []; } }
+function saveSearchHistory(q){
+  if(!q || q.length < 2) return;
+  let hist = getSearchHistory().filter(h=>h.toLowerCase()!==q.toLowerCase());
+  hist.unshift(q);
+  hist = hist.slice(0,5);
+  localStorage.setItem('clSearchHist', JSON.stringify(hist));
+}
+window.clearSearchHistory = () => {
+  localStorage.removeItem('clSearchHist');
+  document.getElementById('searchHistoryWrap').classList.remove('visible');
+};
+window.showSearchHistory = () => {
+  const hist = getSearchHistory();
+  const wrap = document.getElementById('searchHistoryWrap');
+  const chips = document.getElementById('searchHistoryChips');
+  if(!hist.length){ wrap.classList.remove('visible'); return; }
+  chips.innerHTML = hist.map(h=>`
+    <div class="sh-chip" onclick="applySearchHistory('${esc(h)}')">
+      <span>🕐</span>${esc(h)}
+    </div>`).join('');
+  wrap.classList.add('visible');
+};
+window.hideSearchHistory = () => {
+  document.getElementById('searchHistoryWrap').classList.remove('visible');
+};
+window.applySearchHistory = q => {
+  document.getElementById('searchInput').value = q;
+  searchQ = q;
+  applyFilters();
+  hideSearchHistory();
+};
+window.commitSearch = () => {
+  const q = document.getElementById('searchInput').value;
+  saveSearchHistory(q);
+  doSearch(q);
+};
+
+// ══════════════════════════════════════
+// ④ TRENDING SEARCHES
+// ══════════════════════════════════════
+const TRENDING = [
+  { q:'Restaurant', ico:'🍽️', count:'2.3k' },
+  { q:'Hospital near me', ico:'🏥', count:'1.8k' },
+  { q:'Hotel Accra', ico:'🏨', count:'1.2k' },
+  { q:'Mechanic Kumasi', ico:'🔧', count:'980' },
+  { q:'Pharmacy', ico:'💊', count:'870' },
+  { q:'Lawyer', ico:'⚖️', count:'650' },
+  { q:'Event Planner', ico:'🎉', count:'540' },
+  { q:'Salon Takoradi', ico:'💇', count:'430' },
+];
+(function renderTrending(){
+  const chips = document.getElementById('trendingChips');
+  chips.innerHTML = TRENDING.map(t=>`
+    <div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">
+      <span class="trend-ico">${t.ico}</span>
+      ${esc(t.q)}
+      <span class="trend-num">${t.count}</span>
+    </div>`).join('');
+})();
+window.applyTrend = q => {
+  document.getElementById('searchInput').value = q;
+  searchQ = q;
+  saveSearchHistory(q);
+  applyFilters();
+  showToast(`🔍 Showing results for "${q}"`);
+  document.getElementById('bizGrid').scrollIntoView({behavior:'smooth', block:'start'});
+};
+
+// ══════════════════════════════════════
+// ⑦ BOOKMARKS / SAVED BUSINESSES
+// ══════════════════════════════════════
+function getSaved(){ try{ return JSON.parse(localStorage.getItem('clSaved')||'[]'); }catch{ return []; } }
+function isSaved(id){ return getSaved().includes(id); }
+window.toggleSave = (e, id) => {
+  e.preventDefault(); e.stopPropagation();
+  let saved = getSaved();
+  const btn = document.querySelector(`.bm-btn[data-id="${id}"]`);
+  if(saved.includes(id)){
+    saved = saved.filter(s=>s!==id);
+    if(btn){ btn.textContent='🔖'; btn.classList.remove('saved'); btn.title='Save'; }
+    showToast('Removed from saved');
+  } else {
+    saved.push(id);
+    if(btn){ btn.textContent='🏷️'; btn.classList.add('saved'); btn.title='Saved!'; }
+    showToast('✅ Saved!');
+  }
+  localStorage.setItem('clSaved', JSON.stringify(saved));
+  updateSavedBadge();
+};
+function updateSavedBadge(){
+  const count = getSaved().length;
+  const badge = document.getElementById('savedNavBadge');
+  const drawerCount = document.getElementById('drawerSavedCount');
+  if(badge){
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  if(drawerCount){
+    drawerCount.textContent = count;
+    drawerCount.style.display = count > 0 ? 'inline-flex' : 'none';
+  }
+}
+
+// ══════════════════════════════════════
 // ── DARK MODE ──
+// ══════════════════════════════════════
 window.toggleDark = () => {
   const html = document.documentElement;
   const isDark = html.getAttribute('data-theme')==='dark';
@@ -509,6 +1097,39 @@ function renderRecent(){
       <div class="rv-thumb">${b.imageUrl?`<img src="${esc(b.imageUrl)}" alt="" loading="lazy">`:`<span>${catEmoji(b.category)}</span>`}</div>
       <div class="rv-info"><div class="rv-name">${esc(b.name)}</div><div class="rv-cat">${esc(b.category)}</div></div>
     </a>`).join('');
+}
+
+// ══════════════════════════════════════
+// ⑤ NEW THIS WEEK
+// ══════════════════════════════════════
+function renderNewThisWeek(){
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7*24*60*60*1000);
+  const fresh = allBiz.filter(b=>{
+    const created = b.createdAt?.toDate?.()||new Date(b.createdAt||0);
+    return created >= weekAgo;
+  }).sort((a,b)=>{
+    const da = a.createdAt?.toDate?.()||new Date(a.createdAt||0);
+    const db2 = b.createdAt?.toDate?.()||new Date(b.createdAt||0);
+    return db2 - da;
+  }).slice(0,10);
+  const sec = document.getElementById('newThisWeekSection');
+  if(!fresh.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  document.getElementById('newThisWeekScroll').innerHTML = fresh.map(b=>{
+    const img = b.imageUrl||(b.images?.[0])||'';
+    return `<a class="new-card" href="business.html?id=${b.id}">
+      <div class="new-img">
+        ${img?`<img src="${esc(img)}" alt="" loading="lazy">`:`<span>${catEmoji(b.category)}</span>`}
+        <div class="new-badge">NEW</div>
+      </div>
+      <div class="new-info">
+        <div class="new-name">${esc(b.name)}</div>
+        <div class="new-cat">${catEmoji(b.category)} ${esc(b.category)}</div>
+        <div class="new-city">📍 ${esc(b.city||'Ghana')}</div>
+      </div>
+    </a>`;
+  }).join('');
 }
 
 // ── NEAR ME ──
@@ -554,24 +1175,7 @@ function fmtAgo(date){
   return `${Math.floor(sec/31536000)}y ago`;
 }
 
-// ── BOOKMARKS ──
-function getBookmarks(){try{return JSON.parse(localStorage.getItem('clBookmarks')||'[]');}catch{return[];}}
-function isBookmarked(id){return getBookmarks().includes(id);}
-window.toggleBookmark=(e,id)=>{
-  e.preventDefault();e.stopPropagation();
-  let bks=getBookmarks();
-  const already=bks.includes(id);
-  if(already){bks=bks.filter(x=>x!==id);showToast('🔖 Removed from saved');}
-  else{bks.unshift(id);showToast('✅ Business saved!');}
-  localStorage.setItem('clBookmarks',JSON.stringify(bks));
-  document.querySelectorAll(`.bk-btn[data-id="${id}"]`).forEach(btn=>{
-    btn.classList.toggle('bk-saved',!already);
-    btn.title=already?'Save':'Saved';
-    btn.innerHTML=already?'🔖':'✅';
-  });
-};
-
-// ── RENDER CARD ──
+// ── RENDER CARD (with description + bookmark + fixed layout) ──
 function renderCard(b){
   const plan=b.plan||'basic';
   const openS=isOpen(b.openTime,b.closeTime);
@@ -583,52 +1187,55 @@ function renderCard(b){
   const dealHtml=b.deal?.active&&new Date(b.deal.expiresAt)>new Date()?`<div class="card-deal">🔥 ${esc(b.deal.discount)}</div>`:'';
   const planClass=plan!=='basic'?`card-${plan}`:'';
   const openBadge=openS!==null?`<div class="open-badge ${openS?'open':'closed'}">${openS?'● Open':'● Closed'}</div>`:'';
-  const ratingBadge=b.rating?`<div class="rating-badge">★ ${Number(b.rating).toFixed(1)}</div>`:'';
-  const verBadge=b.verified?'<div class="ver-badge" title="Verified Business">✓</div>':'';
+  const hasRating = !!b.rating;
+  const ratingBadge=hasRating?`<div class="rating-badge">★ ${Number(b.rating).toFixed(1)}</div>`:'';
+  const verBadge=b.verified?'<div class="ver-badge">✓</div>':'';
   const planBadge=plan==='premium'?'<div class="plan-ribbon ribbon-premium">👑 Premium</div>':plan==='featured'?'<div class="plan-ribbon ribbon-featured">⭐ Featured</div>':plan==='standard'?'<div class="plan-ribbon ribbon-standard">✓ Listed</div>':'';
-  // DESCRIPTION — truncated to 2 lines
-  const desc=b.description||b.about||b.bio||'';
-  const descHtml=desc?`<p class="card-desc">${esc(desc.slice(0,110))}${desc.length>110?'…':''}</p>`:'';
-  // SOCIAL PROOF
-  const views=b.views||0;
-  const viewBadge=views>=5?`<span class="card-views">👁 ${views>99?'99+':views} viewed</span>`:'';
-  // BOOKMARK
-  const bkSaved=isBookmarked(b.id);
-  const bkBtn=`<button class="bk-btn${bkSaved?' bk-saved':''}" data-id="${b.id}" onclick="toggleBookmark(event,'${b.id}')" title="${bkSaved?'Saved':'Save'}">${bkSaved?'✅':'🔖'}</button>`;
-  // WEBSITE (if available)
-  const webBtn=b.website?`<a class="ca-btn ca-web" href="${esc(b.website)}" target="_blank" onclick="event.stopPropagation()" title="Website">🌐</a>`:'';
+
+  // ⑦ BOOKMARK BUTTON
+  const bookmarked = isSaved(b.id);
+  const bmBtn = `<button class="bm-btn${bookmarked?' saved':''}" data-id="${b.id}" onclick="toggleSave(event,'${b.id}')" title="${bookmarked?'Saved':'Save'}">${bookmarked?'🏷️':'🔖'}</button>`;
+
+  // Description — show up to 2 lines
+  const desc = b.description||b.desc||'';
+  const descHtml = desc ? `<div class="card-desc">${esc(desc)}</div>` : '';
+
+  // WhatsApp share URL
+  const shareUrl = encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n👉 '+location.origin+'/business.html?id='+b.id);
 
   return `
   <a class="biz-card ${planClass}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
-    <div class="card-img-wrap">
-      ${imgUrl?`<img class="card-img" src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:'' }
+    <div class="card-img-wrap${hasRating?' has-rating':''}">
+      ${imgUrl
+        ?`<img class="card-img" src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        :''}
       <div class="card-img-fallback" style="${imgUrl?'display:none':''}">${catEmoji(b.category)}</div>
-      ${openBadge}${ratingBadge}${verBadge}${planBadge}${dealHtml}
+      ${openBadge}
+      ${ratingBadge}
+      ${bmBtn}
+      ${verBadge}
+      ${planBadge}
+      ${dealHtml}
     </div>
     <div class="card-body">
-      <div class="card-name-row">
-        <div class="card-name">${esc(b.name)}</div>
-        ${bkBtn}
-      </div>
+      <div class="card-name">${esc(b.name)}</div>
       <div class="card-meta-row">
         <span class="card-cat">${catEmoji(b.category)} ${esc(b.category)}</span>
         ${dist}
-        ${viewBadge}
       </div>
       <div class="card-loc">📍 ${esc(b.location||b.city||'Ghana')}</div>
       ${descHtml}
       ${tags?`<div class="card-tags">${tags}</div>`:''}
     </div>
-    <div class="card-actions">
-      ${b.phone?`<a class="ca-btn ca-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
-      ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>`:''}
-      <a class="ca-btn ca-view" href="business.html?id=${b.id}">View →</a>
-      ${webBtn}
-      <a class="ca-btn ca-share" href="https://wa.me/?text=${encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n👉 '+location.origin+'/business.html?id='+b.id)}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
-    </div>
     <div class="card-footer">
       <span class="cf-city">📍 ${esc(b.city||'')}</span>
       <span class="cf-meta">${fmtAgo(b.createdAt?.toDate?b.createdAt.toDate():b.createdAt)} · 👁 ${b.views||0}</span>
+    </div>
+    <div class="card-actions">
+      ${b.phone?`<a class="ca-btn ca-call" href="tel:${esc(b.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
+      ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>`:''}
+      <a class="ca-btn ca-view" href="business.html?id=${b.id}" onclick="event.stopPropagation()">View →</a>
+      <a class="ca-btn ca-share" href="https://wa.me/?text=${shareUrl}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
     </div>
   </a>`;
 }
@@ -649,12 +1256,22 @@ async function fetchBiz(){
     document.getElementById('statCities').textContent=Math.max(cities,1);
     const deals=allBiz.filter(b=>b.deal&&b.deal.active&&new Date(b.deal.expiresAt)>new Date()).length;
     document.getElementById('statDeals').textContent=deals||'—';
+
+    // ⑥ Update Open Now chip with live count
+    const openNow = allBiz.filter(b=>isOpen(b.openTime,b.closeTime)===true).length;
+    const chip = document.getElementById('openNowChip');
+    if(chip && openNow > 0){
+      chip.innerHTML = `🟢 Open Now <span class="open-count-tag">${openNow}</span>`;
+    }
+
     updateCityCounts();
     renderDeals();
     renderBOTW();
     renderSponsored();
     renderPremiumSpotlight();
     renderRecent();
+    renderNewThisWeek();  // ⑤ new feature
+    updateSavedBadge();   // ⑦ badge
     applyFilters();
   }catch(e){
     document.getElementById('bizGrid').innerHTML=`<div class="empty-state"><div class="es-ico">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
@@ -698,7 +1315,7 @@ function showActiveFilters(){
   wrap.style.display=tags.length?'flex':'none';
 }
 
-// ── FILTERS ──
+// ── FILTERS (with saved filter added) ──
 function filtered(){
   let list=[...allBiz];
   if(activeCity) list=list.filter(b=>b.city===activeCity);
@@ -711,6 +1328,7 @@ function filtered(){
   else if(activeSort==='top') list=[...list].sort((a,b)=>(b.rating||0)-(a.rating||0));
   else if(activeSort==='near'&&userLat){list=list.filter(b=>b.lat&&b.lng);list=[...list].sort((a,b)=>calcDist(userLat,userLng,Number(a.lat),Number(a.lng))-calcDist(userLat,userLng,Number(b.lat),Number(b.lng)));}
   else if(activeSort==='new') list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
+  else if(activeSort==='saved') list=list.filter(b=>isSaved(b.id)); // ⑦ saved filter
   else list=[...list].sort((a,b)=>(PLAN_ORDER[a.plan]||3)-(PLAN_ORDER[b.plan]||3)||(b.rating||0)-(a.rating||0));
   return list;
 }
@@ -819,9 +1437,19 @@ function renderPremiumSpotlight(){
   }).join('');
 }
 
-// ── RENDER GRID ──
+// ══════════════════════════════════════
+// ⑧ INFINITE SCROLL (replaces Load More)
+// ══════════════════════════════════════
+const PAGE_SIZE = 12;
+let currentPage = 1;
+let currentList = [];
+let infiniteObserver = null;
+
 function renderGrid(list){
-  const grid=document.getElementById('bizGrid');
+  currentList = list;
+  currentPage = 1;
+  const grid = document.getElementById('bizGrid');
+  const sentinel = document.getElementById('scrollSentinel');
   if(!list.length){
     grid.innerHTML=`<div class="empty-state">
       <div class="es-ico">🔍</div>
@@ -829,9 +1457,33 @@ function renderGrid(list){
       <p>${activeCity?`No listings in ${activeCity} yet — be the first!`:'Try a different search or category.'}</p>
       <a href="submit.html" class="es-btn">＋ List Your Business</a>
     </div>`;
+    if(sentinel) sentinel.classList.remove('loading');
     return;
   }
-  grid.innerHTML=list.map(b=>renderCard(b)).join('');
+  grid.innerHTML = list.slice(0, PAGE_SIZE).map(b=>renderCard(b)).join('');
+  if(list.length <= PAGE_SIZE){
+    if(sentinel) sentinel.classList.remove('loading');
+    return;
+  }
+  // Setup IntersectionObserver for infinite scroll
+  if(infiniteObserver) infiniteObserver.disconnect();
+  infiniteObserver = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && currentPage * PAGE_SIZE < currentList.length){
+      sentinel.classList.add('loading');
+      setTimeout(()=>{
+        currentPage++;
+        const more = currentList.slice(0, currentPage * PAGE_SIZE);
+        grid.innerHTML = more.map(b=>renderCard(b)).join('');
+        if(currentPage * PAGE_SIZE >= currentList.length){
+          sentinel.classList.remove('loading');
+          infiniteObserver.disconnect();
+        } else {
+          sentinel.classList.remove('loading');
+        }
+      }, 400);
+    }
+  }, { rootMargin: '200px' });
+  if(sentinel) infiniteObserver.observe(sentinel);
 }
 
 // ── TRACK VIEW ──
@@ -886,32 +1538,6 @@ let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
 
 fetchBiz();
-
-// ── PAGINATION ──
-const PAGE_SIZE=12;
-let currentPage=1,currentList=[];
-const _origRenderGrid=window.renderGrid;
-window.renderGrid=list=>{
-  currentList=list;currentPage=1;
-  _renderPage(list.slice(0,PAGE_SIZE));
-  const wrap=document.getElementById('loadMoreWrap');
-  if(wrap) wrap.style.display=list.length>PAGE_SIZE?'block':'none';
-};
-function _renderPage(slice){
-  const grid=document.getElementById('bizGrid');
-  if(!slice.length){
-    grid.innerHTML=`<div class="empty-state"><div class="es-ico">🔍</div><h3>No businesses found</h3><p>${activeCity?`No listings in ${activeCity} yet.`:'Try a different search.'}</p><a href="submit.html" class="es-btn">＋ List Your Business</a></div>`;
-    document.getElementById('loadMoreWrap').style.display='none';
-    return;
-  }
-  grid.innerHTML=slice.map(b=>renderCard(b)).join('');
-}
-window.loadMore=()=>{
-  currentPage++;
-  const slice=currentList.slice(0,currentPage*PAGE_SIZE);
-  document.getElementById('bizGrid').innerHTML=slice.map(b=>renderCard(b)).join('');
-  if(slice.length>=currentList.length) document.getElementById('loadMoreWrap').style.display='none';
-};
 
 // ── PULL TO REFRESH ──
 let ptrStart=0,ptrActive=false;
@@ -971,6 +1597,18 @@ window.pickCityByName=city=>{
 </script>
 
 <script>
+// ══════════════════════════════════════
+// ⑨ BACK TO TOP BUTTON
+// ══════════════════════════════════════
+window.addEventListener('scroll', ()=>{
+  const btn = document.getElementById('backTop');
+  if(window.scrollY > 400){
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+}, {passive:true});
+
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }

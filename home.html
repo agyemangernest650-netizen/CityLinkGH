@@ -425,6 +425,7 @@
     <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+    <a href="news.html" class="drawer-link"><span class="di">📰</span> News &amp; Guides</a>
     <div class="drawer-section">List Something</div>
     <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
     <div class="drawer-section">Account</div>
@@ -822,7 +823,7 @@
 
 <!-- ═══ BOTTOM NAV ═══ -->
 <nav class="bottom-nav">
-  <a href="index.html" class="bn-item active">
+  <a href="home.html" class="bn-item active">
     <span class="bn-ico">🏪</span>
     <span class="bn-lbl">Home</span>
   </a>
@@ -1204,7 +1205,7 @@ function renderCard(b){
   const shareUrl = encodeURIComponent('🏪 '+b.name+' on CityLinkGH\n📍 '+(b.location||b.city||'Ghana')+'\n📞 '+(b.phone||'')+'\n👉 '+location.origin+'/business.html?id='+b.id);
 
   return `
-  <a class="biz-card ${planClass}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
+  <div class="biz-card ${planClass}" href="business.html?id=${b.id}" onclick="trackView('${b.id}')">
     <div class="card-img-wrap${hasRating?' has-rating':''}">
       ${imgUrl
         ?`<img class="card-img" src="${esc(imgUrl)}" alt="${esc(b.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
@@ -1237,7 +1238,8 @@ function renderCard(b){
       <a class="ca-btn ca-view" href="business.html?id=${b.id}" onclick="event.stopPropagation()">View →</a>
       <a class="ca-btn ca-share" href="https://wa.me/?text=${shareUrl}" target="_blank" onclick="event.stopPropagation()" title="Share">📤</a>
     </div>
-  </a>`;
+  </div>`;
+
 }
 
 // ── FETCH ──

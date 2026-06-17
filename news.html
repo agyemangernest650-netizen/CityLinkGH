@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<link rel="canonical" href="https://citylinkgh.vercel.app/news.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Local news, guides and tips for living, working and renting in Ghana. Brought to you by CityLinkGH.">
+<meta name="theme-color" content="#0A0F0D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CityLinkGH News & Guides">
+<meta property="og:description" content="Local news, guides and tips for living, working and renting in Ghana.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+<title>CityLinkGH — News &amp; Guides</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="news.css">
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark"><span class="lm-g">G</span><span class="lm-h">H</span></div>
+    CityLink<span>GH</span>
+  </div>
+  <div class="hdr-right">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+    <div class="drawer-brand">CityLink<span>GH</span></div>
+    <div class="drawer-section">Explore</div>
+    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+    <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
+    <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+    <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
+    <a href="news.html" class="drawer-link active"><span class="di">📰</span> News &amp; Guides</a>
+    <div class="drawer-section">List Something</div>
+    <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
+    <div class="drawer-section">Account</div>
+    <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
+    <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-kente" aria-hidden="true">
+    <div class="kente-stripe k1"></div>
+    <div class="kente-stripe k2"></div>
+    <div class="kente-stripe k3"></div>
+    <div class="kente-stripe k4"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-flag"><div class="f-red"></div><div class="f-gold"></div><div class="f-green"></div></div>
+    <p class="hero-eyebrow">CityLinkGH Editorial</p>
+    <h1 class="hero-title">News &amp; <em>Guides</em><br>for Life in Ghana</h1>
+    <p class="hero-sub">Practical tips on renting, job hunting, and running a business — written for Ghanaians, by Ghanaians.</p>
+  </div>
+</section>
+
+<!-- CATEGORY FILTER -->
+<div class="cat-section">
+  <div class="cat-track" id="catTrack">
+    <div class="cat-pill active" data-cat="all" onclick="filterCat('all',this)">📰 All</div>
+    <div class="cat-pill" data-cat="Renting" onclick="filterCat('Renting',this)">🏠 Renting</div>
+    <div class="cat-pill" data-cat="Jobs" onclick="filterCat('Jobs',this)">💼 Jobs</div>
+    <div class="cat-pill" data-cat="Business" onclick="filterCat('Business',this)">🏪 Business</div>
+    <div class="cat-pill" data-cat="City Guides" onclick="filterCat('City Guides',this)">📍 City Guides</div>
+    <div class="cat-pill" data-cat="Money" onclick="filterCat('Money',this)">💰 Money</div>
+  </div>
+</div>
+
+<!-- FEATURED ARTICLE -->
+<div id="featuredWrap" style="display:none;"></div>
+
+<!-- ARTICLES GRID -->
+<div class="section-block">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot green"></span><span id="listTitle">Latest Articles</span></div>
+    <span class="result-count" id="resultCount"></span>
+  </div>
+  <div class="articles-grid" id="articlesGrid">
+    <div class="skel-card">
+      <div class="skel-img skeleton"></div>
+      <div class="skel-body">
+        <div class="skeleton" style="height:11px;width:30%;margin-bottom:10px;"></div>
+        <div class="skeleton" style="height:18px;width:85%;margin-bottom:8px;"></div>
+        <div class="skeleton" style="height:13px;width:60%;"></div>
+      </div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-img skeleton"></div>
+      <div class="skel-body">
+        <div class="skeleton" style="height:11px;width:35%;margin-bottom:10px;"></div>
+        <div class="skeleton" style="height:18px;width:75%;margin-bottom:8px;"></div>
+        <div class="skeleton" style="height:13px;width:55%;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-sentinel" id="scrollSentinel"><div class="spinner"></div></div>
+</div>
+
+<div class="page-spacer"></div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">CityLink<span>GH</span></div>
+      <p>Ghana's most trusted local directory and editorial guide.</p>
+    </div>
+    <div class="footer-col"><h4>Directory</h4><ul><li><a href="home.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Buy &amp; Sell</a></li></ul></div>
+    <div class="footer-col"><h4>Read</h4><ul><li><a href="news.html">News &amp; Guides</a></li><li><a href="news.html?cat=Renting">Renting Tips</a></li><li><a href="news.html?cat=Jobs">Career Advice</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 CityLinkGH · All Rights Reserved</span><div class="footer-flag">🇬🇭</div></div>
+</footer>
+
+<nav class="bottom-nav">
+  <a href="home.html" class="bn-item"><span class="bn-ico">🏪</span><span class="bn-lbl">Home</span></a>
+  <a href="jobs.html" class="bn-item"><span class="bn-ico">💼</span><span class="bn-lbl">Jobs</span></a>
+  <a href="news.html" class="bn-item active"><span class="bn-ico">📰</span><span class="bn-lbl">News</span></a>
+  <a href="room.html" class="bn-item"><span class="bn-ico">🏠</span><span class="bn-lbl">Rooms</span></a>
+  <a href="profile.html" class="bn-item"><span class="bn-ico">👤</span><span class="bn-lbl">Profile</span></a>
+</nav>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ARTICLE READER MODAL -->
+<div class="modal-overlay" id="articleModal">
+  <div class="modal" id="articleContent" style="padding:0;border-radius:0;max-height:100vh;"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, increment, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+let allArticles=[], activeCat='all';
+
+window.toggleDark=()=>{const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';html.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';localStorage.setItem('clTheme',isDark?'light':'dark');};
+const savedTheme=localStorage.getItem('clTheme');
+if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';}
+
+async function fetchArticles(){
+  try{
+    const snap=await getDocs(query(collection(db,'articles'),where('published','==',true),orderBy('createdAt','desc')));
+    allArticles=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderFeatured();
+    applyFilter();
+  }catch(e){
+    document.getElementById('articlesGrid').innerHTML=`<div class="empty-state"><div class="es-ico">📰</div><h3>No articles yet</h3><p>Check back soon for news and guides.</p></div>`;
+  }
+}
+
+function renderFeatured(){
+  const featured=allArticles.find(a=>a.featured)||allArticles[0];
+  const wrap=document.getElementById('featuredWrap');
+  if(!featured){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  const img=featured.imageUrl||'';
+  wrap.innerHTML=`<a class="featured-card" href="#" onclick="openArticle('${featured.id}');return false;">
+    <div class="featured-img">
+      ${img?`<img src="${esc(img)}" alt="">`:`<span>📰</span>`}
+      <div class="featured-scrim"></div>
+    </div>
+    <div class="featured-tag">FEATURED</div>
+    <div class="featured-body">
+      <div class="featured-cat">${esc(featured.category||'News')}</div>
+      <div class="featured-title">${esc(featured.title)}</div>
+      <div class="featured-meta">${fmtDate(featured.createdAt)} · ${estimateReadTime(featured.body)} min read</div>
+    </div>
+  </a>`;
+}
+
+window.filterCat=(cat,el)=>{
+  activeCat=cat;
+  document.querySelectorAll('.cat-pill').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('listTitle').textContent=cat==='all'?'Latest Articles':cat;
+  applyFilter();
+};
+
+function applyFilter(){
+  let list=[...allArticles];
+  if(activeCat!=='all') list=list.filter(a=>a.category===activeCat);
+  document.getElementById('resultCount').textContent=`${list.length} article${list.length!==1?'s':''}`;
+  renderGrid(list);
+}
+
+const PAGE_SIZE=8; let currentPage=1, currentList=[], infiniteObserver=null;
+function renderGrid(list){
+  currentList=list; currentPage=1;
+  const grid=document.getElementById('articlesGrid');
+  const sentinel=document.getElementById('scrollSentinel');
+  if(!list.length){
+    grid.innerHTML=`<div class="empty-state"><div class="es-ico">📰</div><h3>No articles found</h3><p>Try a different category.</p></div>`;
+    sentinel.classList.remove('loading');
+    return;
+  }
+  grid.innerHTML=list.slice(0,PAGE_SIZE).map(a=>renderCard(a)).join('');
+  if(list.length<=PAGE_SIZE){sentinel.classList.remove('loading');return;}
+  if(infiniteObserver) infiniteObserver.disconnect();
+  infiniteObserver=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && currentPage*PAGE_SIZE<currentList.length){
+      sentinel.classList.add('loading');
+      setTimeout(()=>{
+        currentPage++;
+        grid.innerHTML=currentList.slice(0,currentPage*PAGE_SIZE).map(a=>renderCard(a)).join('');
+        if(currentPage*PAGE_SIZE>=currentList.length){sentinel.classList.remove('loading');infiniteObserver.disconnect();}
+        else sentinel.classList.remove('loading');
+      },400);
+    }
+  },{rootMargin:'200px'});
+  infiniteObserver.observe(sentinel);
+}
+
+function renderCard(a){
+  const img=a.imageUrl||'';
+  return `<a class="article-card" href="#" onclick="openArticle('${a.id}');return false;">
+    <div class="art-img-wrap">
+      ${img?`<img src="${esc(img)}" alt="${esc(a.title)}" loading="lazy">`:`<div class="art-img-fallback">📰</div>`}
+    </div>
+    <div class="art-body">
+      <div class="art-cat">${esc(a.category||'News')}</div>
+      <div class="art-title">${esc(a.title)}</div>
+      <div class="art-excerpt">${esc(a.excerpt||stripHtml(a.body).slice(0,110)+'…')}</div>
+    </div>
+    <div class="art-footer">
+      <span class="art-date">${fmtDate(a.createdAt)}</span>
+      <span class="art-read">${estimateReadTime(a.body)} min read</span>
+    </div>
+  </a>`;
+}
+
+window.openArticle=async id=>{
+  const a=allArticles.find(x=>x.id===id);
+  if(!a)return;
+  try{await updateDoc(doc(db,'articles',id),{views:increment(1)});}catch(_){}
+  const img=a.imageUrl||'';
+  document.getElementById('articleContent').innerHTML=`
+    <div class="reader-hd">
+      <button class="reader-close" onclick="closeArticle()">✕</button>
+      <button class="reader-share" onclick="shareArticle('${a.id}','${esc(a.title)}')">📤</button>
+    </div>
+    ${img?`<div class="reader-img"><img src="${esc(img)}" alt=""></div>`:''}
+    <div class="reader-body">
+      <div class="reader-cat">${esc(a.category||'News')}</div>
+      <h1 class="reader-title">${esc(a.title)}</h1>
+      <div class="reader-meta">${fmtDate(a.createdAt)} · ${estimateReadTime(a.body)} min read · 👁 ${(a.views||0)+1}</div>
+      <div class="reader-content">${a.body||''}</div>
+    </div>
+    <div class="reader-cta-bar">
+      <div style="font-size:13px;color:var(--gray);">Found this useful?</div>
+      <div style="display:flex;gap:8px;">
+        <a href="home.html" class="reader-cta-btn">🏪 Browse Businesses</a>
+        <a href="jobs.html" class="reader-cta-btn">💼 Find Jobs</a>
+      </div>
+    </div>`;
+  document.getElementById('articleModal').classList.add('show');
+  document.body.style.overflow='hidden';
+  window.scrollTo(0,0);
+};
+window.closeArticle=()=>{
+  document.getElementById('articleModal').classList.remove('show');
+  document.body.style.overflow='';
+};
+window.shareArticle=(id,title)=>{
+  const url=window.location.origin+'/news.html?article='+id;
+  const text=`📰 ${title}\n\nRead on CityLinkGH: ${url}`;
+  if(navigator.share) navigator.share({title,text,url});
+  else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+};
+
+function stripHtml(html){
+  const tmp=document.createElement('div');
+  tmp.innerHTML=html||'';
+  return tmp.textContent||tmp.innerText||'';
+}
+function estimateReadTime(body){
+  const words=stripHtml(body).split(/\s+/).filter(Boolean).length;
+  return Math.max(1,Math.round(words/200));
+}
+function fmtDate(ts){
+  const d=ts?.toDate?ts.toDate():new Date(ts||Date.now());
+  if(isNaN(d)) return '';
+  return d.toLocaleDateString('en-GH',{day:'numeric',month:'short',year:'numeric'});
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+// URL params — open article directly if linked
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  const cat=p.get('cat');
+  if(cat){
+    const el=document.querySelector(`.cat-pill[data-cat="${cat}"]`);
+    if(el) setTimeout(()=>filterCat(cat,el),300);
+  }
+})();
+
+fetchArticles();
+
+window.toggleDrawer=()=>{
+  const h=document.getElementById('hamburger'),d=document.getElementById('navDrawer'),o=document.getElementById('navOverlay');
+  h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');
+  document.body.style.overflow=d.classList.contains('open')?'hidden':'';
+};
+document.querySelectorAll('.drawer-link').forEach(a=>{if(a.href===window.location.href)a.classList.add('active');});
+</script>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>400);},{passive:true});
+document.getElementById('articleModal').addEventListener('click',e=>{if(e.target===document.getElementById('articleModal'))closeArticle();});
+</script>
+</body>
+</html>

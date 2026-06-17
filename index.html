@@ -290,13 +290,31 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:
 /* ─── TOAST ─── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:transform .3s;z-index:500;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+
+.sdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);}
+.sdot:nth-child(1){animation:sdp 1.2s 0s infinite;}
+.sdot:nth-child(2){animation:sdp 1.2s .2s infinite;}
+.sdot:nth-child(3){animation:sdp 1.2s .4s infinite;}
+@keyframes sdp{0%,100%{background:rgba(255,255,255,.2);}50%{background:#D4A017;}}
 </style>
 </head>
 <body>
+  <!-- SPLASH SCREEN -->
+<div id="splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1A6B3C 0%,#0d3d1e 60%,#0a2e16 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,transform .6s ease;">
+  <div style="width:120px;height:120px;border-radius:28px;background:rgba(255,255,255,.12);border:2px solid rgba(212,160,23,.5);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+    <img src="City link.jpeg" width="125" height="125" alt="CityLinkGH" style="object-fit:cover;border-radius:26px;">
+  </div>
+  <div style="margin-top:20px;font-family:'Syne',sans-serif;font-size:32px;font-weight:900;color:#fff;">CityLink<span style="color:#D4A017;">GH</span></div>
+  <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.55);font-family:'Epilogue',sans-serif;">Ghana's #1 Local Directory</div>
+  <div style="display:flex;gap:7px;margin-top:40px;" id="splashDots">
+    <div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
+  </div>
+  <div style="position:absolute;bottom:60px;font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.08em;font-family:'Epilogue',sans-serif;">🇬🇭 ACCRA · KUMASI · TAKORADI</div>
+</div>
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a href="index.html" class="nav-logo">
+  <a href="home.html" class="nav-logo">
     <div class="nav-logo-icon"><img src="City link.jpeg" width="40" height="50" alt="CityLinkGH" style="border-radius:6px;"></div>
    <div> CityLink<span>GH</span></div>
   </a>
@@ -818,6 +836,16 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 /* ── SHOW 3rd MARKET CARD on wider screens ── */
 if(window.innerWidth>=480) document.getElementById('mc3').style.display='block';
+
+(function(){
+  var s=document.getElementById('splash');
+  setTimeout(function(){
+    s.style.opacity='0';
+    s.style.transform='scale(1.04)';
+    s.style.pointerEvents='none';
+    setTimeout(function(){ s.style.display='none'; }, 650);
+  }, 3000); // shows for 2.5 seconds — adjust this number
+})();
 </script>
 </body>
 </html>

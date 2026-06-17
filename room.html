@@ -2,161 +2,137 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<link rel="canonical" href="https://citylinkgh.vercel.app/rooms.html">
+<link rel="canonical" href="https://citylinkgh.vercel.app/room.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Find affordable rooms, self contained, apartments and houses for rent across Ghana.">
-<meta name="keywords" content="Ghana business directory, rooms Ghana, CityLinkGH, local businesses Ghana, Accra, Kumasi">
-<meta name="author" content="CityLinkGH">
-<meta name="theme-color" content="#0D0D0D">
+<meta name="theme-color" content="#0A0F0D">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://citylinkgh.vercel.app/rooms.html">
 <meta property="og:title" content="Rooms & Houses for Rent — CityLinkGH">
 <meta property="og:description" content="Find affordable rooms, self contained, apartments and houses for rent across Ghana.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<meta property="og:site_name" content="CityLinkGH">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Rooms & Houses for Rent — CityLinkGH">
-<meta name="twitter:description" content="Find affordable rooms, self contained, apartments and houses for rent across Ghana.">
-<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
 <title>CityLinkGH — Rooms & Houses for Rent</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <link rel="stylesheet" href="room.css">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Rooms & Houses for Rent — CityLinkGH","url":"https://citylinkgh.vercel.app/rooms.html","description":"Find affordable rooms, apartments and houses for rent across Ghana.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
-</script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
-
-<!-- HEADER -->
 <header>
-  <!-- ① GREETING BAR + LIVE VIEWERS -->
-  <div class="greeting-bar" style="position:absolute;top:0;left:0;right:0;display:block;" id="greetingBar">
-    <!-- rendered inline inside header is tricky; moved below header -->
-  </div>
   <div class="logo">
-    <img src="City link.jpeg" width="80" height="50" alt="CityLinkGH" style="border-radius:6px;">
+    <div class="logo-mark"><span class="lm-g">G</span><span class="lm-h">H</span></div>
     CityLink<span>GH</span>
   </div>
-  <div class="hbtns">
-    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn" aria-label="Toggle dark mode">🌙</button>
-    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+  <div class="hdr-right">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="hdr-post-btn" onclick="openPostModal()">+ Post Room</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
   <nav class="nav-drawer" id="navDrawer">
     <button class="drawer-close" onclick="toggleDrawer()">✕</button>
-   <div class="drawer-brand">CityLink<span>GH</span></div>
+    <div class="drawer-brand">CityLink<span>GH</span></div>
     <div class="drawer-section">Explore</div>
-    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Home</a>
-    <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
+    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+    <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Buy &amp; Sell</a>
+    <a href="news.html" class="drawer-link"><span class="di">📰</span> News &amp; Guides</a>
     <div class="drawer-section">List Something</div>
-    <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
-    <li class="drawer-link" onclick="openPostModal();setTimeout(openModal,300)"><span class="di">🏡</span> Post a Listing</li>
+    <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
+    <div class="drawer-link" onclick="openPostModal();toggleDrawer()" style="cursor:pointer;"><span class="di">🏡</span> Post a Room</div>
     <div class="drawer-section">Account</div>
-    <a href="saved-jobs.html" class="drawer-link" id="drawerSavedLink">
-      <span class="di">🔖</span> Saved Jobs
-      <span id="drawerSavedCount" class="saved-jobs-badge" style="display:none;"></span>
-    </a>
+    <a href="saved-rooms.html" class="drawer-link"><span class="di">🔖</span> Saved Rooms <span id="drawerSavedCount" style="display:none;margin-left:auto;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;"></span></a>
     <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
     <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
   </nav>
 </header>
 
-<!-- ① GREETING BAR (outside header so it shows below) -->
-<div class="greeting-bar" id="greetingBarMain">
-  <div class="greeting-text">
-    <span id="greetEmoji">👋</span>
-    <span id="greetMsg"><strong>Welcome</strong> — find your next home</span>
+<section class="hero">
+  <div class="hero-kente" aria-hidden="true">
+    <div class="kente-stripe k1"></div>
+    <div class="kente-stripe k2"></div>
+    <div class="kente-stripe k3"></div>
+    <div class="kente-stripe k4"></div>
   </div>
-  <div class="live-viewers">
-    <div class="live-dot"></div>
-    <span id="liveCount">—</span> browsing
+  <div class="greeting-bar">
+    <div class="greeting-text"><span id="greetEmoji">🏠</span><span id="greetMsg"><strong>Welcome</strong> — find your next home</span></div>
+    <div class="live-viewers"><div class="live-dot"></div><span id="liveCount">—</span> browsing</div>
   </div>
-</div>
-
-<!-- HERO -->
-<div class="hero">
-  <h1>Find <em>Rooms & Houses</em><br>for Rent in Ghana</h1>
-  <p>Self-contained, chambers, apartments, houses — across all cities. No agent fees on basic listings.</p>
-  <div class="search-wrap" style="position:relative;">
-    <span>🔍</span>
-    <input type="text" id="searchInput" placeholder="Search area, district, city…"
-      oninput="applyFilters()"
-      onfocus="showSearchHistory()"
-      onblur="setTimeout(hideSearchHistory,200)"
-      onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}">
-    <!-- ② VOICE SEARCH -->
-    <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()" title="Voice search">🎙️</button>
-    <button class="search-go" onclick="commitSearch()">Search</button>
-  </div>
-  <!-- ③ SEARCH HISTORY -->
-  <div class="search-history-wrap" id="searchHistoryWrap">
-    <div class="sh-label">Recent Searches <button class="sh-clear" onclick="clearSearchHistory()">Clear</button></div>
-    <div class="sh-chips" id="searchHistoryChips"></div>
-  </div>
-</div>
-
-<!-- STATS -->
-<div class="stats">
-  <div><div class="stat-n" id="statTotal">—</div><div class="stat-l">LISTINGS</div></div>
-  <div><div class="stat-n" id="statAvail">—</div><div class="stat-l">AVAILABLE</div></div>
-  <div><div class="stat-n" id="statCities">—</div><div class="stat-l">CITIES</div></div>
-</div>
-
-<!-- ⑥ AVAILABLE NOW BANNER -->
-<div class="avail-banner" id="availBanner" style="display:none;">
-  <div class="avail-banner-inner">
-    <div>
-      <div class="avail-num" id="availCount">—</div>
-      <div class="avail-lbl">Available Right Now</div>
+  <div class="hero-inner">
+    <div class="hero-flag"><div class="f-red"></div><div class="f-gold"></div><div class="f-green"></div></div>
+    <p class="hero-eyebrow">Ghana's #1 Rental Directory</p>
+    <h1 class="hero-title">Find <em>Rooms & Houses</em><br>for Rent in Ghana</h1>
+    <p class="hero-sub">Self-contained · Chambers · Apartments · Houses — across every city. No agent fees on basic listings.</p>
+    <div class="search-box">
+      <div class="search-icon">🔍</div>
+      <div class="autocomplete-wrap">
+        <input type="text" id="searchInput" autocomplete="off" placeholder="Search area, district, city…"
+          oninput="applyFilters()" onfocus="showSearchHistory()" onblur="setTimeout(hideSearchHistory,200)"
+          onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}">
+      </div>
+      <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()">🎙️</button>
+      <button class="search-go" onclick="commitSearch()">Search</button>
+    </div>
+    <div class="search-history-wrap" id="searchHistoryWrap">
+      <div class="sh-label">Recent <button class="sh-clear" onclick="clearSearchHistory()">Clear</button></div>
+      <div class="sh-chips" id="searchHistoryChips"></div>
+    </div>
+    <div class="hero-quick-links">
+      <a href="jobs.html" class="hql">💼 Jobs</a>
+      <a href="buy.html" class="hql">🛍️ Buy &amp; Sell</a>
+      <a href="home.html" class="hql">🏪 Businesses</a>
+      <button class="hql hql-accent" onclick="openPostModal()">＋ Post Free</button>
     </div>
   </div>
-  <button class="avail-filter-btn" onclick="filterAvailNow()">Show Available →</button>
+  <div class="stats-strip">
+    <div class="stat-pill"><span class="stat-num" id="statTotal">—</span><span class="stat-lbl">Listings</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill"><span class="stat-num" id="statAvail">—</span><span class="stat-lbl">Available</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill"><span class="stat-num" id="statCities">—</span><span class="stat-lbl">Cities</span></div>
+  </div>
+</section>
+
+<div class="avail-banner" id="availBanner" style="display:none;">
+  <div class="avail-inner"><span style="font-size:22px;">✅</span><div><div class="avail-num" id="availCount">—</div><div class="avail-lbl">Available Right Now</div></div></div>
+  <button class="avail-btn" onclick="filterAvailNow()">Show Available →</button>
 </div>
 
-<!-- ④ TRENDING SEARCHES -->
-<div class="trending-section" id="trendingSection">
-  <div class="trending-label">🔥 Trending Searches</div>
+<div class="trending-section">
+  <div class="section-hd" style="margin-bottom:10px;">
+    <div class="section-title"><span class="section-dot red"></span>🔥 Trending Searches</div>
+  </div>
   <div class="trend-track" id="trendTrack"></div>
 </div>
 
-<!-- ⑤ NEW THIS WEEK -->
-<div class="new-week-section" id="newWeekSection" style="display:none;">
-  <div class="new-week-hd">
-    <div class="new-week-title"><div class="new-week-dot"></div>🆕 New This Week</div>
-    <button class="new-week-see" onclick="filterNewThisWeek()">See all →</button>
+<div class="section-block" id="newWeekSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot green"></span>🆕 New This Week</div>
+    <button class="section-action" onclick="filterNewThisWeek()">See all →</button>
   </div>
   <div class="new-week-track" id="newWeekTrack"></div>
 </div>
 
-<!-- TYPE FILTERS -->
 <div class="filter-section">
-  <div class="filter-row" id="typeFilters">
-    <div class="filter-chip active" data-type="all" onclick="filterType(this)">🏠 All Types</div>
-    <div class="filter-chip" data-type="Single Room" onclick="filterType(this)">🛏 Single Room</div>
-    <div class="filter-chip" data-type="Chamber & Hall" onclick="filterType(this)">🛋 Chamber & Hall</div>
-    <div class="filter-chip" data-type="Self Contained" onclick="filterType(this)">🚿 Self Contained</div>
-    <div class="filter-chip" data-type="1 Bedroom" onclick="filterType(this)">🏡 1 Bedroom</div>
-    <div class="filter-chip" data-type="2 Bedroom" onclick="filterType(this)">🏠 2 Bedroom</div>
-    <div class="filter-chip" data-type="3 Bedroom" onclick="filterType(this)">🏘 3 Bedroom</div>
-    <div class="filter-chip" data-type="Apartment" onclick="filterType(this)">🏢 Apartment</div>
-    <div class="filter-chip" data-type="House" onclick="filterType(this)">🏗 Full House</div>
-    <div class="filter-chip" data-type="Office Space" onclick="filterType(this)">💼 Office Space</div>
-    <div class="filter-chip" data-type="Shop" onclick="filterType(this)">🏪 Shop/Store</div>
-    <!-- ⑦ SAVED filter chip -->
-    <div class="filter-chip" id="savedChip" data-type="saved" onclick="filterSaved(this)">🔖 Saved</div>
+  <div class="filter-scroll" id="typeFilters">
+    <div class="fchip active" data-type="all" onclick="filterType(this)">🏠 All Types</div>
+    <div class="fchip" data-type="Single Room" onclick="filterType(this)">🛏 Single Room</div>
+    <div class="fchip" data-type="Chamber &amp; Hall" onclick="filterType(this)">🛋 Chamber &amp; Hall</div>
+    <div class="fchip" data-type="Self Contained" onclick="filterType(this)">🚿 Self Contained</div>
+    <div class="fchip" data-type="1 Bedroom" onclick="filterType(this)">🏡 1 Bedroom</div>
+    <div class="fchip" data-type="2 Bedroom" onclick="filterType(this)">🏠 2 Bedroom</div>
+    <div class="fchip" data-type="3 Bedroom" onclick="filterType(this)">🏘 3 Bedroom</div>
+    <div class="fchip" data-type="Apartment" onclick="filterType(this)">🏢 Apartment</div>
+    <div class="fchip" data-type="House" onclick="filterType(this)">🏗 Full House</div>
+    <div class="fchip" data-type="Office Space" onclick="filterType(this)">💼 Office Space</div>
+    <div class="fchip" data-type="Shop" onclick="filterType(this)">🏪 Shop/Store</div>
+    <div class="fchip" id="savedChip" onclick="filterSaved(this)">🔖 Saved</div>
   </div>
-
-  <!-- PRICE RANGE -->
-  <div style="margin-top:10px;">
-    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Price Range (GHS / year)</div>
+  <div class="price-range-wrap">
+    <div class="price-range-label">Price Range (GHS / year)</div>
     <div class="price-row">
       <input class="price-input" type="number" id="priceMin" placeholder="Min e.g. 500" oninput="applyFilters()">
       <span class="price-sep">—</span>
@@ -165,8 +141,7 @@
   </div>
 </div>
 
-<!-- CITY FILTER -->
-<div class="city-scroll" id="cityScroll">
+<div class="city-scroll">
   <div class="city-pill active" data-city="all" onclick="filterCity(this)">📍 All Cities</div>
   <div class="city-pill" data-city="Accra" onclick="filterCity(this)">Accra</div>
   <div class="city-pill" data-city="Kumasi" onclick="filterCity(this)">Kumasi</div>
@@ -178,9 +153,8 @@
   <div class="city-pill" data-city="Koforidua" onclick="filterCity(this)">Koforidua</div>
 </div>
 
-<!-- SORT -->
 <div class="sort-row">
-  <div class="sort-label" id="listLabel">All Listings</div>
+  <div class="sort-lbl" id="listLabel">All Listings</div>
   <select class="sort-sel" id="sortSel" onchange="applyFilters()">
     <option value="newest">Newest First</option>
     <option value="price_low">Price: Low to High</option>
@@ -190,929 +164,202 @@
   </select>
 </div>
 
-<!-- POST BUTTON -->
 <div class="post-btn-wrap">
-  <button class="post-room-btn" onclick="openPostModal()">
-    🏠 Post Your Room / House for Rent
-  </button>
+  <button class="post-room-btn" onclick="openPostModal()">🏠 Post Your Room / House for Rent</button>
 </div>
 
-<!-- LISTINGS -->
 <div class="rooms-grid" id="roomsGrid">
-  <div style="background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;">
-    <div class="skeleton" style="height:200px;border-radius:0;"></div>
-    <div style="padding:14px;display:flex;flex-direction:column;gap:8px;">
-      <div class="skeleton" style="height:22px;width:50%;"></div>
-      <div class="skeleton" style="height:16px;width:70%;"></div>
-      <div class="skeleton" style="height:13px;width:60%;"></div>
-      <div style="display:flex;gap:8px;"><div class="skeleton" style="height:38px;flex:1;border-radius:9px;"></div><div class="skeleton" style="height:38px;flex:1;border-radius:9px;"></div></div>
-    </div>
-  </div>
+  <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skeleton" style="height:20px;width:55%;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:70%;margin-bottom:6px;"></div><div class="skeleton" style="height:12px;width:50%;margin-bottom:14px;"></div></div></div>
+  <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skeleton" style="height:20px;width:60%;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:65%;margin-bottom:6px;"></div><div class="skeleton" style="height:12px;width:45%;margin-bottom:14px;"></div></div></div>
 </div>
+<div class="scroll-sentinel" id="scrollSentinel"><div class="spinner"></div></div>
+<div class="page-spacer"></div>
 
-<!-- ⑧ INFINITE SCROLL SENTINEL -->
-<div class="scroll-sentinel" id="scrollSentinel">
-  <div class="spinner"></div>
-</div>
-
-<div class="spacer"></div>
-<!-- ═══ FOOTER ═══ -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">CityLink<span>GH</span></div>
-      <h5>Find <em>Rooms</em> in Ghana</h5>
-      <p>Self-contained, apartments, houses and offices across all cities.</p>
+      <p>Ghana's most trusted rental directory. Find rooms, apartments and houses across every city.</p>
     </div>
-    <div class="footer-col">
-      <h4>Directory</h4>
-      <ul>
-        <li><a href="home.html">Browse Businesses</a></li>
-        <li><a href="room.html">Rooms for Rent</a></li>
-        <li><a href="jobs.html">Job Listings</a></li>
-        <li><a href="buy.html">Buy &amp; Sell</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>List With Us</h4>
-      <ul>
-        <li><a href="submit.html">List a Business</a></li>
-        <li><a href="jobs.html">Post a Job</a></li>
-        <li><a href="room.html">Post a Room</a></li>
-        <li><a href="buy.html">Sell Something</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Directory</h4><ul><li><a href="home.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Buy &amp; Sell</a></li></ul></div>
+    <div class="footer-col"><h4>List With Us</h4><ul><li><a href="submit.html">List a Business</a></li><li><a href="jobs.html">Post a Job</a></li><li><a href="room.html">Post a Room</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li></ul></div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 CityLinkGH · All Rights Reserved</span>
-    <div class="footer-flag" aria-label="Ghana flag">🇬🇭</div>
-  </div>
+  <div class="footer-bottom"><span>© 2026 CityLinkGH · All Rights Reserved</span><div class="footer-flag">🇬🇭</div></div>
 </footer>
 
-<!-- ═══ BOTTOM NAV ═══ -->
 <nav class="bottom-nav">
-  <a href="home.html" class="bn-item active">
-    <span class="bn-ico">🏪</span>
-    <span class="bn-lbl">Home</span>
-  </a>
-  <a href="jobs.html" class="bn-item">
-    <span class="bn-ico">💼</span>
-    <span class="bn-lbl">Jobs</span>
-  </a>
-  <a class="bn-item bn-center" onclick="openPostModal();setTimeout(openModal,300)">
-    <span class="bn-plus">＋</span>
-  </a>
-  <a href="room.html" class="bn-item">
-    <span class="bn-ico">🏠</span>
-    <span class="bn-lbl">Rooms</span>
-  </a>
-  <a href="profile.html" class="bn-item" id="profileNavItem" style="position:relative;">
-    <span class="bn-ico">👤</span>
-    <span class="bn-lbl">Profile</span>
-    <span class="saved-count-badge" id="savedNavBadge" style="display:none;"></span>
-  </a>
+  <a href="home.html" class="bn-item"><span class="bn-ico">🏪</span><span class="bn-lbl">Home</span></a>
+  <a href="jobs.html" class="bn-item"><span class="bn-ico">💼</span><span class="bn-lbl">Jobs</span></a>
+  <button class="bn-item bn-center" onclick="openPostModal()"><span class="bn-plus">＋</span></button>
+  <a href="room.html" class="bn-item active"><span class="bn-ico">🏠</span><span class="bn-lbl">Rooms</span></a>
+  <a href="profile.html" class="bn-item" style="position:relative;"><span class="bn-ico">👤</span><span class="bn-lbl">Profile</span><span id="savedNavBadge" style="display:none;position:absolute;top:-2px;right:2px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"></span></a>
 </nav>
 
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<!-- ⑨ BACK TO TOP -->
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
-
-<!-- POST ROOM MODAL -->
 <div class="modal-overlay" id="postModal">
   <div class="modal">
-    <div class="modal-hd">
-      <div class="modal-title">🏠 Post Room / House</div>
-      <button class="modal-close" onclick="closePostModal()">✕</button>
-    </div>
-
+    <div class="modal-hd"><div class="modal-title">🏠 Post Room / House</div><button class="modal-close" onclick="closePostModal()">✕</button></div>
     <div style="margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Choose Listing Plan</div>
+      <div class="field-label" style="margin-bottom:8px;">Choose Listing Plan</div>
       <div class="plan-opts">
-        <div class="plan-opt sel" data-plan="free" data-price="0" onclick="selectPlan(this)">
-          <div class="po-ico">📋</div>
-          <div class="po-name">Free</div>
-          <div class="po-price">Basic listing · 1 photo</div>
-        </div>
-        <div class="plan-opt" data-plan="standard" data-price="10" onclick="selectPlan(this)">
-          <div class="po-ico">⭐</div>
-          <div class="po-name">Standard</div>
-          <div class="po-price">GHS 10 · 5 photos</div>
-        </div>
-        <div class="plan-opt" data-plan="featured" data-price="20" onclick="selectPlan(this)">
-          <div class="po-ico">🌟</div>
-          <div class="po-name">Featured</div>
-          <div class="po-price">GHS 20 · Top listing</div>
-        </div>
-        <div class="plan-opt" data-plan="urgent" data-price="40" onclick="selectPlan(this)">
-          <div class="po-ico">🔴</div>
-          <div class="po-name">Urgent</div>
-          <div class="po-price">GHS 40 · #1 + urgent badge</div>
-        </div>
+        <div class="plan-opt sel" data-plan="free" data-price="0" onclick="selectPlan(this)"><div class="po-ico">📋</div><div class="po-name">Free</div><div class="po-price">Basic · 1 photo</div></div>
+        <div class="plan-opt" data-plan="standard" data-price="10" onclick="selectPlan(this)"><div class="po-ico">⭐</div><div class="po-name">Standard</div><div class="po-price">GHS 10 · 5 photos</div></div>
+        <div class="plan-opt" data-plan="featured" data-price="20" onclick="selectPlan(this)"><div class="po-ico">🌟</div><div class="po-name">Featured</div><div class="po-price">GHS 20 · Top listing</div></div>
+        <div class="plan-opt" data-plan="urgent" data-price="40" onclick="selectPlan(this)"><div class="po-ico">🔴</div><div class="po-name">Urgent</div><div class="po-price">GHS 40 · #1 spot</div></div>
       </div>
     </div>
-
     <div class="field"><label>Title *</label><input type="text" id="rTitle" placeholder="e.g. Self Contained in Osu, Accra"></div>
     <div class="r2">
-      <div class="field"><label>Type *</label>
-        <select id="rType">
-          <option value="">Select…</option>
-          <option>Single Room</option><option>Chamber & Hall</option>
-          <option>Self Contained</option><option>1 Bedroom</option>
-          <option>2 Bedroom</option><option>3 Bedroom</option>
-          <option>Apartment</option><option>House</option>
-          <option>Office Space</option><option>Shop</option>
-        </select>
-      </div>
-      <div class="field"><label>City *</label>
-        <select id="rCity">
-          <option value="">Select…</option>
-          <option>Accra</option><option>Kumasi</option><option>Takoradi</option>
-          <option>Tamale</option><option>Cape Coast</option><option>Sunyani</option>
-          <option>Ho</option><option>Koforidua</option><option>Bolgatanga</option>
-        </select>
-      </div>
+      <div class="field"><label>Type *</label><select id="rType"><option value="">Select…</option><option>Single Room</option><option>Chamber &amp; Hall</option><option>Self Contained</option><option>1 Bedroom</option><option>2 Bedroom</option><option>3 Bedroom</option><option>Apartment</option><option>House</option><option>Office Space</option><option>Shop</option></select></div>
+      <div class="field"><label>City *</label><select id="rCity"><option value="">Select…</option><option>Accra</option><option>Kumasi</option><option>Takoradi</option><option>Tamale</option><option>Cape Coast</option><option>Sunyani</option><option>Ho</option><option>Koforidua</option><option>Bolgatanga</option></select></div>
     </div>
     <div class="field"><label>District / Area *</label><input type="text" id="rDistrict" placeholder="e.g. Osu, East Legon, Spintex" list="ghDistricts" autocomplete="off">
-      <datalist id="ghDistricts">
-        <option value="Osu, Accra"><option value="Labone, Accra"><option value="Cantonments, Accra"><option value="Airport Residential, Accra"><option value="East Legon, Accra"><option value="Spintex, Accra"><option value="Tema, Greater Accra"><option value="Dansoman, Accra"><option value="Achimota, Accra"><option value="Adabraka, Accra"><option value="Madina, Accra"><option value="Lapaz, Accra"><option value="Nungua, Accra"><option value="Teshie, Accra"><option value="Dome, Accra"><option value="Adentan, Accra"><option value="Ashiaman, Greater Accra"><option value="Adum, Kumasi"><option value="Bantama, Kumasi"><option value="Asokwa, Kumasi"><option value="Nhyiaeso, Kumasi"><option value="Suame, Kumasi"><option value="Oforikrom, Kumasi"><option value="Sekondi, Takoradi"><option value="Effia, Takoradi"><option value="Kojokrom, Takoradi"><option value="Tamale Central"><option value="Sagnarigu, Tamale"><option value="Cape Coast Central"><option value="Sunyani, Bono Region"><option value="Ho, Volta Region"><option value="Koforidua, Eastern Region"><option value="Bolgatanga, Upper East"><option value="Wa, Upper West"><option value="Techiman, Bono East"><option value="Keta, Volta Region"><option value="Hohoe, Volta Region">
-      </datalist>
+      <datalist id="ghDistricts"><option value="Osu, Accra"><option value="East Legon, Accra"><option value="Spintex, Accra"><option value="Tema, Greater Accra"><option value="Dansoman, Accra"><option value="Madina, Accra"><option value="Adum, Kumasi"><option value="Bantama, Kumasi"><option value="Sekondi, Takoradi"><option value="Tamale Central"><option value="Cape Coast Central"></datalist>
     </div>
     <div class="r2">
       <div class="field"><label>Rent (GHS) *</label><input type="number" id="rPrice" placeholder="e.g. 1500"></div>
-      <div class="field"><label>Payment Period</label>
-        <select id="rPeriod">
-          <option>per year</option><option>per month</option>
-          <option>2 years advance</option><option>negotiable</option>
-        </select>
-      </div>
+      <div class="field"><label>Period</label><select id="rPeriod"><option>per year</option><option>per month</option><option>2 years advance</option><option>negotiable</option></select></div>
     </div>
     <div class="r2">
-      <div class="field"><label>Bedrooms</label>
-        <select id="rBeds">
-          <option>1</option><option>2</option><option>3</option>
-          <option>4</option><option>5+</option>
-        </select>
-      </div>
-      <div class="field"><label>Bathrooms</label>
-        <select id="rBaths">
-          <option>1</option><option>2</option><option>3</option><option>Shared</option>
-        </select>
+      <div class="field"><label>Bedrooms</label><select id="rBeds"><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
+      <div class="field"><label>Bathrooms</label><select id="rBaths"><option>1</option><option>2</option><option>3</option><option>Shared</option></select></div>
+    </div>
+    <div class="field"><label>Amenities</label>
+      <div class="amenities-grid" id="amenitiesGrid">
+        <div class="amenity-chip" onclick="toggleAmenity(this)">💧 Water</div><div class="amenity-chip" onclick="toggleAmenity(this)">⚡ Electricity</div><div class="amenity-chip" onclick="toggleAmenity(this)">📶 WiFi</div><div class="amenity-chip" onclick="toggleAmenity(this)">🅿️ Parking</div><div class="amenity-chip" onclick="toggleAmenity(this)">🔒 Security</div><div class="amenity-chip" onclick="toggleAmenity(this)">❄️ AC</div><div class="amenity-chip" onclick="toggleAmenity(this)">🛁 Ensuite</div><div class="amenity-chip" onclick="toggleAmenity(this)">🏊 Pool</div><div class="amenity-chip" onclick="toggleAmenity(this)">🚗 Garage</div><div class="amenity-chip" onclick="toggleAmenity(this)">🌿 Garden</div><div class="amenity-chip" onclick="toggleAmenity(this)">🍳 Kitchen</div><div class="amenity-chip" onclick="toggleAmenity(this)">🛋 Furnished</div>
       </div>
     </div>
-
-    <div class="field">
-      <label>Amenities (select all that apply)</label>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;" id="amenitiesGrid">
-        <div class="filter-chip" onclick="toggleAmenity(this)">💧 Water</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">⚡ Electricity</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">📶 WiFi</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🅿️ Parking</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🔒 Security</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">❄️ AC</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🛁 Ensuite</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🏊 Pool</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🚗 Garage</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🌿 Garden</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🍳 Kitchen</div>
-        <div class="filter-chip" onclick="toggleAmenity(this)">🛋 Furnished</div>
-      </div>
-    </div>
-
-    <div class="field"><label>Description</label><textarea id="rDesc" placeholder="Describe the property — size, condition, landlord info, access road…"></textarea></div>
+    <div class="field"><label>Description</label><textarea id="rDesc" placeholder="Describe the property — size, condition, access road…"></textarea></div>
     <div class="r2">
-      <div class="field"><label>Contact Phone *</label><input type="tel" id="rPhone" placeholder="024 000 0000"></div>
+      <div class="field"><label>Phone *</label><input type="tel" id="rPhone" placeholder="024 000 0000"></div>
       <div class="field"><label>WhatsApp</label><input type="tel" id="rWa" placeholder="024 000 0000"></div>
     </div>
-    <div class="field"><label>Landlord / Agent Name</label><input type="text" id="rPoster" placeholder="Your name"></div>
-    <div class="field">
-      <label>Are you the…</label>
-      <div style="display:flex;gap:8px;">
-        <div class="filter-chip active" id="ownerPill" onclick="setListerType('owner')">🏠 Owner</div>
-        <div class="filter-chip" id="agentPill" onclick="setListerType('agent')">🤝 Agent</div>
-        <div class="filter-chip" id="caretakerPill" onclick="setListerType('caretaker')">👷 Caretaker</div>
+    <div class="field"><label>Your Name</label><input type="text" id="rPoster" placeholder="Landlord / Agent name"></div>
+    <div class="field"><label>You are the…</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="amenity-chip active" id="ownerPill" onclick="setListerType('owner')">🏠 Owner</div>
+        <div class="amenity-chip" id="agentPill" onclick="setListerType('agent')">🤝 Agent</div>
+        <div class="amenity-chip" id="caretakerPill" onclick="setListerType('caretaker')">👷 Caretaker</div>
       </div>
     </div>
-
-    <div class="field">
-      <label>Photos — <span id="photoLimitTxt">max 1 (free plan)</span></label>
+    <div class="field"><label>Photos — <span id="photoLimitTxt">max 1 (free plan)</span></label>
       <div class="img-upload-grid" id="imgUpGrid"></div>
       <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
-      <div style="font-size:11px;color:var(--gray);margin-top:4px;" id="ustat"></div>
+      <div class="ustat" id="ustat"></div>
     </div>
-
-    <div id="paySection" style="display:none;background:var(--mist);border-radius:12px;padding:13px;margin-bottom:4px;">
-      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:8px;">💳 Pay to Boost Listing</div>
+    <div class="pay-section" id="paySection">
+      <div class="pay-title">💳 Pay to Boost Listing</div>
       <div style="font-size:13px;color:var(--gray);margin-bottom:10px;">Your listing will appear at the top and get more views.</div>
       <div class="field"><label>Email for Receipt</label><input type="email" id="payEmail" placeholder="you@example.com"></div>
     </div>
-
-    <button class="submit-btn" id="submitRoomBtn" onclick="submitRoom()">
-      🏠 <span id="submitRoomTxt">Post Listing</span>
-    </button>
+    <button class="submit-btn" id="submitRoomBtn" onclick="submitRoom()">🏠 <span id="submitRoomTxt">Post Listing</span></button>
     <div style="height:16px;"></div>
   </div>
 </div>
 
-<!-- DETAIL MODAL -->
 <div class="modal-overlay" id="detailModal">
-  <div class="modal" id="detailContent" style="padding:0;border-radius:20px 20px 0 0;overflow:hidden;"></div>
+  <div class="modal" id="detailContent" style="padding:0;border-radius:22px 22px 0 0;overflow:hidden;"></div>
 </div>
 
 <script type="module">
-import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
-  authDomain: "citylinkgh-48ee0.firebaseapp.com",
-  projectId: "citylinkgh-48ee0",
-  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
-  messagingSenderId: "807811031269",
-  appId: "1:807811031269:web:167b22e23f49992136340c"
-};
-
-const CLOUD_NAME    = "dulnujvm7";
-const UPLOAD_PRESET = "ernest";
-const PAYSTACK_KEY  = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
-const ARKESEL_KEY   = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
-const IMG_LIMITS    = {free:1, standard:5, featured:8, urgent:10};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
-
-let allRooms=[], activeType='all', activeCity='all', selPlan='free', selPrice=0, uploadedImgs=[], listerType='owner';
-let showSavedOnly = false;
-
-// ══════════════════════════════════════
-// ① GREETING + TIME OF DAY
-// ══════════════════════════════════════
-(function initGreeting(){
-  const h = new Date().getHours();
-  let emoji='☀️', msg='Good morning';
-  if(h>=12&&h<17){emoji='🌤️';msg='Good afternoon';}
-  else if(h>=17&&h<21){emoji='🌇';msg='Good evening';}
-  else if(h>=21||h<5){emoji='🌙';msg='Good night';}
-  document.getElementById('greetEmoji').textContent=emoji;
-  document.getElementById('greetMsg').innerHTML=`<strong>${msg}</strong> — find your next home in Ghana`;
-})();
-
-// ══════════════════════════════════════
-// LIVE VIEWER SIMULATION
-// ══════════════════════════════════════
-(function initLive(){
-  const seed=Math.floor(Date.now()/30000);
-  let base=12+(seed%35);
-  document.getElementById('liveCount').textContent=base;
-  setInterval(()=>{
-    const delta=Math.floor(Math.random()*5)-2;
-    base=Math.max(5,Math.min(base+delta,80));
-    const el=document.getElementById('liveCount');
-    if(el)el.textContent=base;
-  },12000);
-})();
-
-// ══════════════════════════════════════
-// ② VOICE SEARCH
-// ══════════════════════════════════════
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
+const CLOUD_NAME="dulnujvm7",UPLOAD_PRESET="ernest",PAYSTACK_KEY="pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8",IMG_LIMITS={free:1,standard:5,featured:8,urgent:10};
+const app=initializeApp(firebaseConfig),db=getFirestore(app);
+let allRooms=[],activeType='all',activeCity='all',selPlan='free',selPrice=0,uploadedImgs=[],listerType='owner',showSavedOnly=false;
+(function(){const h=new Date().getHours();let e='🏠',m='Good morning';if(h>=12&&h<17){e='🌤️';m='Good afternoon';}else if(h>=17&&h<21){e='🌇';m='Good evening';}else if(h>=21||h<5){e='🌙';m='Good night';}document.getElementById('greetEmoji').textContent=e;document.getElementById('greetMsg').innerHTML=`<strong>${m}</strong> — find your next home in Ghana`;})();
+(function(){const seed=Math.floor(Date.now()/30000);let base=10+(seed%30);document.getElementById('liveCount').textContent=base;setInterval(()=>{base=Math.max(5,Math.min(base+Math.floor(Math.random()*5)-2,70));const el=document.getElementById('liveCount');if(el)el.textContent=base;},12000);})();
 let voiceRec=null;
-window.startVoiceSearch=()=>{
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){showToast('⚠️ Voice search not supported');return;}
-  if(!voiceRec){
-    voiceRec=new SR();
-    voiceRec.lang='en-GH';
-    voiceRec.continuous=false;
-    voiceRec.interimResults=false;
-    voiceRec.onresult=e=>{
-      const t=e.results[0][0].transcript;
-      document.getElementById('searchInput').value=t;
-      saveSearchHistory(t);
-      applyFilters();
-      showToast(`🎙️ "${t}"`);
-    };
-    voiceRec.onend=()=>{
-      document.getElementById('voiceBtn').classList.remove('listening');
-      document.getElementById('voiceBtn').textContent='🎙️';
-    };
-    voiceRec.onerror=()=>{
-      showToast('❌ Could not hear. Try again.');
-      document.getElementById('voiceBtn').classList.remove('listening');
-      document.getElementById('voiceBtn').textContent='🎙️';
-    };
-  }
-  const btn=document.getElementById('voiceBtn');
-  btn.classList.add('listening');btn.textContent='⏹️';
-  voiceRec.start();
-  showToast('🎙️ Listening…');
-};
-
-// ══════════════════════════════════════
-// ③ SEARCH HISTORY
-// ══════════════════════════════════════
+window.startVoiceSearch=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast('Voice search not supported');return;}if(!voiceRec){voiceRec=new SR();voiceRec.lang='en-GH';voiceRec.continuous=false;voiceRec.interimResults=false;voiceRec.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('searchInput').value=t;saveSearchHistory(t);applyFilters();showToast(`🎙️ "${t}"`);};voiceRec.onend=()=>{document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceBtn').textContent='🎙️';};voiceRec.onerror=()=>{showToast('Could not hear. Try again.');document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceBtn').textContent='🎙️';};}const btn=document.getElementById('voiceBtn');btn.classList.add('listening');btn.textContent='⏹️';voiceRec.start();showToast('🎙️ Listening…');};
 function getSearchHistory(){try{return JSON.parse(localStorage.getItem('clRoomSearchHist')||'[]');}catch{return[];}}
-function saveSearchHistory(q){
-  if(!q||q.length<2)return;
-  let hist=getSearchHistory().filter(h=>h.toLowerCase()!==q.toLowerCase());
-  hist.unshift(q);
-  hist=hist.slice(0,5);
-  localStorage.setItem('clRoomSearchHist',JSON.stringify(hist));
-}
-window.clearSearchHistory=()=>{
-  localStorage.removeItem('clRoomSearchHist');
-  document.getElementById('searchHistoryWrap').classList.remove('visible');
-};
-window.showSearchHistory=()=>{
-  const hist=getSearchHistory();
-  const wrap=document.getElementById('searchHistoryWrap');
-  if(!hist.length){wrap.classList.remove('visible');return;}
-  document.getElementById('searchHistoryChips').innerHTML=hist.map(h=>`
-    <div class="sh-chip" onclick="applySearchHist('${esc(h)}')"><span>🕐</span>${esc(h)}</div>`).join('');
-  wrap.classList.add('visible');
-};
+function saveSearchHistory(q){if(!q||q.length<2)return;let h=getSearchHistory().filter(x=>x.toLowerCase()!==q.toLowerCase());h.unshift(q);localStorage.setItem('clRoomSearchHist',JSON.stringify(h.slice(0,5)));}
+window.clearSearchHistory=()=>{localStorage.removeItem('clRoomSearchHist');document.getElementById('searchHistoryWrap').classList.remove('visible');};
+window.showSearchHistory=()=>{const hist=getSearchHistory();const wrap=document.getElementById('searchHistoryWrap');if(!hist.length){wrap.classList.remove('visible');return;}document.getElementById('searchHistoryChips').innerHTML=hist.map(h=>`<div class="sh-chip" onclick="applyHist('${esc(h)}')"><span>🕐</span>${esc(h)}</div>`).join('');wrap.classList.add('visible');};
 window.hideSearchHistory=()=>document.getElementById('searchHistoryWrap').classList.remove('visible');
-window.applySearchHist=q=>{
-  document.getElementById('searchInput').value=q;
-  applyFilters();
-  hideSearchHistory();
-};
-window.commitSearch=()=>{
-  const q=document.getElementById('searchInput').value;
-  saveSearchHistory(q);
-  applyFilters();
-};
-
-// ══════════════════════════════════════
-// ④ TRENDING SEARCHES
-// ══════════════════════════════════════
-const TRENDING=[
-  {q:'Self Contained Accra',ico:'🚿',count:'1.8k'},
-  {q:'Single Room Kumasi',ico:'🛏',count:'1.4k'},
-  {q:'2 Bedroom Takoradi',ico:'🏠',count:'980'},
-  {q:'Apartment East Legon',ico:'🏢',count:'860'},
-  {q:'Chamber Hall Tamale',ico:'🛋',count:'640'},
-  {q:'Furnished Apartment',ico:'🛋',count:'520'},
-  {q:'Office Space Accra',ico:'💼',count:'410'},
-  {q:'House Spintex',ico:'🏘',count:'380'},
-];
-(function renderTrending(){
-  document.getElementById('trendTrack').innerHTML=TRENDING.map(t=>`
-    <div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">
-      <span>${t.ico}</span>${esc(t.q)}<span class="trend-num">${t.count}</span>
-    </div>`).join('');
-})();
-window.applyTrend=q=>{
-  document.getElementById('searchInput').value=q;
-  saveSearchHistory(q);
-  applyFilters();
-  showToast(`🔍 "${q}"`);
-  document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});
-};
-
-// ══════════════════════════════════════
-// ⑦ SAVED ROOMS
-// ══════════════════════════════════════
+window.applyHist=q=>{document.getElementById('searchInput').value=q;applyFilters();hideSearchHistory();};
+window.commitSearch=()=>{const q=document.getElementById('searchInput').value;saveSearchHistory(q);applyFilters();};
+const TRENDING=[{q:'Self Contained Accra',ico:'🚿',n:'1.8k'},{q:'Single Room Kumasi',ico:'🛏',n:'1.4k'},{q:'2 Bedroom Takoradi',ico:'🏠',n:'980'},{q:'Apartment East Legon',ico:'🏢',n:'860'},{q:'Chamber Hall Tamale',ico:'🛋',n:'640'},{q:'Furnished Apartment',ico:'🛋',n:'520'},{q:'Office Space Accra',ico:'💼',n:'410'},{q:'House Spintex',ico:'🏘',n:'380'}];
+document.getElementById('trendTrack').innerHTML=TRENDING.map(t=>`<div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">${t.ico} ${esc(t.q)} <span class="trend-num">${t.n}</span></div>`).join('');
+window.applyTrend=q=>{document.getElementById('searchInput').value=q;saveSearchHistory(q);applyFilters();showToast(`🔍 "${q}"`);document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});};
 function getSaved(){try{return JSON.parse(localStorage.getItem('clSavedRooms')||'[]');}catch{return[];}}
 function isRoomSaved(id){return getSaved().includes(id);}
-window.toggleRoomSave=(e,id)=>{
-  e.preventDefault();e.stopPropagation();
-  let saved=getSaved();
-  const btn=document.querySelector(`.room-bm-btn[data-id="${id}"]`);
-  if(saved.includes(id)){
-    saved=saved.filter(s=>s!==id);
-    if(btn){btn.textContent='🔖';btn.classList.remove('saved');}
-    showToast('Removed from saved');
-  } else {
-    saved.push(id);
-    if(btn){btn.textContent='🏷️';btn.classList.add('saved');}
-    showToast('✅ Room saved!');
-  }
-  localStorage.setItem('clSavedRooms',JSON.stringify(saved));
-  updateSavedBadge();
-};
-function updateSavedBadge(){
-  const count=getSaved().length;
-  const nb=document.getElementById('savedNavBadge');
-  const db2=document.getElementById('drawerSavedCount');
-  if(nb){nb.textContent=count;nb.style.display=count>0?'inline-flex':'none';}
-  if(db2){db2.textContent=count;db2.style.display=count>0?'inline-flex':'none';}
-}
-window.filterSaved=el=>{
-  showSavedOnly=!showSavedOnly;
-  document.querySelectorAll('#typeFilters .filter-chip').forEach(c=>c.classList.remove('active'));
-  if(showSavedOnly){el.classList.add('active');}
-  else{
-    document.querySelector('#typeFilters .filter-chip[data-type="all"]').classList.add('active');
-  }
-  applyFilters();
-};
-
-// ══════════════════════════════════════
-// ⑤ NEW THIS WEEK
-// ══════════════════════════════════════
-function renderNewThisWeek(){
-  const now=new Date();
-  const weekAgo=new Date(now.getTime()-7*24*60*60*1000);
-  const fresh=allRooms.filter(r=>{
-    const created=r.createdAt?.toDate?.()||new Date(r.createdAt||0);
-    return created>=weekAgo&&r.available!==false;
-  }).sort((a,b)=>{
-    const da=a.createdAt?.toDate?.()||new Date(a.createdAt||0);
-    const db2=b.createdAt?.toDate?.()||new Date(b.createdAt||0);
-    return db2-da;
-  }).slice(0,10);
-  const sec=document.getElementById('newWeekSection');
-  if(!fresh.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('newWeekTrack').innerHTML=fresh.map(r=>{
-    const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);
-    const img=imgs[0]||'';
-    return `<div class="nw-card" onclick="viewRoom('${r.id}')">
-      <div class="nw-img">
-        ${img?`<img src="${esc(img)}" alt="" loading="lazy">`:'🏠'}
-        <div class="nw-new-badge">NEW</div>
-      </div>
-      <div class="nw-info">
-        <div class="nw-price">GHS ${Number(r.price||0).toLocaleString()}</div>
-        <div class="nw-type">${esc(r.type||'Room')}</div>
-        <div class="nw-loc">📍 ${esc(r.district||r.city||'Ghana')}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-window.filterNewThisWeek=()=>{
-  document.getElementById('sortSel').value='newest';
-  applyFilters();
-  document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});
-};
-
-// ⑥ AVAILABLE NOW filter shortcut
-window.filterAvailNow=()=>{
-  document.getElementById('sortSel').value='available';
-  applyFilters();
-  document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});
-  showToast('✅ Showing available rooms only');
-};
-
-// ── FETCH ──
-async function fetchRooms(){
-  try{
-    const snap=await getDocs(query(collection(db,'rooms'),orderBy('createdAt','desc')));
-    allRooms=snap.docs.map(d=>({id:d.id,...d.data()}));
-    const cutoff=Date.now()-60*24*60*60*1000;
-    allRooms=allRooms.filter(r=>r.createdAt?.toDate?r.createdAt.toDate().getTime()>cutoff:true);
-    document.getElementById('statTotal').textContent=allRooms.length;
-    const availCount=allRooms.filter(r=>r.available!==false).length;
-    document.getElementById('statAvail').textContent=availCount;
-    document.getElementById('statCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
-
-    // ⑥ Available Now banner
-    const banner=document.getElementById('availBanner');
-    document.getElementById('availCount').textContent=availCount;
-    if(availCount>0) banner.style.display='flex';
-
-    renderNewThisWeek();
-    updateSavedBadge();
-    applyFilters();
-  }catch(e){
-    document.getElementById('roomsGrid').innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;
-  }
-}
-
-// ── FILTERS ──
-window.filterType=el=>{
-  activeType=el.dataset.type;
-  showSavedOnly=false;
-  document.querySelectorAll('#typeFilters .filter-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  applyFilters();
-};
-window.filterCity=el=>{
-  activeCity=el.dataset.city;
-  document.querySelectorAll('#cityScroll .city-pill').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  applyFilters();
-};
-
-window.applyFilters=()=>{
-  const q=(document.getElementById('searchInput').value||'').toLowerCase();
-  const minP=Number(document.getElementById('priceMin').value)||0;
-  const maxP=Number(document.getElementById('priceMax').value)||Infinity;
-  const sort=document.getElementById('sortSel').value;
-  let list=[...allRooms];
-
-  if(showSavedOnly) list=list.filter(r=>isRoomSaved(r.id));
-  else if(activeType!=='all'&&activeType!=='saved') list=list.filter(r=>r.type===activeType);
-  if(activeCity!=='all') list=list.filter(r=>r.city===activeCity);
-  if(q) list=list.filter(r=>(r.title||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));
-  if(minP) list=list.filter(r=>Number(r.price)>=minP);
-  if(maxP!==Infinity) list=list.filter(r=>Number(r.price)<=maxP);
-
-  if(sort==='price_low') list=[...list].sort((a,b)=>Number(a.price)-Number(b.price));
-  else if(sort==='price_high') list=[...list].sort((a,b)=>Number(b.price)-Number(a.price));
-  else if(sort==='featured') list=[...list].sort((a,b)=>(a.plan==='urgent'?-2:a.plan==='featured'?-1:0)-(b.plan==='urgent'?-2:b.plan==='featured'?-1:0));
-  else if(sort==='available') list=list.filter(r=>r.available!==false);
-  else list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));
-
-  document.getElementById('listLabel').textContent=`${list.length} listing${list.length!==1?'s':''}`;
-  renderRooms(list);
-};
-
-// ══════════════════════════════════════
-// ⑧ INFINITE SCROLL + RENDER
-// ══════════════════════════════════════
-const PAGE_SIZE=10;
-let currentPage=1, currentList=[], infiniteObserver=null;
-
-function renderRooms(list){
-  currentList=list;currentPage=1;
-  const grid=document.getElementById('roomsGrid');
-  const sentinel=document.getElementById('scrollSentinel');
-  if(!list.length){
-    grid.innerHTML=`<div class="empty"><div class="ei">🏠</div><h3>No listings found</h3><p>Try different filters or <button onclick="openPostModal()" style="color:var(--green);font-weight:700;border:none;background:none;cursor:pointer;font-size:13px;">post your room</button>.</p></div>`;
-    sentinel.classList.remove('loading');
-    return;
-  }
-  grid.innerHTML=list.slice(0,PAGE_SIZE).map(r=>renderRoomCard(r)).join('');
-  if(list.length<=PAGE_SIZE){sentinel.classList.remove('loading');return;}
-  if(infiniteObserver) infiniteObserver.disconnect();
-  infiniteObserver=new IntersectionObserver(entries=>{
-    if(entries[0].isIntersecting&&currentPage*PAGE_SIZE<currentList.length){
-      sentinel.classList.add('loading');
-      setTimeout(()=>{
-        currentPage++;
-        grid.innerHTML=currentList.slice(0,currentPage*PAGE_SIZE).map(r=>renderRoomCard(r)).join('');
-        if(currentPage*PAGE_SIZE>=currentList.length){
-          sentinel.classList.remove('loading');
-          infiniteObserver.disconnect();
-        } else {
-          sentinel.classList.remove('loading');
-        }
-      },400);
-    }
-  },{rootMargin:'200px'});
-  infiniteObserver.observe(sentinel);
-}
-
-function renderRoomCard(r){
-  const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);
-  const imgHtml=imgs.length?`<img src="${esc(imgs[0])}" alt="" onerror="this.style.display='none'">`:'🏠';
-  const ams=(r.amenities||[]).slice(0,4).join(' · ');
-  const isNew=r.createdAt&&(Date.now()-new Date(r.createdAt?.toDate?.()??r.createdAt).getTime())<3*24*60*60*1000;
-  const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');
-  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-  const timeAgo=r.createdAt?fmtAgo(r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt)):'Recently';
-  // ⑦ bookmark state
-  const saved=isRoomSaved(r.id);
-  const bmBtn=`<button class="room-bm-btn${saved?' saved':''}" data-id="${r.id}" onclick="toggleRoomSave(event,'${r.id}')" title="${saved?'Saved':'Save'}">${saved?'🏷️':'🔖'}</button>`;
-  return `
-  <div class="room-card ${r.plan==='featured'||r.plan==='urgent'?'featured':''} ${r.plan==='urgent'?'urgent':''}"
-       onclick="viewRoom('${r.id}')">
-    <div class="room-imgs" style="position:relative;">
-      ${imgHtml}
-      ${imgs.length>1?`<div class="room-imgs-count">📷 ${imgs.length}</div>`:''}
-      ${r.plan==='urgent'?'<div class="room-badge badge-urgent">🔴 URGENT</div>':''}
-      ${r.plan==='featured'?'<div class="room-badge badge-featured">⭐ FEATURED</div>':''}
-      ${isNew?'<div class="room-badge badge-new" style="top:10px;right:46px;left:auto;">NEW</div>':''}
-      ${r.listerType==='agent'?'<div class="room-badge badge-agent" style="bottom:10px;left:10px;top:auto;">🤝 Agent</div>':''}
-      ${bmBtn}
-    </div>
-    <div class="room-body">
-      <div class="room-price">GHS ${Number(r.price).toLocaleString()} <span>${r.period||'per year'}</span></div>
-      <div class="room-title">${esc(r.title)}</div>
-      <div class="room-loc">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
-      <div class="room-features">
-        ${r.type?`<div class="room-feat">🏠 ${esc(r.type)}</div>`:''}
-        ${r.beds?`<div class="room-feat">🛏 ${r.beds} bed${r.beds!=='1'?'s':''}</div>`:''}
-        ${r.baths?`<div class="room-feat">🚿 ${r.baths} bath</div>`:''}
-        ${ams?`<div class="room-feat">${ams}</div>`:''}
-      </div>
-      ${r.desc?`<div class="room-desc">${esc(r.desc)}</div>`:''}
-      <div class="room-acts" onclick="event.stopPropagation()">
-        ${r.phone?`<a class="room-btn rbtn-call" href="tel:${esc(r.phone)}">📞 Call</a>`:''}
-        ${waNum?`<a class="room-btn rbtn-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank">💬 Chat</a>`:''}
-        <button class="room-btn rbtn-view" onclick="event.stopPropagation();viewRoom('${r.id}')">View →</button>
-        <button class="room-btn" style="flex:0 0 auto;background:${r.available!==false?'#fde8e8':'#f0fff6'};color:${r.available!==false?'var(--red)':'var(--green)'};border:1.5px solid ${r.available!==false?'#f5c6c6':'#b8f0d0'};" onclick="event.stopPropagation();toggleRoomAvail('${r.id}',${r.available!==false})" title="${r.available!==false?'Mark as Rented':'Mark as Available'}">${r.available!==false?'🔴 Rented':'✅ Free'}</button>
-      </div>
-    </div>
-    <div class="room-footer">
-      <span class="room-poster">👤 ${esc(r.poster||'Owner')}</span>
-      <span class="room-date">${timeAgo}</span>
-      <span class="room-views">👁 ${r.views||0}</span>
-    </div>
-  </div>`;
-}
-
-// ── DARK MODE ──
-window.toggleDark=()=>{
-  const html=document.documentElement;
-  const isDark=html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme',isDark?'light':'dark');
-  document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';
-  localStorage.setItem('clTheme',isDark?'light':'dark');
-};
-const savedTheme=localStorage.getItem('clTheme');
-if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';}
-
-// ── VIEW ROOM DETAIL ──
-window.viewRoom=async id=>{
-  const r=allRooms.find(x=>x.id===id);
-  if(!r)return;
-  try{await updateDoc(doc(db,'rooms',id),{views:increment(1)});}catch(_){}
-  const imgs=(r.images||(r.imageUrl?[r.imageUrl]:[]));
-  const ams=(r.amenities||[]).map(a=>`<span style="background:var(--mist);padding:4px 10px;border-radius:8px;font-size:12px;">${a}</span>`).join('');
-  const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');
-  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-  const dotsHtml=imgs.length>1?`<div class="gallery-nav">${imgs.map((_,i)=>`<div class="gn-dot${i===0?' active':''}" onclick="detailShowImg(${i})"></div>`).join('')}</div>`:'';
-  const isSaved=isRoomSaved(r.id);
-  document.getElementById('detailContent').innerHTML=`
-    <div style="position:relative;">
-      <div class="detail-gallery" id="detailGallery">
-        ${imgs.length?`<img id="detailMainImg" src="${esc(imgs[0])}" alt="">`:'🏠'}
-      </div>
-      ${dotsHtml}
-      <button onclick="closeDetailModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;">✕</button>
-    </div>
-    <div style="padding:16px 16px 80px;">
-      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px;">GHS ${Number(r.price).toLocaleString()} <span style="font-size:14px;font-weight:400;color:var(--gray);">${r.period||'per year'}</span></div>
-      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;">${esc(r.title)}</div>
-      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
-        ${r.type?`<span style="background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🏠 ${r.type}</span>`:''}
-        ${r.beds?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🛏 ${r.beds} Bed</span>`:''}
-        ${r.baths?`<span style="background:var(--mist);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;">🚿 ${r.baths} Bath</span>`:''}
-        ${r.listerType==='agent'?`<span style="background:var(--purple);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🤝 Agent</span>`:`<span style="background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">🏠 Owner</span>`}
-        <span style="background:${r.available!==false?'#f0fff6':'#fde8e8'};color:${r.available!==false?'#15803D':'#B91C1C'};font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;">${r.available!==false?'✅ Available':'🔴 Rented'}</span>
-      </div>
-      ${ams?`<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;">Amenities</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${ams}</div></div>`:''}
-      ${r.desc?`<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Description</div><div style="font-size:14px;color:var(--gray);line-height:1.7;">${esc(r.desc)}</div></div>`:''}
-      <div style="display:flex;gap:8px;position:sticky;bottom:18px;">
-        ${r.phone?`<a href="tel:${esc(r.phone)}" style="flex:1;background:var(--green);color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">📞 Call</a>`:''}
-        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+r.type+' in '+r.district+' on CityLinkGH. Is it still available?')}" target="_blank" style="flex:1;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;display:block;">💬 WhatsApp</a>`:''}
-      </div>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <button onclick="shareRoom('${r.id}','${esc(r.title)}','${esc(r.district||r.city||'')}','${r.price||0}')" style="flex:1;background:var(--mist);border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">📤 Share</button>
-        <button onclick="saveRoomFromDetail('${r.id}','${esc(r.title)}')" id="saveRoomBtn_${r.id}" style="flex:1;background:${isSaved?'#f0fff6':'var(--mist)'};border:1px solid var(--border);padding:11px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">${isSaved?'✅ Saved':'🔖 Save'}</button>
-        <button onclick="reportRoom('${r.id}','${esc(r.title)}')" style="flex:1;background:#fde8e8;border:1px solid #f5c6c6;padding:11px;border-radius:10px;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">🚩 Report</button>
-      </div>
-      ${(r.district||r.city)?`
-      <a href="https://www.google.com/maps/search/${encodeURIComponent((r.district||'')+' '+(r.city||'')+' Ghana')}" target="_blank"
-         style="display:flex;align-items:center;gap:10px;background:var(--mist);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:10px;text-decoration:none;color:var(--text);">
-        <span style="font-size:22px;">🗺️</span>
-        <div><div style="font-size:13px;font-weight:700;">View on Google Maps</div><div style="font-size:11px;color:var(--gray);">${esc((r.district||'')+', '+(r.city||''))}</div></div>
-        <span style="margin-left:auto;color:var(--gray);">›</span>
-      </a>`:''}
-      <div style="margin-top:18px;">
-        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="width:3px;height:14px;background:var(--gold);border-radius:2px;display:block;"></span>Similar Rooms</div>
-        <div id="similarRooms" style="display:flex;flex-direction:column;gap:8px;"></div>
-      </div>
-    </div>`;
-  window._detailImgs=imgs;window._detailIdx=0;
-  document.getElementById('detailModal').classList.add('show');
-  setTimeout(()=>{
-    const sim=allRooms.filter(x=>x.id!==r.id&&x.available!==false&&(x.city===r.city||x.type===r.type)).slice(0,3);
-    const simEl=document.getElementById('similarRooms');
-    if(!simEl)return;
-    if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar rooms found.</div>';return;}
-    simEl.innerHTML=sim.map(s=>{
-      const si=(s.images||(s.imageUrl?[s.imageUrl]:[]))[0]||'';
-      return `<div onclick="closeDetailModal();setTimeout(()=>viewRoom('${s.id}'),200)" style="background:var(--mist);border-radius:11px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid var(--border);">
-        <div style="width:54px;height:46px;border-radius:8px;background:var(--mist);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;">${si?`<img src="${esc(si)}" style="width:100%;height:100%;object-fit:cover;">`:'🏠'}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.title||s.type||'Room')}</div>
-          <div style="font-size:11px;color:var(--green);font-weight:700;">GHS ${Number(s.price||0).toLocaleString()}</div>
-          <div style="font-size:10px;color:var(--gray);">📍 ${esc(s.district||s.city||'')}</div>
-        </div>
-        <div style="font-size:10px;color:var(--gray);">›</div>
-      </div>`;
-    }).join('');
-  },100);
-};
-
-window.detailShowImg=idx=>{
-  window._detailIdx=idx;
-  const imgs=window._detailImgs||[];
-  const el=document.getElementById('detailMainImg');
-  if(el&&imgs[idx])el.src=imgs[idx];
-  document.querySelectorAll('.gn-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
-};
-
-window.shareRoom=(id,title,location,price)=>{
-  const url=window.location.origin+'/rooms.html';
-  const text=`🏠 ${title}\n📍 ${location}\n💰 GHS ${Number(price).toLocaleString()}\n\nSee on CityLinkGH: ${url}`;
-  if(navigator.share)navigator.share({title,text,url});
-  else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
-};
-
-// Save from detail modal (syncs with card button)
-window.saveRoomFromDetail=(id,title)=>{
-  let saved=getSaved();
-  const btn=document.getElementById('saveRoomBtn_'+id);
-  const cardBtn=document.querySelector(`.room-bm-btn[data-id="${id}"]`);
-  if(saved.includes(id)){
-    saved=saved.filter(s=>s!==id);
-    if(btn){btn.textContent='🔖 Save';btn.style.background='var(--mist)';}
-    if(cardBtn){cardBtn.textContent='🔖';cardBtn.classList.remove('saved');}
-    showToast('Removed from saved');
-  } else {
-    saved.push(id);
-    if(btn){btn.textContent='✅ Saved';btn.style.background='#f0fff6';}
-    if(cardBtn){cardBtn.textContent='🏷️';cardBtn.classList.add('saved');}
-    showToast('✅ Room saved!');
-  }
-  localStorage.setItem('clSavedRooms',JSON.stringify(saved));
-  updateSavedBadge();
-};
-
-window.reportRoom=(id,title)=>{
-  const reason=prompt(`Report "${title}"\n\nReason (scam, wrong info, unavailable, duplicate):`);
-  if(!reason)return;
-  const reports=JSON.parse(localStorage.getItem('clReports')||'[]');
-  reports.push({id,title,reason,type:'room',date:new Date().toISOString()});
-  localStorage.setItem('clReports',JSON.stringify(reports));
-  showToast('🚩 Reported. Thank you!');
-};
-
+window.toggleRoomSave=(e,id)=>{e.preventDefault();e.stopPropagation();let saved=getSaved();const btn=document.querySelector(`.room-bm-btn[data-id="${id}"]`);if(saved.includes(id)){saved=saved.filter(s=>s!==id);if(btn){btn.textContent='🔖';btn.classList.remove('saved');}showToast('Removed from saved');}else{saved.push(id);if(btn){btn.textContent='🏷️';btn.classList.add('saved');}showToast('✅ Room saved!');}localStorage.setItem('clSavedRooms',JSON.stringify(saved));updateSavedBadge();};
+function updateSavedBadge(){const c=getSaved().length;const nb=document.getElementById('savedNavBadge');const db2=document.getElementById('drawerSavedCount');if(nb){nb.textContent=c;nb.style.display=c>0?'inline-flex':'none';}if(db2){db2.textContent=c;db2.style.display=c>0?'inline-flex':'none';}}
+window.filterSaved=el=>{showSavedOnly=!showSavedOnly;document.querySelectorAll('#typeFilters .fchip').forEach(c=>c.classList.remove('active'));if(showSavedOnly)el.classList.add('active');else document.querySelector('#typeFilters .fchip[data-type="all"]').classList.add('active');applyFilters();};
+window.filterAvailNow=()=>{document.getElementById('sortSel').value='available';applyFilters();document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});showToast('✅ Showing available rooms only');};
+window.toggleDark=()=>{const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';html.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';localStorage.setItem('clTheme',isDark?'light':'dark');};
+const savedTheme=localStorage.getItem('clTheme');if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';}
+async function fetchRooms(){try{const snap=await getDocs(query(collection(db,'rooms'),orderBy('createdAt','desc')));allRooms=snap.docs.map(d=>({id:d.id,...d.data()}));const cutoff=Date.now()-60*24*60*60*1000;allRooms=allRooms.filter(r=>r.createdAt?.toDate?r.createdAt.toDate().getTime()>cutoff:true);const availCount=allRooms.filter(r=>r.available!==false).length;document.getElementById('statTotal').textContent=allRooms.length;document.getElementById('statAvail').textContent=availCount;document.getElementById('statCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;document.getElementById('availCount').textContent=availCount;if(availCount>0)document.getElementById('availBanner').style.display='flex';renderNewThisWeek();updateSavedBadge();applyFilters();}catch(e){document.getElementById('roomsGrid').innerHTML=`<div class="empty-state"><div class="es-ico">⚠️</div><h3>Could not load</h3><p>${e.message}</p></div>`;}}
+function renderNewThisWeek(){const weekAgo=new Date(Date.now()-7*24*60*60*1000);const fresh=allRooms.filter(r=>{const c=r.createdAt?.toDate?.()||new Date(r.createdAt||0);return c>=weekAgo&&r.available!==false;}).sort((a,b)=>(b.createdAt?.toDate?.()||new Date(b.createdAt||0))-(a.createdAt?.toDate?.()||new Date(a.createdAt||0))).slice(0,10);const sec=document.getElementById('newWeekSection');if(!fresh.length){sec.style.display='none';return;}sec.style.display='block';document.getElementById('newWeekTrack').innerHTML=fresh.map(r=>{const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);const img=imgs[0]||'';return `<div class="nw-card" onclick="viewRoom('${r.id}')"><div class="nw-img">${img?`<img src="${esc(img)}" alt="" loading="lazy">`:'🏠'}<div class="nw-badge">NEW</div></div><div class="nw-info"><div class="nw-price">GHS ${Number(r.price||0).toLocaleString()}</div><div class="nw-type">${esc(r.type||'Room')}</div><div class="nw-loc">📍 ${esc(r.district||r.city||'Ghana')}</div></div></div>`;}).join('');}
+window.filterNewThisWeek=()=>{document.getElementById('sortSel').value='newest';applyFilters();document.getElementById('roomsGrid').scrollIntoView({behavior:'smooth',block:'start'});};
+window.filterType=el=>{activeType=el.dataset.type;showSavedOnly=false;document.querySelectorAll('#typeFilters .fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
+window.filterCity=el=>{activeCity=el.dataset.city;document.querySelectorAll('.city-pill').forEach(c=>c.classList.remove('active'));el.classList.add('active');applyFilters();};
+window.applyFilters=()=>{const q=(document.getElementById('searchInput').value||'').toLowerCase();const minP=Number(document.getElementById('priceMin').value)||0;const maxP=Number(document.getElementById('priceMax').value)||Infinity;const sort=document.getElementById('sortSel').value;let list=[...allRooms];if(showSavedOnly)list=list.filter(r=>isRoomSaved(r.id));else if(activeType!=='all'&&activeType!=='saved')list=list.filter(r=>r.type===activeType);if(activeCity!=='all')list=list.filter(r=>r.city===activeCity);if(q)list=list.filter(r=>(r.title||'').toLowerCase().includes(q)||(r.district||'').toLowerCase().includes(q)||(r.city||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));if(minP)list=list.filter(r=>Number(r.price)>=minP);if(maxP!==Infinity)list=list.filter(r=>Number(r.price)<=maxP);if(sort==='price_low')list=[...list].sort((a,b)=>Number(a.price)-Number(b.price));else if(sort==='price_high')list=[...list].sort((a,b)=>Number(b.price)-Number(a.price));else if(sort==='featured')list=[...list].sort((a,b)=>(a.plan==='urgent'?-2:a.plan==='featured'?-1:0)-(b.plan==='urgent'?-2:b.plan==='featured'?-1:0));else if(sort==='available')list=list.filter(r=>r.available!==false);else list=[...list].sort((a,b)=>new Date(b.createdAt?.toDate?.()??b.createdAt)-new Date(a.createdAt?.toDate?.()??a.createdAt));document.getElementById('listLabel').textContent=`${list.length} listing${list.length!==1?'s':''}`;renderRooms(list);};
+const PAGE_SIZE=10;let currentPage=1,currentList=[],infiniteObserver=null;
+function renderRooms(list){currentList=list;currentPage=1;const grid=document.getElementById('roomsGrid');const sentinel=document.getElementById('scrollSentinel');if(!list.length){grid.innerHTML=`<div class="empty-state"><div class="es-ico">🏠</div><h3>No listings found</h3><p>Try different filters or <button onclick="openPostModal()" style="color:var(--green);font-weight:700;border:none;background:none;cursor:pointer;font-size:13px;">post your room</button>.</p></div>`;sentinel.classList.remove('loading');return;}grid.innerHTML=list.slice(0,PAGE_SIZE).map(r=>renderRoomCard(r)).join('');if(list.length<=PAGE_SIZE){sentinel.classList.remove('loading');return;}if(infiniteObserver)infiniteObserver.disconnect();infiniteObserver=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&currentPage*PAGE_SIZE<currentList.length){sentinel.classList.add('loading');setTimeout(()=>{currentPage++;grid.innerHTML=currentList.slice(0,currentPage*PAGE_SIZE).map(r=>renderRoomCard(r)).join('');if(currentPage*PAGE_SIZE>=currentList.length){sentinel.classList.remove('loading');infiniteObserver.disconnect();}else sentinel.classList.remove('loading');},400);}},{rootMargin:'200px'});infiniteObserver.observe(sentinel);}
+function typeEmoji(t){return{'Single Room':'🛏','Chamber & Hall':'🛋','Self Contained':'🚿','1 Bedroom':'🏡','2 Bedroom':'🏠','3 Bedroom':'🏘','Apartment':'🏢','House':'🏗','Office Space':'💼','Shop':'🏪'}[t]||'🏠';}
+function renderRoomCard(r){const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);const imgUrl=imgs[0]||'';const ams=(r.amenities||[]).slice(0,3).join(' · ');const isNew=r.createdAt&&(Date.now()-new Date(r.createdAt?.toDate?.()??r.createdAt).getTime())<3*24*60*60*1000;const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;const timeAgo=r.createdAt?fmtAgo(r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt)):'Recently';const saved=isRoomSaved(r.id);const planClass=r.plan==='urgent'?'card-urgent':r.plan==='featured'?'card-featured':r.plan==='standard'?'card-standard':'';const planRibbon=r.plan==='urgent'?'<div class="plan-ribbon ribbon-urgent">🔴 Urgent</div>':r.plan==='featured'?'<div class="plan-ribbon ribbon-featured">⭐ Featured</div>':r.plan==='standard'?'<div class="plan-ribbon ribbon-standard">✓ Listed</div>':'';const availBadge=r.available===false?'<div class="avail-badge rented">🔴 Rented</div>':'<div class="avail-badge available">✅ Available</div>';
+return `<div class="room-card ${planClass}" onclick="viewRoom('${r.id}')">
+  <div class="card-img-wrap">
+    ${imgUrl?`<img class="card-img" src="${esc(imgUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:''}
+    <div class="card-img-fallback" style="${imgUrl?'display:none':''}">${typeEmoji(r.type)}</div>
+    ${availBadge}${imgs.length>1?`<div class="img-count-badge">📷 ${imgs.length}</div>`:''}
+    <button class="room-bm-btn${saved?' saved':''}" data-id="${r.id}" onclick="toggleRoomSave(event,'${r.id}')">${saved?'🏷️':'🔖'}</button>
+    ${planRibbon}${isNew?'<div class="new-badge-overlay">NEW</div>':''}${r.listerType==='agent'?'<div class="agent-badge">🤝 Agent</div>':''}
+  </div>
+  <div class="card-body">
+    <div class="room-price">GHS ${Number(r.price||0).toLocaleString()} <span class="price-period">${r.period||'per year'}</span></div>
+    <div class="card-name">${esc(r.title||r.type||'Room')}</div>
+    <div class="card-loc">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div>
+    <div class="room-feats">${r.type?`<span class="room-feat">${typeEmoji(r.type)} ${esc(r.type)}</span>`:''}${r.beds?`<span class="room-feat">🛏 ${r.beds} bed</span>`:''}${r.baths?`<span class="room-feat">🚿 ${r.baths} bath</span>`:''}</div>
+    ${r.desc?`<div class="card-desc">${esc(r.desc)}</div>`:''}
+    ${ams?`<div class="room-ams">${ams}</div>`:''}
+  </div>
+  <div class="card-footer">
+    <span class="cf-poster">👤 ${esc(r.poster||'Owner')}</span>
+    <span class="cf-meta">${timeAgo} · 👁 ${r.views||0}</span>
+  </div>
+  <div class="card-actions">
+    ${r.phone?`<a class="ca-btn ca-call" href="tel:${esc(r.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
+    ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+(r.type||'room')+' in '+(r.district||r.city||'')+' on CityLinkGH. Is it still available?')}" target="_blank" onclick="event.stopPropagation()">💬 Chat</a>`:''}
+    <button class="ca-btn ca-view" onclick="event.stopPropagation();viewRoom('${r.id}')">View →</button>
+    <button class="ca-btn ca-avail" onclick="event.stopPropagation();toggleRoomAvail('${r.id}',${r.available!==false})">${r.available!==false?'🔴':'✅'}</button>
+  </div>
+</div>`;}
+window.viewRoom=async id=>{const r=allRooms.find(x=>x.id===id);if(!r)return;try{await updateDoc(doc(db,'rooms',id),{views:increment(1)});}catch(_){}const imgs=r.images||(r.imageUrl?[r.imageUrl]:[]);const rawWa=(r.whatsapp||r.phone||'').replace(/\D/g,'');const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;const ams=(r.amenities||[]).map(a=>`<span class="detail-am">${a}</span>`).join('');const dotsHtml=imgs.length>1?`<div class="gallery-nav">${imgs.map((_,i)=>`<div class="gn-dot${i===0?' active':''}" onclick="detailShowImg(${i})"></div>`).join('')}</div>`:'';const isSaved=isRoomSaved(r.id);document.getElementById('detailContent').innerHTML=`<div style="position:relative;"><div class="detail-gallery" id="detailGallery">${imgs.length?`<img id="detailMainImg" src="${esc(imgs[0])}" alt="">`:`<div style="height:220px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:56px;">🏠</div>`}</div>${dotsHtml}<button onclick="closeDetailModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button></div><div style="padding:16px 16px 24px;"><div class="detail-price">GHS ${Number(r.price||0).toLocaleString()} <span style="font-size:14px;font-weight:400;color:var(--gray);">${r.period||'per year'}</span></div><div class="detail-title">${esc(r.title||r.type||'Room')}</div><div class="detail-loc">📍 ${esc(r.district||'')}${r.district&&r.city?', ':''}${esc(r.city||'')}</div><div class="detail-badges">${r.type?`<span class="dbadge dbadge-type">${typeEmoji(r.type)} ${esc(r.type)}</span>`:''}${r.beds?`<span class="dbadge">🛏 ${r.beds} Bed</span>`:''}${r.baths?`<span class="dbadge">🚿 ${r.baths} Bath</span>`:''}${r.listerType==='agent'?`<span class="dbadge dbadge-agent">🤝 Agent</span>`:`<span class="dbadge dbadge-owner">🏠 Owner</span>`}<span class="dbadge ${r.available!==false?'dbadge-avail':'dbadge-rented'}">${r.available!==false?'✅ Available':'🔴 Rented'}</span></div>${ams?`<div style="margin-bottom:12px;"><div class="detail-section-label">Amenities</div><div class="detail-ams">${ams}</div></div>`:''}${r.desc?`<div style="margin-bottom:14px;"><div class="detail-section-label">Description</div><div class="detail-desc">${esc(r.desc)}</div></div>`:''}<div class="detail-ctas">${r.phone?`<a href="tel:${esc(r.phone)}" class="detail-cta-btn cta-call">📞 Call</a>`:''}${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I saw your '+(r.type||'room')+' on CityLinkGH. Is it still available?')}" target="_blank" class="detail-cta-btn cta-wa">💬 WhatsApp</a>`:''}</div><div class="detail-actions"><button onclick="shareRoom('${r.id}','${esc(r.title||r.type||'')}','${esc(r.district||r.city||'')}','${r.price||0}')" class="detail-act-btn">📤 Share</button><button onclick="saveRoomFromDetail('${r.id}')" id="saveDetailBtn_${r.id}" class="detail-act-btn${isSaved?' detail-act-saved':''}">${isSaved?'✅ Saved':'🔖 Save'}</button><button onclick="reportRoom('${r.id}','${esc(r.title||'Room')}')" class="detail-act-btn detail-act-report">🚩 Report</button></div>${(r.district||r.city)?`<a href="https://www.google.com/maps/search/${encodeURIComponent((r.district||'')+' '+(r.city||'')+' Ghana')}" target="_blank" class="maps-link"><span>🗺️</span><div><div style="font-size:13px;font-weight:700;">View on Google Maps</div><div style="font-size:11px;color:var(--gray);">${esc((r.district||'')+', '+(r.city||''))}</div></div><span style="margin-left:auto;color:var(--gray);">›</span></a>`:''}<div style="margin-top:18px;"><div class="detail-section-label" style="margin-bottom:10px;">Similar Rooms</div><div id="similarRooms"></div></div></div>`;window._detailImgs=imgs;window._detailIdx=0;document.getElementById('detailModal').classList.add('show');setTimeout(()=>{const sim=allRooms.filter(x=>x.id!==r.id&&x.available!==false&&(x.city===r.city||x.type===r.type)).slice(0,3);const simEl=document.getElementById('similarRooms');if(!simEl)return;if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar rooms found.</div>';return;}simEl.innerHTML=sim.map(s=>{const si=(s.images||(s.imageUrl?[s.imageUrl]:[]))[0]||'';return `<div onclick="closeDetailModal();setTimeout(()=>viewRoom('${s.id}'),200)" class="similar-item"><div class="sim-thumb">${si?`<img src="${esc(si)}" alt="">`:'🏠'}</div><div style="flex:1;min-width:0;"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.title||s.type||'Room')}</div><div style="font-size:11px;color:var(--green);font-weight:700;">GHS ${Number(s.price||0).toLocaleString()}</div><div style="font-size:10px;color:var(--gray);">📍 ${esc(s.district||s.city||'')}</div></div><span style="color:var(--gray);font-size:12px;">›</span></div>`;}).join('');},100);};
+window.detailShowImg=idx=>{window._detailIdx=idx;const imgs=window._detailImgs||[];const el=document.getElementById('detailMainImg');if(el&&imgs[idx])el.src=imgs[idx];document.querySelectorAll('.gn-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));};
+window.shareRoom=(id,title,location,price)=>{const url=window.location.origin+'/room.html';const text=`🏠 ${title}\n📍 ${location}\n💰 GHS ${Number(price).toLocaleString()}\n\nSee on CityLinkGH: ${url}`;if(navigator.share)navigator.share({title,text,url});else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');};
+window.saveRoomFromDetail=id=>{let saved=getSaved();const btn=document.getElementById('saveDetailBtn_'+id);const cardBtn=document.querySelector(`.room-bm-btn[data-id="${id}"]`);if(saved.includes(id)){saved=saved.filter(s=>s!==id);if(btn){btn.textContent='🔖 Save';btn.classList.remove('detail-act-saved');}if(cardBtn){cardBtn.textContent='🔖';cardBtn.classList.remove('saved');}showToast('Removed from saved');}else{saved.push(id);if(btn){btn.textContent='✅ Saved';btn.classList.add('detail-act-saved');}if(cardBtn){cardBtn.textContent='🏷️';cardBtn.classList.add('saved');}showToast('✅ Room saved!');}localStorage.setItem('clSavedRooms',JSON.stringify(saved));updateSavedBadge();};
+window.reportRoom=(id,title)=>{const reason=prompt(`Report "${title}"\n\nReason:`);if(!reason)return;const reports=JSON.parse(localStorage.getItem('clReports')||'[]');reports.push({id,title,reason,type:'room',date:new Date().toISOString()});localStorage.setItem('clReports',JSON.stringify(reports));showToast('🚩 Reported. Thank you!');};
 window.closeDetailModal=()=>document.getElementById('detailModal').classList.remove('show');
-
-// ── POST MODAL ──
 window.openPostModal=()=>{document.getElementById('postModal').classList.add('show');renderImgGrid();};
 window.closePostModal=()=>document.getElementById('postModal').classList.remove('show');
-
-window.selectPlan=el=>{
-  selPlan=el.dataset.plan;selPrice=Number(el.dataset.price);
-  document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');
-  document.getElementById('photoLimitTxt').textContent=`max ${IMG_LIMITS[selPlan]} photo${IMG_LIMITS[selPlan]!==1?'s':''} (${selPlan} plan)`;
-  document.getElementById('paySection').style.display=selPrice>0?'block':'none';
-  document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';
-  renderImgGrid();
-};
+window.selectPlan=el=>{selPlan=el.dataset.plan;selPrice=Number(el.dataset.price);document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');document.getElementById('photoLimitTxt').textContent=`max ${IMG_LIMITS[selPlan]} photo${IMG_LIMITS[selPlan]!==1?'s':''} (${selPlan} plan)`;document.getElementById('paySection').style.display=selPrice>0?'block':'none';document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';renderImgGrid();};
 window.toggleAmenity=el=>el.classList.toggle('active');
-window.setListerType=type=>{
-  listerType=type;
-  ['owner','agent','caretaker'].forEach(t=>document.getElementById(t+'Pill').classList.remove('active'));
-  document.getElementById(type+'Pill').classList.add('active');
-};
-
-function renderImgGrid(){
-  const limit=IMG_LIMITS[selPlan]||1;
-  const grid=document.getElementById('imgUpGrid');
-  let html=uploadedImgs.map((img,i)=>`<div class="img-up-slot"><img src="${esc(img)}" alt=""><button class="img-up-del" onclick="removeImg(${i})">×</button></div>`).join('');
-  if(uploadedImgs.length<limit)html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
-  grid.innerHTML=html;
-}
+window.setListerType=type=>{listerType=type;['owner','agent','caretaker'].forEach(t=>document.getElementById(t+'Pill').classList.remove('active'));document.getElementById(type+'Pill').classList.add('active');};
+function renderImgGrid(){const limit=IMG_LIMITS[selPlan]||1;const grid=document.getElementById('imgUpGrid');let html=uploadedImgs.map((img,i)=>`<div class="img-up-slot"><img src="${esc(img)}" alt=""><button class="img-up-del" onclick="removeImg(${i})">×</button></div>`).join('');if(uploadedImgs.length<limit)html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;grid.innerHTML=html;}
 window.removeImg=idx=>{uploadedImgs.splice(idx,1);renderImgGrid();};
-
-window.uploadImg=async input=>{
-  const f=input.files[0];if(!f)return;
-  if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
-  const limit=IMG_LIMITS[selPlan]||1;
-  if(uploadedImgs.length>=limit){showToast(`❌ Max ${limit} photos for ${selPlan}`);return;}
-  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
-  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
-  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','ghanaList_rooms');
-  try{
-    let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
-    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
-    const data=await res.json();clearInterval(iv);
-    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedImgs.push(data.secure_url);renderImgGrid();setTimeout(()=>bar.style.display='none',800);}
-    else throw new Error(data.error?.message||'Failed');
-  }catch(e){stat.textContent='❌ Failed';fill.style.width='0%';}
-};
-
-window.submitRoom=async()=>{
-  const title=document.getElementById('rTitle').value.trim();
-  const city=document.getElementById('rCity').value;
-  const type=document.getElementById('rType').value;
-  const price=document.getElementById('rPrice').value;
-  const phone=document.getElementById('rPhone').value.trim();
-  if(!title){showToast('⚠️ Title required');return;}
-  if(!city){showToast('⚠️ City required');return;}
-  if(!type){showToast('⚠️ Type required');return;}
-  if(!price){showToast('⚠️ Price required');return;}
-  if(!phone){showToast('⚠️ Phone required');return;}
-  const amenities=[...document.querySelectorAll('#amenitiesGrid .filter-chip.active')].map(el=>el.textContent.trim());
-  const roomData={
-    title,city,type,price:Number(price),
-    period:document.getElementById('rPeriod').value,
-    district:document.getElementById('rDistrict').value.trim(),
-    beds:document.getElementById('rBeds').value,
-    baths:document.getElementById('rBaths').value,
-    desc:document.getElementById('rDesc').value.trim(),
-    phone,whatsapp:document.getElementById('rWa').value.trim(),
-    poster:document.getElementById('rPoster').value.trim(),
-    listerType,amenities,images:uploadedImgs,imageUrl:uploadedImgs[0]||'',
-    plan:selPlan,available:true,views:0,createdAt:serverTimestamp()
-  };
-  if(selPrice>0){
-    const email=document.getElementById('payEmail').value.trim();
-    if(!email){showToast('⚠️ Email required for payment');return;}
-    const handler=PaystackPop.setup({
-      key:PAYSTACK_KEY,email,amount:selPrice*100,currency:'GHS',ref:'ROOM-'+Date.now(),
-      onSuccess:async response=>{
-        roomData.paid=true;roomData.payRef=response.reference;
-        await doSaveRoom(roomData);
-        await sendSMS(phone,`CityLinkGH: Your ${type} listing in ${city} is now live! Ref: ${response.reference}`);
-      },
-      onClose:()=>showToast('⚠️ Payment cancelled')
-    });
-    handler.openIframe();
-  } else {
-    await doSaveRoom(roomData);
-  }
-};
-
-async function doSaveRoom(data){
-  const btn=document.getElementById('submitRoomBtn');
-  btn.disabled=true;document.getElementById('submitRoomTxt').textContent='Posting…';
-  try{
-    await addDoc(collection(db,'rooms'),data);
-    showToast('✅ Room posted successfully!');
-    closePostModal();uploadedImgs=[];
-    await fetchRooms();
-  }catch(e){showToast('❌ '+e.message);}
-  finally{btn.disabled=false;document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';}
-}
-
-async function sendSMS(to,message){
-  if(!ARKESEL_KEY||ARKESEL_KEY==='YOUR_ARKESEL_API_KEY')return;
-  let num=to.replace(/\D/g,'');
-  if(num.startsWith('0'))num='233'+num.slice(1);
-  if(!num.startsWith('233'))num='233'+num;
-  try{await fetch('https://sms.arkesel.com/api/v2/sms/send',{method:'POST',headers:{'api-key':ARKESEL_KEY,'Content-Type':'application/json'},body:JSON.stringify({sender:'CityLinkGH',message,recipients:[num]})});}
-  catch(e){console.log('SMS:',e.message);}
-}
-
-window.toggleRoomAvail=async(id,currentlyAvail)=>{
-  try{
-    await updateDoc(doc(db,'rooms',id),{available:!currentlyAvail});
-    showToast(currentlyAvail?'🔴 Marked as Rented':'✅ Marked as Available');
-    await fetchRooms();
-  }catch(e){showToast('❌ '+e.message);}
-};
-
+window.uploadImg=async input=>{const f=input.files[0];if(!f)return;if(f.size>5*1024*1024){showToast('Max 5MB');return;}if(uploadedImgs.length>=(IMG_LIMITS[selPlan]||1)){showToast(`Max ${IMG_LIMITS[selPlan]} photos`);return;}const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');bar.style.display='block';stat.textContent='Uploading…';fill.style.width='10%';const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','ghanaList_rooms');try{let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});const data=await res.json();clearInterval(iv);if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedImgs.push(data.secure_url);renderImgGrid();setTimeout(()=>bar.style.display='none',800);}else throw new Error(data.error?.message||'Failed');}catch(e){stat.textContent='❌ Failed';fill.style.width='0%';}};
+window.submitRoom=async()=>{const title=document.getElementById('rTitle').value.trim();const city=document.getElementById('rCity').value;const type=document.getElementById('rType').value;const price=document.getElementById('rPrice').value;const phone=document.getElementById('rPhone').value.trim();if(!title){showToast('Title required');return;}if(!city){showToast('City required');return;}if(!type){showToast('Type required');return;}if(!price){showToast('Price required');return;}if(!phone){showToast('Phone required');return;}const amenities=[...document.querySelectorAll('#amenitiesGrid .amenity-chip.active')].map(el=>el.textContent.trim());const roomData={title,city,type,price:Number(price),period:document.getElementById('rPeriod').value,district:document.getElementById('rDistrict').value.trim(),beds:document.getElementById('rBeds').value,baths:document.getElementById('rBaths').value,desc:document.getElementById('rDesc').value.trim(),phone,whatsapp:document.getElementById('rWa').value.trim(),poster:document.getElementById('rPoster').value.trim(),listerType,amenities,images:uploadedImgs,imageUrl:uploadedImgs[0]||'',plan:selPlan,available:true,views:0,createdAt:serverTimestamp()};if(selPrice>0){const email=document.getElementById('payEmail').value.trim();if(!email){showToast('Email required');return;}const handler=PaystackPop.setup({key:PAYSTACK_KEY,email,amount:selPrice*100,currency:'GHS',ref:'ROOM-'+Date.now(),onSuccess:async response=>{roomData.paid=true;roomData.payRef=response.reference;await doSaveRoom(roomData);},onClose:()=>showToast('Payment cancelled')});handler.openIframe();}else{await doSaveRoom(roomData);}};
+async function doSaveRoom(data){const btn=document.getElementById('submitRoomBtn');btn.disabled=true;document.getElementById('submitRoomTxt').textContent='Posting…';try{await addDoc(collection(db,'rooms'),data);showToast('✅ Room posted!');closePostModal();uploadedImgs=[];await fetchRooms();}catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;document.getElementById('submitRoomTxt').textContent=selPrice>0?`Pay GHS ${selPrice} & Post`:'Post Listing';}}
+window.toggleRoomAvail=async(id,currentlyAvail)=>{try{await updateDoc(doc(db,'rooms',id),{available:!currentlyAvail});showToast(currentlyAvail?'🔴 Marked as Rented':'✅ Marked as Available');await fetchRooms();}catch(e){showToast('❌ '+e.message);}};
 document.getElementById('postModal').addEventListener('click',e=>{if(e.target===document.getElementById('postModal'))closePostModal();});
 document.getElementById('detailModal').addEventListener('click',e=>{if(e.target===document.getElementById('detailModal'))closeDetailModal();});
-
-function fmtAgo(date){
-  if(!date)return'Recently';
-  const diff=Date.now()-new Date(date).getTime();
-  if(isNaN(diff))return'Recently';
-  const m=Math.floor(diff/60000);
-  if(m<60)return`${m}m ago`;
-  const h=Math.floor(m/60);
-  if(h<24)return`${h}h ago`;
-  return`${Math.floor(h/24)}d ago`;
-}
+function fmtAgo(date){if(!date)return'Recently';const d=Date.now()-new Date(date).getTime();if(isNaN(d))return'Recently';const m=Math.floor(d/60000);if(m<60)return`${m}m ago`;const h=Math.floor(m/60);if(h<24)return`${h}h ago`;return`${Math.floor(h/24)}d ago`;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-let toastT;
-window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
-
-fetchRooms();
-renderImgGrid();
-
-window.toggleDrawer=()=>{
-  const h=document.getElementById('hamburger');
-  const d=document.getElementById('navDrawer');
-  const o=document.getElementById('navOverlay');
-  h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');
-  document.body.style.overflow=d.classList.contains('open')?'hidden':'';
-};
+let toastT;window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+fetchRooms();renderImgGrid();
+window.toggleDrawer=()=>{const h=document.getElementById('hamburger'),d=document.getElementById('navDrawer'),o=document.getElementById('navOverlay');h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');document.body.style.overflow=d.classList.contains('open')?'hidden':'';};
 document.querySelectorAll('.drawer-link').forEach(a=>{if(a.href===window.location.href)a.classList.add('active');});
 </script>
-
 <script>
-// ⑨ BACK TO TOP
-window.addEventListener('scroll',()=>{
-  const btn=document.getElementById('backTop');
-  if(window.scrollY>400)btn.classList.add('visible');
-  else btn.classList.remove('visible');
-},{passive:true});
-
-// Swipe to close detail modal
-let touchStartY=0;
-document.getElementById('detailModal').addEventListener('touchstart',e=>{touchStartY=e.touches[0].clientY;},{passive:true});
-document.getElementById('detailModal').addEventListener('touchend',e=>{
-  if(e.changedTouches[0].clientY-touchStartY>80){
-    document.getElementById('detailModal').classList.remove('show');
-  }
-},{passive:true});
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>400);},{passive:true});
+let tsY=0;
+document.getElementById('detailModal').addEventListener('touchstart',e=>{tsY=e.touches[0].clientY;},{passive:true});
+document.getElementById('detailModal').addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-tsY>80)document.getElementById('detailModal').classList.remove('show');},{passive:true});
 </script>
 </body>
 </html>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer=window.dataLayer||[];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());
-  gtag('config','G-XXXXXXXXXX');
-</script>

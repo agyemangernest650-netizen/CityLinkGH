@@ -370,6 +370,15 @@ window.confirmBooking = async () => {
   if (!name)       { showToast('⚠️ Enter your name'); return; }
   if (!phone)      { showToast('⚠️ Enter your phone number'); return; }
 
+  // businessOwnerId is required by the Firestore rules so the
+  // owner can later read/update this booking on their dashboard.
+  // It must already exist on the business document (set when the
+  // business is linked to an owner account in admin.html).
+  if (!biz.ownerUid) {
+    showToast('⚠️ This business has no owner account linked yet. Booking cannot be completed — please contact the business directly.');
+    return;
+  }
+
   const btn = document.getElementById('bookBtn');
   btn.disabled = true;
   document.getElementById('bookBtnTxt').textContent = 'Confirming…';
@@ -381,6 +390,7 @@ window.confirmBooking = async () => {
   const booking = {
     bookingRef:   refId,
     businessId:   bizId,
+    businessOwnerId: biz.ownerUid,
     businessName: biz.name,
     businessPhone: biz.phone||'',
     businessWhatsapp: biz.whatsapp||biz.phone||'',

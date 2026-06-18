@@ -88,6 +88,8 @@ const firebaseConfig = {
   appId: "1:807811031269:web:167b22e23f49992136340c"
 };
 
+// Must match the admin email used in admin.html / firestore.rules
+const ADMIN_EMAIL = "agyemangernest650@gmail.com";
 
 const app  = initializeApp(firebaseConfig);
 const db   = getFirestore(app);
@@ -95,20 +97,55 @@ const auth = getAuth(app);
 
 let allBookings = [], currentTab = 'all', selCalDate = null;
 let mcYear = new Date().getFullYear(), mcMonth = new Date().getMonth();
+let myBusinessIds = [], isAdminUser = false;
 
 const TODAY = new Date().toISOString().split('T')[0];
 
 // ── AUTH CHECK ──
-onAuthStateChanged(auth, user => {
-  if (user) fetchBookings();
-  else { window.location.href = 'profile.html'; }
+onAuthStateChanged(auth, async user => {
+  if (!user) { window.location.href = 'profile.html'; return; }
+
+  isAdminUser = user.email === ADMIN_EMAIL;
+
+  if (isAdminUser) {
+    // Admin sees every business's bookings
+    await fetchBookings();
+  } else {
+    // Business owner — find which business(es) belong to this uid first
+    try {
+      const bizSnap = await getDocs(query(collection(db,'businesses'), where('ownerUid','==',user.uid)));
+      myBusinessIds = bizSnap.docs.map(d=>d.id);
+
+      if (!myBusinessIds.length) {
+        document.getElementById('bookingsList').innerHTML =
+          `<div class="empty"><div class="ei">🏪</div><h3>No business linked to your account</h3><p>Ask the CityLinkGH team to link your business to this login before you can view bookings.</p></div>`;
+        ['stTotal','stToday','stPending','stCancelled','todayCount'].forEach(id=>document.getElementById(id).textContent='0');
+        document.getElementById('todaySub').textContent = 'No business linked yet';
+        return;
+      }
+      await fetchBookings();
+    } catch(e) {
+      document.getElementById('bookingsList').innerHTML = `<div class="empty"><div class="ei">⚠️</div><h3>Could not verify your business</h3><p>${e.message}</p></div>`;
+    }
+  }
 });
 
 // ── FETCH ──
 async function fetchBookings() {
   try {
-    const q    = query(collection(db,'bookings'), orderBy('createdAt','desc'));
-    const snap = await getDocs(q);
+    let snap;
+    if (isAdminUser) {
+      // Admin: all bookings, no filter
+      snap = await getDocs(query(collection(db,'bookings'), orderBy('createdAt','desc')));
+    } else {
+      // Owner: only bookings for businesses they own.
+      // Firestore 'in' queries support max 30 values — fine for a single owner's businesses.
+      snap = await getDocs(query(
+        collection(db,'bookings'),
+        where('businessId','in', myBusinessIds.slice(0,30)),
+        orderBy('createdAt','desc')
+      ));
+    }
     allBookings = snap.docs.map(d=>({id:d.id,...d.data()}));
     updateStats();
     renderMiniCal();
@@ -135,8 +172,9 @@ function updateStats() {
 
 // ── BIZ FILTER ──
 function populateBizFilter() {
-  const bizNames = [...new Set(allBookings.map(b=>b.businessName).filter(Boolean))];
   const sel = document.getElementById('bizFilter');
+  sel.innerHTML = '<option value="">All Businesses</option>';
+  const bizNames = [...new Set(allBookings.map(b=>b.businessName).filter(Boolean))];
   bizNames.forEach(n=>{
     const opt=document.createElement('option');
     opt.value=n; opt.textContent=n; sel.appendChild(opt);
@@ -276,7 +314,7 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
 
-// ── FEATURE 14: RECORD MOMO PAYMENT REF ──
+// ── RECORD MOMO PAYMENT REF ──
 window.recordMomoRef=async id=>{
   const b=allBookings.find(x=>x.id===id);
   const existing=b?.momoRef?`Current: ${b.momoRef}\n\n`:'';

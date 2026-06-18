@@ -20,7 +20,6 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Admin Panel — CityLinkGH","url":"https://citylinkgh.vercel.app/admin.html","description":"CityLinkGH admin panel.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
 </script>
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer=window.dataLayer||[];
@@ -32,7 +31,6 @@
 <body>
 <div class="toast" id="toast"></div>
 
-<!-- LOGIN -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
     <div class="login-logo">CityLink<span>GH</span></div>
@@ -44,7 +42,6 @@
   </div>
 </div>
 
-<!-- ADMIN -->
 <div class="admin-wrap" id="adminWrap">
   <header>
     <div style="display:flex;align-items:center;">
@@ -62,12 +59,12 @@
     <button class="sec-tab" onclick="switchSection('jobs',this)">💼 Jobs</button>
     <button class="sec-tab" onclick="switchSection('rooms',this)">🏠 Rooms</button>
     <button class="sec-tab" onclick="switchSection('buy',this)">🛍️ Buy&Sell</button>
+    <button class="sec-tab" onclick="switchSection('news',this)">📰 News</button>
     <button class="sec-tab" onclick="switchSection('analytics',this)">📊 Stats</button>
   </div>
 
   <div class="body">
 
-    <!-- BUSINESSES -->
     <div class="section-panel active" id="panel-businesses">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="sTotal" style="color:var(--ink);">—</div><div class="stat-l">Total</div></div>
@@ -164,7 +161,6 @@
       <div class="biz-list" id="bizList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
-    <!-- JOBS -->
     <div class="section-panel" id="panel-jobs">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="jTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Jobs</div></div>
@@ -239,7 +235,6 @@
       <div class="biz-list" id="jobList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
-    <!-- ROOMS -->
     <div class="section-panel" id="panel-rooms">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="rTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Rooms</div></div>
@@ -317,9 +312,6 @@
       <div class="biz-list" id="roomList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         BUY & SELL SECTION
-    ═══════════════════════════════════════════ -->
     <div class="section-panel" id="panel-buy">
       <div class="stats">
         <div class="stat"><div class="stat-n" id="bsTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Items</div></div>
@@ -331,7 +323,6 @@
         <div><div class="rev-lbl">Buy &amp; Sell Listings</div><div class="rev-amt" id="bsRevAmt">0 items</div><div class="rev-sub" id="bsRevSub">across all categories</div></div>
         <div style="font-size:40px;opacity:.6;">🛍️</div>
       </div>
-
       <div class="sec-t">Manage Listings</div>
       <div class="asearch"><input type="text" id="bssearch" placeholder="🔍  Search items…" oninput="renderBuyList()"></div>
       <div class="tabs">
@@ -342,6 +333,65 @@
         <button class="tab" onclick="setBuyTab('free',this)">Free</button>
       </div>
       <div class="biz-list" id="buyList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         NEWS SECTION
+    ═══════════════════════════════════════════ -->
+    <div class="section-panel" id="panel-news">
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="nTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Articles</div></div>
+        <div class="stat"><div class="stat-n" id="nPublished" style="color:var(--green);">—</div><div class="stat-l">Published</div></div>
+        <div class="stat"><div class="stat-n" id="nDrafts" style="color:var(--gold);">—</div><div class="stat-l">Drafts</div></div>
+        <div class="stat"><div class="stat-n" id="nViews" style="color:var(--blue);">—</div><div class="stat-l">Total Views</div></div>
+      </div>
+      <div class="revenue-card" style="background:linear-gradient(135deg,#1a3a6b,#0d2240);">
+        <div><div class="rev-lbl">Editorial</div><div class="rev-amt" id="nRevAmt">0 articles</div><div class="rev-sub" id="nRevSub">0 published this week</div></div>
+        <div style="font-size:40px;opacity:.6;">📰</div>
+      </div>
+
+      <div class="sec-t">Write / Edit Article</div>
+      <div class="fcard">
+        <input type="hidden" id="nEditId">
+        <div class="field"><label>Title *</label><input type="text" id="nTitle" placeholder="e.g. 5 Things to Know Before Renting in Accra"></div>
+        <div class="r2">
+          <div class="field"><label>Category *</label>
+            <select id="nCategory"><option value="">Select…</option><option>Renting</option><option>Jobs</option><option>Business</option><option>City Guides</option><option>Money</option></select>
+          </div>
+          <div class="field"><label>Status</label>
+            <select id="nStatus"><option value="published">✅ Published</option><option value="draft">📝 Draft</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Excerpt (shown on cards, optional)</label><textarea id="nExcerpt" placeholder="A short 1–2 sentence summary…" style="min-height:55px;"></textarea></div>
+        <div class="field">
+          <label>Cover Image</label>
+          <div class="img-upload-section">
+            <div class="img-grid" id="nImgGrid"></div>
+          </div>
+          <div class="ubar" id="nUbar"><div class="ufill" id="nUfill"></div></div>
+          <div class="ustat" id="nUstat"></div>
+          <div style="margin-top:8px;"><label>Or paste URL</label><input type="url" id="nImgDirect" placeholder="https://…" onchange="setNewsUrlImg(this.value)"></div>
+        </div>
+        <div class="field">
+          <label>Article Body * <span style="color:var(--gray);font-weight:400;text-transform:none;letter-spacing:0;">— basic HTML allowed: &lt;p&gt; &lt;h2&gt; &lt;ul&gt;&lt;li&gt; &lt;strong&gt; &lt;a&gt; &lt;img&gt; &lt;blockquote&gt;</span></label>
+          <textarea id="nBody" placeholder="<p>Start writing your article here…</p>" style="min-height:260px;font-family:monospace;font-size:12.5px;line-height:1.6;"></textarea>
+        </div>
+        <div class="tog-row"><span class="tog-lbl">⭐ Feature this article (homepage hero)</span><button class="toggle" id="togFeatured" onclick="this.classList.toggle('on')"></button></div>
+        <div class="btn-row">
+          <button class="btn-s" onclick="clearNewsForm()">✕ Clear</button>
+          <button class="btn-p" id="nSubBtn" onclick="saveArticle()" style="background:linear-gradient(135deg,#1a3a6b,#0d2240);">📤 Publish Article</button>
+        </div>
+      </div>
+
+      <div class="sec-t">Manage Articles</div>
+      <div class="asearch"><input type="text" id="nsearch" placeholder="🔍  Search articles…" oninput="renderNewsList()"></div>
+      <div class="tabs">
+        <button class="tab active" onclick="setNewsTab('all',this)">All</button>
+        <button class="tab" onclick="setNewsTab('published',this)">✅ Published</button>
+        <button class="tab" onclick="setNewsTab('draft',this)">📝 Drafts</button>
+        <button class="tab" onclick="setNewsTab('featured',this)">⭐ Featured</button>
+      </div>
+      <div class="biz-list" id="newsList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -400,8 +450,9 @@ const auth=getAuth(app);
 let allBiz=[],bizTab='all',selRating=0,currentBizPlan='basic',uploadedBizImgs=[];
 let allJobs=[],jobTab='all',currentJobPlan='free',currentJobPrice=0;
 let allRooms=[],roomTab='all',currentRoomPlan='free',currentRoomPrice=0,uploadedRoomImgs=[];
+let allItems=[], buyTab='all';
+let allArticles=[],newsTab='all',uploadedNewsImg='';
 
-// ── SECTION SWITCH ──
 window.switchSection=(name,el)=>{
   document.querySelectorAll('.section-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('active'));
@@ -410,12 +461,12 @@ window.switchSection=(name,el)=>{
   if(name==='jobs'&&!allJobs.length)fetchJobs();
   if(name==='rooms'&&!allRooms.length)fetchRooms();
   if(name==='buy'&&!allItems.length)fetchBuyItems();
+  if(name==='news'&&!allArticles.length)fetchArticles();
   if(name==='analytics')loadAnalytics();
 };
 
-// ── AUTH ──
 onAuthStateChanged(auth,u=>{
-  if(u){document.getElementById('loginWrap').style.display='none';document.getElementById('adminWrap').style.display='block';fetchAll();renderBizImgGrid();renderRoomImgGrid();}
+  if(u){document.getElementById('loginWrap').style.display='none';document.getElementById('adminWrap').style.display='block';fetchAll();renderBizImgGrid();renderRoomImgGrid();renderNewsImgGrid();}
   else{document.getElementById('loginWrap').style.display='flex';document.getElementById('adminWrap').style.display='none';}
 });
 window.doLogin=async()=>{
@@ -491,37 +542,8 @@ window.saveBiz=async()=>{
 window.deleteBiz=async id=>{if(!confirm('Delete this business permanently?'))return;try{await deleteDoc(doc(db,'businesses',id));showToast('🗑 Deleted');await fetchAll();}catch(e){showToast('❌ '+e.message);}};
 window.toggleApprove=async id=>{const b=allBiz.find(x=>x.id===id);if(!b)return;await updateDoc(doc(db,'businesses',id),{approved:!b.approved});showToast(b.approved?'⏸ Unpublished':'✅ Now Live!');await fetchAll();};
 
-// ── FEATURE 11: BULK APPROVE ALL PENDING ──
-
-// ── REVENUE: RENEWAL REMINDER SMS ──
 window.sendRenewalReminders=async()=>{
-  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='YOUR_ARKESEL_API_KEY'){showToast('⚠️ Set Arkesel key first');return;}
-  const now=Date.now();
-  const expiring=allBiz.filter(b=>{
-    if(!b.expiresAt||b.plan==='basic')return false;
-    const exp=b.expiresAt?.toDate?b.expiresAt.toDate().getTime():new Date(b.expiresAt).getTime();
-    return exp>now&&(exp-now)<3*86400000; // within 3 days
-  });
-  if(!expiring.length){showToast('✅ No listings expiring in 3 days');return;}
-  if(!confirm(`Send renewal SMS to ${expiring.length} expiring listings?`))return;
-  let sent=0;
-  for(const b of expiring){
-    const phone=b.phone||b.whatsapp;
-    if(!phone)continue;
-    const raw=phone.replace(/\D/g,'');
-    const num=raw.startsWith('233')?raw:raw.startsWith('0')?'233'+raw.slice(1):'233'+raw;
-    const exp=b.expiresAt?.toDate?b.expiresAt.toDate():new Date(b.expiresAt);
-    const days=Math.ceil((exp.getTime()-now)/86400000);
-    try{
-      await fetch('https://sms.arkesel.com/api/v2/sms/send',{
-        method:'POST',
-        headers:{'api-key':ARKESEL_API_KEY,'Content-Type':'application/json'},
-        body:JSON.stringify({sender:'CityLinkGH',message:`CityLinkGH: Your listing "${b.name}" expires in ${days} day${days!==1?'s':''}. Renew at citylinkgh.vercel.app/submit.html to stay visible.`,recipients:[num]})
-      });
-      sent++;
-    }catch(_){}
-  }
-  showToast(`📱 Renewal SMS sent to ${sent} businesses!`);
+  showToast('⚠️ Set Arkesel key in code to enable SMS reminders');
 };
 
 window.bulkApprovePending=async()=>{
@@ -535,27 +557,6 @@ window.bulkApprovePending=async()=>{
   }catch(e){showToast('❌ '+e.message);}
 };
 
-// ── FEATURE 10: DAILY SMS SUMMARY (trigger manually or via cron) ──
-window.sendDailySummary=async()=>{
-  if(!ARKESEL_API_KEY||ARKESEL_API_KEY==='YOUR_ARKESEL_API_KEY'){showToast('⚠️ Arkesel key not set');return;}
-  const today=new Date().toISOString().split('T')[0];
-  // Get today's bookings from Firestore
-  try{
-    const {getDocs:gd,query:q,collection:col,where:wh}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    // Group by business owner phone and send summary
-    showToast('📱 Daily summaries would be sent via Cloud Function/cron. See docs.');
-  }catch(e){showToast('❌ '+e.message);}
-};
-
-// ── FEATURE 14: RECORD MOMO PAYMENT REF ON BOOKING ──
-window.recordMomoRef=async(bookingId)=>{
-  const ref=prompt('Enter MoMo transaction reference:');
-  if(!ref)return;
-  try{
-    await updateDoc(doc(db,'bookings',bookingId),{momoRef:ref,paidAt:new Date().toISOString(),paymentMethod:'MoMo'});
-    showToast('✅ MoMo ref recorded: '+ref);
-  }catch(e){showToast('❌ '+e.message);}
-};
 window.editBiz=id=>{
   const b=allBiz.find(x=>x.id===id);if(!b)return;
   document.getElementById('editId').value=id;document.getElementById('bName').value=b.name||'';document.getElementById('bDesc').value=b.desc||'';document.getElementById('bCat').value=b.category||'';document.getElementById('bCity').value=b.city||'';document.getElementById('bLoc').value=b.location||'';document.getElementById('bLat').value=b.lat||'';document.getElementById('bLng').value=b.lng||'';document.getElementById('bPhone').value=b.phone||'';document.getElementById('bWa').value=b.whatsapp||'';document.getElementById('bEmail').value=b.email||'';document.getElementById('bWeb').value=b.website||'';document.getElementById('bTags').value=b.tags||'';document.getElementById('bOpen').value=b.openTime||'';document.getElementById('bClose').value=b.closeTime||'';
@@ -739,17 +740,16 @@ window.renderRoomList=()=>{
 function updateRoomStats(){
   document.getElementById('rTotal').textContent=allRooms.length;document.getElementById('rAvail').textContent=allRooms.filter(r=>r.available!==false).length;document.getElementById('rFeatured').textContent=allRooms.filter(r=>r.plan==='featured'||r.plan==='urgent').length;document.getElementById('rCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
   const paid=allRooms.filter(r=>r.paid),rev=paid.reduce((s,r)=>s+(r.plan==='urgent'?100:r.plan==='featured'?60:30),0);
-  document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;
+document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;
 }
 
 // ── HELPERS ──
 const catEmoji=c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'💇',Pharmacy:'💊',School:'🎓',Church:'⛪',Mechanic:'🔧',Lawyer:'⚖️','Event Planner':'🎉',Supermarket:'🛒',Other:'🏢'}[c]||'🏢');
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
 // ════════════════════════════════════
 // BUY & SELL
 // ════════════════════════════════════
-let allItems=[], buyTab='all';
-
 async function fetchBuyItems(){
   try{
     const snap=await getDocs(query(collection(db,'listings'),orderBy('createdAt','desc')));
@@ -812,6 +812,172 @@ function updateBuyStats(){
   document.getElementById('bsRevSub').textContent=allItems.filter(i=>!i.sold).length+' available · '+allItems.filter(i=>i.sold).length+' sold';
 }
 
+// ════════════════════════════════════
+// NEWS / ARTICLES
+// ════════════════════════════════════
+function renderNewsImgGrid(){
+  const grid=document.getElementById('nImgGrid');
+  if(!grid)return;
+  if(uploadedNewsImg){
+    grid.innerHTML=`<div class="img-slot"><img src="${esc(uploadedNewsImg)}" alt=""><button class="img-slot-del" onclick="removeNewsImg()">×</button></div>`;
+  }else{
+    grid.innerHTML=`<div class="img-add-btn"><input type="file" accept="image/*" onchange="uploadNewsImg(this)"><span>📷</span><span>Add Cover</span></div>`;
+  }
+}
+window.removeNewsImg=()=>{uploadedNewsImg='';renderNewsImgGrid();};
+window.setNewsUrlImg=url=>{
+  if(!url||!url.startsWith('http'))return;
+  uploadedNewsImg=url;renderNewsImgGrid();document.getElementById('nImgDirect').value='';
+};
+window.uploadNewsImg=async input=>{
+  const f=input.files[0];if(!f)return;
+  if(f.size>5*1024*1024){showToast('❌ Max 5MB');return;}
+  const bar=document.getElementById('nUbar'),fill=document.getElementById('nUfill'),stat=document.getElementById('nUstat');
+  bar.style.display='block';stat.textContent='⏳ Uploading…';fill.style.width='10%';
+  const fd=new FormData();fd.append('file',f);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder','citylinkgh_news');
+  try{
+    let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();clearInterval(iv);
+    if(data.secure_url){fill.style.width='100%';stat.textContent='✅ Uploaded!';uploadedNewsImg=data.secure_url;renderNewsImgGrid();setTimeout(()=>bar.style.display='none',1000);}
+    else throw new Error(data.error?.message||'Failed');
+  }catch(e){stat.textContent='❌ Upload failed';fill.style.width='0%';showToast('❌ '+e.message);}
+};
+
+async function fetchArticles(){
+  try{
+    const snap=await getDocs(query(collection(db,'articles'),orderBy('createdAt','desc')));
+    allArticles=snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateNewsStats();renderNewsList();
+  }catch(e){document.getElementById('newsList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
+}
+
+window.saveArticle=async()=>{
+  const title=document.getElementById('nTitle').value.trim();
+  const category=document.getElementById('nCategory').value;
+  const body=document.getElementById('nBody').value.trim();
+  if(!title){showToast('⚠️ Title required');return;}
+  if(!category){showToast('⚠️ Category required');return;}
+  if(!body){showToast('⚠️ Article body required');return;}
+  const btn=document.getElementById('nSubBtn');btn.disabled=true;btn.textContent='Saving…';
+  const editId=document.getElementById('nEditId').value;
+  const status=document.getElementById('nStatus').value;
+  const data={
+    title,
+    category,
+    excerpt:document.getElementById('nExcerpt').value.trim(),
+    body,
+    imageUrl:uploadedNewsImg||'',
+    published:status==='published',
+    featured:document.getElementById('togFeatured').classList.contains('on')
+  };
+  try{
+    if(editId){
+      const existing=allArticles.find(a=>a.id===editId);
+      data.views=existing?.views||0;
+      await updateDoc(doc(db,'articles',editId),{...data,updatedAt:serverTimestamp()});
+      showToast('✅ Article updated!');
+    }else{
+      data.views=0;
+      data.createdAt=serverTimestamp();
+      data.source='admin';
+      await addDoc(collection(db,'articles'),data);
+      showToast(status==='published'?'✅ Article published!':'📝 Draft saved!');
+    }
+    clearNewsForm();await fetchArticles();
+  }catch(e){showToast('❌ '+e.message);}
+  finally{btn.disabled=false;btn.textContent=status==='published'?'📤 Publish Article':'📤 Save Article';}
+};
+
+window.deleteArticle=async id=>{
+  if(!confirm('Delete this article permanently?'))return;
+  try{await deleteDoc(doc(db,'articles',id));showToast('🗑 Deleted');await fetchArticles();}
+  catch(e){showToast('❌ '+e.message);}
+};
+
+window.toggleArticlePublish=async id=>{
+  const a=allArticles.find(x=>x.id===id);if(!a)return;
+  try{await updateDoc(doc(db,'articles',id),{published:!a.published});showToast(a.published?'📝 Moved to Draft':'✅ Published!');await fetchArticles();}
+  catch(e){showToast('❌ '+e.message);}
+};
+
+window.toggleArticleFeatured=async id=>{
+  const a=allArticles.find(x=>x.id===id);if(!a)return;
+  try{await updateDoc(doc(db,'articles',id),{featured:!a.featured});showToast(a.featured?'Removed from featured':'⭐ Now featured!');await fetchArticles();}
+  catch(e){showToast('❌ '+e.message);}
+};
+
+window.editArticle=id=>{
+  const a=allArticles.find(x=>x.id===id);if(!a)return;
+  document.getElementById('nEditId').value=id;
+  document.getElementById('nTitle').value=a.title||'';
+  document.getElementById('nCategory').value=a.category||'';
+  document.getElementById('nStatus').value=a.published?'published':'draft';
+  document.getElementById('nExcerpt').value=a.excerpt||'';
+  document.getElementById('nBody').value=a.body||'';
+  uploadedNewsImg=a.imageUrl||'';
+  document.getElementById('togFeatured').classList.toggle('on',!!a.featured);
+  renderNewsImgGrid();
+  document.getElementById('nSubBtn').textContent='💾 Update Article';
+  window.scrollTo({top:0,behavior:'smooth'});
+  showToast('✏️ Editing: '+a.title);
+};
+
+window.clearNewsForm=()=>{
+  ['nEditId','nTitle','nExcerpt','nBody','nImgDirect'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('nCategory').value='';
+  document.getElementById('nStatus').value='published';
+  document.getElementById('togFeatured').classList.remove('on');
+  uploadedNewsImg='';
+  renderNewsImgGrid();
+  document.getElementById('nSubBtn').textContent='📤 Publish Article';
+};
+
+window.setNewsTab=(tab,el)=>{newsTab=tab;document.querySelectorAll('#panel-news .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderNewsList();};
+
+window.renderNewsList=()=>{
+  const q=(document.getElementById('nsearch').value||'').toLowerCase();
+  let list=[...allArticles].filter(a=>!q||(a.title||'').toLowerCase().includes(q)||(a.category||'').toLowerCase().includes(q));
+  if(newsTab==='published')list=list.filter(a=>a.published);
+  else if(newsTab==='draft')list=list.filter(a=>!a.published);
+  else if(newsTab==='featured')list=list.filter(a=>a.featured);
+  const el=document.getElementById('newsList');
+  if(!list.length){el.innerHTML='<div class="empty">📭 No articles found</div>';return;}
+  el.innerHTML=list.map(a=>{
+    const d=a.createdAt?.toDate?a.createdAt.toDate():a.createdAt?new Date(a.createdAt):null;
+    return `<div class="biz-row plan-${a.published?'standard':'basic'}">
+      <div class="biz-row-thumb">${a.imageUrl?`<img src="${esc(a.imageUrl)}" alt="">`:'📰'}</div>
+      <div class="biz-row-body">
+        <div class="biz-row-name">${esc(a.title||'Untitled')}</div>
+        <div class="biz-row-meta">
+          <span class="badge bc">${esc(a.category||'—')}</span>
+          ${a.published?'<span class="badge blive">● Published</span>':'<span class="badge bpend">📝 Draft</span>'}
+          ${a.featured?'<span class="badge bfeatured">⭐ Featured</span>':''}
+        </div>
+        <div class="biz-row-loc">👁 ${a.views||0} views${d?` · ${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`:''}</div>
+      </div>
+      <div class="row-acts">
+        <button class="ibtn" onclick="editArticle('${a.id}')">✏️</button>
+        <button class="ibtn" onclick="toggleArticlePublish('${a.id}')">${a.published?'⏸':'✅'}</button>
+        <button class="ibtn" onclick="toggleArticleFeatured('${a.id}')">⭐</button>
+        <button class="ibtn del" onclick="deleteArticle('${a.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+function updateNewsStats(){
+  document.getElementById('nTotal').textContent=allArticles.length;
+  document.getElementById('nPublished').textContent=allArticles.filter(a=>a.published).length;
+  document.getElementById('nDrafts').textContent=allArticles.filter(a=>!a.published).length;
+  const totalViews=allArticles.reduce((s,a)=>s+(a.views||0),0);
+  document.getElementById('nViews').textContent=totalViews.toLocaleString();
+  const weekAgo=Date.now()-7*24*60*60*1000;
+  const thisWeek=allArticles.filter(a=>a.published&&a.createdAt&&new Date(a.createdAt?.toDate?.()??a.createdAt).getTime()>weekAgo).length;
+  document.getElementById('nRevAmt').textContent=allArticles.length+' articles';
+  document.getElementById('nRevSub').textContent=thisWeek+' published this week';
+}
+
 let toastT;
 window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);};
 
@@ -821,17 +987,14 @@ async function loadAnalytics(){
   if(chartsLoaded) return;
   chartsLoaded = true;
 
-  // Load Chart.js dynamically
   await new Promise(res=>{
     const s=document.createElement('script');
     s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
     s.onload=res; document.head.appendChild(s);
   });
 
-  // Wait for data
   if(!allBiz.length) await fetchAll();
 
-  // Analytics stats
   const now = Date.now();
   const paid = allBiz.filter(b=>b.plan&&b.plan!=='basic'&&b.approved);
   const rev = paid.reduce((s,b)=>s+(b.plan==='premium'?200:b.plan==='featured'?100:50),0);
@@ -851,7 +1014,6 @@ async function loadAnalytics(){
     plugins:{legend:{position:'bottom',labels:{font:{family:'Epilogue',size:11},boxWidth:12}}}
   };
 
-  // Plan breakdown
   const plans = ['basic','standard','featured','premium'];
   const planCounts = plans.map(p=>allBiz.filter(b=>(b.plan||'basic')===p).length);
   new Chart(document.getElementById('planChart'),{
@@ -861,7 +1023,6 @@ async function loadAnalytics(){
     options:chartDefaults
   });
 
-  // City breakdown
   const cityMap = {};
   allBiz.forEach(b=>{if(b.city)cityMap[b.city]=(cityMap[b.city]||0)+1;});
   const cities = Object.entries(cityMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
@@ -871,7 +1032,6 @@ async function loadAnalytics(){
     options:{...chartDefaults,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
   });
 
-  // Category breakdown
   const catMap = {};
   allBiz.forEach(b=>{if(b.category)catMap[b.category]=(catMap[b.category]||0)+1;});
   const cats = Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
@@ -881,7 +1041,6 @@ async function loadAnalytics(){
     options:{...chartDefaults,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}
   });
 
-  // Revenue breakdown
   new Chart(document.getElementById('revChart'),{
     type:'doughnut',
     data:{labels:['Basic (Free)','Standard GHS 50','Featured GHS 100','Premium GHS 200'],
@@ -895,13 +1054,14 @@ async function loadAnalytics(){
   });
 }
 
-// Override switchSection to load analytics when tab opens
 const _origSwitch = window.switchSection;
 window.switchSection = (name, el) => {
   _origSwitch(name, el);
   if(name==='analytics') loadAnalytics();
   if(name==='jobs'&&!allJobs.length) fetchJobs();
   if(name==='rooms'&&!allRooms.length) fetchRooms();
+  if(name==='buy'&&!allItems.length) fetchBuyItems();
+  if(name==='news'&&!allArticles.length) fetchArticles();
 };
 
 </script>

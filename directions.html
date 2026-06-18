@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Directions — CityLinkGH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #D4A017;
+      --gold-lt: #FFF9E6;
+      --gold-dim:rgba(212,160,23,.15);
+      --green:   #1A6B3C;
+      --green-lt:#E8F5EE;
+      --blue:    #2563EB;
+      --blue-lt: #EFF6FF;
+      --red:     #EF4444;
+      --ink:     #0D0D0D;
+      --cream:   #FDFAF3;
+      --mist:    #F0EBE0;
+      --border:  #E2D9C8;
+      --gray:    #7A7265;
+      --surface: #fff;
+      --radius:  14px;
+      --shadow:  0 4px 32px rgba(0,0,0,0.10);
+    }
+
+    body {
+      font-family: 'Epilogue', system-ui, sans-serif;
+      background: linear-gradient(160deg,#0d0d0d 0%,#0e2800 55%,#091a00 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 14px 48px;
+      gap: 16px;
+    }
+
+    /* ── BACK TO HOME ── */
+    .back-bar {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 9px;
+      color: rgba(255,255,255,0.75);
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.13); color: #fff; }
+    .back-btn svg { width:16px; height:16px; stroke: currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; }
+
+    .powered-tag {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .powered-tag span { color: rgba(255,255,255,0.4); font-weight:400; }
+
+    /* ── CARD ── */
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg,#0e2800 0%,#1A6B3C 60%,#25a05a 100%);
+      padding: 26px 28px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content:'';
+      position:absolute;
+      right:-40px; top:-40px;
+      width:180px; height:180px;
+      border-radius:50%;
+      background:rgba(212,160,23,0.08);
+    }
+    .header::after {
+      content:'';
+      position:absolute;
+      left:-30px; bottom:-30px;
+      width:120px; height:120px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.04);
+    }
+    .header-eyebrow {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:rgba(212,160,23,0.18);
+      border:1px solid rgba(212,160,23,0.35);
+      border-radius:20px;
+      padding:3px 11px;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:10px;
+      position:relative;z-index:1;
+    }
+    .header h1 {
+      font-family:'Syne',sans-serif;
+      font-size:1.6rem;
+      font-weight:900;
+      color:#fff;
+      letter-spacing:-0.02em;
+      position:relative;z-index:1;
+    }
+    .header h1 span { color:var(--gold); }
+    .header p {
+      margin-top:4px;
+      font-size:0.83rem;
+      color:rgba(255,255,255,0.6);
+      position:relative;z-index:1;
+    }
+
+    /* Quick destination chips */
+    .quick-chips {
+      display:flex;
+      gap:7px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      position:relative;z-index:1;
+    }
+    .q-chip {
+      background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.18);
+      border-radius:20px;
+      padding:4px 11px;
+      font-size:11px;
+      color:rgba(255,255,255,0.75);
+      cursor:pointer;
+      transition:background .15s,color .15s,border-color .15s;
+      font-family:'Epilogue',sans-serif;
+      font-weight:500;
+    }
+    .q-chip:hover {
+      background:rgba(212,160,23,0.2);
+      border-color:rgba(212,160,23,0.4);
+      color:var(--gold);
+    }
+
+    /* ── MAP ── */
+    #map {
+      width:100%;
+      height:250px;
+      background:var(--mist);
+    }
+
+    /* ── BODY ── */
+    .body { padding:22px 22px 24px; }
+
+    /* Route visual */
+    .route-visual {
+      display:flex;
+      align-items:stretch;
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .route-dots {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding-top:14px;
+      flex-shrink:0;
+    }
+    .dot { width:12px; height:12px; border-radius:50%; border:2.5px solid #fff; flex-shrink:0; }
+    .dot-origin { background:var(--green); box-shadow:0 0 0 3px rgba(26,107,60,0.2); }
+    .dot-dest   { background:var(--red);   box-shadow:0 0 0 3px rgba(239,68,68,0.2); }
+    .dot-line {
+      width:2px; flex:1; min-height:20px;
+      background:repeating-linear-gradient(to bottom,var(--border) 0,var(--border) 4px,transparent 4px,transparent 8px);
+      margin:4px 0;
+    }
+    .route-fields { flex:1; display:flex; flex-direction:column; gap:10px; }
+
+    /* Input */
+    .input-wrap { position:relative; }
+    .input-wrap input {
+      width:100%;
+      background:var(--cream);
+      border:1.5px solid var(--border);
+      border-radius:11px;
+      padding:12px 44px 12px 14px;
+      font-family:'Epilogue',sans-serif;
+      font-size:0.9rem;
+      color:var(--ink);
+      outline:none;
+      transition:border-color .18s, box-shadow .18s;
+    }
+    .input-wrap input:focus {
+      border-color:var(--green);
+      box-shadow:0 0 0 3px rgba(26,107,60,0.1);
+    }
+    .input-wrap input::placeholder { color:#aaa; }
+    .input-action {
+      position:absolute; right:10px; top:50%;
+      transform:translateY(-50%);
+      background:none; border:none; cursor:pointer;
+      font-size:1rem; padding:4px; border-radius:6px;
+      transition:background .15s;
+    }
+    .input-action:hover { background:var(--mist); }
+
+    /* Swap button */
+    .swap-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:32px; height:32px;
+      border-radius:50%;
+      background:var(--mist);
+      border:1.5px solid var(--border);
+      cursor:pointer;
+      margin:0 auto 6px;
+      font-size:16px;
+      transition:background .15s, transform .2s;
+      flex-shrink:0;
+    }
+    .swap-btn:hover { background:var(--border); transform:rotate(180deg); }
+
+    /* Section label */
+    .section-label {
+      font-size:0.7rem;
+      font-weight:700;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      color:var(--gray);
+      margin:16px 0 9px;
+    }
+
+    /* Travel modes */
+    .modes { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .mode {
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      padding:10px 6px 8px;
+      border-radius:11px;
+      border:1.5px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      transition:all .15s;
+      font-family:'Epilogue',sans-serif;
+    }
+    .mode .icon { font-size:1.3rem; }
+    .mode .label { font-size:0.72rem; font-weight:600; color:var(--gray); }
+    .mode:hover { border-color:var(--green); background:var(--green-lt); }
+    .mode.active { border-color:var(--green); background:var(--green-lt); }
+    .mode.active .label { color:var(--green); }
+
+    /* Go button */
+    #go-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      width:100%; margin-top:18px; padding:15px;
+      background:var(--green);
+      color:#fff; border:none; border-radius:13px;
+      font-family:'Syne',sans-serif; font-size:0.97rem; font-weight:800;
+      cursor:pointer; transition:background .18s, transform .1s, opacity .18s;
+      letter-spacing:.01em;
+    }
+    #go-btn:hover:not(:disabled) { background:#155c31; }
+    #go-btn:active:not(:disabled) { transform:scale(0.98); }
+    #go-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+    /* Status */
+    #status {
+      margin-top:10px; font-size:0.82rem;
+      text-align:center; min-height:18px;
+      color:var(--gray); transition:color .2s;
+    }
+    #status.ok   { color:var(--green); }
+    #status.err  { color:var(--red); }
+    #status.info { color:var(--blue); }
+
+    /* Open Maps btn */
+    #open-maps-btn {
+      display:none; align-items:center; justify-content:center; gap:8px;
+      width:100%; margin-top:12px; padding:12px;
+      background:var(--gold-lt); color:var(--ink);
+      border:1.5px solid var(--gold); border-radius:12px;
+      font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:800;
+      cursor:pointer; transition:background .15s;
+    }
+    #open-maps-btn:hover { background:#fff3cc; }
+    #open-maps-btn.show { display:flex; }
+
+    /* Share route btn */
+    #share-btn {
+      display:none; align-items:center; justify-content:center; gap:8px;
+      width:100%; margin-top:8px; padding:11px;
+      background:var(--cream); color:var(--ink);
+      border:1.5px solid var(--border); border-radius:12px;
+      font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700;
+      cursor:pointer; transition:background .15s;
+    }
+    #share-btn:hover { background:var(--mist); }
+    #share-btn.show { display:flex; }
+
+    /* ── ROUTE SUMMARY CARD ── */
+    #route-summary {
+      display:none;
+      background:linear-gradient(135deg,var(--green-lt),#fff);
+      border:1.5px solid rgba(26,107,60,0.2);
+      border-radius:13px;
+      padding:14px 16px;
+      margin-top:14px;
+      gap:0;
+    }
+    #route-summary.show { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; }
+    .rs-item { text-align:center; padding:4px 8px; }
+    .rs-item:not(:last-child) { border-right:1px solid rgba(26,107,60,0.15); }
+    .rs-val { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; color:var(--green); }
+    .rs-lbl { font-size:0.7rem; color:var(--gray); margin-top:2px; }
+
+    /* ── STEPS PANEL ── */
+    #steps-panel { display:none; border-top:1px solid var(--border); padding:0 22px 22px; }
+    #steps-panel.show { display:block; }
+
+    .steps-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 0 12px;
+    }
+    .steps-header span {
+      font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.07em; color:var(--gray);
+    }
+    .steps-toggle {
+      font-size:12px; color:var(--green); cursor:pointer;
+      font-weight:600; background:none; border:none;
+      font-family:'Epilogue',sans-serif;
+    }
+
+    .step-list { display:flex; flex-direction:column; gap:0; }
+    .step-item {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:10px 0; border-bottom:1px solid #f3ede1;
+    }
+    .step-item:last-child { border-bottom:none; }
+    .step-num {
+      width:26px; height:26px; border-radius:50%;
+      background:var(--green-lt); color:var(--green);
+      font-size:0.72rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; margin-top:1px;
+    }
+    .step-text { font-size:0.84rem; color:var(--ink); line-height:1.45; }
+    .step-dist { font-size:0.73rem; color:var(--gray); margin-top:2px; }
+
+    /* ── NEARBY PANEL ── */
+    #nearby-panel { display:none; border-top:1px solid var(--border); padding:18px 22px; }
+    #nearby-panel.show { display:block; }
+    .nearby-title {
+      font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.07em; color:var(--gray);
+      margin-bottom:12px;
+    }
+    .nearby-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .nearby-chip {
+      display:flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      background:var(--cream); border:1.5px solid var(--border);
+      border-radius:10px; cursor:pointer;
+      text-decoration:none; color:var(--ink);
+      transition:border-color .15s, transform .15s;
+      font-size:0.82rem; font-weight:600;
+    }
+    .nearby-chip:hover { border-color:var(--gold); transform:translateY(-1px); }
+    .nearby-chip .ni { font-size:1.1rem; }
+
+    /* ── FOOTER BAR ── */
+    .widget-footer {
+      border-top:1px solid var(--border);
+      padding:12px 22px;
+      display:flex; align-items:center; justify-content:space-between;
+      background:var(--cream);
+    }
+    .wf-brand { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; color:var(--ink); }
+    .wf-brand span { color:var(--gold); }
+    .wf-powered { font-size:10px; color:var(--gray); }
+
+    /* Spinner */
+    .spinner {
+      display:inline-block; width:15px; height:15px;
+      border:2px solid rgba(255,255,255,0.4);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin .7s linear infinite; vertical-align:middle;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Toast */
+    .toast {
+      position:fixed; bottom:20px; left:50%;
+      transform:translateX(-50%) translateY(60px);
+      background:var(--ink); color:#fff;
+      padding:10px 20px; border-radius:9px;
+      font-size:13px; font-family:'Epilogue',sans-serif;
+      box-shadow:0 4px 20px rgba(0,0,0,.25);
+      transition:transform .3s; z-index:999; white-space:nowrap;
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+
+    @media(max-width:420px) {
+      .header { padding:20px 18px 16px; }
+      .body { padding:16px 16px 20px; }
+      #steps-panel, #nearby-panel { padding-left:16px; padding-right:16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BACK BAR -->
+<div class="back-bar">
+  <a href="home.html" class="back-btn">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Home
+  </a>
+  <div class="powered-tag">CityLink<span>GH</span></div>
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">🇬🇭 Navigation</div>
+    <h1>Get <span>Directions</span></h1>
+    <p>Live map · Turn-by-turn · Open in Google Maps</p>
+    <!-- Quick destinations -->
+    <div class="quick-chips">
+      <div class="q-chip" onclick="setQuickDest('Accra Mall, Accra')">🏬 Accra Mall</div>
+      <div class="q-chip" onclick="setQuickDest('Kotoka International Airport, Accra')">✈️ Airport</div>
+      <div class="q-chip" onclick="setQuickDest('Kumasi Central Market')">🛒 Kumasi Market</div>
+      <div class="q-chip" onclick="setQuickDest('Labadi Beach, Accra')">🏖️ Labadi Beach</div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div id="map"></div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- FROM / TO -->
+    <div class="route-visual">
+      <div class="route-dots">
+        <div class="dot dot-origin"></div>
+        <div class="dot-line"></div>
+        <div class="dot dot-dest"></div>
+      </div>
+      <div class="route-fields">
+        <div class="input-wrap">
+          <input id="origin-input" type="text" placeholder="Your location…" readonly/>
+          <button class="input-action" id="locate-btn" title="Detect my location" onclick="detectLocation()">📍</button>
+        </div>
+        <div class="input-wrap">
+          <input id="dest-input" type="text" placeholder="Where to? (city, landmark, address…)"/>
+          <button class="input-action" title="Clear" onclick="clearDest()" style="font-size:.85rem;color:#aaa;">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRAVEL MODES -->
+    <div class="section-label">Travel mode</div>
+    <div class="modes">
+      <button class="mode active" onclick="setMode(this,'driving')">
+        <span class="icon">🚗</span><span class="label">Drive</span>
+      </button>
+      <button class="mode" onclick="setMode(this,'walking')">
+        <span class="icon">🚶</span><span class="label">Walk</span>
+      </button>
+      <button class="mode" onclick="setMode(this,'cycling')">
+        <span class="icon">🚲</span><span class="label">Cycle</span>
+      </button>
+      <button class="mode" onclick="setMode(this,'transit')">
+        <span class="icon">🚌</span><span class="label">Trotro</span>
+      </button>
+    </div>
+
+    <!-- ROUTE SUMMARY -->
+    <div id="route-summary">
+      <div class="rs-item"><div class="rs-val" id="rs-dist">—</div><div class="rs-lbl">Distance</div></div>
+      <div class="rs-item"><div class="rs-val" id="rs-time">—</div><div class="rs-lbl">Est. Time</div></div>
+      <div class="rs-item"><div class="rs-val" id="rs-steps">—</div><div class="rs-lbl">Steps</div></div>
+    </div>
+
+    <!-- GO -->
+    <button id="go-btn" onclick="getRoute()" disabled>
+      <span id="go-label">Get Directions</span>
+    </button>
+    <div id="status">Tap 📍 to detect your location.</div>
+
+    <!-- ACTION BUTTONS -->
+    <button id="open-maps-btn" onclick="openInMaps()">
+      🗺️ Open in Google Maps
+    </button>
+    <button id="share-btn" onclick="shareRoute()">
+      🔗 Share this Route
+    </button>
+
+  </div><!-- /body -->
+
+  <!-- STEPS PANEL -->
+  <div id="steps-panel">
+    <div class="steps-header">
+      <span>Turn-by-turn directions</span>
+      <button class="steps-toggle" onclick="toggleSteps()">Hide ▲</button>
+    </div>
+    <div class="step-list" id="step-list"></div>
+  </div>
+
+  <!-- NEARBY PANEL -->
+  <div id="nearby-panel">
+    <div class="nearby-title">🔍 Search Nearby on CityLinkGH</div>
+    <div class="nearby-grid">
+      <a href="home.html?cat=Restaurants" class="nearby-chip"><span class="ni">🍽️</span>Restaurants</a>
+      <a href="home.html?cat=Hospitals" class="nearby-chip"><span class="ni">🏥</span>Hospitals</a>
+      <a href="home.html?cat=Hotels" class="nearby-chip"><span class="ni">🏨</span>Hotels</a>
+      <a href="home.html?cat=Mechanics" class="nearby-chip"><span class="ni">🔧</span>Mechanics</a>
+      <a href="home.html?cat=Salons" class="nearby-chip"><span class="ni">💇</span>Salons</a>
+      <a href="home.html?cat=Schools" class="nearby-chip"><span class="ni">🎓</span>Schools</a>
+    </div>
+  </div>
+
+  <!-- WIDGET FOOTER -->
+  <div class="widget-footer">
+    <div class="wf-brand">CityLink<span>GH</span></div>
+    <div class="wf-powered">Powered by OpenStreetMap · OSRM</div>
+  </div>
+
+</div><!-- /card -->
+
+<div class="toast" id="toast"></div>
+
+<!-- LEAFLET -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  let userCoords = null;
+  let travelMode = 'driving';
+  let map, originMarker, destMarker, routeLayer;
+  let mapsUrl = '';
+  let stepsVisible = true;
+  let currentDest = '';
+
+  // ── Init map centered on Ghana ──
+  map = L.map('map', { zoomControl:false, attributionControl:false })
+         .setView([7.9465, -1.0232], 6);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    maxZoom:19
+  }).addTo(map);
+
+  L.control.zoom({ position:'bottomright' }).addTo(map);
+  L.control.attribution({ position:'bottomleft', prefix:'© OpenStreetMap · CartoDB' }).addTo(map);
+
+  const greenIcon = L.divIcon({
+    className:'',
+    html:`<div style="width:14px;height:14px;background:#1A6B3C;border:2.5px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,
+    iconSize:[14,14], iconAnchor:[7,7]
+  });
+  const redIcon = L.divIcon({
+    className:'',
+    html:`<div style="width:14px;height:14px;background:#EF4444;border:2.5px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,
+    iconSize:[14,14], iconAnchor:[7,7]
+  });
+
+  // ── Quick destination chips ──
+  function setQuickDest(dest) {
+    document.getElementById('dest-input').value = dest;
+    currentDest = dest;
+    checkReady();
+    if (userCoords) showToast('📍 Destination set! Tap Get Directions.');
+    else showToast('📍 Set destination. Now detect your location.');
+  }
+
+  // ── Detect location ──
+  function detectLocation() {
+    if (!navigator.geolocation) { setStatus('Geolocation not supported.','err'); return; }
+    document.getElementById('origin-input').value = 'Detecting…';
+    document.getElementById('locate-btn').textContent = '⏳';
+    setStatus('Requesting your location…','info');
+
+    navigator.geolocation.getCurrentPosition(async pos => {
+      userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      document.getElementById('locate-btn').textContent = '📍';
+
+      try {
+        const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userCoords.lat}&lon=${userCoords.lng}&format=json`);
+        const d = await r.json();
+        const a = d.address;
+        const label = a.road
+          ? `${a.house_number ? a.house_number+' ':''}${a.road}, ${a.city||a.town||a.village||''}`
+          : d.display_name.split(',').slice(0,2).join(',');
+        document.getElementById('origin-input').value = label;
+      } catch {
+        document.getElementById('origin-input').value = `${userCoords.lat.toFixed(4)}, ${userCoords.lng.toFixed(4)}`;
+      }
+
+      if (originMarker) map.removeLayer(originMarker);
+      originMarker = L.marker([userCoords.lat, userCoords.lng], { icon:greenIcon })
+        .bindPopup('<b>You are here</b>').addTo(map);
+      map.setView([userCoords.lat, userCoords.lng], 14, { animate:true });
+
+      setStatus('✅ Location found. Enter your destination.','ok');
+      checkReady();
+      // Show nearby panel
+      document.getElementById('nearby-panel').classList.add('show');
+    }, () => {
+      document.getElementById('locate-btn').textContent = '📍';
+      document.getElementById('origin-input').value = '';
+      setStatus('Location permission denied. Please enable it.','err');
+    });
+  }
+
+  // ── Mode ──
+  function setMode(btn, mode) {
+    document.querySelectorAll('.mode').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    travelMode = mode;
+  }
+
+  // ── Clear ──
+  function clearDest() {
+    document.getElementById('dest-input').value = '';
+    currentDest = '';
+    if (destMarker) { map.removeLayer(destMarker); destMarker = null; }
+    if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+    document.getElementById('steps-panel').classList.remove('show');
+    document.getElementById('open-maps-btn').classList.remove('show');
+    document.getElementById('share-btn').classList.remove('show');
+    document.getElementById('route-summary').classList.remove('show');
+    checkReady(); setStatus('Destination cleared.','');
+  }
+
+  // ── Ready ──
+  function checkReady() {
+    const dest = document.getElementById('dest-input').value.trim();
+    document.getElementById('go-btn').disabled = !(userCoords && dest);
+  }
+  document.getElementById('dest-input').addEventListener('input', checkReady);
+
+  // ── Geocode ──
+  async function geocodeDest(query) {
+    // Add Ghana bias
+    const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query+', Ghana')}&format=json&limit=1&countrycodes=gh`);
+    const d = await r.json();
+    if (!d.length) {
+      // retry without Ghana bias
+      const r2 = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`);
+      const d2 = await r2.json();
+      if (!d2.length) throw new Error('Destination not found. Try adding a city name.');
+      return { lat:parseFloat(d2[0].lat), lng:parseFloat(d2[0].lon), name:d2[0].display_name };
+    }
+    return { lat:parseFloat(d[0].lat), lng:parseFloat(d[0].lon), name:d[0].display_name };
+  }
+
+  // ── Get route ──
+  async function getRoute() {
+    const destQuery = document.getElementById('dest-input').value.trim();
+    if (!userCoords || !destQuery) return;
+
+    document.getElementById('go-label').innerHTML = '<span class="spinner"></span> Finding route…';
+    document.getElementById('go-btn').disabled = true;
+    setStatus('Calculating route…','info');
+    document.getElementById('steps-panel').classList.remove('show');
+    document.getElementById('open-maps-btn').classList.remove('show');
+    document.getElementById('share-btn').classList.remove('show');
+    document.getElementById('route-summary').classList.remove('show');
+
+    try {
+      const dest = await geocodeDest(destQuery);
+
+      if (destMarker) map.removeLayer(destMarker);
+      destMarker = L.marker([dest.lat, dest.lng], { icon:redIcon })
+        .bindPopup(`<b>Destination</b><br>${dest.name.split(',').slice(0,2).join(',')}`)
+        .addTo(map);
+
+      const profile = travelMode === 'driving'  ? 'driving'
+                    : travelMode === 'walking'   ? 'foot'
+                    : travelMode === 'cycling'   ? 'cycling'
+                    : 'driving';
+
+      const url = `https://router.project-osrm.org/route/v1/${profile}/${userCoords.lng},${userCoords.lat};${dest.lng},${dest.lat}?overview=full&geometries=geojson&steps=true`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.code !== 'Ok') throw new Error('No route found between these locations.');
+
+      const route = data.routes[0];
+      const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
+
+      if (routeLayer) map.removeLayer(routeLayer);
+      routeLayer = L.polyline(coords, {
+        color:'#1A6B3C', weight:5, opacity:.85,
+        lineCap:'round', lineJoin:'round'
+      }).addTo(map);
+
+      map.fitBounds(routeLayer.getBounds(), { padding:[30,30], animate:true });
+
+      const dist = (route.distance / 1000).toFixed(1);
+      const mins = Math.round(route.duration / 60);
+      const hours = mins >= 60 ? `${Math.floor(mins/60)}h ${mins%60}m` : `${mins} min`;
+
+      // Summary
+      const steps = route.legs[0].steps;
+      document.getElementById('rs-dist').textContent = dist + ' km';
+      document.getElementById('rs-time').textContent = hours;
+      document.getElementById('rs-steps').textContent = steps.length;
+      document.getElementById('route-summary').classList.add('show');
+
+      // Steps
+      const list = document.getElementById('step-list');
+      list.innerHTML = '';
+      steps.forEach((s, i) => {
+        const isLast = i === steps.length - 1;
+        const d = s.distance < 1000 ? `${Math.round(s.distance)} m` : `${(s.distance/1000).toFixed(1)} km`;
+        const type = s.maneuver.type;
+        const mod  = s.maneuver.modifier || '';
+        const icon = maneuverIcon(type, mod, isLast);
+        const name = s.name ? `on <b>${s.name}</b>` : '';
+        const div  = document.createElement('div');
+        div.className = 'step-item';
+        div.innerHTML = `
+          <div class="step-num">${icon}</div>
+          <div>
+            <div class="step-text">${humanStep(type, mod, isLast)} ${name}</div>
+            ${!isLast ? `<div class="step-dist">${d}</div>` : ''}
+          </div>`;
+        list.appendChild(div);
+      });
+
+      document.getElementById('steps-panel').classList.add('show');
+      stepsVisible = true;
+      document.querySelector('.steps-toggle').textContent = 'Hide ▲';
+
+      // Google Maps & share
+      mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${encodeURIComponent(destQuery)}&travelmode=${travelMode==='cycling'?'bicycling':travelMode}`;
+      document.getElementById('open-maps-btn').classList.add('show');
+      document.getElementById('share-btn').classList.add('show');
+
+      setStatus(`✅ Route found · ${dist} km · ~${hours}`,'ok');
+      showToast('🗺️ Route ready! Scroll down for turn-by-turn.');
+    } catch(e) {
+      setStatus(e.message || 'Something went wrong. Try again.','err');
+    }
+
+    document.getElementById('go-label').textContent = 'Get Directions';
+    document.getElementById('go-btn').disabled = false;
+    checkReady();
+  }
+
+  function openInMaps() { window.open(mapsUrl, '_blank'); }
+
+  function shareRoute() {
+    if (navigator.share) {
+      navigator.share({ title:'Route on CityLinkGH', url: mapsUrl })
+        .catch(()=>{});
+    } else {
+      navigator.clipboard.writeText(mapsUrl).then(()=>{
+        showToast('🔗 Route link copied to clipboard!');
+      });
+    }
+  }
+
+  function toggleSteps() {
+    stepsVisible = !stepsVisible;
+    document.getElementById('step-list').style.display = stepsVisible ? '' : 'none';
+    document.querySelector('.steps-toggle').textContent = stepsVisible ? 'Hide ▲' : 'Show ▼';
+  }
+
+  // ── Helpers ──
+  function maneuverIcon(type, mod, isLast) {
+    if (isLast || type==='arrive') return '🏁';
+    if (type==='depart') return '🚀';
+    if (type==='roundabout'||type==='rotary') return '🔄';
+    if (mod.includes('left')) return '←';
+    if (mod.includes('right')) return '→';
+    return '↑';
+  }
+  function humanStep(type, mod, isLast) {
+    if (isLast || type==='arrive') return 'Arrive at destination';
+    if (type==='depart') return 'Start heading';
+    if (type==='roundabout'||type==='rotary') return 'Enter roundabout';
+    if (type==='merge') return 'Merge';
+    if (type==='on ramp') return 'Take the ramp';
+    if (type==='off ramp') return 'Take exit';
+    if (type==='fork') return `Keep ${mod||'straight'}`;
+    if (mod==='slight left')  return 'Bear left';
+    if (mod==='slight right') return 'Bear right';
+    if (mod==='left')         return 'Turn left';
+    if (mod==='right')        return 'Turn right';
+    if (mod==='sharp left')   return 'Sharp left';
+    if (mod==='sharp right')  return 'Sharp right';
+    if (mod==='uturn')        return 'Make a U-turn';
+    return 'Continue straight';
+  }
+  function setStatus(msg, cls) {
+    const el = document.getElementById('status');
+    el.textContent = msg; el.className = cls||'';
+  }
+  function showToast(msg, dur=3000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), dur);
+  }
+</script>
+</body>
+</html>

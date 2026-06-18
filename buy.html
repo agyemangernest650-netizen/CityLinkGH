@@ -1,1237 +1,311 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Buy and sell locally in Ghana. Post items for sale, find deals near you on CityLinkGH Marketplace.">
-  <meta property="og:title" content="CityLinkGH — Buy & Sell Marketplace">
-  <meta property="og:description" content="Ghana's local buy and sell marketplace. Find phones, furniture, cars and more.">
-  <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
-  <meta property="og:url" content="https://citylinkgh.vercel.app/buy.html">
-  <meta name="theme-color" content="#0D0D0D">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
-  <link rel="canonical" href="https://citylinkgh.vercel.app/buy.html">
-  <title>CityLinkGH — Buy &amp; Sell Marketplace</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <!-- Paystack -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
-
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#F7F6F2;--surface:#fff;--ink:#1A1A1A;--ink-muted:#6B6B6B;
-      --text:#1A1A1A;--card:#fff;
-      --accent:#E84D2A;--accent-lt:#FFF0EC;
-      --sell:#1DB35E;--sell-lt:#E8F8EE;
-      --want:#3B7EF6;--want-lt:#EBF2FF;
-      --blue:#3B7EF6;
-      --wa:#25D366;--gold:#F59E0B;--gold-lt:#FFFBEB;
-      --border:#E5E4DF;--radius:12px;--shadow:0 2px 16px rgba(0,0,0,.07);
-    }
-    [data-theme="dark"]{
-      --bg:#12121C;--surface:#1E1E2E;--ink:#F0EBE0;--ink-muted:#9A9AB0;
-      --text:#F0EBE0;--card:#1E1E2E;
-      --border:#3A3A5E;--shadow:0 2px 16px rgba(0,0,0,.3);
-    }
-    [data-theme="dark"] body{background:var(--bg);color:var(--text);}
-    [data-theme="dark"] .listing-card{background:var(--surface);}
-    [data-theme="dark"] .toolbar{background:var(--surface);border-color:var(--border);}
-    [data-theme="dark"] .search-wrap input,[data-theme="dark"] .toolbar select{background:var(--bg);color:var(--text);border-color:var(--border);}
-    [data-theme="dark"] .modal{background:var(--surface);}
-    [data-theme="dark"] .form-group input,[data-theme="dark"] .form-group select,[data-theme="dark"] .form-group textarea{background:var(--bg);color:var(--text);border-color:var(--border);}
-    [data-theme="dark"] .plan-pick-card{background:var(--bg);border-color:var(--border);}
-    [data-theme="dark"] .pricing-card{background:var(--surface);}
-    [data-theme="dark"] .no-image{background:#2A2A3E;}
-    [data-theme="dark"] .action-chip{color:var(--ink-muted);border-color:var(--border);}
-    [data-theme="dark"] .modal-close{background:var(--bg);}
-    [data-theme="dark"] .stat-pill{background:var(--surface);border-color:var(--border);}
-    [data-theme="dark"] header{background:#0A0A14;}
-    [data-theme="dark"] .bottom-nav{background:#1E1E2E;border-color:var(--border);}
-    [data-theme="dark"] .bottom-nav a span:last-child{color:var(--ink-muted);}
-
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
-
-    /* ── HEADER ── */
-    header{background:var(--ink);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--blue);gap:10px;}
-    .logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;white-space:nowrap;display:flex;align-items:center;gap:8px;}
-    .logo img{border-radius:6px;object-fit:cover;}
-    .logo span{color:var(--blue);}
-    .hbtns{display:flex;gap:6px;align-items:center;flex-shrink:0;}
-    .dark-toggle{background:none;border:none;cursor:pointer;font-size:20px;padding:4px;}
-
-    /* ── BOTTOM NAV ── */
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E2D9C8;display:flex;justify-content:space-around;padding:6px 0 env(safe-area-inset-bottom,14px);z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,.07);}
-    .bottom-nav a{text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;}
-    .bottom-nav a span:first-child{font-size:20px;}
-    .bottom-nav a span:last-child{font-size:10px;color:#7A7265;}
-    .bottom-nav a.active span:last-child{color:#D4A017;font-weight:700;}
-    .bottom-nav-spacer{height:70px;}
-
-    /* ── HERO ── */
-    .hero{background:linear-gradient(135deg,#0d2044,#1a3a6e);padding:28px 20px 34px;position:relative;overflow:hidden;}
-    .hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(59,126,246,.28) 0%,transparent 70%);border-radius:50%;}
-    .hero::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(232,77,42,.18) 0%,transparent 70%);border-radius:50%;}
-    .hero-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px;position:relative;z-index:1;}
-    .hero h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:8px;position:relative;z-index:1;}
-    .hero h1 em{font-style:normal;color:#5BA4FF;}
-    .hero p{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:18px;line-height:1.65;position:relative;z-index:1;max-width:400px;}
-    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1;}
-    .hero-stats{display:flex;gap:12px;margin-top:20px;position:relative;z-index:1;flex-wrap:wrap;}
-    .stat-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:6px 14px;font-size:.72rem;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:6px;}
-    .stat-pill strong{color:#fff;font-weight:700;}
-
-    /* ── BUTTONS ── */
-    .btn-primary{background:var(--accent);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-family:"Syne",sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:opacity .18s,transform .18s;-webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center;gap:7px;}
-    .btn-primary:hover{opacity:.88;transform:translateY(-1px);}
-    .btn-primary:active{transform:scale(.97);}
-    .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);padding:12px 24px;border-radius:8px;font-family:"Syne",sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;transition:border-color .18s,background .18s;-webkit-tap-highlight-color:transparent;}
-    .btn-ghost:hover{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);}
-    .btn-outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent);padding:10px 20px;border-radius:8px;font-family:"Syne",sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s;-webkit-tap-highlight-color:transparent;}
-    .btn-outline:hover{background:var(--accent);color:#fff;}
-
-    /* ── TOOLBAR ── */
-    .toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:53px;z-index:10;}
-    .search-wrap{flex:1;min-width:140px;position:relative;}
-    .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:var(--ink-muted);pointer-events:none;}
-    .search-wrap input{width:100%;padding:9px 10px 9px 32px;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem;font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s;}
-    .search-wrap input:focus{border-color:var(--accent);}
-    .toolbar select{padding:9px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.8rem;font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);outline:none;cursor:pointer;max-width:130px;-webkit-appearance:none;appearance:none;}
-    .toolbar select:focus{border-color:var(--accent);}
-    @media(max-width:480px){
-      .toolbar{gap:8px;}
-      .search-wrap{flex:0 0 100%;order:-1;}
-      .toolbar select{flex:1;max-width:none;font-size:.75rem;}
-    }
-
-    /* ── GRID ── */
-    .container{max-width:1200px;margin:0 auto;padding:24px 16px 120px;}
-    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;}
-    .section-header h2{font-family:"Syne",sans-serif;font-size:1.3rem;font-weight:700;}
-    .listing-count{font-size:.75rem;color:var(--ink-muted);background:var(--border);padding:3px 10px;border-radius:20px;}
-    #listings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;}
-    @media(max-width:400px){#listings-grid{grid-template-columns:1fr 1fr;gap:10px;}}
-    @media(max-width:280px){#listings-grid{grid-template-columns:1fr;}}
-
-    /* ── CARD ── */
-    .listing-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;position:relative;border:2px solid transparent;}
-    .listing-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.11);}
-    .listing-card.is-sold{opacity:.6;}
-    .listing-card.is-pending{opacity:.75;}
-    .listing-card.plan-premium{box-shadow:0 4px 24px rgba(232,77,42,.18);}
-    .listing-card.plan-standard{box-shadow:0 4px 18px rgba(59,126,246,.13);}
-
-    .featured-ribbon{position:absolute;top:0;left:0;right:0;color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:4px 0;z-index:2;}
-    .pending-ribbon{position:absolute;top:0;left:0;right:0;background:var(--gold);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:4px 0;z-index:2;}
-    .listing-card.plan-premium .card-image-wrap,.listing-card.is-pending .card-image-wrap{margin-top:22px;}
-
-    .card-image-wrap{position:relative;height:160px;overflow:hidden;background:var(--bg);}
-    .card-image-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .35s;}
-    .listing-card:hover .card-image-wrap img{transform:scale(1.04);}
-    .no-image{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#EFEFED;}
-    .no-image svg{width:44px;height:44px;fill:#C5C4BF;}
-
-    .type-badge{position:absolute;top:10px;left:10px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 9px;border-radius:20px;}
-    .type-badge.sell{background:var(--sell-lt);color:var(--sell);}
-    .type-badge.buy{background:var(--want-lt);color:var(--want);}
-    .sold-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-family:"Syne",sans-serif;font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:.1em;}
-    .view-count{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.5);color:#fff;font-size:.65rem;padding:2px 7px;border-radius:20px;}
-    .save-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.9);border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 8px rgba(0,0,0,.12);}
-    .save-btn svg{width:16px;height:16px;fill:#ccc;stroke:#999;stroke-width:1.5;transition:fill .15s,stroke .15s;}
-    .save-btn.saved svg{fill:#E84D2A;stroke:#E84D2A;}
-    .save-btn:active{transform:scale(1.2);}
-
-    .card-body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1;}
-    .card-tags-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-    .category-tag{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);}
-    .plan-badge{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid;text-transform:uppercase;letter-spacing:.06em;}
-    .condition-tag{font-size:.65rem;font-weight:600;padding:2px 8px;border-radius:20px;background:#f0f0f0;color:#555;}
-    .card-title{font-family:"Syne",sans-serif;font-size:1rem;font-weight:700;line-height:1.3;}
-    .card-desc{font-size:.82rem;color:var(--ink-muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
-    .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;flex-wrap:wrap;gap:8px;}
-    .price{font-family:"Syne",sans-serif;font-size:1.1rem;font-weight:800;}
-    .card-actions{display:flex;gap:8px;}
-    .wa-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:#E8FBF0;color:var(--wa);text-decoration:none;transition:background .15s;-webkit-tap-highlight-color:transparent;}
-    .wa-btn:hover{background:#d0f5e0;}
-    .wa-btn svg{width:18px;height:18px;}
-    .call-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--accent-lt);color:var(--accent);text-decoration:none;transition:background .15s;-webkit-tap-highlight-color:transparent;}
-    .call-btn:hover{background:#ffddd5;}
-    .call-btn svg{width:16px;height:16px;fill:var(--accent);}
-    .card-location{display:flex;align-items:center;gap:4px;font-size:.73rem;color:var(--ink-muted);}
-    .card-location svg{width:11px;height:11px;fill:var(--ink-muted);}
-    .card-expiry{font-size:.68rem;color:var(--ink-muted);}
-    .card-meta-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
-    .action-chip{font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:none;cursor:pointer;color:var(--ink-muted);transition:background .12s,color .12s;-webkit-tap-highlight-color:transparent;}
-    .action-chip:hover{background:var(--border);}
-    .action-chip.danger:hover{background:#fdecea;color:#c0392b;border-color:#e0b4b0;}
-    .action-chip.accent{color:var(--accent);border-color:var(--accent);}
-    .action-chip.accent:hover{background:var(--accent-lt);}
-    .action-chip.muted{color:#bbb;}
-
-    /* ── LOADING / EMPTY ── */
-    .loading-pulse{grid-column:1/-1;display:flex;gap:16px;justify-content:center;padding:60px 0;}
-    .loading-pulse span{width:11px;height:11px;border-radius:50%;background:var(--accent);animation:pulse 1s ease-in-out infinite;}
-    .loading-pulse span:nth-child(2){animation-delay:.15s;}
-    .loading-pulse span:nth-child(3){animation-delay:.3s;}
-    @keyframes pulse{0%,100%{opacity:.25;transform:scale(.8);}50%{opacity:1;transform:scale(1);}}
-    #empty-state{display:none;grid-column:1/-1;flex-direction:column;align-items:center;padding:60px 16px;text-align:center;color:var(--ink-muted);}
-
-    /* ── MODALS ── */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:300;align-items:flex-end;justify-content:center;padding:0;}
-    .modal-overlay.open{display:flex;}
-    .modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding:24px 20px 36px;animation:slideUp .22s ease;}
-    @media(min-width:600px){.modal-overlay{align-items:center;padding:16px;}.modal{border-radius:16px;padding:32px;}}
-    @keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-    .modal-handle{width:40px;height:4px;border-radius:4px;background:var(--border);margin:0 auto 20px;}
-    @media(min-width:600px){.modal-handle{display:none;}}
-    .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-    .modal-header h2{font-family:"Syne",sans-serif;font-size:1.3rem;font-weight:800;}
-    .modal-close{background:var(--bg);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1.1rem;color:var(--ink-muted);display:flex;align-items:center;justify-content:center;transition:background .15s;}
-    .modal-close:hover{background:var(--border);}
-
-    /* ── PLAN PICKER ── */
-    .plan-picker-label{font-size:.75rem;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:block;}
-    .plan-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-    @media(max-width:480px){.plan-picker{grid-template-columns:1fr;gap:8px;}}
-    .plan-pick-card{border:2px solid var(--border);border-radius:10px;padding:14px 10px;cursor:pointer;transition:border-color .15s,background .15s,transform .15s;text-align:center;background:var(--bg);-webkit-tap-highlight-color:transparent;position:relative;}
-    .plan-pick-card:hover{border-color:var(--ink-muted);transform:translateY(-2px);}
-    .plan-pick-card.active.basic{border-color:#6B6B6B;background:#F5F5F5;}
-    .plan-pick-card.active.standard{border-color:var(--want);background:var(--want-lt);}
-    .plan-pick-card.active.premium{border-color:var(--accent);background:var(--accent-lt);}
-    .plan-pick-card.premium::before{content:'⭐ Popular';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.58rem;font-weight:800;letter-spacing:.06em;padding:2px 10px;border-radius:20px;white-space:nowrap;}
-    .plan-pick-name{font-family:"Syne",sans-serif;font-size:.9rem;font-weight:800;}
-    .plan-pick-price{font-size:.78rem;color:var(--ink-muted);margin:3px 0 5px;}
-    .plan-pick-perks{font-size:.68rem;color:var(--ink-muted);line-height:1.5;}
-    .plan-tip{font-size:.73rem;color:var(--ink-muted);margin-top:4px;}
-
-    /* ── PAYMENT NOTE ── */
-    .payment-note{display:none;align-items:flex-start;gap:10px;background:var(--gold-lt);border:1px solid #FDE68A;border-radius:8px;padding:12px;margin-bottom:14px;font-size:.8rem;}
-    .payment-note svg{width:18px;height:18px;fill:var(--gold);flex-shrink:0;margin-top:1px;}
-    .payment-note.visible{display:flex;}
-
-    /* ── FORM ── */
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    @media(max-width:480px){.form-row{grid-template-columns:1fr;}}
-    .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
-    .form-group label{font-size:.75rem;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.07em;}
-    .form-group input,.form-group select,.form-group textarea{padding:11px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;font-family:"Inter",sans-serif;color:var(--ink);background:var(--bg);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
-    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent);}
-    .form-group textarea{resize:vertical;min-height:88px;}
-    .file-label{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1.5px dashed var(--border);border-radius:8px;cursor:pointer;font-size:.875rem;color:var(--ink-muted);transition:border-color .15s,background .15s;}
-    .file-label:hover{border-color:var(--accent);background:var(--accent-lt);}
-    .file-label svg{width:18px;height:18px;fill:none;stroke:var(--ink-muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-    #f-image{display:none;}
-    #image-preview{display:none;width:100%;height:150px;object-fit:cover;border-radius:8px;margin-top:8px;}
-    #form-error{color:#c0392b;font-size:.8rem;margin-bottom:8px;min-height:18px;}
-
-    /* ── PRICING MODAL ── */
-    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;}
-    @media(max-width:600px){.pricing-grid{grid-template-columns:1fr;gap:10px;}}
-    .pricing-card{border:2px solid var(--border);border-radius:14px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;position:relative;background:var(--surface);transition:transform .2s,box-shadow .2s;}
-    .pricing-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1);}
-    .pricing-card.recommended{border-color:var(--accent);box-shadow:0 4px 24px rgba(232,77,42,.15);}
-    .rec-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 12px;border-radius:20px;white-space:nowrap;}
-    .pricing-plan-name{font-family:"Syne",sans-serif;font-size:1.1rem;font-weight:800;}
-    .pricing-plan-price{font-family:"Syne",sans-serif;font-size:1.6rem;font-weight:800;margin:4px 0;}
-    .pricing-plan-price span{font-size:.82rem;font-weight:400;color:var(--ink-muted);}
-    .pricing-features{list-style:none;display:flex;flex-direction:column;gap:6px;flex:1;}
-    .pricing-features li{font-size:.82rem;color:var(--ink-muted);display:flex;align-items:center;gap:7px;}
-    .pricing-features li::before{content:"✓";color:var(--sell);font-weight:700;}
-    .pricing-features li.no{color:#bbb;}
-    .pricing-features li.no::before{content:"✗";color:#ddd;}
-    .pricing-cta{margin-top:12px;padding:12px;border-radius:8px;font-family:"Syne",sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;border:none;transition:opacity .15s,transform .15s;width:100%;}
-    .pricing-cta:hover{opacity:.88;transform:translateY(-1px);}
-
-    /* ── FAB ── */
-    .fab{display:none;position:fixed;bottom:80px;right:16px;z-index:50;background:var(--accent);color:#fff;border:none;width:58px;height:58px;border-radius:50%;font-size:1.7rem;cursor:pointer;box-shadow:0 4px 20px rgba(232,77,42,.5);align-items:center;justify-content:center;transition:transform .15s;-webkit-tap-highlight-color:transparent;}
-    .fab:active{transform:scale(.92);}
-    @media(max-width:600px){.fab{display:flex;}}
-
-    /* ── TOAST ── */
-    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:11px 22px;border-radius:8px;font-size:.85rem;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:transform .3s ease;z-index:500;white-space:nowrap;}
-    .toast.show{transform:translateX(-50%) translateY(0);}
-    @media(min-width:600px){.toast{bottom:24px;}}
-
-    /* ── HAMBURGER ── */
-    .hamburger{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;gap:5px;justify-content:center;}
-    .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .3s;}
-    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .hamburger.open span:nth-child(2){opacity:0;}
-    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    .nav-drawer{position:fixed;top:0;right:-280px;width:280px;height:100vh;background:var(--ink);z-index:500;transition:right .3s ease;padding:70px 0 30px;box-shadow:-4px 0 30px rgba(0,0,0,.3);overflow-y:auto;}
-    .nav-drawer.open{right:0;}
-    .nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:499;}
-    .nav-overlay.open{display:block;}
-    .drawer-link{display:flex;align-items:center;gap:12px;padding:14px 24px;color:rgba(255,255,255,.75);text-decoration:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s,color .2s;cursor:pointer;}
-    .drawer-link:hover,.drawer-link.active{background:rgba(255,255,255,.07);color:#fff;}
-    .drawer-link .di{font-size:18px;width:28px;text-align:center;}
-    .drawer-section{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:16px 24px 6px;}
-    .drawer-close{position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;line-height:1;}
-
-    /* ── DETAIL MODAL GALLERY ── */
-    .detail-gallery{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:10px;margin-bottom:4px;}
-    .detail-gallery img{width:100%;min-width:100%;height:220px;object-fit:cover;border-radius:10px;scroll-snap-align:start;flex-shrink:0;}
-
-    /* ── FOOTER ── */
-    .footer{background:#111827;color:#fff;padding:50px 20px 20px;margin-top:50px;}
-    .footer-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;}
-    .footer-box h3{margin-bottom:15px;color:#fbbf24;}
-    .footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-    .footer-logo span{color:#fbbf24;}
-    .footer-box p{color:#d1d5db;line-height:1.7;font-size:.88rem;}
-    .footer-box ul{list-style:none;padding:0;}
-    .footer-box ul li{margin-bottom:10px;}
-    .footer-box ul li a{text-decoration:none;color:#d1d5db;transition:.3s;font-size:.88rem;}
-    .footer-box ul li a:hover{color:#fbbf24;}
-    .socials{margin-top:15px;display:flex;gap:10px;flex-wrap:wrap;}
-    .socials a{text-decoration:none;background:#1f2937;color:#fff;padding:8px 14px;border-radius:6px;transition:.3s;font-size:.82rem;}
-    .socials a:hover{background:#fbbf24;color:#000;}
-    .footer-bottom{border-top:1px solid #374151;margin-top:30px;padding-top:20px;text-align:center;color:#9ca3af;font-size:.82rem;}
-
-    /* ── RESPONSIVE TWEAKS ── */
-    @media(max-width:400px){
-      .card-image-wrap{height:120px;}
-      .card-title{font-size:.88rem;}
-      .card-body{padding:10px;gap:4px;}
-      .card-actions{gap:5px;}
-      .wa-btn,.call-btn{width:32px;height:32px;}
-      .card-footer{flex-wrap:wrap;gap:5px;}
-    }
-    @media(max-width:480px){
-      .section-header h2{font-size:1.1rem;}
-      .hero h1{font-size:1.5rem;}
-    }
-
-    /* ── SEARCH HIGHLIGHT ── */
-    mark{background:rgba(232,77,42,.15);color:var(--accent);border-radius:2px;padding:0 2px;}
-
-    /* ── SKELETON CARDS ── */
-    .skeleton-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;animation:shimmer 1.4s infinite;}
-    .skeleton-img{height:160px;background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
-    .skeleton-line{height:12px;border-radius:4px;background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;margin:8px 14px;}
-    .skeleton-line.short{width:55%;margin-top:4px;}
-    @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-    [data-theme="dark"] .skeleton-img,[data-theme="dark"] .skeleton-line{background:linear-gradient(90deg,#2a2a3e 25%,#3a3a5e 50%,#2a2a3e 75%);background-size:200% 100%;}
-
-    /* ── CHAR COUNTER ── */
-    .char-counter{font-size:.7rem;color:var(--ink-muted);text-align:right;margin-top:2px;}
-    .char-counter.warn{color:var(--gold);}
-    .char-counter.over{color:var(--accent);}
-
-    /* ── PROGRESS STEPS ── */
-    .form-steps{display:flex;align-items:center;gap:0;margin-bottom:20px;}
-    .step{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--ink-muted);}
-    .step-num{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;}
-    .step.active .step-num{background:var(--accent);color:#fff;}
-    .step.done .step-num{background:var(--sell);color:#fff;}
-    .step-line{flex:1;height:2px;background:var(--border);margin:0 4px;}
-    .step-line.done{background:var(--sell);}
-  </style>
-
-  <script type="module">
-    import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getFirestore, collection, addDoc, getDocs,
-      query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc, where, getDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signInAnonymously }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-    /* ── FIREBASE CONFIG ── */
-    const FC={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
-    const CLOUDINARY_CLOUD_NAME="dulnujvm7", CLOUDINARY_UPLOAD_PRESET="ernest";
-
-    /* ── PAYSTACK CONFIG ── */
-    const PAYSTACK_KEY = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
-
-    /* ── ARKESEL CONFIG ── */
-    const ARKESEL_KEY = "VWZXc3VHaGh4aHlrRHhMcEl6Zm4";
-    const ARKESEL_SENDER_ID = "CityLinkGH";
-
-    /* ─────────────────────────────────────────
-       PLAN DEFINITIONS  (GH₵10 / GH₵20)
-       Paystack amount = pesewas (100 = GH₵1)
-    ───────────────────────────────────────── */
-    const PLANS = {
-      basic: {
-        name:"Basic", price:0, paystackAmount:0,
-        color:"#6B6B6B", bg:"#F5F5F5", border:"#E0E0E0",
-        photos:1, duration:30, featured:false,
-        badge:false, highlight:false, bold_title:false,
-        perks:["1 photo","30 days live","Standard display","WhatsApp & Call button"]
-      },
-      standard: {
-        name:"Standard", price:10, paystackAmount:1000,  /* GH₵10 = 1000 pesewas */
-        color:"#3B7EF6", bg:"#EBF2FF", border:"#3B7EF6",
-        photos:5, duration:60, featured:false,
-        badge:true, highlight:true, bold_title:false,
-        perks:["5 photos","60 days live","Blue badge + border","SMS confirmation","Priority search"]
-      },
-      premium: {
-        name:"Premium", price:20, paystackAmount:2000,   /* GH₵20 = 2000 pesewas */
-        color:"#E84D2A", bg:"#FFF0EC", border:"#E84D2A",
-        photos:10, duration:90, featured:true,
-        badge:true, highlight:true, bold_title:true,
-        perks:["10 photos","90 days live","Pinned to top","Featured ribbon","Red badge","SMS alerts to buyer leads","Bold title"]
-      }
-    };
-
-    /* ── init ── */
-    const app  = initializeApp(FC);
-    const db   = getFirestore(app);
-    const auth = getAuth(app);
-    let currentUser  = null;
-    let selectedPlan = "basic";
-    let pendingListingData = null;
-
-    signInAnonymously(auth);
-    onAuthStateChanged(auth, u => { currentUser = u; });
-
-    /* ── SMS ── */
-    async function sendSMS(to, message) {
-      if (!ARKESEL_KEY) { console.warn("SMS skipped: no key"); return; }
-      try {
-        const phone = to.replace(/\s/g,"");
-        await fetch("https://sms.arkesel.com/api/v2/sms/send", {
-          method:"POST",
-          headers:{ "api-key":ARKESEL_KEY, "Content-Type":"application/json" },
-          body:JSON.stringify({ sender:ARKESEL_SENDER_ID, message, recipients:[phone] })
-        });
-      } catch(e) { console.warn("SMS error:", e); }
-    }
-
-    /* ── PAYSTACK ── */
-    function initiatePaystackPayment(plan, email, phone, onSuccess) {
-      const p = PLANS[plan];
-      if (p.price === 0) { onSuccess({ reference:"free_"+Date.now() }); return; }
-
-      const handler = PaystackPop.setup({
-        key:      PAYSTACK_KEY,
-        email:    email || "buyer@marketplace.com",
-        amount:   p.paystackAmount,          // already in pesewas – no ×100
-        currency: "GHS",
-        ref:      "CL_"+Date.now()+"_"+Math.random().toString(36).substr(2,6).toUpperCase(),
-        metadata:{
-          custom_fields:[
-            {display_name:"Plan",  variable_name:"plan",  value:p.name},
-            {display_name:"Phone", variable_name:"phone", value:phone}
-          ]
-        },
-        onSuccess: response => onSuccess(response),
-        onClose:  () => {
-          const btn = document.getElementById("submit-btn");
-          btn.disabled=false; btn.textContent="Post Listing";
-          showToast("Payment cancelled.");
-        }
-      });
-      handler.openIframe();
-    }
-
-    /* ── CLOUDINARY ── */
-    async function uploadToCloudinary(file) {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-      const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{method:"POST",body:fd});
-      const data = await res.json();
-      if (!data.secure_url) throw new Error("Upload failed");
-      return data.secure_url;
-    }
-
-    /* ── SORT ── */
-    function sortItems(items, sort) {
-      if (sort==="price_asc")  return [...items].sort((a,b)=>(parseFloat(a.price)||0)-(parseFloat(b.price)||0));
-      if (sort==="price_desc") return [...items].sort((a,b)=>(parseFloat(b.price)||0)-(parseFloat(a.price)||0));
-      if (sort==="saved")      return items.filter(i=>isSaved(i.id));
-      return items;
-    }
-
-    /* ── FAVOURITES ── */
-    const getSaved   = ()  => JSON.parse(localStorage.getItem("bs_saved")||"[]");
-    const toggleSave = id  => {
-      let s=getSaved();
-      s.includes(id)?(s=s.filter(x=>x!==id)):s.push(id);
-      localStorage.setItem("bs_saved",JSON.stringify(s));
-    };
-    const isSaved = id => getSaved().includes(id);
-
-    /* ── VIEW COUNTER ── */
-    async function incrementViews(id) {
-      try {
-        const viewed = JSON.parse(localStorage.getItem("bs_viewed")||"[]");
-        if (viewed.includes(id)) return;
-        const snap = await getDoc(doc(db,"buy_sell_listings",id));
-        if (!snap.exists()) return;
-        await updateDoc(doc(db,"buy_sell_listings",id),{ views:(snap.data()?.views||0)+1 });
-        viewed.push(id);
-        localStorage.setItem("bs_viewed",JSON.stringify(viewed));
-      } catch(e){}
-    }
-
-    /* ── CARD BUILDER ── */
-    function buildCard(item, searchTerm="") {
-      const plan     = PLANS[item.plan]||PLANS.basic;
-      const saved    = isSaved(item.id);
-      const isMine   = currentUser && item.uid===currentUser.uid;
-      const isSold   = item.status==="sold";
-      const isPending= item.status==="pending";
-      const wa       = item.phone
-        ?`https://wa.me/${item.phone.replace(/\D/g,"")}?text=Hi%2C+I+saw+your+listing+%22${encodeURIComponent(item.title)}%22+on+CityLinkGH.+Is+it+still+available%3F`
-        :"#";
-      const planBadge = plan.badge
-        ?`<span class="plan-badge" style="background:${plan.bg};color:${plan.color};border-color:${plan.border}">${plan.name}</span>`
-        :"";
-      const borderStyle = plan.highlight ? `style="border:2px solid ${plan.border};"` : "";
-      const titleStyle  = plan.bold_title ? `style="font-weight:900;font-size:1.08rem;"` : "";
-      const expiryDays  = item.expiresAt
-        ?Math.max(0,Math.ceil((item.expiresAt.toDate?item.expiresAt.toDate():new Date(item.expiresAt)-new Date())/(1000*60*60*24)))
-        :plan.duration;
-
-      // highlight search term
-      function hl(text) {
-        if (!searchTerm||!text) return text||"";
-        const re=new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")})`,"gi");
-        return text.replace(re,"<mark>$1</mark>");
-      }
-
-      return `
-      <div class="listing-card plan-${item.plan||"basic"}${isSold?" is-sold":""}${isPending?" is-pending":""}" data-id="${item.id}" ${borderStyle}>
-        ${plan.featured?`<div class="featured-ribbon" style="background:${plan.color}">⭐ Featured</div>`:""}
-        ${isPending?`<div class="pending-ribbon">⏳ Pending Payment</div>`:""}
-        <div class="card-image-wrap">
-          ${item.imageUrl
-            ?`<img src="${item.imageUrl}" alt="${item.title}" loading="lazy" onclick="openDetailModal('${item.id}')" style="cursor:pointer"/>`
-            :`<div class="no-image" onclick="openDetailModal('${item.id}')" style="cursor:pointer"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg></div>`
-          }
-          <span class="type-badge ${item.type}">${item.type==="sell"?"For Sale":"Wanted"}</span>
-          ${isSold?`<span class="sold-overlay">SOLD</span>`:""}
-          <button class="save-btn${saved?" saved":""}" data-id="${item.id}" aria-label="Save listing">
-            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
-          ${item.views?`<span class="view-count">👁 ${item.views}</span>`:""}
-        </div>
-        <div class="card-body">
-          <div class="card-tags-row">
-            <span class="category-tag">${item.category||"General"}</span>
-            ${planBadge}
-            ${item.condition?`<span class="condition-tag">${item.condition}</span>`:""}
-          </div>
-          <h3 class="card-title" ${titleStyle} onclick="openDetailModal('${item.id}')" style="cursor:pointer">${hl(item.title)}</h3>
-          <p class="card-desc">${hl(item.description)}</p>
-          <div class="card-footer">
-            <span class="price">${item.price?`GH₵${parseFloat(item.price).toLocaleString()}`:"Negotiable"}</span>
-            <div class="card-actions">
-              <a href="${wa}" target="_blank" rel="noopener" class="wa-btn" title="WhatsApp" onclick="trackContact('${item.id}','whatsapp')">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-              </a>
-              <a href="tel:${item.phone}" class="call-btn" title="Call seller" onclick="trackContact('${item.id}','call')">
-                <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-              </a>
-            </div>
-          </div>
-          ${item.location?`<div class="card-location"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>${item.location}</div>`:""}
-          <div class="card-expiry">${isSold?"✅ Sold":`Expires in ${expiryDays} day${expiryDays!==1?"s":""}`}</div>
-          <div class="card-meta-row">
-            ${isMine&&!isSold?`<button class="mark-sold-btn action-chip" data-id="${item.id}">✓ Sold</button>`:""}
-            ${isMine?`<button class="delete-btn action-chip danger" data-id="${item.id}">🗑 Remove</button>`:""}
-            ${isMine?`<button class="bump-btn action-chip accent" data-id="${item.id}" data-title="${item.title}">⬆ Bump</button>`:""}
-            ${!isMine?`<button class="report-btn action-chip muted" data-id="${item.id}" data-title="${item.title}">⚑ Report</button>`:""}
-            <button class="share-btn action-chip" data-id="${item.id}" data-title="${item.title}">↗ Share</button>
-          </div>
-        </div>
-      </div>`;
-    }
-
-    /* ── CONTACT TRACKER ── */
-    window.trackContact = async function(id, type) {
-      try {
-        const snap = await getDoc(doc(db,"buy_sell_listings",id));
-        if (!snap.exists()) return;
-        const d = snap.data();
-        await updateDoc(doc(db,"buy_sell_listings",id),{[`contacts_${type}`]:(d[`contacts_${type}`]||0)+1});
-        if (d.plan==="premium" && d.phone) {
-          sendSMS(d.phone,
-            `Someone just ${type==="whatsapp"?"messaged you on WhatsApp":"called"} about your listing "${d.title}" on CityLinkGH!`
-          );
-        }
-      } catch(e){}
-    };
-
-    /* ── LOAD LISTINGS ── */
-    async function loadListings(cat="all", type="all", search="", sort="newest") {
-      const grid  = document.getElementById("listings-grid");
-      const empty = document.getElementById("empty-state");
-
-      // Skeleton loading
-      grid.innerHTML = Array(6).fill(`
-        <div class="skeleton-card">
-          <div class="skeleton-img"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line short"></div>
-          <div class="skeleton-line" style="width:70%;margin-top:10px;"></div>
-        </div>`).join("");
-
-      const q    = query(collection(db,"buy_sell_listings"),orderBy("createdAt","desc"));
-      const snap = await getDocs(q);
-      let items  = [];
-      snap.forEach(d=>{
-        const data = d.data();
-        if (data.status==="pending" && data.uid!==currentUser?.uid) return;
-        if (data.expiresAt) {
-          const exp = data.expiresAt.toDate ? data.expiresAt.toDate() : new Date(data.expiresAt);
-          if (exp < new Date()) return;
-        }
-        items.push({id:d.id,...data});
-      });
-
-      if (cat!=="all")    items=items.filter(i=>i.category===cat);
-      if (type!=="all")   items=items.filter(i=>i.type===type);
-      if (search)         items=items.filter(i=>
-        (i.title||"").toLowerCase().includes(search.toLowerCase())||
-        (i.description||"").toLowerCase().includes(search.toLowerCase())||
-        (i.location||"").toLowerCase().includes(search.toLowerCase())
-      );
-
-      const prem = sortItems(items.filter(i=>i.plan==="premium"),sort);
-      const std  = sortItems(items.filter(i=>i.plan==="standard"),sort);
-      const bas  = sortItems(items.filter(i=>!i.plan||i.plan==="basic"),sort);
-      items = [...prem,...std,...bas];
-
-      document.getElementById("listing-count").textContent =
-        items.length+" listing"+(items.length!==1?"s":"");
-
-      grid.innerHTML="";
-      if (!items.length){ empty.style.display="flex"; return; }
-      empty.style.display="none";
-
-      items.forEach(item=>{
-        const wrap=document.createElement("div");
-        wrap.innerHTML=buildCard(item, search);
-        grid.appendChild(wrap.firstElementChild);
-        setTimeout(()=>incrementViews(item.id),1500);
-      });
-
-      attachCardEvents(grid);
-    }
-
-    function attachCardEvents(grid) {
-      grid.querySelectorAll(".save-btn").forEach(btn=>{
-        btn.addEventListener("click",e=>{
-          e.stopPropagation();
-          toggleSave(btn.dataset.id);
-          btn.classList.toggle("saved",isSaved(btn.dataset.id));
-          showToast(isSaved(btn.dataset.id)?"❤️ Saved!":"Removed from saved");
-        });
-      });
-      grid.querySelectorAll(".mark-sold-btn").forEach(btn=>{
-        btn.addEventListener("click",async()=>{
-          if(!confirm("Mark this as sold?")) return;
-          await updateDoc(doc(db,"buy_sell_listings",btn.dataset.id),{status:"sold"});
-          showToast("✅ Marked as sold!"); refresh();
-        });
-      });
-      grid.querySelectorAll(".delete-btn").forEach(btn=>{
-        btn.addEventListener("click",async()=>{
-          if(!confirm("Remove this listing permanently?")) return;
-          await deleteDoc(doc(db,"buy_sell_listings",btn.dataset.id));
-          showToast("Listing removed"); refresh();
-        });
-      });
-      grid.querySelectorAll(".bump-btn").forEach(btn=>{
-        btn.addEventListener("click",()=>openBumpModal(btn.dataset.id,btn.dataset.title));
-      });
-      grid.querySelectorAll(".report-btn").forEach(btn=>{
-        btn.addEventListener("click",()=>openReportModal(btn.dataset.id,btn.dataset.title));
-      });
-      grid.querySelectorAll(".share-btn").forEach(btn=>{
-        btn.addEventListener("click",async()=>{
-          const url=location.href.split("?")[0]+"?listing="+btn.dataset.id;
-          if(navigator.share) await navigator.share({title:btn.dataset.title,url});
-          else { await navigator.clipboard.writeText(url); showToast("🔗 Link copied!"); }
-        });
-      });
-    }
-
-    function refresh() {
-      loadListings(
-        document.getElementById("filter-category").value,
-        document.getElementById("filter-type").value,
-        document.getElementById("search-input").value,
-        document.getElementById("sort-select").value
-      );
-    }
-    window.loadListings=loadListings;
-
-    /* ── SUBMIT LISTING ── */
-    window.submitListing = async function() {
-      const btn = document.getElementById("submit-btn");
-      const err = document.getElementById("form-error");
-      err.textContent="";
-
-      const title    = document.getElementById("f-title").value.trim();
-      const desc     = document.getElementById("f-desc").value.trim();
-      const price    = document.getElementById("f-price").value.trim();
-      const phone    = document.getElementById("f-phone").value.trim();
-      const email    = document.getElementById("f-email").value.trim();
-      const location = document.getElementById("f-location").value.trim();
-      const category = document.getElementById("f-category").value;
-      const type     = document.getElementById("f-type").value;
-      const condition= document.getElementById("f-condition").value;
-      const files    = document.getElementById("f-image").files;
-      const plan     = PLANS[selectedPlan];
-
-      if (!title)  { err.textContent="Please add a title."; return; }
-      if (!desc)   { err.textContent="Please add a description."; return; }
-      if (!phone)  { err.textContent="Phone number is required."; return; }
-      if (!email && plan.price>0) { err.textContent="Email is required for paid plans (used for Paystack receipt)."; return; }
-      if (files.length>plan.photos) { err.textContent=`${plan.name} plan allows max ${plan.photos} photo${plan.photos>1?"s":""}.`; return; }
-
-      btn.disabled=true; btn.textContent="Processing…";
-
-      pendingListingData = {title,description:desc,price,phone,email,location,category,type,condition,plan:selectedPlan};
-
-      initiatePaystackPayment(selectedPlan, email, phone, async (paystackResponse)=>{
-        try {
-          btn.textContent="Uploading…";
-          let imageUrl="";
-          if (files[0]) imageUrl=await uploadToCloudinary(files[0]);
-
-          const expiresAt=new Date(Date.now()+plan.duration*86400000);
-
-          await addDoc(collection(db,"buy_sell_listings"),{
-            ...pendingListingData, imageUrl,
-            status:"active",
-            paymentRef: paystackResponse.reference||"free",
-            uid: currentUser?currentUser.uid:"anon",
-            createdAt: serverTimestamp(),
-            expiresAt, views:0,
-            contacts_whatsapp:0, contacts_call:0
-          });
-
-          await sendSMS(phone,
-            `Hi! Your "${title}" listing is now LIVE on CityLinkGH under the ${plan.name} plan. Active for ${plan.duration} days. Good luck! 🎉`
-          );
-
-          document.getElementById("post-form").reset();
-          document.getElementById("image-preview").style.display="none";
-          document.getElementById("image-preview-count").textContent="";
-          window.selectPlan("basic");
-          closeModal(); refresh();
-          showToast(`🎉 Your listing is live!`);
-        } catch(e) {
-          err.textContent="Something went wrong — please try again."; console.error(e);
-        } finally {
-          btn.disabled=false; btn.textContent="Post Listing";
-        }
-      });
-    };
-
-    /* ── BUMP LISTING ── */
-    window.openBumpModal = function(id, title) {
-      document.getElementById("bump-id").value=id;
-      document.getElementById("bump-title").textContent=`"${title}"`;
-      document.getElementById("bump-modal").classList.add("open");
-      document.body.style.overflow="hidden";
-    };
-    window.closeBumpModal=function(){
-      document.getElementById("bump-modal").classList.remove("open");
-      document.body.style.overflow="";
-    };
-    window.payBump = function() {
-      const id    = document.getElementById("bump-id").value;
-      const email = document.getElementById("bump-email").value.trim();
-      if (!email){ showToast("Enter your email to continue."); return; }
-
-      const handler=PaystackPop.setup({
-        key:      PAYSTACK_KEY,          /* ✅ FIXED: was PAYSTACK_PUBLIC_KEY */
-        email,
-        amount:   199,                   /* GH₵1.99 = 199 pesewas */
-        currency: "GHS",
-        ref:      "BUMP_"+Date.now(),
-        onSuccess: async()=>{
-          await updateDoc(doc(db,"buy_sell_listings",id),{
-            plan:"premium",
-            bumpedAt: serverTimestamp(),
-            expiresAt: new Date(Date.now()+30*86400000)
-          });
-          closeBumpModal(); refresh();
-          showToast("⬆️ Listing bumped to top for 30 days!");
-        },
-        onClose:()=>showToast("Bump cancelled.")
-      });
-      handler.openIframe();
-    };
-
-    /* ── DETAIL MODAL ── */
-    window.openDetailModal = async function(id) {
-      const snap = await getDoc(doc(db,"buy_sell_listings",id));
-      if (!snap.exists()) return;
-      const item = {id,...snap.data()};
-      const plan = PLANS[item.plan]||PLANS.basic;
-      const wa   = item.phone
-        ?`https://wa.me/${item.phone.replace(/\D/g,"")}?text=Hi%2C+I+saw+your+listing+%22${encodeURIComponent(item.title)}%22.+Is+it+still+available%3F`
-        :"#";
-
-      document.getElementById("detail-body").innerHTML=`
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          ${item.imageUrl?`<img src="${item.imageUrl}" style="width:100%;max-height:280px;object-fit:cover;border-radius:10px;" alt="${item.title}"/>`:""}
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <span class="type-badge ${item.type}" style="position:static;">${item.type==="sell"?"For Sale":"Wanted"}</span>
-            <span class="category-tag">${item.category||"General"}</span>
-            ${plan.badge?`<span class="plan-badge" style="background:${plan.bg};color:${plan.color};border-color:${plan.border}">${plan.name}</span>`:""}
-            ${item.condition?`<span class="condition-tag">${item.condition}</span>`:""}
-          </div>
-          <h2 style="font-family:Syne,sans-serif;font-size:1.3rem;font-weight:800;">${item.title}</h2>
-          <p style="font-size:1.6rem;font-weight:800;font-family:Syne,sans-serif;color:var(--accent);">${item.price?`GH₵${parseFloat(item.price).toLocaleString()}`:"<span style='font-size:1rem;color:var(--ink-muted)'>Price Negotiable</span>"}</p>
-          <p style="font-size:.9rem;color:var(--ink-muted);line-height:1.7;">${item.description}</p>
-          ${item.location?`<div style="display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--ink-muted);background:var(--bg);padding:8px 12px;border-radius:8px;">📍 ${item.location}</div>`:""}
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <a href="${wa}" target="_blank" class="btn-primary" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex:1;justify-content:center;" onclick="trackContact('${id}','whatsapp')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-              WhatsApp Seller
-            </a>
-            <a href="tel:${item.phone}" class="btn-outline" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex:1;justify-content:center;" onclick="trackContact('${id}','call')">
-              📞 Call Seller
-            </a>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:8px;border-top:1px solid var(--border);">
-            <div style="text-align:center;padding:10px;background:var(--bg);border-radius:8px;">
-              <div style="font-size:1.2rem;font-weight:800;font-family:Syne,sans-serif;">${item.views||0}</div>
-              <div style="font-size:.68rem;color:var(--ink-muted);">👁 Views</div>
-            </div>
-            <div style="text-align:center;padding:10px;background:var(--bg);border-radius:8px;">
-              <div style="font-size:1.2rem;font-weight:800;font-family:Syne,sans-serif;">${item.contacts_whatsapp||0}</div>
-              <div style="font-size:.68rem;color:var(--ink-muted);">💬 WhatsApp</div>
-            </div>
-            <div style="text-align:center;padding:10px;background:var(--bg);border-radius:8px;">
-              <div style="font-size:1.2rem;font-weight:800;font-family:Syne,sans-serif;">${item.contacts_call||0}</div>
-              <div style="font-size:.68rem;color:var(--ink-muted);">📞 Calls</div>
-            </div>
-          </div>
-        </div>`;
-      document.getElementById("detail-modal").classList.add("open");
-      document.body.style.overflow="hidden";
-    };
-    window.closeDetailModal=function(){
-      document.getElementById("detail-modal").classList.remove("open");
-      document.body.style.overflow="";
-    };
-
-    /* ── REPORT ── */
-    window.submitReport = async function() {
-      const id    =document.getElementById("report-listing-id").value;
-      const reason=document.getElementById("report-reason").value;
-      const details=document.getElementById("report-details").value.trim();
-      if(!reason){showToast("Please select a reason.");return;}
-      await addDoc(collection(db,"listing_reports"),{
-        listingId:id,reason,details,
-        reportedBy:currentUser?currentUser.uid:"anon",
-        createdAt:serverTimestamp()
-      });
-      closeReportModal(); showToast("Report submitted — thank you!");
-    };
-
-    /* ── PLAN PICKER ── */
-    window.selectPlan = function(plan) {
-      selectedPlan=plan;
-      document.querySelectorAll(".plan-pick-card").forEach(c=>c.classList.remove("active"));
-      document.getElementById("pick-"+plan).classList.add("active");
-      const p=PLANS[plan];
-      document.getElementById("plan-photo-tip").textContent=`Up to ${p.photos} photo${p.photos>1?"s":""} · Listing stays live for ${p.duration} days`;
-      const note = document.getElementById("payment-note");
-      if (plan==="basic") {
-        note.classList.remove("visible");
-      } else {
-        note.classList.add("visible");
-        document.getElementById("payment-plan-name").textContent=p.name;
-        document.getElementById("payment-plan-price").textContent=`GH₵${p.price} via Paystack`;
-      }
-    };
-
-    /* ── INIT ── */
-    window.addEventListener("DOMContentLoaded",()=>{
-      loadListings();
-      window.selectPlan("basic");
-
-      document.getElementById("filter-category").addEventListener("change",refresh);
-      document.getElementById("filter-type").addEventListener("change",refresh);
-      document.getElementById("sort-select").addEventListener("change",refresh);
-      let st;
-      document.getElementById("search-input").addEventListener("input",()=>{clearTimeout(st);st=setTimeout(refresh,320);});
-
-      // char counter for description
-      const descEl = document.getElementById("f-desc");
-      const counter = document.getElementById("desc-counter");
-      descEl.addEventListener("input",()=>{
-        const len=descEl.value.length;
-        counter.textContent=`${len}/500`;
-        counter.className="char-counter"+(len>450?" warn":"")+(len>500?" over":"");
-      });
-
-      document.getElementById("f-image").addEventListener("change",e=>{
-        const file=e.target.files[0];
-        const count=e.target.files.length;
-        if(!file)return;
-        const prev=document.getElementById("image-preview");
-        prev.src=URL.createObjectURL(file);
-        prev.style.display="block";
-        document.getElementById("image-preview-count").textContent=
-          count>1?`+${count-1} more photo${count>2?"s":""}` :"";
-      });
-
-      const urlParams=new URLSearchParams(location.search);
-      if(urlParams.get("listing")) openDetailModal(urlParams.get("listing"));
-    });
-
-    /* ── MODAL HELPERS ── */
-    window.openReportModal=function(id,title){
-      document.getElementById("report-listing-id").value=id;
-      document.getElementById("report-modal-title").textContent=`Report: "${title}"`;
-      document.getElementById("report-modal").classList.add("open");
-      document.body.style.overflow="hidden";
-    };
-    window.closeReportModal=function(){
-      document.getElementById("report-modal").classList.remove("open");
-      document.body.style.overflow="";
-    };
-    window.openPricingModal=function(){
-      document.getElementById("pricing-modal").classList.add("open");
-      document.body.style.overflow="hidden";
-    };
-    window.closePricingModal=function(){
-      document.getElementById("pricing-modal").classList.remove("open");
-      document.body.style.overflow="";
-    };
-    window.choosePlanAndPost=function(plan){
-      closePricingModal();
-      openModal();
-      setTimeout(()=>window.selectPlan(plan),120);
-    };
-  </script>
+<meta charset="UTF-8">
+<link rel="canonical" href="https://citylinkgh.vercel.app/buy.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Buy and sell locally in Ghana. Post items for sale, find deals near you on CityLinkGH Marketplace.">
+<meta name="theme-color" content="#0A0F0D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Buy & Sell Marketplace — CityLinkGH">
+<meta property="og:description" content="Ghana's local buy and sell marketplace. Find phones, furniture, cars and more.">
+<meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+<title>CityLinkGH — Buy &amp; Sell Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<link rel="stylesheet" href="buy.css">
 </head>
 <body>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <a href="home.html"><span>🏪</span><span>Home</span></a>
-  <a href="jobs.html"><span>💼</span><span>Jobs</span></a>
-  <a href="room.html"><span>🏠</span><span>Rooms</span></a>
-  <a href="buy.html" class="active"><span>🛍️</span><span>Buy&Sell</span></a>
-  <a href="profile.html"><span>👤</span><span>Profile</span></a>
-</nav>
-
 <div class="toast" id="toast"></div>
 
-<!-- HEADER -->
 <header>
   <div class="logo">
-    <img src="City link.jpeg" width="80" height="50" alt="CityLinkGH" style="border-radius:6px;">
+    <div class="logo-mark"><span class="lm-g">G</span><span class="lm-h">H</span></div>
     CityLink<span>GH</span>
   </div>
-  <div class="hbtns">
-    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn" aria-label="Toggle dark mode">🌙</button>
-    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+  <div class="hdr-right">
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
+    <button class="hdr-post-btn" onclick="openModal()">+ Post Item</button>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
   <nav class="nav-drawer" id="navDrawer">
     <button class="drawer-close" onclick="toggleDrawer()">✕</button>
-    <div class="drawer-section">Navigate</div>
-    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Home</a>
-    <a href="buy.html" class="drawer-link active"><span class="di">🛍️</span> Buy &amp; Sell</a>
+    <div class="drawer-brand">CityLink<span>GH</span></div>
+    <div class="drawer-section">Explore</div>
+    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
+    <a href="buy.html" class="drawer-link active"><span class="di">🛍️</span> Buy &amp; Sell</a>
+    <a href="directions.html" class="drawer-link"><span class="di">🗺️</span>Navigation</a>
     <a href="news.html" class="drawer-link"><span class="di">📰</span> News &amp; Guides</a>
     <div class="drawer-section">List Something</div>
-    <a href="submit.html" class="drawer-link"><span class="di">＋</span> List a Business</a>
-    <span class="drawer-link" onclick="setTimeout(openModal,300)"><span class="di">🛍️</span> Post a Listing</span>
+    <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
+    <div class="drawer-link" onclick="openModal();toggleDrawer()" style="cursor:pointer;"><span class="di">🛍️</span> Post a Listing</div>
     <div class="drawer-section">Account</div>
+    <a href="saved-items.html" class="drawer-link"><span class="di">🔖</span> Saved Items <span id="drawerSavedCount" style="display:none;margin-left:auto;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;"></span></a>
     <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
     <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
   </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero">
-  <p class="hero-eyebrow">Local Marketplace · Ghana</p>
-  <h1>Buy &amp; Sell<br><em>in your community</em></h1>
-  <p>Find great deals near you or turn what you no longer need into cash — with WhatsApp &amp; call right on every listing.</p>
-  <div class="hero-actions">
-    <button class="btn-primary" onclick="openModal()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Post a Listing
-    </button>
-    <button class="btn-ghost" onclick="openPricingModal()">View Plans &amp; Pricing</button>
+  <div class="hero-kente" aria-hidden="true">
+    <div class="kente-stripe k1"></div>
+    <div class="kente-stripe k2"></div>
+    <div class="kente-stripe k3"></div>
+    <div class="kente-stripe k4"></div>
   </div>
-  <div class="hero-stats">
-    <div class="stat-pill">🔥 <strong>Free</strong> to post Basic</div>
-    <div class="stat-pill">📱 <strong>SMS</strong> confirmation</div>
-    <div class="stat-pill">⚡ <strong>Live</strong> in minutes</div>
+  <div class="greeting-bar">
+    <div class="greeting-text"><span id="greetEmoji">🛍️</span><span id="greetMsg"><strong>Welcome</strong> — buy and sell in your community</span></div>
+    <div class="live-viewers"><div class="live-dot"></div><span id="liveCount">—</span> browsing</div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-flag"><div class="f-red"></div><div class="f-gold"></div><div class="f-green"></div></div>
+    <p class="hero-eyebrow">Ghana's Local Marketplace</p>
+    <h1 class="hero-title">Buy &amp; <em>Sell</em><br>in Your Community</h1>
+    <p class="hero-sub">Find great deals near you or turn what you no longer need into cash — WhatsApp &amp; call right on every listing.</p>
+    <div class="search-box">
+      <div class="search-icon">🔍</div>
+      <div class="autocomplete-wrap">
+        <input type="text" id="search-input" autocomplete="off" placeholder="Search items, brand, location…"
+          onfocus="showSearchHistory()" onblur="setTimeout(hideSearchHistory,200)"
+          onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}">
+      </div>
+      <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()">🎙️</button>
+      <button class="search-go" onclick="commitSearch()">Search</button>
+    </div>
+    <div class="search-history-wrap" id="searchHistoryWrap">
+      <div class="sh-label">Recent <button class="sh-clear" onclick="clearSearchHistory()">Clear</button></div>
+      <div class="sh-chips" id="searchHistoryChips"></div>
+    </div>
+    <div class="hero-quick-links">
+      <a href="jobs.html" class="hql">💼 Jobs</a>
+      <a href="room.html" class="hql">🏠 Rooms</a>
+      <a href="home.html" class="hql">🏪 Businesses</a>
+      <a href="directions.html" class="hql">🗺️ Navigation</a>
+      <button class="hql hql-accent" onclick="openModal()">＋ Post Free</button>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-pill"><span class="stat-num" id="statTotal">—</span><span class="stat-lbl">Listings</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill"><span class="stat-num" id="statForSale">—</span><span class="stat-lbl">For Sale</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill"><span class="stat-num" id="statWanted">—</span><span class="stat-lbl">Wanted</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill"><span class="stat-num" id="statNew">—</span><span class="stat-lbl">This Week</span></div>
   </div>
 </section>
 
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <div class="search-wrap">
-    <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-    <input type="text" id="search-input" placeholder="Search listings, location…" autocomplete="off"/>
+<!-- NEW LISTINGS BANNER -->
+<div class="hot-banner" id="hotBanner" style="display:none;">
+  <div class="hot-inner"><span style="font-size:22px;">🔥</span><div><div class="hot-num" id="hotCount">—</div><div class="hot-lbl">New This Week</div></div></div>
+  <button class="hot-btn" onclick="filterNewItems()">View New →</button>
+</div>
+
+<!-- TRENDING SEARCHES -->
+<div class="trending-section">
+  <div class="section-hd" style="margin-bottom:10px;">
+    <div class="section-title"><span class="section-dot red"></span>🔥 Trending Searches</div>
   </div>
-  <select id="filter-category">
-    <option value="all">All Categories</option>
-    <option value="Electronics">Electronics</option>
-    <option value="Furniture">Furniture</option>
-    <option value="Clothing">Clothing</option>
-    <option value="Vehicles">Vehicles</option>
-    <option value="Home & Garden">Home &amp; Garden</option>
-    <option value="Sports">Sports</option>
-    <option value="Books">Books</option>
-    <option value="Toys">Toys</option>
-    <option value="Other">Other</option>
-  </select>
-  <select id="filter-type">
-    <option value="all">All Types</option>
-    <option value="sell">For Sale</option>
-    <option value="buy">Wanted</option>
-  </select>
-  <select id="sort-select">
-    <option value="newest">Newest</option>
-    <option value="price_asc">Price ↑</option>
-    <option value="price_desc">Price ↓</option>
-    <option value="saved">❤️ Saved</option>
+  <div class="trend-track" id="trendTrack"></div>
+</div>
+
+<!-- NEW THIS WEEK -->
+<div class="section-block" id="newWeekSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot purple"></span>🆕 New This Week</div>
+    <button class="section-action" onclick="filterNewItems()">See all →</button>
+  </div>
+  <div class="new-week-track" id="newWeekTrack"></div>
+</div>
+
+<!-- PRICE DROPS / DEALS -->
+<div class="section-block" id="dealsSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot gold"></span>💰 Best Value</div>
+    <button class="section-action" onclick="sortByPriceLow()">See all →</button>
+  </div>
+  <div class="deals-track" id="dealsTrack"></div>
+</div>
+
+<!-- TYPE + CATEGORY FILTERS -->
+<div class="filter-section">
+  <div class="filter-scroll" id="typeFilters">
+    <div class="fchip active" data-type="all" onclick="filterType(this)">🛍️ All</div>
+    <div class="fchip" data-type="sell" onclick="filterType(this)">💰 For Sale</div>
+    <div class="fchip" data-type="buy" onclick="filterType(this)">🔍 Wanted</div>
+    <div class="fchip" id="savedChip" onclick="filterSaved(this)">🔖 Saved</div>
+  </div>
+  <div class="filter-scroll" id="categoryFilters" style="margin-top:8px;">
+    <div class="fchip active" data-cat="all" onclick="filterCat(this)">📦 All Categories</div>
+    <div class="fchip" data-cat="Electronics" onclick="filterCat(this)">📱 Electronics</div>
+    <div class="fchip" data-cat="Furniture" onclick="filterCat(this)">🛋 Furniture</div>
+    <div class="fchip" data-cat="Clothing" onclick="filterCat(this)">👕 Clothing</div>
+    <div class="fchip" data-cat="Vehicles" onclick="filterCat(this)">🚗 Vehicles</div>
+    <div class="fchip" data-cat="Home & Garden" onclick="filterCat(this)">🏡 Home &amp; Garden</div>
+    <div class="fchip" data-cat="Sports" onclick="filterCat(this)">⚽ Sports</div>
+    <div class="fchip" data-cat="Books" onclick="filterCat(this)">📚 Books</div>
+    <div class="fchip" data-cat="Toys" onclick="filterCat(this)">🧸 Toys</div>
+    <div class="fchip" data-cat="Other" onclick="filterCat(this)">🔹 Other</div>
+  </div>
+  <!-- PRICE RANGE -->
+  <div class="price-range-wrap">
+    <div class="price-range-label">Price Range (GHS)</div>
+    <div class="price-row">
+      <input class="price-input" type="number" id="priceMin" placeholder="Min" oninput="refresh()">
+      <span class="price-sep">—</span>
+      <input class="price-input" type="number" id="priceMax" placeholder="Max" oninput="refresh()">
+    </div>
+  </div>
+</div>
+
+<!-- SORT ROW -->
+<div class="sort-row">
+  <div class="sort-lbl" id="listing-count">Loading…</div>
+  <select class="sort-sel" id="sort-select">
+    <option value="newest">Newest First</option>
+    <option value="price_asc">Price: Low to High</option>
+    <option value="price_desc">Price: High to Low</option>
+    <option value="saved">❤️ Saved Only</option>
   </select>
 </div>
 
-<!-- LISTINGS -->
+<!-- POST BUTTON -->
+<div class="post-btn-wrap">
+  <button class="post-item-btn" onclick="openModal()">🛍️ Post Your Item — Free or Boost</button>
+  <button class="view-plans-btn" onclick="openPricingModal()">View Plans &amp; Pricing</button>
+</div>
+
+<!-- LISTINGS GRID -->
 <div class="container">
-  <div class="section-header">
-    <h2>Recent Listings</h2>
-    <span class="listing-count" id="listing-count">Loading…</span>
+  <div id="listings-grid" class="items-grid">
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skeleton" style="height:11px;width:30%;margin-bottom:10px;"></div><div class="skeleton" style="height:18px;width:85%;margin-bottom:8px;"></div><div class="skeleton" style="height:13px;width:60%;"></div></div></div>
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skeleton" style="height:11px;width:35%;margin-bottom:10px;"></div><div class="skeleton" style="height:18px;width:75%;margin-bottom:8px;"></div><div class="skeleton" style="height:13px;width:55%;"></div></div></div>
   </div>
-  <div id="listings-grid"></div>
-  <div id="empty-state" style="display:none;flex-direction:column;align-items:center;padding:60px 16px;text-align:center;color:var(--ink-muted);">
-    <svg viewBox="0 0 24 24" style="width:56px;height:56px;fill:#D0CFCA;margin-bottom:14px"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm-9 9H7v-2h4v2zm6 0h-4v-2h4v2zM4 7l4-4h8l4 4"/></svg>
-    <h3 style="font-family:Syne,sans-serif;font-size:1.05rem;color:var(--ink);margin-bottom:6px;">No listings found</h3>
-    <p style="font-size:.85rem;margin-bottom:18px;">Try a different filter, or be the first to post!</p>
-    <button class="btn-primary" onclick="openModal()">+ Post a Listing</button>
+  <div id="empty-state" class="empty-state" style="display:none;">
+    <div class="es-ico">🛍️</div>
+    <h3>No listings found</h3>
+    <p>Try a different filter, or be the first to post!</p>
+    <button class="es-btn" onclick="openModal()">+ Post a Listing</button>
   </div>
+  <div class="scroll-sentinel" id="scrollSentinel"><div class="spinner"></div></div>
 </div>
 
-<button class="fab" onclick="openModal()" aria-label="Post a listing">+</button>
+<div class="page-spacer"></div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">CityLink<span>GH</span></div>
+      <p>Ghana's most trusted local marketplace. Buy, sell, and find great deals in your community.</p>
+    </div>
+    <div class="footer-col"><h4>Directory</h4><ul><li><a href="home.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Buy &amp; Sell</a></li><li><a href="directions.html">Navigation</a></li></ul></div>
+    <div class="footer-col"><h4>List With Us</h4><ul><li><a href="submit.html">List a Business</a></li><li><a href="jobs.html">Post a Job</a></li><li><a href="buy.html">Sell Something</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 CityLinkGH · All Rights Reserved</span><div class="footer-flag">🇬🇭</div></div>
+</footer>
+
+<nav class="bottom-nav">
+  <a href="home.html" class="bn-item"><span class="bn-ico">🏪</span><span class="bn-lbl">Home</span></a>
+  <a href="jobs.html" class="bn-item"><span class="bn-ico">💼</span><span class="bn-lbl">Jobs</span></a>
+  <button class="bn-item bn-center" onclick="openModal()"><span class="bn-plus">＋</span></button>
+  <a href="room.html" class="bn-item"><span class="bn-ico">🏠</span><span class="bn-lbl">Rooms</span></a>
+<a href="directions.html" class="bn-item"><span class="bn-ico">🗺️</span><span class="bn-lbl">Navigation</span></a>
+  <a href="buy.html" class="bn-item active"><span class="bn-ico">🛍️</span><span class="bn-lbl">Buy&amp;Sell</span></a>
+</nav>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ══ POST MODAL ══ -->
 <div class="modal-overlay" id="post-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2>Post a Listing</h2>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-hd"><div class="modal-title">🛍️ Post a Listing</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+
+    <div style="margin-bottom:14px;">
+      <div class="field-label" style="margin-bottom:8px;">Choose Listing Plan</div>
+      <div class="plan-opts">
+        <div class="plan-opt sel" id="pick-basic" data-plan="basic" onclick="selectPlan('basic')"><div class="po-ico">📋</div><div class="po-name">Basic</div><div class="po-price">Free · 1 photo</div></div>
+        <div class="plan-opt" id="pick-standard" data-plan="standard" onclick="selectPlan('standard')"><div class="po-ico">⭐</div><div class="po-name">Standard</div><div class="po-price">GHS 10 · 5 photos</div></div>
+        <div class="plan-opt" id="pick-premium" data-plan="premium" onclick="selectPlan('premium')"><div class="po-ico">🌟</div><div class="po-name">Premium</div><div class="po-price">GHS 20 · Top listing</div></div>
+      </div>
+      <div class="plan-tip" id="plan-photo-tip">Up to 1 photo · 30 days live</div>
     </div>
 
-    <!-- Plan picker -->
-    <span class="plan-picker-label">Choose your plan</span>
-    <div class="plan-picker">
-      <div class="plan-pick-card basic" id="pick-basic" onclick="selectPlan('basic')">
-        <div class="plan-pick-name">Basic</div>
-        <div class="plan-pick-price" style="color:#6B6B6B;font-weight:700;">Free</div>
-        <div class="plan-pick-perks">1 photo · 30 days<br>Standard listing</div>
-      </div>
-      <div class="plan-pick-card standard" id="pick-standard" onclick="selectPlan('standard')">
-        <div class="plan-pick-name">Standard</div>
-        <div class="plan-pick-price" style="color:var(--want);font-weight:700;">GH₵10</div>
-        <div class="plan-pick-perks">5 photos · 60 days<br>Blue badge + border</div>
-      </div>
-      <div class="plan-pick-card premium" id="pick-premium" onclick="selectPlan('premium')">
-        <div class="plan-pick-name">Premium</div>
-        <div class="plan-pick-price" style="color:var(--accent);font-weight:700;">GH₵20</div>
-        <div class="plan-pick-perks">10 photos · 90 days<br>Pinned to top</div>
-      </div>
-    </div>
-
-    <!-- Payment notice (shown for paid plans) -->
     <div class="payment-note" id="payment-note">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-      <div>
-        <strong id="payment-plan-name">Standard</strong> plan — <span id="payment-plan-price">GH₵10 via Paystack</span><br>
-        <span style="color:var(--ink-muted);font-size:.75rem;">Secure payment via Paystack. A Paystack window will open when you click "Post Listing".</span>
-      </div>
+      <span style="font-size:18px;">💳</span>
+      <div><strong id="payment-plan-name">Standard</strong> plan — <span id="payment-plan-price">GHS 10 via Paystack</span><br>
+      <span style="color:var(--gray);font-size:12px;">A secure Paystack window opens when you click "Post Listing".</span></div>
     </div>
 
-    <div id="post-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label>I want to…</label>
-          <select id="f-type">
-            <option value="sell">Sell something</option>
-            <option value="buy">Buy / Wanted</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Category</label>
-          <select id="f-category">
-            <option value="Electronics">Electronics</option>
-            <option value="Furniture">Furniture</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Vehicles">Vehicles</option>
-            <option value="Home & Garden">Home &amp; Garden</option>
-            <option value="Sports">Sports</option>
-            <option value="Books">Books</option>
-            <option value="Toys">Toys</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+    <div class="r2">
+      <div class="field"><label>I want to…</label>
+        <select id="f-type"><option value="sell">Sell something</option><option value="buy">Buy / Wanted</option></select>
       </div>
-      <div class="form-group">
-        <label>Title *</label>
-        <input type="text" id="f-title" placeholder="e.g. Samsung TV 55 inch – like new" maxlength="100"/>
+      <div class="field"><label>Category</label>
+        <select id="f-category"><option>Electronics</option><option>Furniture</option><option>Clothing</option><option>Vehicles</option><option>Home &amp; Garden</option><option>Sports</option><option>Books</option><option>Toys</option><option>Other</option></select>
       </div>
-      <div class="form-group">
-        <label>Description *</label>
-        <textarea id="f-desc" placeholder="Describe the item, condition, reason for selling…" maxlength="500"></textarea>
-        <span class="char-counter" id="desc-counter">0/500</span>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Price (GH₵)</label>
-          <input type="number" id="f-price" placeholder="Leave blank = Negotiable" min="0" step="0.01" inputmode="decimal"/>
-        </div>
-        <div class="form-group">
-          <label>Condition</label>
-          <select id="f-condition">
-            <option value="">Select…</option>
-            <option value="Brand New">Brand New</option>
-            <option value="Like New">Like New</option>
-            <option value="Good">Good</option>
-            <option value="Fair">Fair</option>
-            <option value="For Parts">For Parts</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Phone / WhatsApp *</label>
-          <input type="tel" id="f-phone" placeholder="+233 XX XXX XXXX" inputmode="tel"/>
-        </div>
-        <div class="form-group">
-          <label>Email <span style="font-weight:400;text-transform:none;">(paid plans)</span></label>
-          <input type="email" id="f-email" placeholder="you@email.com" inputmode="email"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Location</label>
-        <input type="text" id="f-location" placeholder="e.g. Accra, Kumasi, Takoradi"/>
-      </div>
-      <div class="form-group">
-        <label>Photo(s)</label>
-        <label class="file-label" for="f-image">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-          Tap to upload photo(s)
-        </label>
-        <input type="file" id="f-image" accept="image/*" multiple capture="environment"/>
-        <img id="image-preview" alt="Preview"/>
-        <span id="image-preview-count" style="font-size:.72rem;color:var(--ink-muted);margin-top:4px;display:block;"></span>
-        <p class="plan-tip" id="plan-photo-tip">Up to 1 photo · 30 days live</p>
-      </div>
-      <p id="form-error"></p>
-      <button class="btn-primary" id="submit-btn" onclick="submitListing()" style="width:100%;padding:15px;font-size:1rem;justify-content:center;">
-        Post Listing
-      </button>
-      <p style="font-size:.7rem;color:var(--ink-muted);text-align:center;margin-top:10px;">
-        📱 SMS confirmation sent to your number after posting.
-      </p>
     </div>
+    <div class="field"><label>Title *</label><input type="text" id="f-title" placeholder="e.g. Samsung TV 55 inch – like new" maxlength="100"></div>
+    <div class="field"><label>Description *</label><textarea id="f-desc" placeholder="Describe the item, condition, reason for selling…" maxlength="500"></textarea><div class="char-counter" id="desc-counter">0/500</div></div>
+    <div class="r2">
+      <div class="field"><label>Price (GHS)</label><input type="number" id="f-price" placeholder="Leave blank = Negotiable" min="0" step="0.01"></div>
+      <div class="field"><label>Condition</label><select id="f-condition"><option value="">Select…</option><option>Brand New</option><option>Like New</option><option>Good</option><option>Fair</option><option>For Parts</option></select></div>
+    </div>
+    <div class="r2">
+      <div class="field"><label>Phone / WhatsApp *</label><input type="tel" id="f-phone" placeholder="024 000 0000"></div>
+      <div class="field"><label>Email <span style="font-weight:400;text-transform:none;">(paid plans)</span></label><input type="email" id="f-email" placeholder="you@email.com"></div>
+    </div>
+    <div class="field"><label>Location</label><input type="text" id="f-location" placeholder="e.g. Accra, Kumasi, Takoradi"></div>
+
+    <div class="field">
+      <label>Photo(s)</label>
+      <div class="img-upload-grid" id="imgUpGrid"></div>
+      <input type="file" id="f-image" accept="image/*" style="display:none;">
+      <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
+      <div class="ustat" id="ustat"></div>
+    </div>
+    <p id="form-error" style="color:var(--red);font-size:13px;margin-bottom:8px;min-height:16px;"></p>
+    <button class="submit-btn" id="submit-btn" onclick="submitListing()">🛍️ <span id="submitTxt">Post Listing</span></button>
+    <p style="font-size:11px;color:var(--gray);text-align:center;margin-top:10px;">📱 SMS confirmation sent to your number after posting.</p>
+    <div style="height:10px;"></div>
   </div>
 </div>
 
 <!-- ══ DETAIL MODAL ══ -->
 <div class="modal-overlay" id="detail-modal" onclick="if(event.target===this)closeDetailModal()">
-  <div class="modal" style="max-width:560px;">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2>Listing Details</h2>
-      <button class="modal-close" onclick="closeDetailModal()">✕</button>
-    </div>
-    <div id="detail-body"></div>
-  </div>
+  <div class="modal" id="detail-body" style="padding:0;border-radius:22px 22px 0 0;overflow:hidden;"></div>
 </div>
 
 <!-- ══ PRICING MODAL ══ -->
 <div class="modal-overlay" id="pricing-modal" onclick="if(event.target===this)closePricingModal()">
-  <div class="modal" style="max-width:720px;">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2>Listing Plans &amp; Pricing</h2>
-      <button class="modal-close" onclick="closePricingModal()">✕</button>
-    </div>
-    <p style="font-size:.875rem;color:var(--ink-muted);margin-bottom:4px;">More visibility = more enquiries. Payments via Paystack · SMS confirmation included.</p>
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">Listing Plans &amp; Pricing</div><button class="modal-close" onclick="closePricingModal()">✕</button></div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">More visibility = more enquiries. Payments via Paystack · SMS confirmation included.</p>
     <div class="pricing-grid">
-      <!-- Basic -->
       <div class="pricing-card">
         <div class="pricing-plan-name">Basic</div>
         <div class="pricing-plan-price">Free <span>forever</span></div>
-        <ul class="pricing-features">
-          <li>1 photo</li>
-          <li>30 days live</li>
-          <li>Standard listing card</li>
-          <li>WhatsApp &amp; Call button</li>
-          <li class="no">No badge</li>
-          <li class="no">Not pinned</li>
-          <li class="no">No SMS alerts</li>
-        </ul>
-        <button class="pricing-cta btn-outline" onclick="choosePlanAndPost('basic')">Post Free</button>
+        <ul class="pricing-features"><li>1 photo</li><li>30 days live</li><li>Standard listing card</li><li>WhatsApp &amp; Call button</li><li class="no">No badge</li><li class="no">Not pinned</li></ul>
+        <button class="pricing-cta" onclick="choosePlanAndPost('basic')">Post Free</button>
       </div>
-      <!-- Standard -->
-      <div class="pricing-card">
-        <div class="pricing-plan-name" style="color:var(--want)">Standard</div>
-        <div class="pricing-plan-price" style="color:var(--want)">GH₵10 <span>per listing</span></div>
-        <ul class="pricing-features">
-          <li>5 photos</li>
-          <li>60 days live</li>
-          <li>Blue badge + border</li>
-          <li>SMS confirmation</li>
-          <li>Priority in search results</li>
-          <li class="no">Not pinned to top</li>
-          <li class="no">No SMS buyer alerts</li>
-        </ul>
-        <button class="pricing-cta btn-primary" style="background:var(--want);" onclick="choosePlanAndPost('standard')">Choose Standard — GH₵10</button>
+      <div class="pricing-card standard">
+        <div class="pricing-plan-name">Standard</div>
+        <div class="pricing-plan-price">GHS 10 <span>per listing</span></div>
+        <ul class="pricing-features"><li>5 photos</li><li>60 days live</li><li>Purple badge + border</li><li>SMS confirmation</li><li>Priority in search</li></ul>
+        <button class="pricing-cta standard" onclick="choosePlanAndPost('standard')">Choose Standard</button>
       </div>
-      <!-- Premium -->
-      <div class="pricing-card recommended">
-        <div class="rec-badge">Most Popular</div>
-        <div class="pricing-plan-name" style="color:var(--accent)">Premium</div>
-        <div class="pricing-plan-price" style="color:var(--accent)">GH₵20 <span>per listing</span></div>
-        <ul class="pricing-features">
-          <li>10 photos</li>
-          <li>90 days live</li>
-          <li>Red badge + border</li>
-          <li>Pinned to top of grid</li>
-          <li>⭐ Featured ribbon</li>
-          <li>SMS when buyers contact you</li>
-          <li>Bold title</li>
-        </ul>
-        <button class="pricing-cta btn-primary" onclick="choosePlanAndPost('premium')">Choose Premium — GH₵20</button>
-      </div>
-    </div>
-
-    <!-- Visual card preview -->
-    <div style="margin-top:24px;padding:16px;background:var(--bg);border-radius:10px;">
-      <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-muted);margin-bottom:12px;">How your listing looks in the grid</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-        <div style="border:2px solid #E0E0E0;border-radius:8px;padding:10px;background:#fff;font-size:.72rem;">
-          <div style="font-size:.6rem;font-weight:700;color:#999;text-transform:uppercase;margin-bottom:4px;">Basic</div>
-          <div style="font-weight:700;font-size:.8rem;">Your item</div>
-          <div style="color:#999;font-size:.68rem;margin-top:2px;">Standard · no badge</div>
-        </div>
-        <div style="border:2px solid #3B7EF6;border-radius:8px;padding:10px;background:#fff;font-size:.72rem;box-shadow:0 3px 12px rgba(59,126,246,.15);">
-          <div style="font-size:.6rem;font-weight:700;color:#3B7EF6;text-transform:uppercase;margin-bottom:4px;">Standard ✦</div>
-          <div style="font-weight:700;font-size:.8rem;">Your item</div>
-          <div style="color:#999;font-size:.68rem;margin-top:2px;">Blue border + badge</div>
-        </div>
-        <div style="border:2px solid #E84D2A;border-radius:8px;padding:10px;background:#fff;font-size:.72rem;box-shadow:0 3px 16px rgba(232,77,42,.2);position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;background:#E84D2A;color:#fff;font-size:.52rem;font-weight:800;text-align:center;padding:2px;letter-spacing:.06em;text-transform:uppercase;">⭐ Featured</div>
-          <div style="margin-top:14px;font-size:.6rem;font-weight:700;color:#E84D2A;text-transform:uppercase;margin-bottom:4px;">Premium ★</div>
-          <div style="font-weight:900;font-size:.85rem;">Your item</div>
-          <div style="color:#999;font-size:.68rem;margin-top:2px;">Pinned · red border</div>
-        </div>
+      <div class="pricing-card premium">
+        <div class="rec-badge">⭐ Most Popular</div>
+        <div class="pricing-plan-name">Premium</div>
+        <div class="pricing-plan-price">GHS 20 <span>per listing</span></div>
+        <ul class="pricing-features"><li>10 photos</li><li>90 days live</li><li>Pinned to top</li><li>⭐ Featured ribbon</li><li>SMS buyer alerts</li><li>Bold title</li></ul>
+        <button class="pricing-cta premium" onclick="choosePlanAndPost('premium')">Choose Premium</button>
       </div>
     </div>
   </div>
@@ -1239,132 +313,446 @@
 
 <!-- ══ BUMP MODAL ══ -->
 <div class="modal-overlay" id="bump-modal" onclick="if(event.target===this)closeBumpModal()">
-  <div class="modal" style="max-width:400px;">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2>⬆️ Bump Listing</h2>
-      <button class="modal-close" onclick="closeBumpModal()">✕</button>
-    </div>
-    <input type="hidden" id="bump-id"/>
-    <p style="font-size:.88rem;color:var(--ink-muted);margin-bottom:16px;">Move <strong id="bump-title"></strong> to the top of the grid for 30 days for <strong>GH₵1.99</strong> via Paystack.</p>
-    <div class="form-group">
-      <label>Your Email (for Paystack receipt)</label>
-      <input type="email" id="bump-email" placeholder="you@email.com" inputmode="email"/>
-    </div>
-    <button class="btn-primary" onclick="payBump()" style="width:100%;padding:14px;justify-content:center;">
-      Pay GH₵1.99 &amp; Bump to Top
-    </button>
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-hd"><div class="modal-title">⬆️ Bump Listing</div><button class="modal-close" onclick="closeBumpModal()">✕</button></div>
+    <input type="hidden" id="bump-id">
+    <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">Move <strong id="bump-title"></strong> to the top of the grid for 30 days for <strong>GHS 10</strong> via Paystack.</p>
+    <div class="field"><label>Your Email (for Paystack receipt)</label><input type="email" id="bump-email" placeholder="you@email.com"></div>
+    <button class="submit-btn" onclick="payBump()">Pay GHS 10 &amp; Bump to Top</button>
   </div>
 </div>
 
 <!-- ══ REPORT MODAL ══ -->
 <div class="modal-overlay" id="report-modal" onclick="if(event.target===this)closeReportModal()">
   <div class="modal" style="max-width:420px;">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2>⚑ Report Listing</h2>
-      <button class="modal-close" onclick="closeReportModal()">✕</button>
+    <div class="modal-hd"><div class="modal-title">⚑ Report Listing</div><button class="modal-close" onclick="closeReportModal()">✕</button></div>
+    <p id="report-modal-title" style="font-size:13px;color:var(--gray);margin-bottom:16px;"></p>
+    <input type="hidden" id="report-listing-id">
+    <div class="field"><label>Reason *</label>
+      <select id="report-reason"><option value="">Select a reason…</option><option value="spam">Spam or duplicate</option><option value="scam">Scam or fraud</option><option value="inappropriate">Inappropriate content</option><option value="wrong_category">Wrong category</option><option value="already_sold">Already sold</option><option value="other">Other</option></select>
     </div>
-    <p id="report-modal-title" style="font-size:.85rem;color:var(--ink-muted);margin-bottom:18px;"></p>
-    <input type="hidden" id="report-listing-id"/>
-    <div class="form-group">
-      <label>Reason *</label>
-      <select id="report-reason">
-        <option value="">Select a reason…</option>
-        <option value="spam">Spam or duplicate</option>
-        <option value="scam">Scam or fraud</option>
-        <option value="inappropriate">Inappropriate content</option>
-        <option value="wrong_category">Wrong category</option>
-        <option value="already_sold">Already sold</option>
-        <option value="other">Other</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Details (optional)</label>
-      <textarea id="report-details" placeholder="Any extra context…" style="min-height:70px;"></textarea>
-    </div>
-    <button class="btn-primary" onclick="submitReport()" style="width:100%;padding:14px;justify-content:center;">Submit Report</button>
+    <div class="field"><label>Details (optional)</label><textarea id="report-details" placeholder="Any extra context…" style="min-height:65px;"></textarea></div>
+    <button class="submit-btn" onclick="submitReport()">Submit Report</button>
   </div>
 </div>
 
-<div class="bottom-nav-spacer"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-box">
-      <div class="footer-logo">CityLink<span>GH</span></div>
-     <h5>Find <em>Jobs</em> in Ghana</h5>
-  <p>Full time, part time, remote, internships & attachments across all cities.</p>
-    </div>
-    <div class="footer-box">
-      <h3>Directory</h3>
-      <ul>
-        <li><a href="home.html">Browse Businesses</a></li>
-        <li><a href="room.html">Rooms for Rent</a></li>
-        <li><a href="jobs.html">Jobs for listing</a></li>
-        <li><a href="buy.html">Buy &amp; Sell</a></li>
-      </ul>
-    </div>
-    <div class="footer-box">
-      <h3>List With Us</h3>
-      <ul>
-        <li><a href="submit.html">List a Business</a></li>
-        <li><a href="jobs.html">Post a Job</a></li>
-        <li><a href="room.html">Post a Room</a><li>
-        <li> <a href="buy.html">Sell Something</a><li>
-      </ul>
-    </div>
+const FC={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
+const CLOUD_NAME="dulnujvm7", UPLOAD_PRESET="ernest";
+const PAYSTACK_KEY="pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
+const ARKESEL_KEY="VWZXc3VHaGh4aHlrRHhMcEl6Zm4", ARKESEL_SENDER_ID="CityLinkGH";
 
-    <div class="footer-box">
-      <h3>Company</h3>
-    <ul>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="terms.html">Terms</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li>
-    </ul>
+const PLANS={
+  basic:{name:"Basic",price:0,paystackAmount:0,photos:1,duration:30,featured:false,badge:false,highlight:false,bold_title:false},
+  standard:{name:"Standard",price:10,paystackAmount:1000,photos:5,duration:60,featured:false,badge:true,highlight:true,bold_title:false},
+  premium:{name:"Premium",price:20,paystackAmount:2000,photos:10,duration:90,featured:true,badge:true,highlight:true,bold_title:true}
+};
+
+const app=initializeApp(FC), db=getFirestore(app), auth=getAuth(app);
+let currentUser=null, selectedPlan="basic", pendingListingData=null, uploadedImgs=[];
+let allItems=[], activeType='all', activeCat='all', showSavedOnly=false;
+
+signInAnonymously(auth);
+onAuthStateChanged(auth, u=>{ currentUser=u; });
+
+// ── GREETING ──
+(function(){const h=new Date().getHours();let e='🛍️',m='Good morning';if(h>=12&&h<17){e='🌤️';m='Good afternoon';}else if(h>=17&&h<21){e='🌇';m='Good evening';}else if(h>=21||h<5){e='🌙';m='Good night';}document.getElementById('greetEmoji').textContent=e;document.getElementById('greetMsg').innerHTML=`<strong>${m}</strong> — buy and sell in your community`;})();
+// ── LIVE VIEWERS ──
+(function(){const seed=Math.floor(Date.now()/30000);let base=8+(seed%25);document.getElementById('liveCount').textContent=base;setInterval(()=>{base=Math.max(4,Math.min(base+Math.floor(Math.random()*5)-2,60));const el=document.getElementById('liveCount');if(el)el.textContent=base;},12000);})();
+
+// ── VOICE SEARCH ──
+let voiceRec=null;
+window.startVoiceSearch=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast('Voice search not supported');return;}if(!voiceRec){voiceRec=new SR();voiceRec.lang='en-GH';voiceRec.continuous=false;voiceRec.interimResults=false;voiceRec.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('search-input').value=t;saveSearchHistory(t);refresh();showToast(`🎙️ "${t}"`);};voiceRec.onend=()=>{document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceBtn').textContent='🎙️';};voiceRec.onerror=()=>{showToast('Could not hear. Try again.');document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceBtn').textContent='🎙️';};}const btn=document.getElementById('voiceBtn');btn.classList.add('listening');btn.textContent='⏹️';voiceRec.start();showToast('🎙️ Listening…');};
+
+// ── SEARCH HISTORY ──
+function getSearchHistory(){try{return JSON.parse(localStorage.getItem('bsSearchHist')||'[]');}catch{return[];}}
+function saveSearchHistory(q){if(!q||q.length<2)return;let h=getSearchHistory().filter(x=>x.toLowerCase()!==q.toLowerCase());h.unshift(q);localStorage.setItem('bsSearchHist',JSON.stringify(h.slice(0,5)));}
+window.clearSearchHistory=()=>{localStorage.removeItem('bsSearchHist');document.getElementById('searchHistoryWrap').classList.remove('visible');};
+window.showSearchHistory=()=>{const hist=getSearchHistory();const wrap=document.getElementById('searchHistoryWrap');if(!hist.length){wrap.classList.remove('visible');return;}document.getElementById('searchHistoryChips').innerHTML=hist.map(h=>`<div class="sh-chip" onclick="applyHist('${esc(h)}')"><span>🕐</span>${esc(h)}</div>`).join('');wrap.classList.add('visible');};
+window.hideSearchHistory=()=>document.getElementById('searchHistoryWrap').classList.remove('visible');
+window.applyHist=q=>{document.getElementById('search-input').value=q;refresh();hideSearchHistory();};
+window.commitSearch=()=>{const q=document.getElementById('search-input').value;saveSearchHistory(q);refresh();};
+
+// ── TRENDING ──
+const TRENDING=[{q:'iPhone',ico:'📱',n:'2.1k'},{q:'Toyota Corolla',ico:'🚗',n:'1.6k'},{q:'Sofa Set',ico:'🛋',n:'1.2k'},{q:'Laptop',ico:'💻',n:'980'},{q:'Generator',ico:'⚡',n:'760'},{q:'TV 55 inch',ico:'📺',n:'640'},{q:'Office Chair',ico:'🪑',n:'520'},{q:'Baby Items',ico:'🧸',n:'410'}];
+document.getElementById('trendTrack').innerHTML=TRENDING.map(t=>`<div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">${t.ico} ${esc(t.q)} <span class="trend-num">${t.n}</span></div>`).join('');
+window.applyTrend=q=>{document.getElementById('search-input').value=q;saveSearchHistory(q);refresh();showToast(`🔍 "${q}"`);document.getElementById('listings-grid').scrollIntoView({behavior:'smooth',block:'start'});};
+
+// ── SAVED ──
+const getSaved=()=>JSON.parse(localStorage.getItem("bs_saved")||"[]");
+const isSaved=id=>getSaved().includes(id);
+const toggleSave=id=>{let s=getSaved();s.includes(id)?(s=s.filter(x=>x!==id)):s.push(id);localStorage.setItem("bs_saved",JSON.stringify(s));updateSavedBadge();};
+function updateSavedBadge(){const c=getSaved().length;const db2=document.getElementById('drawerSavedCount');if(db2){db2.textContent=c;db2.style.display=c>0?'inline-flex':'none';}}
+window.filterSaved=el=>{showSavedOnly=!showSavedOnly;document.querySelectorAll('#typeFilters .fchip').forEach(c=>c.classList.remove('active'));if(showSavedOnly)el.classList.add('active');else document.querySelector('#typeFilters .fchip[data-type="all"]').classList.add('active');refresh();};
+window.filterNewItems=()=>{document.getElementById('sort-select').value='newest';refresh();document.getElementById('listings-grid').scrollIntoView({behavior:'smooth',block:'start'});};
+window.sortByPriceLow=()=>{document.getElementById('sort-select').value='price_asc';refresh();document.getElementById('listings-grid').scrollIntoView({behavior:'smooth',block:'start'});};
+
+// ── DARK MODE ──
+window.toggleDark=()=>{const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';html.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';localStorage.setItem('clTheme',isDark?'light':'dark');};
+const savedTheme=localStorage.getItem('clTheme');if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';}
+
+// ── SMS ──
+async function sendSMS(to,message){if(!ARKESEL_KEY)return;try{const phone=to.replace(/\s/g,"");await fetch("https://sms.arkesel.com/api/v2/sms/send",{method:"POST",headers:{"api-key":ARKESEL_KEY,"Content-Type":"application/json"},body:JSON.stringify({sender:ARKESEL_SENDER_ID,message,recipients:[phone]})});}catch(e){}}
+
+// ── PAYSTACK ──
+function initiatePaystackPayment(plan,email,phone,onSuccess){
+  const p=PLANS[plan];
+  if(p.price===0){onSuccess({reference:"free_"+Date.now()});return;}
+  const handler=PaystackPop.setup({key:PAYSTACK_KEY,email:email||"buyer@marketplace.com",amount:p.paystackAmount,currency:"GHS",ref:"CL_"+Date.now()+"_"+Math.random().toString(36).substr(2,6).toUpperCase(),metadata:{custom_fields:[{display_name:"Plan",variable_name:"plan",value:p.name},{display_name:"Phone",variable_name:"phone",value:phone}]},onSuccess:response=>onSuccess(response),onClose:()=>{const btn=document.getElementById("submit-btn");btn.disabled=false;document.getElementById('submitTxt').textContent="Post Listing";showToast("Payment cancelled.");}});
+  handler.openIframe();
+}
+
+// ── CLOUDINARY ──
+async function uploadToCloudinary(file){const fd=new FormData();fd.append("file",file);fd.append("upload_preset",UPLOAD_PRESET);const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:"POST",body:fd});const data=await res.json();if(!data.secure_url)throw new Error("Upload failed");return data.secure_url;}
+
+function typeEmoji(cat){return{Electronics:'📱',Furniture:'🛋',Clothing:'👕',Vehicles:'🚗','Home & Garden':'🏡',Sports:'⚽',Books:'📚',Toys:'🧸',Other:'🔹'}[cat]||'🛍️';}
+
+// ── VIEW COUNTER ──
+async function incrementViews(id){try{const viewed=JSON.parse(localStorage.getItem("bs_viewed")||"[]");if(viewed.includes(id))return;const snap=await getDoc(doc(db,"buy_sell_listings",id));if(!snap.exists())return;await updateDoc(doc(db,"buy_sell_listings",id),{views:(snap.data()?.views||0)+1});viewed.push(id);localStorage.setItem("bs_viewed",JSON.stringify(viewed));}catch(e){}}
+
+window.trackContact=async function(id,type){
+  try{const snap=await getDoc(doc(db,"buy_sell_listings",id));if(!snap.exists())return;const d=snap.data();await updateDoc(doc(db,"buy_sell_listings",id),{[`contacts_${type}`]:(d[`contacts_${type}`]||0)+1});if(d.plan==="premium"&&d.phone){sendSMS(d.phone,`Someone just ${type==="whatsapp"?"messaged you on WhatsApp":"called"} about your listing "${d.title}" on CityLinkGH!`);}}catch(e){}
+};
+
+// ── FETCH ──
+async function fetchListings(){
+  const q=query(collection(db,"buy_sell_listings"),orderBy("createdAt","desc"));
+  const snap=await getDocs(q);
+  allItems=[];
+  snap.forEach(d=>{
+    const data=d.data();
+    if(data.status==="pending"&&data.uid!==currentUser?.uid)return;
+    if(data.expiresAt){const exp=data.expiresAt.toDate?data.expiresAt.toDate():new Date(data.expiresAt);if(exp<new Date())return;}
+    allItems.push({id:d.id,...data});
+  });
+  const weekAgo=Date.now()-7*24*60*60*1000;
+  const newCount=allItems.filter(i=>i.createdAt&&new Date(i.createdAt?.toDate?.()??i.createdAt).getTime()>weekAgo).length;
+  document.getElementById('statTotal').textContent=allItems.length;
+  document.getElementById('statForSale').textContent=allItems.filter(i=>i.type==='sell'&&i.status!=='sold').length;
+  document.getElementById('statWanted').textContent=allItems.filter(i=>i.type==='buy').length;
+  document.getElementById('statNew').textContent=newCount;
+  document.getElementById('hotCount').textContent=newCount;
+  if(newCount>0)document.getElementById('hotBanner').style.display='flex';
+  renderNewThisWeek();renderDeals();updateSavedBadge();refresh();
+}
+
+function renderNewThisWeek(){
+  const weekAgo=Date.now()-7*24*60*60*1000;
+  const fresh=allItems.filter(i=>i.createdAt&&new Date(i.createdAt?.toDate?.()??i.createdAt).getTime()>weekAgo&&i.status!=='sold').slice(0,8);
+  const sec=document.getElementById('newWeekSection');
+  if(!fresh.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('newWeekTrack').innerHTML=fresh.map(i=>`<div class="nw-card" onclick="openDetailModal('${i.id}')"><div class="nw-img">${i.imageUrl?`<img src="${esc(i.imageUrl)}" alt="" loading="lazy">`:typeEmoji(i.category)}<div class="nw-badge">NEW</div></div><div class="nw-info"><div class="nw-price">${i.price?`GHS ${Number(i.price).toLocaleString()}`:'Negotiable'}</div><div class="nw-type">${esc(i.title)}</div><div class="nw-loc">📍 ${esc(i.location||'Ghana')}</div></div></div>`).join('');
+}
+
+function renderDeals(){
+  const withPrice=allItems.filter(i=>i.price&&i.status!=='sold').sort((a,b)=>parseFloat(a.price)-parseFloat(b.price)).slice(0,6);
+  const sec=document.getElementById('dealsSection');
+  if(!withPrice.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('dealsTrack').innerHTML=withPrice.map(i=>`<div class="deal-card" onclick="openDetailModal('${i.id}')"><div class="deal-img-wrap">${i.imageUrl?`<img src="${esc(i.imageUrl)}" alt="">`:typeEmoji(i.category)}</div><div class="deal-info"><div class="deal-name">${esc(i.title)}</div><div class="deal-desc">GHS ${Number(i.price).toLocaleString()}</div></div></div>`).join('');
+}
+
+// ── FILTERS ──
+window.filterType=el=>{activeType=el.dataset.type;showSavedOnly=false;document.querySelectorAll('#typeFilters .fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');refresh();};
+window.filterCat=el=>{activeCat=el.dataset.cat;document.querySelectorAll('#categoryFilters .fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');refresh();};
+
+function sortItems(items,sort){
+  if(sort==="price_asc")return[...items].sort((a,b)=>(parseFloat(a.price)||0)-(parseFloat(b.price)||0));
+  if(sort==="price_desc")return[...items].sort((a,b)=>(parseFloat(b.price)||0)-(parseFloat(a.price)||0));
+  return items;
+}
+
+window.refresh=function(){
+  const search=(document.getElementById('search-input').value||'').toLowerCase();
+  const sort=document.getElementById('sort-select').value;
+  const minP=Number(document.getElementById('priceMin').value)||0;
+  const maxP=Number(document.getElementById('priceMax').value)||Infinity;
+  let items=[...allItems];
+  if(showSavedOnly||sort==='saved')items=items.filter(i=>isSaved(i.id));
+  else if(activeType!=='all')items=items.filter(i=>i.type===activeType);
+  if(activeCat!=='all')items=items.filter(i=>i.category===activeCat);
+  if(search)items=items.filter(i=>(i.title||"").toLowerCase().includes(search)||(i.description||"").toLowerCase().includes(search)||(i.location||"").toLowerCase().includes(search));
+  if(minP)items=items.filter(i=>Number(i.price||0)>=minP);
+  if(maxP!==Infinity)items=items.filter(i=>Number(i.price||0)<=maxP);
+
+  const prem=sortItems(items.filter(i=>i.plan==="premium"),sort);
+  const std=sortItems(items.filter(i=>i.plan==="standard"),sort);
+  const bas=sortItems(items.filter(i=>!i.plan||i.plan==="basic"),sort);
+  items=[...prem,...std,...bas];
+
+  document.getElementById("listing-count").textContent=items.length+" listing"+(items.length!==1?"s":"");
+  renderGrid(items,search);
+};
+
+// ── INFINITE SCROLL + RENDER ──
+const PAGE_SIZE=12;let currentPage=1,currentList=[],infiniteObserver=null;
+function renderGrid(items,search=''){
+  currentList=items;currentPage=1;
+  const grid=document.getElementById("listings-grid");
+  const empty=document.getElementById("empty-state");
+  const sentinel=document.getElementById('scrollSentinel');
+  if(!items.length){grid.innerHTML='';empty.style.display="flex";sentinel.classList.remove('loading');return;}
+  empty.style.display="none";
+  grid.innerHTML=items.slice(0,PAGE_SIZE).map(item=>buildCard(item,search)).join('');
+  attachCardEvents(grid);
+  items.slice(0,PAGE_SIZE).forEach(item=>setTimeout(()=>incrementViews(item.id),1500));
+  if(items.length<=PAGE_SIZE){sentinel.classList.remove('loading');return;}
+  if(infiniteObserver)infiniteObserver.disconnect();
+  infiniteObserver=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&currentPage*PAGE_SIZE<currentList.length){
+      sentinel.classList.add('loading');
+      setTimeout(()=>{
+        currentPage++;
+        const slice=currentList.slice(0,currentPage*PAGE_SIZE);
+        grid.innerHTML=slice.map(item=>buildCard(item,search)).join('');
+        attachCardEvents(grid);
+        if(currentPage*PAGE_SIZE>=currentList.length){sentinel.classList.remove('loading');infiniteObserver.disconnect();}
+        else sentinel.classList.remove('loading');
+      },400);
+    }
+  },{rootMargin:'200px'});
+  infiniteObserver.observe(sentinel);
+}
+
+function hl(text,searchTerm){if(!searchTerm||!text)return text||"";const re=new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")})`,"gi");return text.replace(re,"<mark>$1</mark>");}
+
+function buildCard(item,searchTerm=""){
+  const saved=isSaved(item.id);
+  const isMine=currentUser&&item.uid===currentUser.uid;
+  const isSold=item.status==="sold";
+  const isPending=item.status==="pending";
+  const plan=item.plan||'basic';
+  const rawWa=(item.phone||'').replace(/\D/g,'');
+  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+  const planRibbon=plan==='premium'?'<div class="plan-ribbon ribbon-premium">⭐ Featured</div>':plan==='standard'?'<div class="plan-ribbon ribbon-standard">✓ Listed</div>':'';
+  const planClass=plan==='premium'?'card-premium':plan==='standard'?'card-standard':'';
+  const isNew=item.createdAt&&(Date.now()-new Date(item.createdAt?.toDate?.()??item.createdAt).getTime())<3*24*60*60*1000;
+  const timeAgo=item.createdAt?fmtAgo(item.createdAt?.toDate?item.createdAt.toDate():new Date(item.createdAt)):'Recently';
+
+  return `<div class="item-card ${planClass}${isSold?' is-sold':''}${isPending?' is-pending':''}" data-id="${item.id}">
+    <div class="card-img-wrap" onclick="openDetailModal('${item.id}')">
+      ${item.imageUrl?`<img class="card-img" src="${esc(item.imageUrl)}" alt="${esc(item.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:''}
+      <div class="card-img-fallback" style="${item.imageUrl?'display:none':''}">${typeEmoji(item.category)}</div>
+      <div class="type-badge ${item.type}">${item.type==="sell"?"For Sale":"Wanted"}</div>
+      ${isSold?'<div class="sold-overlay">SOLD</div>':''}
+      ${isNew&&!isSold?'<div class="new-badge-overlay">NEW</div>':''}
+      ${isPending?'<div class="pending-badge">⏳ Pending</div>':''}
+      <button class="item-bm-btn${saved?' saved':''}" data-id="${item.id}" onclick="event.stopPropagation();handleSave('${item.id}')">${saved?'🏷️':'🔖'}</button>
+      ${planRibbon}
+      ${item.views?`<span class="view-count">👁 ${item.views}</span>`:''}
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 CityLink Ghana. All Rights Reserved.</p>
-  </div>
-</footer>
+    <div class="card-body">
+      <div class="card-meta-row">
+        <span class="card-cat">${typeEmoji(item.category)} ${esc(item.category||'General')}</span>
+        ${item.condition?`<span class="condition-tag">${esc(item.condition)}</span>`:''}
+      </div>
+      <div class="card-name" ${plan==='premium'?'style="font-weight:900;"':''} onclick="openDetailModal('${item.id}')">${hl(esc(item.title),searchTerm)}</div>
+      ${item.location?`<div class="card-loc">📍 ${esc(item.location)}</div>`:''}
+      <div class="card-desc">${hl(esc(item.description),searchTerm)}</div>
+    </div>
+    <div class="card-footer">
+      <span class="cf-price">${item.price?`GHS ${parseFloat(item.price).toLocaleString()}`:'Negotiable'}</span>
+      <span class="cf-meta">${timeAgo}${isSold?' · Sold':''}</span>
+    </div>
+    <div class="card-actions">
+      ${item.phone?`<a class="ca-btn ca-call" href="tel:${esc(item.phone)}" onclick="event.stopPropagation();trackContact('${item.id}','call')">📞 Call</a>`:''}
+      ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hi, I saw your listing "'+item.title+'" on CityLinkGH. Is it still available?')}" target="_blank" onclick="event.stopPropagation();trackContact('${item.id}','whatsapp')">💬 Chat</a>`:''}
+      <button class="ca-btn ca-view" onclick="event.stopPropagation();openDetailModal('${item.id}')">View →</button>
+    </div>
+    ${(isMine||!isMine)?`<div class="card-meta-actions">
+      ${isMine&&!isSold?`<button class="action-chip" onclick="markSold('${item.id}')">✓ Mark Sold</button>`:''}
+      ${isMine?`<button class="action-chip danger" onclick="deleteListing('${item.id}')">🗑 Remove</button>`:''}
+      ${isMine?`<button class="action-chip accent" onclick="openBumpModal('${item.id}','${esc(item.title)}')">⬆ Bump</button>`:''}
+      ${!isMine?`<button class="action-chip muted" onclick="openReportModal('${item.id}','${esc(item.title)}')">⚑ Report</button>`:''}
+      <button class="action-chip" onclick="shareItem('${item.id}','${esc(item.title)}')">↗ Share</button>
+    </div>`:''}
+  </div>`;
+}
+
+function attachCardEvents(grid){}
+
+window.handleSave=id=>{toggleSave(id);const btn=document.querySelector(`.item-bm-btn[data-id="${id}"]`);if(btn){const s=isSaved(id);btn.textContent=s?'🏷️':'🔖';btn.classList.toggle('saved',s);}showToast(isSaved(id)?'❤️ Saved!':'Removed from saved');};
+window.markSold=async id=>{if(!confirm('Mark this as sold?'))return;await updateDoc(doc(db,"buy_sell_listings",id),{status:"sold"});showToast('✅ Marked as sold!');await fetchListings();};
+window.deleteListing=async id=>{if(!confirm('Remove this listing permanently?'))return;await deleteDoc(doc(db,"buy_sell_listings",id));showToast('Listing removed');await fetchListings();};
+window.shareItem=async(id,title)=>{const url=location.origin+'/buy.html?listing='+id;if(navigator.share)await navigator.share({title,url});else{await navigator.clipboard.writeText(url);showToast('🔗 Link copied!');}};
+
+// ── DETAIL MODAL ──
+window.openDetailModal=async function(id){
+  const snap=await getDoc(doc(db,"buy_sell_listings",id));
+  if(!snap.exists())return;
+  const item={id,...snap.data()};
+  const rawWa=(item.phone||'').replace(/\D/g,'');
+  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
+  const saved=isSaved(id);
+  document.getElementById('detail-body').innerHTML=`
+    <div style="position:relative;">
+      ${item.imageUrl?`<img src="${esc(item.imageUrl)}" style="width:100%;height:240px;object-fit:cover;" alt="">`:`<div style="height:200px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:56px;">${typeEmoji(item.category)}</div>`}
+      <button onclick="closeDetailModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;">✕</button>
+    </div>
+    <div style="padding:16px 16px 24px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
+        <span class="dbadge dbadge-type">${item.type==="sell"?"For Sale":"Wanted"}</span>
+        <span class="dbadge">${typeEmoji(item.category)} ${esc(item.category||'General')}</span>
+        ${item.condition?`<span class="dbadge">${esc(item.condition)}</span>`:''}
+      </div>
+      <div class="detail-title">${esc(item.title)}</div>
+      <div class="detail-price">${item.price?`GHS ${parseFloat(item.price).toLocaleString()}`:'<span style="font-size:16px;color:var(--gray);">Price Negotiable</span>'}</div>
+      <div class="detail-desc">${esc(item.description)}</div>
+      ${item.location?`<div class="maps-link" style="margin-top:12px;"><span>📍</span><div>${esc(item.location)}</div></div>`:''}
+      <div class="detail-ctas">
+        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hi, I saw your listing "'+item.title+'". Is it still available?')}" target="_blank" class="detail-cta-btn cta-wa" onclick="trackContact('${id}','whatsapp')">💬 WhatsApp Seller</a>`:''}
+        ${item.phone?`<a href="tel:${esc(item.phone)}" class="detail-cta-btn cta-call" onclick="trackContact('${id}','call')">📞 Call Seller</a>`:''}
+      </div>
+      <div class="detail-stats">
+        <div class="dstat"><div class="dstat-n">${item.views||0}</div><div class="dstat-l">👁 Views</div></div>
+        <div class="dstat"><div class="dstat-n">${item.contacts_whatsapp||0}</div><div class="dstat-l">💬 WhatsApp</div></div>
+        <div class="dstat"><div class="dstat-n">${item.contacts_call||0}</div><div class="dstat-l">📞 Calls</div></div>
+      </div>
+      <div class="detail-actions">
+        <button onclick="handleSave('${id}');this.textContent=isSaved('${id}')?'✅ Saved':'🔖 Save'" class="detail-act-btn${saved?' detail-act-saved':''}">${saved?'✅ Saved':'🔖 Save'}</button>
+        <button onclick="shareItem('${id}','${esc(item.title)}')" class="detail-act-btn">📤 Share</button>
+        <button onclick="openReportModal('${id}','${esc(item.title)}')" class="detail-act-btn detail-act-report">🚩 Report</button>
+      </div>
+    </div>`;
+  document.getElementById('detail-modal').classList.add('show');
+};
+window.closeDetailModal=()=>document.getElementById('detail-modal').classList.remove('show');
+
+// ── SUBMIT LISTING ──
+window.submitListing=async function(){
+  const btn=document.getElementById("submit-btn");
+  const err=document.getElementById("form-error");
+  err.textContent="";
+  const title=document.getElementById("f-title").value.trim();
+  const desc=document.getElementById("f-desc").value.trim();
+  const price=document.getElementById("f-price").value.trim();
+  const phone=document.getElementById("f-phone").value.trim();
+  const email=document.getElementById("f-email").value.trim();
+  const location=document.getElementById("f-location").value.trim();
+  const category=document.getElementById("f-category").value;
+  const type=document.getElementById("f-type").value;
+  const condition=document.getElementById("f-condition").value;
+  const plan=PLANS[selectedPlan];
+
+  if(!title){err.textContent="Please add a title.";return;}
+  if(!desc){err.textContent="Please add a description.";return;}
+  if(!phone){err.textContent="Phone number is required.";return;}
+  if(!email&&plan.price>0){err.textContent="Email is required for paid plans.";return;}
+  if(uploadedImgs.length>plan.photos){err.textContent=`${plan.name} plan allows max ${plan.photos} photo${plan.photos>1?"s":""}.`;return;}
+
+  btn.disabled=true;document.getElementById('submitTxt').textContent="Processing…";
+  pendingListingData={title,description:desc,price,phone,email,location,category,type,condition,plan:selectedPlan};
+
+  initiatePaystackPayment(selectedPlan,email,phone,async(paystackResponse)=>{
+    try{
+      document.getElementById('submitTxt').textContent="Saving…";
+      const expiresAt=new Date(Date.now()+plan.duration*86400000);
+      await addDoc(collection(db,"buy_sell_listings"),{
+        ...pendingListingData,imageUrl:uploadedImgs[0]||'',
+        status:"active",paymentRef:paystackResponse.reference||"free",
+        uid:currentUser?currentUser.uid:"anon",createdAt:serverTimestamp(),
+        expiresAt,views:0,contacts_whatsapp:0,contacts_call:0
+      });
+      await sendSMS(phone,`Hi! Your "${title}" listing is now LIVE on CityLinkGH under the ${plan.name} plan. Active for ${plan.duration} days. Good luck! 🎉`);
+      document.getElementById('f-title').value='';document.getElementById('f-desc').value='';document.getElementById('f-price').value='';document.getElementById('f-phone').value='';document.getElementById('f-email').value='';document.getElementById('f-location').value='';document.getElementById('f-condition').value='';
+      uploadedImgs=[];renderImgGrid();
+      window.selectPlan("basic");closeModal();await fetchListings();
+      showToast(`🎉 Your listing is live!`);
+    }catch(e){err.textContent="Something went wrong — please try again.";console.error(e);}
+    finally{btn.disabled=false;document.getElementById('submitTxt').textContent="Post Listing";}
+  });
+};
+
+// ── IMAGE UPLOAD ──
+function renderImgGrid(){
+  const limit=PLANS[selectedPlan].photos;
+  const grid=document.getElementById('imgUpGrid');
+  let html=uploadedImgs.map((img,i)=>`<div class="img-up-slot"><img src="${esc(img)}" alt=""><button class="img-up-del" onclick="removeImg(${i})">×</button></div>`).join('');
+  if(uploadedImgs.length<limit)html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
+  grid.innerHTML=html;
+}
+window.removeImg=idx=>{uploadedImgs.splice(idx,1);renderImgGrid();};
+window.uploadImg=async input=>{
+  const f=input.files[0];if(!f)return;
+  if(f.size>5*1024*1024){showToast('Max 5MB');return;}
+  const limit=PLANS[selectedPlan].photos;
+  if(uploadedImgs.length>=limit){showToast(`Max ${limit} photos for ${PLANS[selectedPlan].name}`);return;}
+  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
+  bar.style.display='block';stat.textContent='Uploading…';fill.style.width='10%';
+  try{
+    let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
+    const url=await uploadToCloudinary(f);
+    clearInterval(iv);fill.style.width='100%';stat.textContent='✅ Uploaded!';
+    uploadedImgs.push(url);renderImgGrid();setTimeout(()=>bar.style.display='none',800);
+  }catch(e){stat.textContent='❌ Failed';fill.style.width='0%';}
+};
+
+// ── BUMP ──
+window.openBumpModal=function(id,title){document.getElementById("bump-id").value=id;document.getElementById("bump-title").textContent=`"${title}"`;document.getElementById("bump-modal").classList.add("show");};
+window.closeBumpModal=function(){document.getElementById("bump-modal").classList.remove("show");};
+window.payBump=function(){
+  const id=document.getElementById("bump-id").value;
+  const email=document.getElementById("bump-email").value.trim();
+  if(!email){showToast("Enter your email to continue.");return;}
+  const handler=PaystackPop.setup({key:PAYSTACK_KEY,email,amount:1000,currency:"GHS",ref:"BUMP_"+Date.now(),onSuccess:async()=>{await updateDoc(doc(db,"buy_sell_listings",id),{plan:"premium",bumpedAt:serverTimestamp(),expiresAt:new Date(Date.now()+30*86400000)});closeBumpModal();await fetchListings();showToast("⬆️ Listing bumped to top for 30 days!");},onClose:()=>showToast("Bump cancelled.")});
+  handler.openIframe();
+};
+
+// ── REPORT ──
+window.openReportModal=function(id,title){document.getElementById("report-listing-id").value=id;document.getElementById("report-modal-title").textContent=`Report: "${title}"`;document.getElementById("report-modal").classList.add("show");};
+window.closeReportModal=function(){document.getElementById("report-modal").classList.remove("show");};
+window.submitReport=async function(){
+  const id=document.getElementById("report-listing-id").value;
+  const reason=document.getElementById("report-reason").value;
+  const details=document.getElementById("report-details").value.trim();
+  if(!reason){showToast("Please select a reason.");return;}
+  await addDoc(collection(db,"listing_reports"),{listingId:id,reason,details,reportedBy:currentUser?currentUser.uid:"anon",createdAt:serverTimestamp()});
+  closeReportModal();showToast("Report submitted — thank you!");
+};
+
+// ── PLAN PICKER ──
+window.selectPlan=function(plan){
+  selectedPlan=plan;
+  document.querySelectorAll(".plan-opt").forEach(c=>c.classList.remove("sel"));
+  document.getElementById("pick-"+plan).classList.add("sel");
+  const p=PLANS[plan];
+  document.getElementById("plan-photo-tip").textContent=`Up to ${p.photos} photo${p.photos>1?"s":""} · Listing stays live for ${p.duration} days`;
+  const note=document.getElementById("payment-note");
+  if(plan==="basic"){note.style.display='none';}
+  else{note.style.display='flex';document.getElementById("payment-plan-name").textContent=p.name;document.getElementById("payment-plan-price").textContent=`GHS ${p.price} via Paystack`;}
+  renderImgGrid();
+};
+window.choosePlanAndPost=function(plan){closePricingModal();openModal();setTimeout(()=>window.selectPlan(plan),120);};
+
+window.openModal=()=>{document.getElementById("post-modal").classList.add("show");};
+window.closeModal=()=>{document.getElementById("post-modal").classList.remove("show");};
+window.openPricingModal=()=>{document.getElementById("pricing-modal").classList.add("show");};
+window.closePricingModal=()=>{document.getElementById("pricing-modal").classList.remove("show");};
+
+function fmtAgo(date){if(!date)return'Recently';const d=Date.now()-new Date(date).getTime();if(isNaN(d))return'Recently';const m=Math.floor(d/60000);if(m<60)return`${m}m ago`;const h=Math.floor(m/60);if(h<24)return`${h}h ago`;return`${Math.floor(h/24)}d ago`;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastT;window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+document.getElementById('sort-select').addEventListener('change',refresh);
+const descEl=document.getElementById('f-desc');
+const counter=document.getElementById('desc-counter');
+descEl.addEventListener('input',()=>{const len=descEl.value.length;counter.textContent=`${len}/500`;counter.className='char-counter'+(len>450?' warn':'')+(len>500?' over':'');});
+
+const urlParams=new URLSearchParams(location.search);
+if(urlParams.get("listing"))setTimeout(()=>openDetailModal(urlParams.get("listing")),600);
+
+fetchListings();renderImgGrid();
+
+window.toggleDrawer=()=>{const h=document.getElementById('hamburger'),d=document.getElementById('navDrawer'),o=document.getElementById('navOverlay');h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');document.body.style.overflow=d.classList.contains('open')?'hidden':'';};
+</script>
+
 <script>
-  function openModal()  { document.getElementById("post-modal").classList.add("open"); document.body.style.overflow="hidden"; }
-  function closeModal() { document.getElementById("post-modal").classList.remove("open"); document.body.style.overflow=""; }
-
-  function showToast(msg, dur=3200) {
-    const t=document.getElementById("toast");
-    t.textContent=msg; t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"), dur);
-  }
-
-  /* HAMBURGER */
-  window.toggleDrawer = () => {
-    const h=document.getElementById('hamburger');
-    const d=document.getElementById('navDrawer');
-    const o=document.getElementById('navOverlay');
-    h.classList.toggle('open');
-    d.classList.toggle('open');
-    o.classList.toggle('open');
-    document.body.style.overflow=d.classList.contains('open')?'hidden':'';
-  };
-
-  /* DARK MODE */
-  window.toggleDark = () => {
-    const html=document.documentElement;
-    const isDark=html.getAttribute('data-theme')==='dark';
-    html.setAttribute('data-theme',isDark?'light':'dark');
-    document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';
-    localStorage.setItem('clTheme',isDark?'light':'dark');
-  };
-  const savedTheme=localStorage.getItem('clTheme');
-  if(savedTheme){
-    document.documentElement.setAttribute('data-theme',savedTheme);
-    document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';
-  }
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>400);},{passive:true});
 </script>
 </body>
 </html>
-            

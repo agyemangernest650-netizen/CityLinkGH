@@ -1,0 +1,1 @@
+User-agent: *Allow: /# Block admin/internal pages from being indexedDisallow: /admin.htmlDisallow: /chronicle-admin.htmlSitemap: https://citylinkgh.vercel.app/sitemap.xml

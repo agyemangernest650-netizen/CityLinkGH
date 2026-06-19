@@ -97,7 +97,7 @@ const auth = getAuth(app);
 
 let allBookings = [], currentTab = 'all', selCalDate = null;
 let mcYear = new Date().getFullYear(), mcMonth = new Date().getMonth();
-let myBusinessIds = [], isAdminUser = false;
+let isAdminUser = false;
 
 const TODAY = new Date().toISOString().split('T')[0];
 
@@ -106,43 +106,23 @@ onAuthStateChanged(auth, async user => {
   if (!user) { window.location.href = 'profile.html'; return; }
 
   isAdminUser = user.email === ADMIN_EMAIL;
-
-  if (isAdminUser) {
-    // Admin sees every business's bookings
-    await fetchBookings();
-  } else {
-    // Business owner — find which business(es) belong to this uid first
-    try {
-      const bizSnap = await getDocs(query(collection(db,'businesses'), where('ownerUid','==',user.uid)));
-      myBusinessIds = bizSnap.docs.map(d=>d.id);
-
-      if (!myBusinessIds.length) {
-        document.getElementById('bookingsList').innerHTML =
-          `<div class="empty"><div class="ei">🏪</div><h3>No business linked to your account</h3><p>Ask the CityLinkGH team to link your business to this login before you can view bookings.</p></div>`;
-        ['stTotal','stToday','stPending','stCancelled','todayCount'].forEach(id=>document.getElementById(id).textContent='0');
-        document.getElementById('todaySub').textContent = 'No business linked yet';
-        return;
-      }
-      await fetchBookings();
-    } catch(e) {
-      document.getElementById('bookingsList').innerHTML = `<div class="empty"><div class="ei">⚠️</div><h3>Could not verify your business</h3><p>${e.message}</p></div>`;
-    }
-  }
+  await fetchBookings(user.email);
 });
 
 // ── FETCH ──
-async function fetchBookings() {
+async function fetchBookings(userEmail) {
   try {
     let snap;
     if (isAdminUser) {
       // Admin: all bookings, no filter
       snap = await getDocs(query(collection(db,'bookings'), orderBy('createdAt','desc')));
     } else {
-      // Owner: only bookings for businesses they own.
-      // Firestore 'in' queries support max 30 values — fine for a single owner's businesses.
+      // Owner: only bookings where businessEmail matches their
+      // signed-in email — this is the same email-matching pattern
+      // profile.html already uses for "My Business Listings".
       snap = await getDocs(query(
         collection(db,'bookings'),
-        where('businessId','in', myBusinessIds.slice(0,30)),
+        where('businessEmail','==', userEmail),
         orderBy('createdAt','desc')
       ));
     }

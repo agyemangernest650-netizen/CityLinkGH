@@ -35,6 +35,27 @@
   <div class="logo">CityLink<span>GH</span></div>
 </header>
 
+<!-- ══════════════════════════════════════
+     SIGN-IN GATE
+     Shown if the visitor isn't logged in via
+     profile.html. Business email is taken from
+     the signed-in account, so ownership always
+     matches what profile.html / bookingdash.html
+     check against.
+══════════════════════════════════════ -->
+<div class="signin-gate" id="signinGate" style="display:none;padding:60px 20px;text-align:center;">
+  <div style="font-size:52px;margin-bottom:16px;">🔐</div>
+  <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:10px;">Sign in to list your business</h2>
+  <p style="color:var(--gray,#7A7265);font-size:13px;line-height:1.6;max-width:340px;margin:0 auto 24px;">
+    You need an account so you can manage your listing, see bookings, and get notified — the same account works on your Profile page.
+  </p>
+  <a href="profile.html?next=submit.html" style="display:inline-block;background:#1A6B3C;color:#fff;padding:13px 28px;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;">
+    Sign In / Create Account →
+  </a>
+</div>
+
+<div id="appWrap" style="display:none;">
+
 <div class="steps">
   <div class="step active" id="s1"><div class="sc">1</div><div class="sl">Plan</div></div>
   <div class="sline" id="l1"></div>
@@ -48,6 +69,14 @@
 <div class="hero">
   <h1>List Your Business 🏪</h1>
   <p>Reach thousands of Ghanaians every day.<br>Choose a plan and get found on CityLinkGH.</p>
+</div>
+
+<!-- SIGNED-IN-AS BANNER -->
+<div style="max-width:600px;margin:0 auto 4px;padding:0 16px;">
+  <div style="background:#f0fff6;border:1.5px solid #b8f0d0;border-radius:10px;padding:10px 14px;font-size:12px;color:#1A6B3C;display:flex;align-items:center;gap:8px;">
+    <span>✅</span>
+    <span>Listing as <strong id="signedInEmail">—</strong> — this email will be attached to your listing so you can manage it from your Profile.</span>
+  </div>
 </div>
 
 <div id="formView">
@@ -145,7 +174,10 @@
         <div class="field"><label>WhatsApp</label><input type="tel" id="bWa" placeholder="024 000 0000"></div>
       </div>
       <div class="r2">
-        <div class="field"><label>Email</label><input type="email" id="bEmail"></div>
+        <div class="field">
+          <label>Email <span style="font-weight:400;text-transform:none;color:var(--gray,#7A7265);">(your account email — locked)</span></label>
+          <input type="email" id="bEmail" disabled style="background:#f4f4f0;cursor:not-allowed;">
+        </div>
         <div class="field"><label>Website</label><input type="url" id="bWeb" placeholder="https://…"></div>
       </div>
     </div>
@@ -202,11 +234,6 @@
   </div>
 
   <div class="field">
-    <label>Your Email (for receipt)</label>
-    <input type="email" id="payEmail" placeholder="you@example.com">
-  </div>
-
-  <div class="field">
     <label>Your Phone Number</label>
     <input type="tel" id="payPhone" placeholder="024 000 0000">
   </div>
@@ -244,12 +271,15 @@
   <div class="ref-box"><div class="ref-lbl">Reference Number</div><div class="ref-num" id="refNum">—</div></div>
   <div class="perks-box" id="perksBox"></div>
   <p id="sMsg"></p>
-  <a href="home.html">← Browse CityLinkGH</a>
+  <a href="profile.html">← Manage in My Profile</a>
 </div>
+
+</div><!-- /appWrap -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
@@ -278,10 +308,29 @@ const PLAN_PERKS_DATA = {
   premium: {icon:'👑',title:'Premium Listing Live!',msg:'Payment confirmed! Premium spotlight active now.',perks:['👑 Premium Spotlight section','Purple ribbon + border','#1 placement in all searches','✓ Verified + ⭐ Featured','10 photos · 30 days','📅 Booking enabled']}
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
 
 let selPlan='basic', selPrice=0, uploadedImages=[], payRef='', payDone=false;
+let currentUserEmail = '';
+
+// ── AUTH GATE ──
+// submit.html now requires a signed-in account (same login as
+// profile.html) so the business's email field always matches the
+// account that will manage it later via My Profile / bookingdash.html.
+onAuthStateChanged(auth, user => {
+  if (!user || !user.email) {
+    document.getElementById('signinGate').style.display = 'block';
+    document.getElementById('appWrap').style.display = 'none';
+    return;
+  }
+  currentUserEmail = user.email;
+  document.getElementById('signinGate').style.display = 'none';
+  document.getElementById('appWrap').style.display = 'block';
+  document.getElementById('signedInEmail').textContent = currentUserEmail;
+  document.getElementById('bEmail').value = currentUserEmail;
+});
 
 // ── PLAN ──
 window.pickPlan = el => {
@@ -362,10 +411,10 @@ const ARKESEL_SENDER   = "CityLinkGH"; // max 11 chars, no spaces
 
 // ── PAYSTACK PAYMENT ──
 window.doPaystackPay = () => {
-  const email = document.getElementById('payEmail').value.trim();
+  const email = currentUserEmail; // always the signed-in account's email
   const phone = document.getElementById('payPhone').value.trim();
 
-  if (!email) { showToast('⚠️ Enter your email for receipt'); return; }
+  if (!email) { showToast('⚠️ You must be signed in to pay'); return; }
   if (!phone)  { showToast('⚠️ Enter your phone number'); return; }
 
   const btn  = document.getElementById('payBtn');
@@ -462,6 +511,7 @@ async function sendArkeselSMS(to, message) {
 
 // ── SUBMIT ──
 window.doSubmit=async()=>{
+  if(!currentUserEmail){showToast('⚠️ Please sign in first');return;}
   if(selPrice>0&&!payDone){showToast('💳 Complete payment first');document.getElementById('momoBox').scrollIntoView({behavior:'smooth'});return;}
   finalSubmit(payDone);
 };
@@ -476,6 +526,7 @@ async function finalSubmit(paid){
   if(!city){showToast('⚠️ City required');return;}
   if(!phone){showToast('⚠️ Phone required');return;}
   if(!document.getElementById('agreeCheck').checked){showToast('⚠️ Please accept the terms');return;}
+  if(!currentUserEmail){showToast('⚠️ Please sign in first');return;}
 
   const btn=document.getElementById('subBtn');btn.disabled=true;
   document.getElementById('subTxt').textContent='Submitting…';
@@ -494,7 +545,10 @@ async function finalSubmit(paid){
       location:document.getElementById('bLoc').value.trim(),
       phone,
       whatsapp:document.getElementById('bWa').value.trim(),
-      email:document.getElementById('bEmail').value.trim(),
+      // Email is always the signed-in account's email — this is
+      // what ties the listing to the owner's profile.html account
+      // and to their bookingdash.html bookings later.
+      email: currentUserEmail,
       website:document.getElementById('bWeb').value.trim(),
       tags:document.getElementById('bTags').value.trim(),
       openTime:document.getElementById('bOpen').value,

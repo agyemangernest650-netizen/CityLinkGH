@@ -733,7 +733,7 @@
 const firebaseConfig = {
   apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
   authDomain: "citylinkgh-48ee0.firebaseapp.com",
-  databaseURL: "https://citylinkgh-48ee0-default-rtdb.firebaseio.com/",
+ databaseURL: "https://citylinkgh-48ee0-default-rtdb.firebaseio.com/",
   projectId: "citylinkgh-48ee0",
   storageBucket: "citylinkgh-48ee0.firebasestorage.app",
   messagingSenderId: "807811031269",
@@ -1047,7 +1047,7 @@ async function dGetRoute(silent=false){
     dRoutePoly=route.geometry.coordinates.map(c=>[c[1],c[0]]);
     dRouteSteps=route.legs[0].steps; dCurrentStep=0;
     if(dRouteLayer) dMap.removeLayer(dRouteLayer);
-    dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
+dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
     if(!silent) dMap.fitBounds(dRouteLayer.getBounds(),{padding:[26,26],animate:true});
     const d=(route.distance/1000).toFixed(1), m=Math.round(route.duration/60);
     document.getElementById('d-rs-dist').textContent=dist(route.distance);
@@ -1273,22 +1273,34 @@ async function muJoin(){
   document.getElementById('mu-err').textContent='';
 
   const sk=muSK();
+
+  // Read existing meta — if session already exists, use its group size
+  // If first to join, write meta with chosen group size
+  const existingMeta=await dbGet(`${sk}:meta`);
+  if(existingMeta && existingMeta.groupSize){
+    muGroupSize=existingMeta.groupSize;
+    // Sync the UI group size buttons
+    document.querySelectorAll('.gs-btn').forEach(b=>{
+      b.classList.toggle('active', parseInt(b.textContent)===muGroupSize);
+    });
+  }
+
   const slots=MU_SLOTS.slice(0,muGroupSize);
+  const now=Date.now();
   let assigned=null;
 
-  // Try each slot using a Firebase transaction to atomically claim it
+  // Use Firebase transaction to atomically claim a slot
   for(const slot of slots){
     const ref=_db.ref('clgh/'+_safeKey(`${sk}:${slot}`));
-    let claimed=false;
     await ref.transaction(current=>{
-      // Slot is free or already owned by this name → claim it
-      if(!current || current.name===muMyName){
-        claimed=true;
-        return {name:muMyName,lat:null,lng:null,ts:Date.now(),online:true,speed:0,isHost:slot==='A'};
+      // Free slot: null, offline (ts too old), or same name rejoining
+      const isStale = current && current.ts && (now - current.ts > 20000) && !current.online;
+      const isMine  = current && current.name === muMyName;
+      if(!current || isStale || isMine){
+        return {name:muMyName,lat:null,lng:null,ts:now,online:true,speed:0,isHost:slot==='A'};
       }
-      // Slot taken by someone else → abort (return undefined)
-      return undefined;
-    }).then(result=>{ if(result.committed) assigned=slot; }).catch(()=>{});
+      return undefined; // slot taken — abort transaction
+    }).then(result=>{ if(result.committed && !assigned) assigned=slot; }).catch(()=>{});
     if(assigned) break;
   }
 
@@ -1298,7 +1310,9 @@ async function muJoin(){
   }
   muRole=assigned;
   const isHost=muRole==='A';
-  await dbSet(`${sk}:meta`,{groupSize:muGroupSize,ts:Date.now(),hostSlot:'A'});
+
+  // Write meta (first joiner sets it; later joiners just refresh ts)
+  await dbSet(`${sk}:meta`,{groupSize:muGroupSize,ts:now,hostSlot:'A'});
 
   muInitMap();
   document.getElementById('mu-login').classList.remove('active');

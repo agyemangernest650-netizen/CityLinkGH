@@ -1273,18 +1273,31 @@ async function muJoin(){
   document.getElementById('mu-err').textContent='';
 
   const sk=muSK();
+  const slots=MU_SLOTS.slice(0,muGroupSize);
   let assigned=null;
-  for(const slot of MU_SLOTS.slice(0,muGroupSize)){
-    const existing=await dbGet(`${sk}:${slot}`);
-    if(!existing||existing.name===muMyName){ assigned=slot; break; }
+
+  // Try each slot using a Firebase transaction to atomically claim it
+  for(const slot of slots){
+    const ref=_db.ref('clgh/'+_safeKey(`${sk}:${slot}`));
+    let claimed=false;
+    await ref.transaction(current=>{
+      // Slot is free or already owned by this name → claim it
+      if(!current || current.name===muMyName){
+        claimed=true;
+        return {name:muMyName,lat:null,lng:null,ts:Date.now(),online:true,speed:0,isHost:slot==='A'};
+      }
+      // Slot taken by someone else → abort (return undefined)
+      return undefined;
+    }).then(result=>{ if(result.committed) assigned=slot; }).catch(()=>{});
+    if(assigned) break;
   }
+
   if(!assigned){
     document.getElementById('mu-err').textContent='Session is full. Try a different ID or increase group size.';
     muJoinEl.disabled=false; muJoinEl.textContent='📍 Join Session'; return;
   }
   muRole=assigned;
   const isHost=muRole==='A';
-  await dbSet(`${sk}:${muRole}`,{name:muMyName,lat:null,lng:null,ts:Date.now(),online:true,speed:0,isHost});
   await dbSet(`${sk}:meta`,{groupSize:muGroupSize,ts:Date.now(),hostSlot:'A'});
 
   muInitMap();

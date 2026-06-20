@@ -49,7 +49,6 @@
     .brand { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; color:var(--gold); }
     .brand em { color:rgba(255,255,255,0.4); font-style:normal; font-weight:400; }
 
-    /* Toggle buttons in top bar */
     .top-toggle {
       display:flex; align-items:center; gap:5px; padding:6px 10px;
       background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
@@ -115,7 +114,6 @@
     .q-chip { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:20px; padding:4px 10px; font-size:11px; color:rgba(255,255,255,0.75); cursor:pointer; transition:all .15s; font-family:'Epilogue',sans-serif; font-weight:500; }
     .q-chip:hover { background:rgba(212,160,23,0.2); border-color:rgba(212,160,23,0.4); color:var(--gold); }
 
-    /* Live tracking bar */
     #d-tracking-bar { display:none; width:100%; background:linear-gradient(90deg,#0e2800,#1A6B3C); padding:9px 18px; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; }
     #d-tracking-bar.show { display:flex; }
     .tb-pill { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:3px 10px; }
@@ -127,7 +125,6 @@
     .tb-key { font-size:9px; color:rgba(255,255,255,0.55); letter-spacing:.06em; text-transform:uppercase; }
     #d-stop-btn { background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); border-radius:8px; padding:5px 11px; font-family:'Syne',sans-serif; font-size:11px; font-weight:800; color:#fca5a5; cursor:pointer; }
 
-    /* Next step / off-route / arrived */
     #d-nsb { display:none; width:100%; background:var(--blue-lt); border-bottom:2px solid var(--blue); padding:10px 18px; align-items:center; gap:11px; }
     #d-nsb.show { display:flex; }
     #d-nsb-icon { font-size:1.3rem; flex-shrink:0; }
@@ -145,17 +142,14 @@
     .ab-sub { font-size:0.72rem; color:rgba(255,255,255,0.65); margin-top:2px; }
     .ab-close { background:rgba(255,255,255,0.15); border:none; color:#fff; border-radius:8px; padding:5px 11px; font-family:'Syne',sans-serif; font-size:11px; font-weight:700; cursor:pointer; }
 
-    /* Share live location bar */
     #d-share-live-bar { display:none; background:var(--gold-lt); border-bottom:2px solid var(--gold); padding:9px 18px; align-items:center; gap:10px; }
     #d-share-live-bar.show { display:flex; }
     .slb-text { font-size:0.78rem; font-weight:600; color:#78350f; flex:1; }
     .slb-text strong { font-family:'Syne',sans-serif; }
     #d-copy-live-btn { background:var(--gold); border:none; border-radius:8px; padding:5px 13px; font-family:'Syne',sans-serif; font-size:11px; font-weight:800; color:#fff; cursor:pointer; }
 
-    /* Map */
     #d-map { width:100%; height:300px; background:var(--mist); }
 
-    /* Body */
     .dir-body { padding:18px 20px 20px; }
     .route-visual { display:flex; align-items:stretch; gap:13px; margin-bottom:14px; }
     .route-dots { display:flex; flex-direction:column; align-items:center; padding-top:12px; flex-shrink:0; }
@@ -171,7 +165,6 @@
     .input-action { position:absolute; right:9px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:0.9rem; padding:3px; border-radius:6px; transition:background .15s; }
     .input-action:hover { background:var(--mist); }
 
-    /* Modes */
     .modes { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
     .mode { display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 5px 7px; border-radius:10px; border:1.5px solid var(--border); background:var(--card-bg); cursor:pointer; transition:all .15s; }
     .mode .micon { font-size:1.15rem; }
@@ -179,12 +172,10 @@
     .mode:hover,.mode.active { border-color:var(--green); background:var(--green-lt); }
     .mode.active .mlabel { color:var(--green); }
 
-    /* Avoid chips */
     .avoid-row { display:flex; gap:7px; flex-wrap:wrap; margin-top:8px; }
     .avoid-chip { display:flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; border:1.5px solid var(--border); background:var(--card-bg); font-size:0.7rem; font-weight:600; color:var(--gray); cursor:pointer; transition:all .15s; user-select:none; }
     .avoid-chip.on { border-color:var(--orange); background:#fff7ed; color:var(--orange); }
 
-    /* Favourites */
     .fav-row { display:flex; gap:7px; flex-wrap:wrap; margin-top:8px; }
     .fav-chip { display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:20px; border:1.5px solid var(--border); background:var(--card-bg); font-size:0.72rem; font-weight:600; color:var(--gray); cursor:pointer; transition:all .15s; }
     .fav-chip:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-lt); }
@@ -192,7 +183,6 @@
     .fav-chip .fav-del { margin-left:3px; color:#aaa; font-size:0.8rem; }
     .fav-chip .fav-del:hover { color:var(--red); }
 
-    /* Route summary */
     #d-summary { display:none; background:linear-gradient(135deg,var(--green-lt),var(--card-bg)); border:1.5px solid rgba(26,107,60,0.2); border-radius:12px; padding:11px 13px; margin-top:11px; }
     #d-summary.show { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
     .rs-item { text-align:center; padding:3px 6px; }
@@ -200,7 +190,6 @@
     .rs-val { font-family:'Syne',sans-serif; font-size:0.97rem; font-weight:800; color:var(--green); }
     .rs-lbl { font-size:0.65rem; color:var(--gray); margin-top:2px; }
 
-    /* Buttons */
     .btn-row { display:flex; gap:8px; margin-top:14px; }
     #d-go-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:13px; background:var(--green); color:#fff; border:none; border-radius:12px; font-family:'Syne',sans-serif; font-size:0.93rem; font-weight:800; cursor:pointer; transition:background .18s,opacity .18s; }
     #d-go-btn:hover:not(:disabled) { background:#155c31; }
@@ -223,7 +212,6 @@
     #d-save-fav-btn { background:var(--gold-lt); color:#92400e; border:1.5px solid rgba(212,160,23,0.4); }
     #d-save-fav-btn:hover { background:#fef3c7; }
 
-    /* Steps */
     #d-steps-panel { display:none; border-top:1px solid var(--border); padding:0 20px 18px; }
     #d-steps-panel.show { display:block; }
     .steps-header { display:flex; align-items:center; justify-content:space-between; padding:12px 0 9px; }
@@ -238,7 +226,6 @@
     .step-text { font-size:0.81rem; color:var(--ink); line-height:1.45; }
     .step-dist { font-size:0.7rem; color:var(--gray); margin-top:2px; }
 
-    /* Route history */
     #d-history-panel { border-top:1px solid var(--border); padding:14px 20px; }
     #d-history-panel.hidden { display:none; }
     .hist-title { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-bottom:9px; }
@@ -252,7 +239,6 @@
     .hist-del { font-size:0.8rem; color:#ccc; cursor:pointer; padding:2px 5px; border-radius:4px; }
     .hist-del:hover { color:var(--red); background:#fef2f2; }
 
-    /* Nearby / POI */
     #d-nearby { display:none; border-top:1px solid var(--border); padding:14px 20px; }
     #d-nearby.show { display:block; }
     .nearby-title { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-bottom:9px; }
@@ -287,7 +273,6 @@
     .gen-btn { padding:0 12px; background:var(--mist); border:1.5px solid var(--border); border-radius:11px; font-family:'Syne',sans-serif; font-size:11px; font-weight:800; color:var(--gray); cursor:pointer; white-space:nowrap; transition:background .15s; }
     .gen-btn:hover { background:var(--border); }
 
-    /* Group size selector */
     .group-row { display:flex; align-items:center; gap:8px; margin-top:4px; }
     .group-row label { font-size:0.72rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--gray); }
     .group-size-btns { display:flex; gap:5px; }
@@ -302,7 +287,6 @@
     .mu-join-btn:disabled { opacity:.45; cursor:not-allowed; }
     .mu-err { font-size:0.76rem; color:var(--red); margin-top:8px; text-align:center; min-height:16px; }
 
-    /* Map header */
     .mu-map-header { background:linear-gradient(135deg,#0e2800,#1A6B3C); padding:11px 16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:7px; }
     .mh-left { display:flex; align-items:center; gap:7px; }
     .session-id-lbl { font-family:'Syne',sans-serif; font-size:10px; font-weight:800; color:rgba(255,255,255,0.5); letter-spacing:.06em; text-transform:uppercase; }
@@ -328,7 +312,6 @@
 
     .mu-panel { padding:14px 18px 18px; background:var(--panel-bg); }
 
-    /* Members list (group) */
     #mu-members { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
     .member-badge { display:flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; border:1.5px solid var(--border); background:var(--cream); font-size:11px; font-weight:700; color:var(--ink); font-family:'Syne',sans-serif; }
     .member-dot { width:7px; height:7px; border-radius:50%; }
@@ -371,7 +354,6 @@
     .dc-step { font-size:0.8rem; color:var(--ink); font-weight:600; }
     .dc-dist { font-size:0.7rem; color:var(--gray); margin-top:2px; }
 
-    /* Chat panel */
     #mu-chat { border-top:1px solid var(--border); }
     #mu-chat.hidden { display:none; }
     .chat-header { display:flex; align-items:center; justify-content:space-between; padding:10px 18px 8px; }
@@ -390,7 +372,6 @@
     .chat-send { padding:9px 14px; background:var(--purple); color:#fff; border:none; border-radius:11px; font-family:'Syne',sans-serif; font-size:12px; font-weight:800; cursor:pointer; }
     .chat-send:hover { background:#6d28d9; }
 
-    /* I'm here button */
     #mu-im-here-btn { display:none; width:100%; padding:12px; background:linear-gradient(90deg,#1A6B3C,#25a05a); color:#fff; border:none; border-radius:11px; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:800; cursor:pointer; margin-bottom:10px; transition:opacity .15s; }
     #mu-im-here-btn.show { display:block; }
     #mu-im-here-btn:hover { opacity:.9; }
@@ -398,8 +379,35 @@
     .leave-btn { width:100%; padding:10px; background:var(--card-bg); border:1.5px solid var(--border); border-radius:11px; font-family:'Syne',sans-serif; font-size:0.81rem; font-weight:800; color:var(--red); cursor:pointer; transition:background .15s; margin-top:6px; }
     .leave-btn:hover { background:#fef2f2; border-color:var(--red); }
 
-    /* Arrived notification in chat */
     .chat-system { text-align:center; font-size:0.72rem; color:var(--gray); padding:4px 0; font-style:italic; }
+
+    .pin-row { display:flex; gap:8px; }
+    .pin-row .field-input { flex:1; letter-spacing:.2em; font-weight:700; }
+
+    .host-badge { display:inline-flex; align-items:center; gap:4px; background:rgba(212,160,23,0.15); border:1px solid rgba(212,160,23,0.4); border-radius:20px; padding:2px 8px; font-size:10px; font-weight:800; color:var(--gold); font-family:'Syne',sans-serif; margin-left:4px; }
+    .host-lock { background:var(--mist); border:1.5px solid var(--border); border-radius:10px; padding:10px 13px; margin-bottom:11px; font-size:0.78rem; color:var(--gray); display:flex; align-items:center; gap:8px; }
+    .host-lock.hidden { display:none; }
+
+    #mu-typing { min-height:18px; padding:0 18px 4px; font-size:0.72rem; color:var(--gray); font-style:italic; }
+    .typing-dots span { display:inline-block; animation:typingBounce 1s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay:.15s; }
+    .typing-dots span:nth-child(3) { animation-delay:.3s; }
+    @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
+
+    .msg-seen { font-size:0.6rem; color:rgba(255,255,255,0.55); text-align:right; margin-top:2px; }
+    .chat-msg.theirs .msg-seen { color:var(--gray); }
+
+    .msg-reactions { display:flex; gap:4px; flex-wrap:wrap; margin-top:4px; }
+    .reaction-btn { background:var(--cream); border:1.5px solid var(--border); border-radius:20px; padding:2px 7px; font-size:0.78rem; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:3px; }
+    .reaction-btn:hover { border-color:var(--gold); background:var(--gold-lt); }
+    .reaction-btn.mine { background:var(--gold-lt); border-color:var(--gold); }
+    .reaction-count { font-size:0.7rem; font-weight:700; color:var(--gray); }
+    .msg-emoji-picker { display:none; gap:5px; margin-top:5px; flex-wrap:wrap; }
+    .msg-emoji-picker.show { display:flex; }
+    .ep-btn { background:none; border:none; font-size:1rem; cursor:pointer; padding:2px 4px; border-radius:6px; transition:background .15s; }
+    .ep-btn:hover { background:var(--mist); }
+    .react-toggle { font-size:0.7rem; color:var(--gray); cursor:pointer; background:none; border:none; padding:2px 5px; border-radius:6px; }
+    .react-toggle:hover { background:var(--mist); }
 
     @media(max-width:440px) {
       .dir-body,.mu-panel,.mu-login-body { padding-left:14px; padding-right:14px; }
@@ -420,19 +428,14 @@
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" id="tab-directions" onclick="switchTab('directions')">
-    🗺️ Directions
-  </button>
-  <button class="tab-btn" id="tab-meetup" onclick="switchTab('meetup')">
-    👥 Meet Up
-  </button>
+  <button class="tab-btn active" id="tab-directions" onclick="switchTab('directions')">🗺️ Directions</button>
+  <button class="tab-btn" id="tab-meetup" onclick="switchTab('meetup')">👥 Meet Up</button>
 </div>
 
 <div class="card">
 
   <!-- ══════════════ TAB 1: DIRECTIONS ══════════════ -->
   <div class="tab-panel active" id="panel-directions">
-
     <div class="dir-header">
       <div class="dir-eyebrow">🇬🇭 Navigation</div>
       <h1>Get <span>Directions</span></h1>
@@ -470,7 +473,6 @@
       <button class="ab-close" onclick="dDismissArrived()">✕</button>
     </div>
 
-    <!-- Live location share bar -->
     <div id="d-share-live-bar">
       <div class="slb-text">📡 <strong>Live location active.</strong> Anyone with your link can track you.</div>
       <button id="d-copy-live-btn" onclick="dCopyLiveLink()">Copy Link</button>
@@ -495,7 +497,6 @@
         </div>
       </div>
 
-      <!-- Favourites -->
       <div class="section-label">⭐ Favourites</div>
       <div class="fav-row" id="fav-row">
         <div class="fav-chip add-fav" onclick="dAddFavPrompt()">＋ Add current</div>
@@ -545,13 +546,11 @@
       <div class="step-list" id="d-step-list"></div>
     </div>
 
-    <!-- Route History -->
     <div id="d-history-panel" class="hidden">
       <div class="hist-title">🕓 Recent routes</div>
       <div class="hist-list" id="hist-list"></div>
     </div>
 
-    <!-- Nearby / Ghana POIs -->
     <div id="d-nearby">
       <div class="nearby-title">🔍 Search Nearby in Ghana</div>
       <div class="nearby-grid">
@@ -589,7 +588,7 @@
       </div>
       <div class="mu-login-body">
         <h3>Join or start a session</h3>
-        <p>Everyone enters the same Session ID — it can be anything you like.</p>
+        <p>Everyone enters the same Session ID and PIN — keeps your group private.</p>
         <div class="field-group">
           <div>
             <label class="field-label">Your name</label>
@@ -600,6 +599,13 @@
             <div class="session-row">
               <input class="field-input" id="mu-session" type="text" placeholder="e.g. FAMILY-TRIP or 1234" maxlength="24" style="text-transform:uppercase;letter-spacing:.04em;"/>
               <button class="gen-btn" onclick="muGenSession()">Generate</button>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">🔐 Session PIN — shared secret</label>
+            <div class="pin-row">
+              <input class="field-input" id="mu-pin" type="password" placeholder="e.g. 5678" maxlength="20"/>
+              <button class="gen-btn" onclick="muGenPin()">Random</button>
             </div>
           </div>
           <div>
@@ -614,7 +620,7 @@
             </div>
           </div>
         </div>
-        <div class="mu-divider"><hr/><span>Share the Session ID with your group</span><hr/></div>
+        <div class="mu-divider"><hr/><span>Share Session ID + PIN with your group only</span><hr/></div>
         <button class="mu-join-btn" id="mu-join-btn" onclick="muJoin()" disabled>📍 Join Session</button>
         <div class="mu-err" id="mu-err"></div>
       </div>
@@ -633,13 +639,12 @@
 
       <div id="mu-waiting">
         <div class="wb-spin"></div>
-        <div class="wb-text">Waiting for others. Share the <strong>Session ID</strong> above.</div>
+        <div class="wb-text">Waiting for others. Share the <strong>Session ID + PIN</strong> above.</div>
       </div>
 
       <div id="mu-map"></div>
 
       <div class="mu-panel">
-        <!-- Group members -->
         <div id="mu-members"></div>
 
         <div class="partner-card hidden" id="mu-partner-card">
@@ -657,10 +662,10 @@
           <div class="mu-stat"><div class="mu-stat-val" id="mu-st-theireta">—</div><div class="mu-stat-lbl">Their ETA</div></div>
         </div>
 
-        <!-- I'm here button -->
         <button id="mu-im-here-btn" onclick="muImHere()">✅ I'm Here! Notify the group</button>
 
         <label class="meetup-lbl">📍 Set meetup point</label>
+        <div class="host-lock hidden" id="mu-host-lock">🔒 Only the host can set the meetup point</div>
         <div class="quick-meet">
           <div class="qm-chip" onclick="muSetMeetup('Accra Mall, Accra')">🏬 Accra Mall</div>
           <div class="qm-chip" onclick="muSetMeetup('Kotoka Airport, Accra')">✈️ Airport</div>
@@ -694,15 +699,15 @@
         <button class="leave-btn" onclick="muLeave()">Leave Session</button>
       </div>
 
-      <!-- CHAT -->
       <div id="mu-chat" class="hidden">
         <div class="chat-header">
           <div class="chat-title">💬 Group Chat</div>
           <button class="chat-toggle" onclick="muToggleChat()">Hide ▲</button>
         </div>
         <div id="chat-messages"></div>
+        <div id="mu-typing"></div>
         <div class="chat-input-row">
-          <input id="chat-input" type="text" placeholder="Type a message…" maxlength="200" onkeydown="if(event.key==='Enter')muSendChat()"/>
+          <input id="chat-input" type="text" placeholder="Type a message…" maxlength="200" onkeydown="if(event.key==='Enter')muSendChat()" oninput="muTyping()"/>
           <button class="chat-send" onclick="muSendChat()">Send</button>
         </div>
       </div>
@@ -712,14 +717,33 @@
         <div class="cf-note">Live · OpenStreetMap · OSRM</div>
       </div>
     </div>
-
   </div>
-</div><!-- /card -->
+</div>
 
 <div class="toast" id="toast"></div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- Leaflet -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
+/* ── Firebase init ── */
+const firebaseConfig = {
+  apiKey: "AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",
+  authDomain: "citylinkgh-48ee0.firebaseapp.com",
+  databaseURL: "https://citylinkgh-48ee0-default-rtdb.firebaseio.com",
+  projectId: "citylinkgh-48ee0",
+  storageBucket: "citylinkgh-48ee0.firebasestorage.app",
+  messagingSenderId: "807811031269",
+  appId: "1:807811031269:web:167b22e23f49992136340c"
+};
+firebase.initializeApp(firebaseConfig);
+const _db = firebase.database();
+
+function _safeKey(k) { return k.replace(/[.#$\[\]]/g,'_'); }
+
 /* ═══════════════════════════════════════════
    GLOBALS & SHARED UTILS
 ═══════════════════════════════════════════ */
@@ -822,19 +846,20 @@ function switchTab(tab) {
 }
 
 /* ═══════════════════════════════════════════
-   STORAGE
+   STORAGE — Firebase Realtime Database
 ═══════════════════════════════════════════ */
-async function dbSet(key,val) {
-  try {
-    if(window.storage) await window.storage.set(key,JSON.stringify(val),true);
-    else localStorage.setItem('clgh_'+key,JSON.stringify(val));
-  } catch(e){}
+async function dbSet(key, val) {
+  try { await _db.ref('clgh/' + _safeKey(key)).set(val); } catch(e){ console.warn('dbSet',e); }
 }
 async function dbGet(key) {
-  try {
-    if(window.storage){ const r=await window.storage.get(key,true); return r?JSON.parse(r.value):null; }
-    const v=localStorage.getItem('clgh_'+key); return v?JSON.parse(v):null;
-  } catch(e){ return null; }
+  try { const snap = await _db.ref('clgh/' + _safeKey(key)).once('value'); return snap.val(); }
+  catch(e){ return null; }
+}
+function dbListen(key, cb) {
+  _db.ref('clgh/' + _safeKey(key)).on('value', snap => cb(snap.val()));
+}
+function dbUnlisten(key) {
+  _db.ref('clgh/' + _safeKey(key)).off();
 }
 
 /* ═══════════════════════════════════════════
@@ -873,14 +898,8 @@ function dAddFavPrompt() {
   showToast(`⭐ Saved "${name.trim()}" as favourite!`);
 }
 
-function dSaveFav() {
-  dAddFavPrompt();
-}
-
-function dDelFav(i) {
-  favs.splice(i,1); saveFavsLocal(); renderFavs();
-}
-
+function dSaveFav() { dAddFavPrompt(); }
+function dDelFav(i) { favs.splice(i,1); saveFavsLocal(); renderFavs(); }
 renderFavs();
 
 /* ═══════════════════════════════════════════
@@ -915,7 +934,6 @@ function renderHistory() {
 }
 
 function delHistory(i) { routeHistory.splice(i,1); localStorage.setItem('clgh_history',JSON.stringify(routeHistory)); renderHistory(); }
-
 renderHistory();
 
 /* ═══════════════════════════════════════════
@@ -988,7 +1006,6 @@ function dUpdatePos(pos){
     dUpdateLiveETA(); dCheckOffRoute(); dAdvanceStep();
     dMap.panTo([dUserCoords.lat,dUserCoords.lng],{animate:true,duration:0.4});
   }
-  // Push live location to shared store if sharing
   if(dLiveShareActive) dbSet(dLiveShareKey,{lat:dUserCoords.lat,lng:dUserCoords.lng,ts:Date.now()});
 }
 
@@ -1030,7 +1047,7 @@ async function dGetRoute(silent=false){
     dRoutePoly=route.geometry.coordinates.map(c=>[c[1],c[0]]);
     dRouteSteps=route.legs[0].steps; dCurrentStep=0;
     if(dRouteLayer) dMap.removeLayer(dRouteLayer);
-    dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
+dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
     if(!silent) dMap.fitBounds(dRouteLayer.getBounds(),{padding:[26,26],animate:true});
     const d=(route.distance/1000).toFixed(1), m=Math.round(route.duration/60);
     document.getElementById('d-rs-dist').textContent=dist(route.distance);
@@ -1155,7 +1172,6 @@ function dToggleSteps(){
 }
 function dSetStatus(msg,cls){ const el=document.getElementById('d-status'); el.textContent=msg; el.className=cls||''; }
 
-/* Live location sharing */
 function dToggleLiveShare(){
   if(dLiveShareActive){ dStopLiveShare(); return; }
   if(!dUserCoords){showToast('Detect your location first');return;}
@@ -1183,15 +1199,29 @@ function dCopyLiveLink(){
 const MU_COLORS=['#2563EB','#7C3AED','#059669','#EA580C','#DB2777'];
 const MU_DOTS=['blue','purple','green2','orange2','pink2'];
 const MU_SLOTS=['A','B','C','D','E'];
+const MU_EMOJIS=['👍','❤️','😂','😮','🙏','🔥'];
 
 let muMap, muMapInited=false;
 let muMarkers={}, muRouteLayerMe=null, muRouteLayerThem=null, muMeetLayer=null, muBetweenLayer=null;
 let muMyCoords=null, muMeetupCoords=null;
-let muMyName='', muRole='', muSessionId='', muGroupSize=2;
-let muWatchId=null, muPollTimer=null;
-let muMembers={}; // {role: {name,lat,lng,ts,online,speed}}
+let muMyName='', muRole='', muSessionId='', muPin='', muGroupSize=2;
+let muWatchId=null, muPollTimer=null, muTypingTimer=null;
+let muMembers={};
 let muChatVisible=true, muLastChatTs=0;
 const MU_POLL=3000;
+
+function muPlaySound(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.setValueAtTime(880,ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+0.2);
+    g.gain.setValueAtTime(0.3,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);
+    o.start(); o.stop(ctx.currentTime+0.3);
+  }catch(e){}
+}
 
 function muInitMap(){
   if(muMapInited) return; muMapInited=true;
@@ -1208,17 +1238,22 @@ function muMeetIcon(){
   return L.divIcon({className:'',html:`<div style="background:#D4A017;border:3px solid #fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 3px 14px rgba(212,160,23,0.5)">📍</div>`,iconSize:[34,34],iconAnchor:[17,17]});
 }
 
-/* Login inputs */
 const muNameEl=document.getElementById('mu-name');
 const muSessEl=document.getElementById('mu-session');
+const muPinEl =document.getElementById('mu-pin');
 const muJoinEl=document.getElementById('mu-join-btn');
-function muCheckJoin(){ muJoinEl.disabled=!(muNameEl.value.trim()&&muSessEl.value.trim()); }
+function muCheckJoin(){ muJoinEl.disabled=!(muNameEl.value.trim()&&muSessEl.value.trim()&&muPinEl.value.trim()); }
 muNameEl.addEventListener('input',muCheckJoin);
 muSessEl.addEventListener('input',()=>{ muSessEl.value=muSessEl.value.toUpperCase().replace(/[^A-Z0-9-]/g,''); muCheckJoin(); });
+muPinEl.addEventListener('input',muCheckJoin);
 
 function muGenSession(){
   const w=['ACCRA','KUMASI','TEMA','TAMALE','CAPE','SUNYANI','WA','HO','BOLGA'];
   muSessEl.value=`${w[Math.floor(Math.random()*w.length)]}-${Math.floor(10+Math.random()*89)}`;
+  muCheckJoin();
+}
+function muGenPin(){
+  muPinEl.value=Math.floor(1000+Math.random()*9000).toString();
   muCheckJoin();
 }
 
@@ -1227,33 +1262,47 @@ function muSetGroupSize(btn,n){
   btn.classList.add('active'); muGroupSize=n;
 }
 
+function muSK(){ return `sess_${muSessionId}_${btoa(muPin).replace(/[=+/]/g,'_')}`; }
+
 async function muJoin(){
-  muMyName=muNameEl.value.trim(); muSessionId=muSessEl.value.trim().toUpperCase();
-  if(!muMyName||!muSessionId) return;
+  muMyName=muNameEl.value.trim();
+  muSessionId=muSessEl.value.trim().toUpperCase();
+  muPin=muPinEl.value.trim();
+  if(!muMyName||!muSessionId||!muPin) return;
   muJoinEl.disabled=true; muJoinEl.innerHTML='<span class="spinner"></span> Joining…';
   document.getElementById('mu-err').textContent='';
 
-  // Find an open slot or rejoin
+  const sk=muSK();
   let assigned=null;
   for(const slot of MU_SLOTS.slice(0,muGroupSize)){
-    const existing=await dbGet(`session:${muSessionId}:${slot}`);
+    const existing=await dbGet(`${sk}:${slot}`);
     if(!existing||existing.name===muMyName){ assigned=slot; break; }
   }
   if(!assigned){
-    document.getElementById('mu-err').textContent='Session is full. Try a different Session ID or increase group size.';
+    document.getElementById('mu-err').textContent='Session is full. Try a different ID or increase group size.';
     muJoinEl.disabled=false; muJoinEl.textContent='📍 Join Session'; return;
   }
   muRole=assigned;
-  await dbSet(`session:${muSessionId}:${muRole}`,{name:muMyName,lat:null,lng:null,ts:Date.now(),online:true,speed:0});
-  await dbSet(`session:${muSessionId}:meta`,{groupSize:muGroupSize,ts:Date.now()});
+  const isHost=muRole==='A';
+  await dbSet(`${sk}:${muRole}`,{name:muMyName,lat:null,lng:null,ts:Date.now(),online:true,speed:0,isHost});
+  await dbSet(`${sk}:meta`,{groupSize:muGroupSize,ts:Date.now(),hostSlot:'A'});
 
   muInitMap();
   document.getElementById('mu-login').classList.remove('active');
   document.getElementById('mu-map-screen').classList.add('active');
   document.getElementById('mu-session-display').textContent=muSessionId;
+  muUpdateHostUI(isHost);
   setTimeout(()=>muMap.invalidateSize(),60);
   muStartGPS(); muStartPolling();
-  showToast(`👋 Welcome, ${muMyName}! Share the Session ID.`);
+  showToast(isHost?`👑 You are the host, ${muMyName}!`:`👋 Welcome, ${muMyName}!`);
+}
+
+function muUpdateHostUI(isHost){
+  document.getElementById('mu-host-lock').classList.toggle('hidden',isHost);
+  document.getElementById('mu-meetup-go').style.display=isHost?'':'none';
+  document.getElementById('mu-meetup-input').disabled=!isHost;
+  document.getElementById('mu-meetup-input').placeholder=isHost?'Any location in Ghana…':'Host will set the meetup point…';
+  document.querySelectorAll('.qm-chip').forEach(c=>c.style.pointerEvents=isHost?'auto':'none');
 }
 
 function muStartGPS(){
@@ -1265,24 +1314,58 @@ function muStartGPS(){
     const color=MU_COLORS[MU_SLOTS.indexOf(muRole)%MU_COLORS.length];
     if(!muMarkers[muRole]){ muMarkers[muRole]=L.marker([muMyCoords.lat,muMyCoords.lng],{icon:muMakeIcon(color,init),zIndexOffset:1000}).bindPopup(`<b>${muMyName}</b> (You)`).addTo(muMap); muMap.setView([muMyCoords.lat,muMyCoords.lng],14,{animate:true}); }
     else muMarkers[muRole].setLatLng([muMyCoords.lat,muMyCoords.lng]);
-    const existing=await dbGet(`session:${muSessionId}:${muRole}`);
-    await dbSet(`session:${muSessionId}:${muRole}`,{...(existing||{}),name:muMyName,lat:muMyCoords.lat,lng:muMyCoords.lng,ts:Date.now(),online:true,speed:spd});
+    const sk=muSK();
+    const existing=await dbGet(`${sk}:${muRole}`);
+    await dbSet(`${sk}:${muRole}`,{...(existing||{}),name:muMyName,lat:muMyCoords.lat,lng:muMyCoords.lng,ts:Date.now(),online:true,speed:spd,isHost:muRole==='A'});
     muUpdateUI();
   },err=>console.warn(err),{enableHighAccuracy:true,maximumAge:3000,timeout:12000});
 }
 
-function muStartPolling(){ muPoll(); muPollTimer=setInterval(muPoll,MU_POLL); }
+function muStartPolling(){
+  muPoll();
+  muPollTimer=setInterval(muPoll,MU_POLL);
+  const sk=muSK();
+
+  dbListen(`${sk}:chat`, data=>{
+    if(!data||!data.messages) return;
+    const latest=data.messages.length?data.messages[data.messages.length-1].ts:0;
+    if(latest>muLastChatTs){
+      const isNew=muLastChatTs>0;
+      muLastChatTs=latest;
+      muRenderChat(data.messages);
+      if(isNew){ muPlaySound(); }
+    }
+  });
+
+  dbListen(`${sk}:typing`, data=>{
+    if(!data) return;
+    const typers=Object.entries(data)
+      .filter(([role,d])=>role!==muRole&&d.active&&(Date.now()-d.ts<4000))
+      .map(([,d])=>d.name);
+    const el=document.getElementById('mu-typing');
+    if(typers.length){ el.innerHTML=`<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span> ${typers.join(', ')} ${typers.length>1?'are':'is'} typing`; }
+    else { el.textContent=''; }
+  });
+
+  dbListen(`${sk}:here`, data=>{
+    if(!data) return;
+    if(data.ts>(window._muLastHere||0)&&data.role!==muRole){
+      window._muLastHere=data.ts;
+      muPlaySound();
+      showToast(`✅ ${data.name} has arrived at the meetup!`,5000);
+    }
+  });
+}
 
 async function muPoll(){
-  // Read meta for group size
-  const meta=await dbGet(`session:${muSessionId}:meta`);
+  const sk=muSK();
+  const meta=await dbGet(`${sk}:meta`);
   const gSize=meta?meta.groupSize:muGroupSize;
-
-  // Read all slots
   const now=Date.now(); let anyOnline=false;
+
   for(const slot of MU_SLOTS.slice(0,gSize)){
     if(slot===muRole) continue;
-    const pd=await dbGet(`session:${muSessionId}:${slot}`);
+    const pd=await dbGet(`${sk}:${slot}`);
     const online=pd&&pd.ts&&(now-pd.ts<15000);
     if(online) anyOnline=true;
     muMembers[slot]=pd?{...pd,online}:{online:false};
@@ -1296,8 +1379,7 @@ async function muPoll(){
 
   document.getElementById('mu-waiting').classList.toggle('hidden',anyOnline);
 
-  // Shared meetup
-  const mdata=await dbGet(`session:${muSessionId}:meetup`);
+  const mdata=await dbGet(`${sk}:meetup`);
   if(mdata&&(!muMeetupCoords||mdata.ts>(window._muLastMeet||0))){
     window._muLastMeet=mdata.ts;
     document.getElementById('mu-meetup-input').value=mdata.label||'';
@@ -1305,17 +1387,7 @@ async function muPoll(){
     muRenderMeetMarker(); muCalcBothRoutes();
   }
 
-  // Chat messages
-  const chatData=await dbGet(`session:${muSessionId}:chat`);
-  if(chatData&&chatData.ts>muLastChatTs){ muLastChatTs=chatData.ts; muRenderChat(chatData.messages||[]); }
-
-  // I'm here notifications
-  const hereData=await dbGet(`session:${muSessionId}:here`);
-  if(hereData&&hereData.ts>(window._muLastHere||0)&&hereData.role!==muRole){
-    window._muLastHere=hereData.ts;
-    showToast(`✅ ${hereData.name} has arrived at the meetup!`,5000);
-  }
-
+  muMarkSeen();
   muUpdateUI();
   muRenderMemberPills(gSize);
 }
@@ -1327,42 +1399,37 @@ function muRenderMemberPills(gSize){
   const allSlots=[muRole,...MU_SLOTS.slice(0,gSize).filter(s=>s!==muRole)];
   allSlots.forEach(slot=>{
     const isMe=slot===muRole;
-    const data=isMe?{name:muMyName,online:true,speed:0}:(muMembers[slot]||{});
+    const data=isMe?{name:muMyName,online:true,speed:0,isHost:muRole==='A'}:(muMembers[slot]||{});
     if(!data.name&&!isMe) return;
     const dotClass=MU_DOTS[MU_SLOTS.indexOf(slot)%MU_DOTS.length];
     const color=MU_COLORS[MU_SLOTS.indexOf(slot)%MU_COLORS.length];
-    // header pill
+    const hostTag=data.isHost?'<span style="font-size:9px;margin-left:3px">👑</span>':'';
     const pill=document.createElement('div'); pill.className='user-pill';
-    pill.innerHTML=`<div class="u-dot ${dotClass}${data.online?' live':''}"></div><div class="u-name">${data.name||(isMe?muMyName:'Waiting…')}</div><div class="u-status">${isMe?'live':data.online?'live':'offline'}</div>`;
+    pill.innerHTML=`<div class="u-dot ${dotClass}${data.online?' live':''}"></div><div class="u-name">${data.name||(isMe?muMyName:'Waiting…')}${hostTag}</div><div class="u-status">${isMe?'live':data.online?'live':'offline'}</div>`;
     pillsEl.appendChild(pill);
-    // member badge
     const badge=document.createElement('div'); badge.className='member-badge';
-    badge.innerHTML=`<div class="member-dot" style="background:${color}"></div>${data.name||(isMe?muMyName:'Waiting…')}${data.online&&data.speed?` · ${data.speed}${useMetric?'km/h':'mph'}`:''}`;
+    badge.innerHTML=`<div class="member-dot" style="background:${color}"></div>${data.name||(isMe?muMyName:'Waiting…')}${hostTag}${data.online&&data.speed?` · ${data.speed}${useMetric?'km/h':'mph'}`:''}`;
     membersEl.appendChild(badge);
   });
-  // Show im-here if meetup is set and we have location
   if(muMeetupCoords&&muMyCoords) document.getElementById('mu-im-here-btn').classList.add('show');
 }
 
 function muUpdateUI(){
   if(!muMyCoords) return;
-  // Find first online partner for the summary card
   const partnerSlot=MU_SLOTS.find(s=>s!==muRole&&muMembers[s]&&muMembers[s].online&&muMembers[s].lat);
   if(partnerSlot){
     const pd=muMembers[partnerSlot];
     document.getElementById('mu-partner-card').classList.remove('hidden');
     document.getElementById('mu-pc-avatar').textContent=pd.name.slice(0,1).toUpperCase();
-    document.getElementById('mu-pc-name').textContent=pd.name;
+    document.getElementById('mu-pc-name').textContent=pd.name+(pd.isHost?' 👑':'');
     const age=Math.round((Date.now()-pd.ts)/1000);
     document.getElementById('mu-pc-meta').textContent=age<5?'Just updated':`${age}s ago`;
     const dBetween=haversine(muMyCoords.lat,muMyCoords.lng,pd.lat,pd.lng);
     document.getElementById('mu-pc-dist').textContent=dist(dBetween);
     document.getElementById('mu-st-between').textContent=distShort(dBetween);
     document.getElementById('mu-stats').classList.remove('hidden');
-    // Between line
     if(muBetweenLayer) muMap.removeLayer(muBetweenLayer);
     muBetweenLayer=L.polyline([[muMyCoords.lat,muMyCoords.lng],[pd.lat,pd.lng]],{color:'#9333ea',weight:2,opacity:.3,dashArray:'6 6'}).addTo(muMap);
-    // Their ETA
     if(muMeetupCoords){
       const theirDist=haversine(pd.lat,pd.lng,muMeetupCoords.lat,muMeetupCoords.lng);
       const theirSpd=pd.speed||30;
@@ -1370,7 +1437,6 @@ function muUpdateUI(){
       if(theirMins!==null) document.getElementById('mu-st-theireta').textContent=calcETA(theirMins);
     }
   }
-  // Fit all visible markers + meetup
   const pts=[];
   if(muMyCoords) pts.push([muMyCoords.lat,muMyCoords.lng]);
   MU_SLOTS.forEach(s=>{ if(muMembers[s]&&muMembers[s].online&&muMembers[s].lat) pts.push([muMembers[s].lat,muMembers[s].lng]); });
@@ -1381,11 +1447,12 @@ function muUpdateUI(){
 function muSetMeetup(p){ document.getElementById('mu-meetup-input').value=p; muCalcMeetup(); }
 
 async function muCalcMeetup(){
+  if(muRole!=='A'){showToast('Only the host can set the meetup point');return;}
   const q=document.getElementById('mu-meetup-input').value.trim(); if(!q) return;
   document.getElementById('mu-meetup-go').disabled=true; document.getElementById('mu-meetup-go').textContent='…';
   try{
     const c=await geocodePlace(q); muMeetupCoords={lat:c.lat,lng:c.lng};
-    await dbSet(`session:${muSessionId}:meetup`,{lat:c.lat,lng:c.lng,label:q,ts:Date.now()});
+    await dbSet(`${muSK()}:meetup`,{lat:c.lat,lng:c.lng,label:q,ts:Date.now()});
     window._muLastMeet=Date.now();
     muRenderMeetMarker(); await muCalcBothRoutes();
     showToast('📍 Meetup point set for everyone!');
@@ -1406,7 +1473,7 @@ async function muCalcBothRoutes(){
       const r=data.routes[0];
       if(muRouteLayerMe) muMap.removeLayer(muRouteLayerMe);
       muRouteLayerMe=L.polyline(r.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#2563EB',weight:4,opacity:.75,lineCap:'round',lineJoin:'round'}).addTo(muMap);
-      const d=(r.distance/1000).toFixed(1), m=Math.round(r.duration/60);
+      const m=Math.round(r.duration/60);
       const s=r.legs[0].steps[0];
       document.getElementById('mu-you-who').textContent=muMyName.toUpperCase()+' (YOU)';
       document.getElementById('mu-you-step').textContent=humanStep(s.maneuver.type,s.maneuver.modifier||'',false)+(s.name?` on ${s.name}`:'');
@@ -1416,7 +1483,6 @@ async function muCalcBothRoutes(){
       document.getElementById('mu-stats').classList.remove('hidden');
     }catch(e){}
   }
-  // Partner route
   const partnerSlot=MU_SLOTS.find(s=>s!==muRole&&muMembers[s]&&muMembers[s].online&&muMembers[s].lat);
   if(partnerSlot&&muMeetupCoords){
     try{
@@ -1425,7 +1491,7 @@ async function muCalcBothRoutes(){
       const r=data.routes[0];
       if(muRouteLayerThem) muMap.removeLayer(muRouteLayerThem);
       muRouteLayerThem=L.polyline(r.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#7C3AED',weight:4,opacity:.75,lineCap:'round',lineJoin:'round'}).addTo(muMap);
-      const d=(r.distance/1000).toFixed(1), m=Math.round(r.duration/60);
+      const m=Math.round(r.duration/60);
       const s=r.legs[0].steps[0];
       document.getElementById('mu-them-who').textContent=pd.name.toUpperCase()+"'S ROUTE";
       document.getElementById('mu-them-step').textContent=humanStep(s.maneuver.type,s.maneuver.modifier||'',false)+(s.name?` on ${s.name}`:'');
@@ -1440,59 +1506,124 @@ function muToggleChat(){
   muChatVisible=!muChatVisible;
   document.getElementById('chat-messages').style.display=muChatVisible?'':'none';
   document.querySelector('.chat-input-row').style.display=muChatVisible?'':'none';
+  document.getElementById('mu-typing').style.display=muChatVisible?'':'none';
   document.querySelector('.chat-toggle').textContent=muChatVisible?'Hide ▲':'Show ▼';
 }
 
+async function muTyping(){
+  const sk=muSK();
+  clearTimeout(muTypingTimer);
+  await dbSet(`${sk}:typing:${muRole}`,{name:muMyName,role:muRole,active:true,ts:Date.now()});
+  muTypingTimer=setTimeout(async()=>{
+    await dbSet(`${sk}:typing:${muRole}`,{name:muMyName,role:muRole,active:false,ts:Date.now()});
+  },3000);
+}
+
+async function muMarkSeen(){
+  const sk=muSK();
+  await dbSet(`${sk}:seen:${muRole}`,{name:muMyName,ts:Date.now()});
+}
+
 async function muSendChat(){
+  const sk=muSK();
   const inp=document.getElementById('chat-input');
   const msg=inp.value.trim(); if(!msg) return;
   inp.value='';
-  const existing=await dbGet(`session:${muSessionId}:chat`);
+  clearTimeout(muTypingTimer);
+  await dbSet(`${sk}:typing:${muRole}`,{name:muMyName,role:muRole,active:false,ts:Date.now()});
+  const existing=await dbGet(`${sk}:chat`);
   const msgs=(existing&&existing.messages)||[];
-  msgs.push({who:muMyName,role:muRole,text:msg,ts:Date.now()});
+  msgs.push({id:Date.now()+'_'+muRole, who:muMyName, role:muRole, text:msg, ts:Date.now(), reactions:{}, seenBy:[]});
   if(msgs.length>50) msgs.shift();
-  await dbSet(`session:${muSessionId}:chat`,{messages:msgs,ts:Date.now()});
+  await dbSet(`${sk}:chat`,{messages:msgs,ts:Date.now()});
   muLastChatTs=Date.now(); muRenderChat(msgs);
+}
+
+async function muReact(msgId, emoji){
+  const sk=muSK();
+  const existing=await dbGet(`${sk}:chat`);
+  if(!existing||!existing.messages) return;
+  const msgs=existing.messages.map(m=>{
+    if(m.id!==msgId) return m;
+    const reactions=m.reactions||{};
+    const key=`${emoji}`;
+    if(!reactions[key]) reactions[key]=[];
+    const idx=reactions[key].indexOf(muRole);
+    if(idx>-1) reactions[key].splice(idx,1);
+    else reactions[key].push(muRole);
+    if(!reactions[key].length) delete reactions[key];
+    return {...m,reactions};
+  });
+  await dbSet(`${sk}:chat`,{messages:msgs,ts:existing.ts});
+  muRenderChat(msgs);
 }
 
 function muRenderChat(msgs){
   const box=document.getElementById('chat-messages');
   document.getElementById('mu-chat').classList.remove('hidden');
+  const wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<40;
   box.innerHTML='';
+
   msgs.forEach(m=>{
-    if(m.system){ const d=document.createElement('div'); d.className='chat-system'; d.textContent=m.text; box.appendChild(d); return; }
+    if(m.system){
+      const d=document.createElement('div'); d.className='chat-system'; d.textContent=m.text; box.appendChild(d); return;
+    }
     const mine=m.role===muRole;
     const div=document.createElement('div'); div.className='chat-msg '+(mine?'mine':'theirs');
-    div.innerHTML=`${!mine?`<div class="msg-who">${m.who}</div>`:''}<div>${m.text}</div><div class="msg-time">${new Date(m.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+
+    const reactions=m.reactions||{};
+    const reactionsHtml=Object.entries(reactions).map(([emoji,roles])=>{
+      const iMine=roles.includes(muRole);
+      return `<button class="reaction-btn${iMine?' mine':''}" onclick="muReact('${m.id}','${emoji}')">${emoji}<span class="reaction-count">${roles.length}</span></button>`;
+    }).join('');
+
+    const seenBy=(m.seenBy||[]).filter(r=>r!==m.role);
+    const seenHtml=mine&&seenBy.length?`<div class="msg-seen">✓ Seen by ${seenBy.map(r=>muMembers[r]?.name||r).join(', ')}</div>`:'';
+
+    const pickerHtml=`<div class="msg-emoji-picker" id="picker-${m.id}">${MU_EMOJIS.map(e=>`<button class="ep-btn" onclick="muReact('${m.id}','${e}');document.getElementById('picker-${m.id}').classList.remove('show')">${e}</button>`).join('')}</div>`;
+
+    div.innerHTML=`
+      ${!mine?`<div class="msg-who">${m.who}</div>`:''}
+      <div>${m.text}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap">
+        <div class="msg-reactions">${reactionsHtml}</div>
+        <button class="react-toggle" onclick="document.getElementById('picker-${m.id}').classList.toggle('show')">😀</button>
+      </div>
+      ${pickerHtml}
+      <div class="msg-time">${new Date(m.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      ${seenHtml}`;
     box.appendChild(div);
   });
-  box.scrollTop=box.scrollHeight;
+  if(wasAtBottom) box.scrollTop=box.scrollHeight;
 }
 
-/* ── I'M HERE ── */
 async function muImHere(){
+  const sk=muSK();
   if(!muMeetupCoords||!muMyCoords) return;
-  await dbSet(`session:${muSessionId}:here`,{name:muMyName,role:muRole,ts:Date.now()});
+  await dbSet(`${sk}:here`,{name:muMyName,role:muRole,ts:Date.now()});
   window._muLastHere=Date.now();
-  // Add system message to chat
-  const existing=await dbGet(`session:${muSessionId}:chat`);
+  const existing=await dbGet(`${sk}:chat`);
   const msgs=(existing&&existing.messages)||[];
   msgs.push({system:true,text:`✅ ${muMyName} has arrived at the meetup!`,ts:Date.now()});
-  await dbSet(`session:${muSessionId}:chat`,{messages:msgs,ts:Date.now()});
+  await dbSet(`${sk}:chat`,{messages:msgs,ts:Date.now()});
   muLastChatTs=Date.now(); muRenderChat(msgs);
   showToast('✅ Notified your group!');
 }
 
-function muCopySession(){ navigator.clipboard.writeText(muSessionId).then(()=>showToast('📋 Session ID copied!')); }
+function muCopySession(){ navigator.clipboard.writeText(`Session: ${muSessionId} · PIN: ${muPin}`).then(()=>showToast('📋 Session ID + PIN copied!')); }
 
 async function muLeave(){
+  const sk=muSK();
   if(muWatchId) navigator.geolocation.clearWatch(muWatchId);
   if(muPollTimer) clearInterval(muPollTimer);
-  const k=`session:${muSessionId}:${muRole}`;
-  const d=await dbGet(k); if(d) await dbSet(k,{...d,online:false,ts:Date.now()-20000});
+  dbUnlisten(`${sk}:chat`);
+  dbUnlisten(`${sk}:typing`);
+  dbUnlisten(`${sk}:here`);
+  const d=await dbGet(`${sk}:${muRole}`);
+  if(d) await dbSet(`${sk}:${muRole}`,{...d,online:false,ts:Date.now()-20000});
   document.getElementById('mu-map-screen').classList.remove('active');
   document.getElementById('mu-login').classList.add('active');
-  muMyCoords=null; muMeetupCoords=null; muMembers={};
+  muMyCoords=null; muMeetupCoords=null; muMembers={}; muPin='';
   Object.values(muMarkers).forEach(m=>{ try{muMap.removeLayer(m);}catch(e){} }); muMarkers={};
   muMap=null; muMapInited=false; muLastChatTs=0;
   document.getElementById('mu-chat').classList.add('hidden');

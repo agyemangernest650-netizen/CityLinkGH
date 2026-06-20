@@ -2,19 +2,31 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<link rel="canonical" href="https://citylinkgh.vercel.app/buy.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Buy and sell locally in Ghana. Post items for sale, find deals near you on CityLinkGH Marketplace.">
+<meta name="description" content="Shop local Ghanaian businesses on CityLinkGH. Browse stores, products and services — order directly via WhatsApp or call.">
+<meta name="keywords" content="Ghana stores, shop local Ghana, CityLinkGH, buy and sell Ghana, Accra, Kumasi">
+<meta name="author" content="CityLinkGH">
+<link rel="canonical" href="https://citylinkgh.vercel.app/buy.html">
 <meta name="theme-color" content="#0A0F0D">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Buy & Sell Marketplace — CityLinkGH">
-<meta property="og:description" content="Ghana's local buy and sell marketplace. Find phones, furniture, cars and more.">
+<meta property="og:url" content="https://citylinkgh.vercel.app/buy.html">
+<meta property="og:title" content="Shop Local — CityLinkGH Store Directory">
+<meta property="og:description" content="Browse Ghanaian stores and order products directly via WhatsApp or call.">
 <meta property="og:image" content="https://citylinkgh.vercel.app/og-image.jpg">
+<meta property="og:site_name" content="CityLinkGH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shop Local — CityLinkGH Store Directory">
+<meta name="twitter:description" content="Browse Ghanaian stores and order products directly via WhatsApp or call.">
+<meta name="twitter:image" content="https://citylinkgh.vercel.app/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
-<title>CityLinkGH — Buy &amp; Sell Marketplace</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+<title>CityLinkGH — Shop Local Stores</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <link rel="stylesheet" href="buy.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Shop Local — CityLinkGH","url":"https://citylinkgh.vercel.app/buy.html","description":"Browse Ghanaian stores and order products directly via WhatsApp or call.","isPartOf":{"@type":"WebSite","name":"CityLinkGH","url":"https://citylinkgh.vercel.app"}}
+</script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -26,7 +38,7 @@
   </div>
   <div class="hdr-right">
     <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙</button>
-    <button class="hdr-post-btn" onclick="openModal()">+ Post Item</button>
+    <button class="hdr-post-btn" onclick="goRegister()">+ List Store</button>
     <button class="hamburger" id="hamburger" onclick="toggleDrawer()">
       <span></span><span></span><span></span>
     </button>
@@ -39,19 +51,19 @@
     <a href="home.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
-    <a href="buy.html" class="drawer-link active"><span class="di">🛍️</span> Buy &amp; Sell</a>
-    <a href="directions.html" class="drawer-link"><span class="di">🗺️</span>Navigation</a>
+    <a href="buy.html" class="drawer-link active"><span class="di">🛍️</span> Shop Local</a>
     <a href="news.html" class="drawer-link"><span class="di">📰</span> News &amp; Guides</a>
     <div class="drawer-section">List Something</div>
     <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
-    <div class="drawer-link" onclick="openModal();toggleDrawer()" style="cursor:pointer;"><span class="di">🛍️</span> Post a Listing</div>
+    <div class="drawer-link" onclick="goRegister();toggleDrawer()" style="cursor:pointer;"><span class="di">🛍️</span> Open a Store</div>
     <div class="drawer-section">Account</div>
-    <a href="saved-items.html" class="drawer-link"><span class="di">🔖</span> Saved Items <span id="drawerSavedCount" style="display:none;margin-left:auto;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;"></span></a>
+    <div class="drawer-link" id="drawerMyStore" onclick="openDashboard();toggleDrawer()" style="cursor:pointer;display:none;"><span class="di">⚙️</span> My Store</div>
     <a href="profile.html" class="drawer-link"><span class="di">👤</span> My Profile</a>
     <a href="about.html" class="drawer-link"><span class="di">ℹ️</span> About</a>
   </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-kente" aria-hidden="true">
     <div class="kente-stripe k1"></div>
@@ -60,20 +72,20 @@
     <div class="kente-stripe k4"></div>
   </div>
   <div class="greeting-bar">
-    <div class="greeting-text"><span id="greetEmoji">🛍️</span><span id="greetMsg"><strong>Welcome</strong> — buy and sell in your community</span></div>
+    <div class="greeting-text"><span id="greetEmoji">🛍️</span><span id="greetMsg"><strong>Welcome</strong> — shop local Ghanaian stores</span></div>
     <div class="live-viewers"><div class="live-dot"></div><span id="liveCount">—</span> browsing</div>
   </div>
   <div class="hero-inner">
     <div class="hero-flag"><div class="f-red"></div><div class="f-gold"></div><div class="f-green"></div></div>
-    <p class="hero-eyebrow">Ghana's Local Marketplace</p>
-    <h1 class="hero-title">Buy &amp; <em>Sell</em><br>in Your Community</h1>
-    <p class="hero-sub">Find great deals near you or turn what you no longer need into cash — WhatsApp &amp; call right on every listing.</p>
+    <p class="hero-eyebrow">Ghana's Local Business Marketplace</p>
+    <h1 class="hero-title">Shop Local. <em>Support Ghana.</em></h1>
+    <p class="hero-sub">Browse products and services from verified businesses near you — then order directly via WhatsApp or call. No middleman, no fees.</p>
     <div class="search-box">
       <div class="search-icon">🔍</div>
       <div class="autocomplete-wrap">
-        <input type="text" id="search-input" autocomplete="off" placeholder="Search items, brand, location…"
+        <input type="text" id="search-input" autocomplete="off" placeholder="Search stores, products…"
           onfocus="showSearchHistory()" onblur="setTimeout(hideSearchHistory,200)"
-          onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);}">
+          onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value);refresh();}">
       </div>
       <button class="search-voice" id="voiceBtn" onclick="startVoiceSearch()">🎙️</button>
       <button class="search-go" onclick="commitSearch()">Search</button>
@@ -86,25 +98,24 @@
       <a href="jobs.html" class="hql">💼 Jobs</a>
       <a href="room.html" class="hql">🏠 Rooms</a>
       <a href="home.html" class="hql">🏪 Businesses</a>
-      <a href="directions.html" class="hql">🗺️ Navigation</a>
-      <button class="hql hql-accent" onclick="openModal()">＋ Post Free</button>
+      <button class="hql hql-accent" onclick="goRegister()">＋ Open a Store</button>
     </div>
   </div>
   <div class="stats-strip">
-    <div class="stat-pill"><span class="stat-num" id="statTotal">—</span><span class="stat-lbl">Listings</span></div>
+    <div class="stat-pill"><span class="stat-num" id="statStores">—</span><span class="stat-lbl">Stores</span></div>
     <div class="stat-divider"></div>
-    <div class="stat-pill"><span class="stat-num" id="statForSale">—</span><span class="stat-lbl">For Sale</span></div>
+    <div class="stat-pill"><span class="stat-num" id="statProducts">—</span><span class="stat-lbl">Products</span></div>
     <div class="stat-divider"></div>
-    <div class="stat-pill"><span class="stat-num" id="statWanted">—</span><span class="stat-lbl">Wanted</span></div>
+    <div class="stat-pill"><span class="stat-num" id="statVerified">—</span><span class="stat-lbl">Verified</span></div>
     <div class="stat-divider"></div>
-    <div class="stat-pill"><span class="stat-num" id="statNew">—</span><span class="stat-lbl">This Week</span></div>
+    <div class="stat-pill"><span class="stat-num" id="statNew">—</span><span class="stat-lbl">New This Week</span></div>
   </div>
 </section>
 
-<!-- NEW LISTINGS BANNER -->
+<!-- NEW STORES BANNER -->
 <div class="hot-banner" id="hotBanner" style="display:none;">
-  <div class="hot-inner"><span style="font-size:22px;">🔥</span><div><div class="hot-num" id="hotCount">—</div><div class="hot-lbl">New This Week</div></div></div>
-  <button class="hot-btn" onclick="filterNewItems()">View New →</button>
+  <div class="hot-inner"><span style="font-size:22px;">🔥</span><div><div class="hot-num" id="hotCount">—</div><div class="hot-lbl">New Stores This Week</div></div></div>
+  <button class="hot-btn" onclick="filterNewStores()">View New →</button>
 </div>
 
 <!-- TRENDING SEARCHES -->
@@ -115,83 +126,70 @@
   <div class="trend-track" id="trendTrack"></div>
 </div>
 
-<!-- NEW THIS WEEK -->
-<div class="section-block" id="newWeekSection" style="display:none;">
+<!-- FEATURED STORES -->
+<div class="section-block" id="featuredSection" style="display:none;">
+  <div class="section-hd">
+    <div class="section-title"><span class="section-dot gold"></span>⭐ Featured Stores</div>
+    <button class="section-action" onclick="filterFeaturedStores()">See all →</button>
+  </div>
+  <div class="featured-track" id="featuredTrack"></div>
+</div>
+
+<!-- NEW STORES CAROUSEL -->
+<div class="section-block" id="newStoreSection" style="display:none;">
   <div class="section-hd">
     <div class="section-title"><span class="section-dot purple"></span>🆕 New This Week</div>
-    <button class="section-action" onclick="filterNewItems()">See all →</button>
+    <button class="section-action" onclick="filterNewStores()">See all →</button>
   </div>
   <div class="new-week-track" id="newWeekTrack"></div>
 </div>
 
-<!-- PRICE DROPS / DEALS -->
-<div class="section-block" id="dealsSection" style="display:none;">
-  <div class="section-hd">
-    <div class="section-title"><span class="section-dot gold"></span>💰 Best Value</div>
-    <button class="section-action" onclick="sortByPriceLow()">See all →</button>
-  </div>
-  <div class="deals-track" id="dealsTrack"></div>
-</div>
-
-<!-- TYPE + CATEGORY FILTERS -->
+<!-- CATEGORY FILTERS -->
 <div class="filter-section">
-  <div class="filter-scroll" id="typeFilters">
-    <div class="fchip active" data-type="all" onclick="filterType(this)">🛍️ All</div>
-    <div class="fchip" data-type="sell" onclick="filterType(this)">💰 For Sale</div>
-    <div class="fchip" data-type="buy" onclick="filterType(this)">🔍 Wanted</div>
-    <div class="fchip" id="savedChip" onclick="filterSaved(this)">🔖 Saved</div>
-  </div>
-  <div class="filter-scroll" id="categoryFilters" style="margin-top:8px;">
-    <div class="fchip active" data-cat="all" onclick="filterCat(this)">📦 All Categories</div>
+  <div class="filter-scroll" id="categoryFilters">
+    <div class="fchip active" data-cat="all" onclick="filterCat(this)">🛍️ All Categories</div>
     <div class="fchip" data-cat="Electronics" onclick="filterCat(this)">📱 Electronics</div>
-    <div class="fchip" data-cat="Furniture" onclick="filterCat(this)">🛋 Furniture</div>
-    <div class="fchip" data-cat="Clothing" onclick="filterCat(this)">👕 Clothing</div>
-    <div class="fchip" data-cat="Vehicles" onclick="filterCat(this)">🚗 Vehicles</div>
-    <div class="fchip" data-cat="Home & Garden" onclick="filterCat(this)">🏡 Home &amp; Garden</div>
-    <div class="fchip" data-cat="Sports" onclick="filterCat(this)">⚽ Sports</div>
-    <div class="fchip" data-cat="Books" onclick="filterCat(this)">📚 Books</div>
-    <div class="fchip" data-cat="Toys" onclick="filterCat(this)">🧸 Toys</div>
+    <div class="fchip" data-cat="Fashion & Clothing" onclick="filterCat(this)">👗 Fashion</div>
+    <div class="fchip" data-cat="Food & Beverages" onclick="filterCat(this)">🍔 Food</div>
+    <div class="fchip" data-cat="Health & Beauty" onclick="filterCat(this)">💅 Health &amp; Beauty</div>
+    <div class="fchip" data-cat="Home & Furniture" onclick="filterCat(this)">🛋 Home</div>
+    <div class="fchip" data-cat="Automotive" onclick="filterCat(this)">🚗 Automotive</div>
+    <div class="fchip" data-cat="Education & Tutoring" onclick="filterCat(this)">📚 Education</div>
+    <div class="fchip" data-cat="Hair & Barbershop" onclick="filterCat(this)">💈 Hair</div>
+    <div class="fchip" data-cat="Tailoring & Sewing" onclick="filterCat(this)">✂️ Tailoring</div>
+    <div class="fchip" data-cat="Repairs & Maintenance" onclick="filterCat(this)">🔧 Repairs</div>
+    <div class="fchip" data-cat="Professional Services" onclick="filterCat(this)">💼 Professional</div>
     <div class="fchip" data-cat="Other" onclick="filterCat(this)">🔹 Other</div>
-  </div>
-  <!-- PRICE RANGE -->
-  <div class="price-range-wrap">
-    <div class="price-range-label">Price Range (GHS)</div>
-    <div class="price-row">
-      <input class="price-input" type="number" id="priceMin" placeholder="Min" oninput="refresh()">
-      <span class="price-sep">—</span>
-      <input class="price-input" type="number" id="priceMax" placeholder="Max" oninput="refresh()">
-    </div>
   </div>
 </div>
 
 <!-- SORT ROW -->
 <div class="sort-row">
-  <div class="sort-lbl" id="listing-count">Loading…</div>
-  <select class="sort-sel" id="sort-select">
+  <div class="sort-lbl" id="store-count">Loading…</div>
+  <select class="sort-sel" id="sort-select" onchange="refresh()">
     <option value="newest">Newest First</option>
-    <option value="price_asc">Price: Low to High</option>
-    <option value="price_desc">Price: High to Low</option>
-    <option value="saved">❤️ Saved Only</option>
+    <option value="verified">✓ Verified First</option>
+    <option value="products">Most Products</option>
   </select>
 </div>
 
-<!-- POST BUTTON -->
+<!-- POST BUTTONS -->
 <div class="post-btn-wrap">
-  <button class="post-item-btn" onclick="openModal()">🛍️ Post Your Item — Free or Boost</button>
+  <button class="post-item-btn" onclick="goRegister()">🛍️ Open Your Store — Free to Start</button>
   <button class="view-plans-btn" onclick="openPricingModal()">View Plans &amp; Pricing</button>
 </div>
 
-<!-- LISTINGS GRID -->
+<!-- STORES GRID -->
 <div class="container">
-  <div id="listings-grid" class="items-grid">
+  <div id="stores-grid" class="stores-grid">
     <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skeleton" style="height:11px;width:30%;margin-bottom:10px;"></div><div class="skeleton" style="height:18px;width:85%;margin-bottom:8px;"></div><div class="skeleton" style="height:13px;width:60%;"></div></div></div>
     <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skeleton" style="height:11px;width:35%;margin-bottom:10px;"></div><div class="skeleton" style="height:18px;width:75%;margin-bottom:8px;"></div><div class="skeleton" style="height:13px;width:55%;"></div></div></div>
   </div>
   <div id="empty-state" class="empty-state" style="display:none;">
     <div class="es-ico">🛍️</div>
-    <h3>No listings found</h3>
-    <p>Try a different filter, or be the first to post!</p>
-    <button class="es-btn" onclick="openModal()">+ Post a Listing</button>
+    <h3>No stores found</h3>
+    <p>Try a different filter, or be the first to open a store!</p>
+    <button class="es-btn" onclick="goRegister()">+ Open a Store</button>
   </div>
   <div class="scroll-sentinel" id="scrollSentinel"><div class="spinner"></div></div>
 </div>
@@ -202,10 +200,10 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">CityLink<span>GH</span></div>
-      <p>Ghana's most trusted local marketplace. Buy, sell, and find great deals in your community.</p>
+      <p>Ghana's most trusted local business directory. Shop local stores and order directly via WhatsApp or call.</p>
     </div>
-    <div class="footer-col"><h4>Directory</h4><ul><li><a href="home.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Buy &amp; Sell</a></li><li><a href="directions.html">Navigation</a></li></ul></div>
-    <div class="footer-col"><h4>List With Us</h4><ul><li><a href="submit.html">List a Business</a></li><li><a href="jobs.html">Post a Job</a></li><li><a href="buy.html">Sell Something</a></li></ul></div>
+    <div class="footer-col"><h4>Directory</h4><ul><li><a href="home.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Shop Local</a></li></ul></div>
+    <div class="footer-col"><h4>List With Us</h4><ul><li><a href="submit.html">List a Business</a></li><li><a href="jobs.html">Post a Job</a></li><li><a href="buy.html" onclick="goRegister();return false;">Open a Store</a></li></ul></div>
     <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li></ul></div>
   </div>
   <div class="footer-bottom"><span>© 2026 CityLinkGH · All Rights Reserved</span><div class="footer-flag">🇬🇭</div></div>
@@ -214,153 +212,205 @@
 <nav class="bottom-nav">
   <a href="home.html" class="bn-item"><span class="bn-ico">🏪</span><span class="bn-lbl">Home</span></a>
   <a href="jobs.html" class="bn-item"><span class="bn-ico">💼</span><span class="bn-lbl">Jobs</span></a>
-  <button class="bn-item bn-center" onclick="openModal()"><span class="bn-plus">＋</span></button>
+  <button class="bn-item bn-center" onclick="goRegister()"><span class="bn-plus">＋</span></button>
   <a href="room.html" class="bn-item"><span class="bn-ico">🏠</span><span class="bn-lbl">Rooms</span></a>
-<a href="directions.html" class="bn-item"><span class="bn-ico">🗺️</span><span class="bn-lbl">Navigation</span></a>
-  <a href="buy.html" class="bn-item active"><span class="bn-ico">🛍️</span><span class="bn-lbl">Buy&amp;Sell</span></a>
+  <a href="buy.html" class="bn-item active"><span class="bn-ico">🛍️</span><span class="bn-lbl">Shop</span></a>
 </nav>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<!-- ══ POST MODAL ══ -->
-<div class="modal-overlay" id="post-modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-title">🛍️ Post a Listing</div><button class="modal-close" onclick="closeModal()">✕</button></div>
-
-    <div style="margin-bottom:14px;">
-      <div class="field-label" style="margin-bottom:8px;">Choose Listing Plan</div>
-      <div class="plan-opts">
-        <div class="plan-opt sel" id="pick-basic" data-plan="basic" onclick="selectPlan('basic')"><div class="po-ico">📋</div><div class="po-name">Basic</div><div class="po-price">Free · 1 photo</div></div>
-        <div class="plan-opt" id="pick-standard" data-plan="standard" onclick="selectPlan('standard')"><div class="po-ico">⭐</div><div class="po-name">Standard</div><div class="po-price">GHS 10 · 5 photos</div></div>
-        <div class="plan-opt" id="pick-premium" data-plan="premium" onclick="selectPlan('premium')"><div class="po-ico">🌟</div><div class="po-name">Premium</div><div class="po-price">GHS 20 · Top listing</div></div>
-      </div>
-      <div class="plan-tip" id="plan-photo-tip">Up to 1 photo · 30 days live</div>
-    </div>
-
-    <div class="payment-note" id="payment-note">
-      <span style="font-size:18px;">💳</span>
-      <div><strong id="payment-plan-name">Standard</strong> plan — <span id="payment-plan-price">GHS 10 via Paystack</span><br>
-      <span style="color:var(--gray);font-size:12px;">A secure Paystack window opens when you click "Post Listing".</span></div>
-    </div>
-
-    <div class="r2">
-      <div class="field"><label>I want to…</label>
-        <select id="f-type"><option value="sell">Sell something</option><option value="buy">Buy / Wanted</option></select>
-      </div>
-      <div class="field"><label>Category</label>
-        <select id="f-category"><option>Electronics</option><option>Furniture</option><option>Clothing</option><option>Vehicles</option><option>Home &amp; Garden</option><option>Sports</option><option>Books</option><option>Toys</option><option>Other</option></select>
-      </div>
-    </div>
-    <div class="field"><label>Title *</label><input type="text" id="f-title" placeholder="e.g. Samsung TV 55 inch – like new" maxlength="100"></div>
-    <div class="field"><label>Description *</label><textarea id="f-desc" placeholder="Describe the item, condition, reason for selling…" maxlength="500"></textarea><div class="char-counter" id="desc-counter">0/500</div></div>
-    <div class="r2">
-      <div class="field"><label>Price (GHS)</label><input type="number" id="f-price" placeholder="Leave blank = Negotiable" min="0" step="0.01"></div>
-      <div class="field"><label>Condition</label><select id="f-condition"><option value="">Select…</option><option>Brand New</option><option>Like New</option><option>Good</option><option>Fair</option><option>For Parts</option></select></div>
-    </div>
-    <div class="r2">
-      <div class="field"><label>Phone / WhatsApp *</label><input type="tel" id="f-phone" placeholder="024 000 0000"></div>
-      <div class="field"><label>Email <span style="font-weight:400;text-transform:none;">(paid plans)</span></label><input type="email" id="f-email" placeholder="you@email.com"></div>
-    </div>
-    <div class="field"><label>Location</label><input type="text" id="f-location" placeholder="e.g. Accra, Kumasi, Takoradi"></div>
-
-    <div class="field">
-      <label>Photo(s)</label>
-      <div class="img-upload-grid" id="imgUpGrid"></div>
-      <input type="file" id="f-image" accept="image/*" style="display:none;">
-      <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
-      <div class="ustat" id="ustat"></div>
-    </div>
-    <p id="form-error" style="color:var(--red);font-size:13px;margin-bottom:8px;min-height:16px;"></p>
-    <button class="submit-btn" id="submit-btn" onclick="submitListing()">🛍️ <span id="submitTxt">Post Listing</span></button>
-    <p style="font-size:11px;color:var(--gray);text-align:center;margin-top:10px;">📱 SMS confirmation sent to your number after posting.</p>
-    <div style="height:10px;"></div>
-  </div>
-</div>
-
-<!-- ══ DETAIL MODAL ══ -->
+<!-- ══ STORE DETAIL MODAL ══ -->
 <div class="modal-overlay" id="detail-modal" onclick="if(event.target===this)closeDetailModal()">
   <div class="modal" id="detail-body" style="padding:0;border-radius:22px 22px 0 0;overflow:hidden;"></div>
+</div>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="modal-overlay" id="auth-modal" onclick="if(event.target===this)closeAuthModal()">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-hd"><div class="modal-title" id="authModalTitle">Sign In to Open a Store</div><button class="modal-close" onclick="closeAuthModal()">✕</button></div>
+    <div class="field"><label>Email</label><input type="email" id="authEmail" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="authPwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitAuth()"></div>
+    <p id="authErr" style="color:var(--red);font-size:12px;margin-bottom:8px;min-height:14px;"></p>
+    <button class="submit-btn" onclick="submitAuth()" id="authSubmitBtn">Sign In →</button>
+    <div style="text-align:center;font-size:13px;color:var(--gray);margin-top:14px;">
+      <span id="authSwitchText">New here?</span>
+      <span onclick="toggleAuthMode()" style="color:var(--purple);font-weight:700;cursor:pointer;" id="authSwitchLink">Create account</span>
+    </div>
+  </div>
 </div>
 
 <!-- ══ PRICING MODAL ══ -->
 <div class="modal-overlay" id="pricing-modal" onclick="if(event.target===this)closePricingModal()">
   <div class="modal">
-    <div class="modal-hd"><div class="modal-title">Listing Plans &amp; Pricing</div><button class="modal-close" onclick="closePricingModal()">✕</button></div>
-    <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">More visibility = more enquiries. Payments via Paystack · SMS confirmation included.</p>
+    <div class="modal-hd"><div class="modal-title">Store Plans &amp; Pricing</div><button class="modal-close" onclick="closePricingModal()">✕</button></div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">More products and visibility as you grow. Payments via Paystack Mobile Money.</p>
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="pricing-plan-name">Basic</div>
         <div class="pricing-plan-price">Free <span>forever</span></div>
-        <ul class="pricing-features"><li>1 photo</li><li>30 days live</li><li>Standard listing card</li><li>WhatsApp &amp; Call button</li><li class="no">No badge</li><li class="no">Not pinned</li></ul>
-        <button class="pricing-cta" onclick="choosePlanAndPost('basic')">Post Free</button>
+        <ul class="pricing-features"><li>Up to 5 products</li><li>Standard listing</li><li>WhatsApp &amp; call links</li><li class="no">No analytics</li><li class="no">Not featured</li></ul>
+        <button class="pricing-cta" onclick="choosePlanAndRegister('basic')">Start Free</button>
       </div>
       <div class="pricing-card standard">
-        <div class="pricing-plan-name">Standard</div>
-        <div class="pricing-plan-price">GHS 10 <span>per listing</span></div>
-        <ul class="pricing-features"><li>5 photos</li><li>60 days live</li><li>Purple badge + border</li><li>SMS confirmation</li><li>Priority in search</li></ul>
-        <button class="pricing-cta standard" onclick="choosePlanAndPost('standard')">Choose Standard</button>
+        <div class="pricing-plan-name">Pro</div>
+        <div class="pricing-plan-price">GHS 50 <span>per month</span></div>
+        <ul class="pricing-features"><li>Up to 20 products</li><li>Priority placement</li><li>Monthly analytics</li><li>Purple badge + border</li></ul>
+        <button class="pricing-cta standard" onclick="choosePlanAndRegister('pro')">Choose Pro</button>
       </div>
       <div class="pricing-card premium">
         <div class="rec-badge">⭐ Most Popular</div>
-        <div class="pricing-plan-name">Premium</div>
-        <div class="pricing-plan-price">GHS 20 <span>per listing</span></div>
-        <ul class="pricing-features"><li>10 photos</li><li>90 days live</li><li>Pinned to top</li><li>⭐ Featured ribbon</li><li>SMS buyer alerts</li><li>Bold title</li></ul>
-        <button class="pricing-cta premium" onclick="choosePlanAndPost('premium')">Choose Premium</button>
+        <div class="pricing-plan-name">Featured</div>
+        <div class="pricing-plan-price">GHS 120 <span>per month</span></div>
+        <ul class="pricing-features"><li>Unlimited products</li><li>Homepage spotlight</li><li>⭐ Featured badge</li><li>Priority support</li></ul>
+        <button class="pricing-cta premium" onclick="choosePlanAndRegister('featured')">Choose Featured</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ BUMP MODAL ══ -->
-<div class="modal-overlay" id="bump-modal" onclick="if(event.target===this)closeBumpModal()">
-  <div class="modal" style="max-width:420px;">
-    <div class="modal-hd"><div class="modal-title">⬆️ Bump Listing</div><button class="modal-close" onclick="closeBumpModal()">✕</button></div>
-    <input type="hidden" id="bump-id">
-    <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">Move <strong id="bump-title"></strong> to the top of the grid for 30 days for <strong>GHS 10</strong> via Paystack.</p>
-    <div class="field"><label>Your Email (for Paystack receipt)</label><input type="email" id="bump-email" placeholder="you@email.com"></div>
-    <button class="submit-btn" onclick="payBump()">Pay GHS 10 &amp; Bump to Top</button>
+<!-- ══ REGISTER STORE MODAL (3-step wizard) ══ -->
+<div class="modal-overlay" id="register-modal" onclick="if(event.target===this)closeRegisterModal()">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🛍️ Open Your Store</div><button class="modal-close" onclick="closeRegisterModal()">✕</button></div>
+
+    <div class="reg-steps">
+      <div class="reg-step active" id="regStep0"><div class="rs-num">1</div><div class="rs-lbl">Business Info</div></div>
+      <div class="reg-step-line" id="regLine0"></div>
+      <div class="reg-step" id="regStep1"><div class="rs-num">2</div><div class="rs-lbl">Products</div></div>
+      <div class="reg-step-line" id="regLine1"></div>
+      <div class="reg-step" id="regStep2"><div class="rs-num">3</div><div class="rs-lbl">Plan &amp; Launch</div></div>
+    </div>
+
+    <!-- STEP 0: BUSINESS INFO -->
+    <div id="regPanel0" class="reg-panel">
+      <div class="field">
+        <label>Store Logo (optional)</label>
+        <div class="logo-upload-wrap" id="logoUploadWrap" onclick="document.getElementById('logoFileInput').click()">
+          <span id="logoUploadIcon">📷</span>
+          <span id="logoUploadTxt" style="font-size:11px;font-weight:700;">Upload</span>
+        </div>
+        <input type="file" id="logoFileInput" accept="image/*" style="display:none;" onchange="uploadLogo(this)">
+      </div>
+      <div class="field"><label>Business Name *</label><input type="text" id="regName" placeholder="e.g. Kofi Electronics"></div>
+      <div class="field"><label>Category *</label>
+        <select id="regCategory"><option value="">Select a category</option></select>
+      </div>
+      <div class="r2">
+        <div class="field"><label>Owner Name</label><input type="text" id="regOwner" placeholder="Your full name"></div>
+        <div class="field"><label>Location</label><input type="text" id="regLocation" placeholder="City, Area"></div>
+      </div>
+      <div class="r2">
+        <div class="field"><label>Phone Number</label><input type="tel" id="regPhone" placeholder="024 000 0000"></div>
+        <div class="field"><label>WhatsApp Number</label><input type="tel" id="regWhatsapp" placeholder="024 000 0000"></div>
+      </div>
+      <div class="field"><label>Business Description</label><textarea id="regDesc" placeholder="What makes your business special?"></textarea></div>
+      <button class="submit-btn" onclick="regNextStep(0)">Next: Add Products →</button>
+    </div>
+
+    <!-- STEP 1: PRODUCTS -->
+    <div id="regPanel1" class="reg-panel" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div class="field-label" style="margin:0;">Add products &amp; services</div>
+        <button class="reg-add-product-btn" onclick="addProductRow()">+ Add Another</button>
+      </div>
+      <div id="productRows"></div>
+      <div style="display:flex;gap:10px;margin-top:6px;">
+        <button class="submit-btn-outline" onclick="regPrevStep(1)">← Back</button>
+        <button class="submit-btn" onclick="regNextStep(1)" style="flex:2;">Next: Choose Plan →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: PLAN & LAUNCH -->
+    <div id="regPanel2" class="reg-panel" style="display:none;">
+      <div class="field-label" style="margin-bottom:10px;">Choose your plan</div>
+      <div class="reg-plan-opts" id="regPlanOpts">
+        <div class="reg-plan-opt sel" data-plan="basic" data-price="0" onclick="selectRegPlan('basic')">
+          <div class="rpo-top"><div class="rpo-name">Basic</div><div class="rpo-price">Free</div></div>
+          <div class="rpo-desc">Up to 5 products, standard listing</div>
+        </div>
+        <div class="reg-plan-opt" data-plan="pro" data-price="50" onclick="selectRegPlan('pro')">
+          <div class="rpo-top"><div class="rpo-name">Pro</div><div class="rpo-price">GHS 50/mo</div></div>
+          <div class="rpo-desc">Up to 20 products, priority placement, analytics</div>
+        </div>
+        <div class="reg-plan-opt" data-plan="featured" data-price="120" onclick="selectRegPlan('featured')">
+          <div class="rpo-top"><div class="rpo-name">Featured ⭐</div><div class="rpo-price">GHS 120/mo</div></div>
+          <div class="rpo-desc">Unlimited products, homepage spotlight, badge</div>
+        </div>
+      </div>
+      <div class="payment-note" id="regPaymentNote">
+        <span style="font-size:18px;">💳</span>
+        <div>You'll pay via Paystack Mobile Money checkout when you click Launch. Your store goes live immediately after successful payment.</div>
+      </div>
+      <p id="regError" style="color:var(--red);font-size:13px;margin-bottom:8px;min-height:16px;"></p>
+      <div style="display:flex;gap:10px;">
+        <button class="submit-btn-outline" onclick="regPrevStep(2)">← Back</button>
+        <button class="submit-btn" onclick="launchStore()" id="launchBtn" style="flex:2;">🚀 <span id="launchBtnTxt">Launch My Store</span></button>
+      </div>
+    </div>
+
+    <!-- SUCCESS PANEL -->
+    <div id="regSuccessPanel" style="display:none;text-align:center;padding:20px 8px;">
+      <div style="font-size:56px;margin-bottom:14px;">🎉</div>
+      <div style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin-bottom:8px;">Store Created!</div>
+      <p style="color:var(--gray);font-size:13px;line-height:1.6;margin-bottom:18px;" id="regSuccessMsg">Your store is now live on CityLinkGH.</p>
+      <div style="background:var(--mist);border-radius:12px;padding:16px;text-align:left;margin-bottom:18px;" id="regSuccessSummary"></div>
+      <button class="submit-btn" onclick="closeRegisterModal();refresh();">View All Stores</button>
+    </div>
   </div>
 </div>
 
-<!-- ══ REPORT MODAL ══ -->
-<div class="modal-overlay" id="report-modal" onclick="if(event.target===this)closeReportModal()">
-  <div class="modal" style="max-width:420px;">
-    <div class="modal-hd"><div class="modal-title">⚑ Report Listing</div><button class="modal-close" onclick="closeReportModal()">✕</button></div>
-    <p id="report-modal-title" style="font-size:13px;color:var(--gray);margin-bottom:16px;"></p>
-    <input type="hidden" id="report-listing-id">
-    <div class="field"><label>Reason *</label>
-      <select id="report-reason"><option value="">Select a reason…</option><option value="spam">Spam or duplicate</option><option value="scam">Scam or fraud</option><option value="inappropriate">Inappropriate content</option><option value="wrong_category">Wrong category</option><option value="already_sold">Already sold</option><option value="other">Other</option></select>
-    </div>
-    <div class="field"><label>Details (optional)</label><textarea id="report-details" placeholder="Any extra context…" style="min-height:65px;"></textarea></div>
-    <button class="submit-btn" onclick="submitReport()">Submit Report</button>
+<!-- ══ OWNER DASHBOARD MODAL ══ -->
+<div class="modal-overlay" id="dashboard-modal" onclick="if(event.target===this)closeDashboard()">
+  <div class="modal" id="dashboardBody" style="max-width:680px;">
+    <div class="modal-hd"><div class="modal-title">⚙️ Manage My Store</div><button class="modal-close" onclick="closeDashboard()">✕</button></div>
+    <div id="dashboardContent"><div class="loading-row"><div class="spinner"></div> Loading…</div></div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const FC={apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
-const CLOUD_NAME="dulnujvm7", UPLOAD_PRESET="ernest";
-const PAYSTACK_KEY="pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
-const ARKESEL_KEY="VWZXc3VHaGh4aHlrRHhMcEl6Zm4", ARKESEL_SENDER_ID="CityLinkGH";
+const firebaseConfig = {apiKey:"AIzaSyDdvBbM753KjhpQjkBasKWDMi2O43GRISM",authDomain:"citylinkgh-48ee0.firebaseapp.com",projectId:"citylinkgh-48ee0",storageBucket:"citylinkgh-48ee0.firebasestorage.app",messagingSenderId:"807811031269",appId:"1:807811031269:web:167b22e23f49992136340c"};
+const CLOUD_NAME = "dulnujvm7", UPLOAD_PRESET = "ernest";
+const PAYSTACK_KEY = "pk_live_fc038132bb4e798a5b118c99eca7407a1d57e6b8";
 
-const PLANS={
-  basic:{name:"Basic",price:0,paystackAmount:0,photos:1,duration:30,featured:false,badge:false,highlight:false,bold_title:false},
-  standard:{name:"Standard",price:10,paystackAmount:1000,photos:5,duration:60,featured:false,badge:true,highlight:true,bold_title:false},
-  premium:{name:"Premium",price:20,paystackAmount:2000,photos:10,duration:90,featured:true,badge:true,highlight:true,bold_title:true}
+const CATEGORIES = ["Electronics","Fashion & Clothing","Food & Beverages","Health & Beauty","Home & Furniture","Automotive","Education & Tutoring","Hair & Barbershop","Tailoring & Sewing","Repairs & Maintenance","Professional Services","Other"];
+const PLANS = {
+  basic:    { name:"Basic",    price:0,   paystackAmount:0,     limit:5,        duration:null },
+  pro:      { name:"Pro",      price:50,  paystackAmount:5000,  limit:20,       duration:30 },
+  featured: { name:"Featured", price:120, paystackAmount:12000, limit:Infinity, duration:30 }
 };
 
-const app=initializeApp(FC), db=getFirestore(app), auth=getAuth(app);
-let currentUser=null, selectedPlan="basic", pendingListingData=null, uploadedImgs=[];
-let allItems=[], activeType='all', activeCat='all', showSavedOnly=false;
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
 
-signInAnonymously(auth);
-onAuthStateChanged(auth, u=>{ currentUser=u; });
+let currentUser = null;
+let allStores = [], activeCat = 'all', viewFilter = 'all';
+let regStep = 0, regForm = {}, regProducts = [], regPlan = 'basic', regLogoUrl = '';
+let authMode = 'login';
+
+// ── Category select for register form ──
+document.getElementById('regCategory').innerHTML = '<option value="">Select a category</option>' + CATEGORIES.map(c=>`<option>${c}</option>`).join('');
+
+const fmt = n => `GHS ${Number(n).toLocaleString()}`;
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function waLink(phone, msg){const raw=(phone||'').replace(/\D/g,'');const num=raw.startsWith('233')?raw.slice(3):raw.startsWith('0')?raw.slice(1):raw;return `https://wa.me/233${num}?text=${encodeURIComponent(msg)}`;}
+
+let toastT;
+window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
+
+// ── AUTH STATE ──
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  const myStoreLinks = document.querySelectorAll('#drawerMyStore');
+  myStoreLinks.forEach(el => el.style.display = user ? 'flex' : 'none');
+});
 
 // ── GREETING ──
-(function(){const h=new Date().getHours();let e='🛍️',m='Good morning';if(h>=12&&h<17){e='🌤️';m='Good afternoon';}else if(h>=17&&h<21){e='🌇';m='Good evening';}else if(h>=21||h<5){e='🌙';m='Good night';}document.getElementById('greetEmoji').textContent=e;document.getElementById('greetMsg').innerHTML=`<strong>${m}</strong> — buy and sell in your community`;})();
+(function(){const h=new Date().getHours();let e='🛍️',m='Good morning';if(h>=12&&h<17){e='🌤️';m='Good afternoon';}else if(h>=17&&h<21){e='🌇';m='Good evening';}else if(h>=21||h<5){e='🌙';m='Good night';}document.getElementById('greetEmoji').textContent=e;document.getElementById('greetMsg').innerHTML=`<strong>${m}</strong> — shop local Ghanaian stores`;})();
 // ── LIVE VIEWERS ──
 (function(){const seed=Math.floor(Date.now()/30000);let base=8+(seed%25);document.getElementById('liveCount').textContent=base;setInterval(()=>{base=Math.max(4,Math.min(base+Math.floor(Math.random()*5)-2,60));const el=document.getElementById('liveCount');if(el)el.textContent=base;},12000);})();
 
@@ -369,151 +419,143 @@ let voiceRec=null;
 window.startVoiceSearch=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast('Voice search not supported');return;}if(!voiceRec){voiceRec=new SR();voiceRec.lang='en-GH';voiceRec.continuous=false;voiceRec.interimResults=false;voiceRec.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('search-input').value=t;saveSearchHistory(t);refresh();showToast(`🎙️ "${t}"`);};voiceRec.onend=()=>{document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceBtn').textContent='🎙️';};voiceRec.onerror=()=>{showToast('Could not hear. Try again.');document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceBtn').textContent='🎙️';};}const btn=document.getElementById('voiceBtn');btn.classList.add('listening');btn.textContent='⏹️';voiceRec.start();showToast('🎙️ Listening…');};
 
 // ── SEARCH HISTORY ──
-function getSearchHistory(){try{return JSON.parse(localStorage.getItem('bsSearchHist')||'[]');}catch{return[];}}
-function saveSearchHistory(q){if(!q||q.length<2)return;let h=getSearchHistory().filter(x=>x.toLowerCase()!==q.toLowerCase());h.unshift(q);localStorage.setItem('bsSearchHist',JSON.stringify(h.slice(0,5)));}
-window.clearSearchHistory=()=>{localStorage.removeItem('bsSearchHist');document.getElementById('searchHistoryWrap').classList.remove('visible');};
+function getSearchHistory(){try{return JSON.parse(localStorage.getItem('buySearchHist')||'[]');}catch{return[];}}
+function saveSearchHistory(q){if(!q||q.length<2)return;let h=getSearchHistory().filter(x=>x.toLowerCase()!==q.toLowerCase());h.unshift(q);localStorage.setItem('buySearchHist',JSON.stringify(h.slice(0,5)));}
+window.clearSearchHistory=()=>{localStorage.removeItem('buySearchHist');document.getElementById('searchHistoryWrap').classList.remove('visible');};
 window.showSearchHistory=()=>{const hist=getSearchHistory();const wrap=document.getElementById('searchHistoryWrap');if(!hist.length){wrap.classList.remove('visible');return;}document.getElementById('searchHistoryChips').innerHTML=hist.map(h=>`<div class="sh-chip" onclick="applyHist('${esc(h)}')"><span>🕐</span>${esc(h)}</div>`).join('');wrap.classList.add('visible');};
 window.hideSearchHistory=()=>document.getElementById('searchHistoryWrap').classList.remove('visible');
 window.applyHist=q=>{document.getElementById('search-input').value=q;refresh();hideSearchHistory();};
 window.commitSearch=()=>{const q=document.getElementById('search-input').value;saveSearchHistory(q);refresh();};
 
 // ── TRENDING ──
-const TRENDING=[{q:'iPhone',ico:'📱',n:'2.1k'},{q:'Toyota Corolla',ico:'🚗',n:'1.6k'},{q:'Sofa Set',ico:'🛋',n:'1.2k'},{q:'Laptop',ico:'💻',n:'980'},{q:'Generator',ico:'⚡',n:'760'},{q:'TV 55 inch',ico:'📺',n:'640'},{q:'Office Chair',ico:'🪑',n:'520'},{q:'Baby Items',ico:'🧸',n:'410'}];
+const TRENDING=[{q:'Electronics',ico:'📱',n:'1.8k'},{q:'Tailoring',ico:'✂️',n:'1.3k'},{q:'Hair & Barbershop',ico:'💈',n:'1.1k'},{q:'Phone repair',ico:'🔧',n:'870'},{q:'Catering',ico:'🍔',n:'640'},{q:'Furniture',ico:'🛋',n:'520'},{q:'Tutoring',ico:'📚',n:'410'},{q:'Auto repair',ico:'🚗',n:'380'}];
 document.getElementById('trendTrack').innerHTML=TRENDING.map(t=>`<div class="trend-chip" onclick="applyTrend('${esc(t.q)}')">${t.ico} ${esc(t.q)} <span class="trend-num">${t.n}</span></div>`).join('');
-window.applyTrend=q=>{document.getElementById('search-input').value=q;saveSearchHistory(q);refresh();showToast(`🔍 "${q}"`);document.getElementById('listings-grid').scrollIntoView({behavior:'smooth',block:'start'});};
-
-// ── SAVED ──
-const getSaved=()=>JSON.parse(localStorage.getItem("bs_saved")||"[]");
-const isSaved=id=>getSaved().includes(id);
-const toggleSave=id=>{let s=getSaved();s.includes(id)?(s=s.filter(x=>x!==id)):s.push(id);localStorage.setItem("bs_saved",JSON.stringify(s));updateSavedBadge();};
-function updateSavedBadge(){const c=getSaved().length;const db2=document.getElementById('drawerSavedCount');if(db2){db2.textContent=c;db2.style.display=c>0?'inline-flex':'none';}}
-window.filterSaved=el=>{showSavedOnly=!showSavedOnly;document.querySelectorAll('#typeFilters .fchip').forEach(c=>c.classList.remove('active'));if(showSavedOnly)el.classList.add('active');else document.querySelector('#typeFilters .fchip[data-type="all"]').classList.add('active');refresh();};
-window.filterNewItems=()=>{document.getElementById('sort-select').value='newest';refresh();document.getElementById('listings-grid').scrollIntoView({behavior:'smooth',block:'start'});};
-window.sortByPriceLow=()=>{document.getElementById('sort-select').value='price_asc';refresh();document.getElementById('listings-grid').scrollIntoView({behavior:'smooth',block:'start'});};
+window.applyTrend=q=>{document.getElementById('search-input').value=q;saveSearchHistory(q);refresh();showToast(`🔍 "${q}"`);document.getElementById('stores-grid').scrollIntoView({behavior:'smooth',block:'start'});};
 
 // ── DARK MODE ──
 window.toggleDark=()=>{const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';html.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('darkBtn').textContent=isDark?'☀️':'🌙';localStorage.setItem('clTheme',isDark?'light':'dark');};
 const savedTheme=localStorage.getItem('clTheme');if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('darkBtn').textContent=savedTheme==='dark'?'☀️':'🌙';}
 
-// ── SMS ──
-async function sendSMS(to,message){if(!ARKESEL_KEY)return;try{const phone=to.replace(/\s/g,"");await fetch("https://sms.arkesel.com/api/v2/sms/send",{method:"POST",headers:{"api-key":ARKESEL_KEY,"Content-Type":"application/json"},body:JSON.stringify({sender:ARKESEL_SENDER_ID,message,recipients:[phone]})});}catch(e){}}
+window.toggleDrawer=()=>{const h=document.getElementById('hamburger'),d=document.getElementById('navDrawer'),o=document.getElementById('navOverlay');h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');document.body.style.overflow=d.classList.contains('open')?'hidden':'';};
 
-// ── PAYSTACK ──
-function initiatePaystackPayment(plan,email,phone,onSuccess){
-  const p=PLANS[plan];
-  if(p.price===0){onSuccess({reference:"free_"+Date.now()});return;}
-  const handler=PaystackPop.setup({key:PAYSTACK_KEY,email:email||"buyer@marketplace.com",amount:p.paystackAmount,currency:"GHS",ref:"CL_"+Date.now()+"_"+Math.random().toString(36).substr(2,6).toUpperCase(),metadata:{custom_fields:[{display_name:"Plan",variable_name:"plan",value:p.name},{display_name:"Phone",variable_name:"phone",value:phone}]},onSuccess:response=>onSuccess(response),onClose:()=>{const btn=document.getElementById("submit-btn");btn.disabled=false;document.getElementById('submitTxt').textContent="Post Listing";showToast("Payment cancelled.");}});
-  handler.openIframe();
+// ════════════════════════════════════
+// FETCH STORES (live snapshot)
+// ════════════════════════════════════
+function catEmoji(cat){return{Electronics:'📱','Fashion & Clothing':'👗','Food & Beverages':'🍔','Health & Beauty':'💅','Home & Furniture':'🛋',Automotive:'🚗','Education & Tutoring':'📚','Hair & Barbershop':'💈','Tailoring & Sewing':'✂️','Repairs & Maintenance':'🔧','Professional Services':'💼',Other:'🔹'}[cat]||'🛍️';}
+
+onSnapshot(query(collection(db,'stores'), orderBy('createdAt','desc')), snap => {
+  allStores = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  updateStats();
+  renderFeatured();
+  renderNewThisWeek();
+  refresh();
+}, err => {
+  console.error(err);
+  document.getElementById('stores-grid').innerHTML = `<div class="empty-state" style="display:flex;"><div class="es-ico">⚠️</div><h3>Could not load stores</h3><p>${esc(err.message)}</p></div>`;
+});
+
+function updateStats(){
+  const weekAgo = Date.now()-7*24*60*60*1000;
+  const newCount = allStores.filter(s=>s.createdAt && new Date(s.createdAt?.toDate?.()??s.createdAt).getTime()>weekAgo).length;
+  document.getElementById('statStores').textContent = allStores.length;
+  document.getElementById('statProducts').textContent = allStores.reduce((a,s)=>a+(s.products||[]).length,0);
+  document.getElementById('statVerified').textContent = allStores.filter(s=>s.verified).length;
+  document.getElementById('statNew').textContent = newCount;
+  document.getElementById('hotCount').textContent = newCount;
+  document.getElementById('hotBanner').style.display = newCount>0 ? 'flex' : 'none';
 }
 
-// ── CLOUDINARY ──
-async function uploadToCloudinary(file){const fd=new FormData();fd.append("file",file);fd.append("upload_preset",UPLOAD_PRESET);const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:"POST",body:fd});const data=await res.json();if(!data.secure_url)throw new Error("Upload failed");return data.secure_url;}
-
-function typeEmoji(cat){return{Electronics:'📱',Furniture:'🛋',Clothing:'👕',Vehicles:'🚗','Home & Garden':'🏡',Sports:'⚽',Books:'📚',Toys:'🧸',Other:'🔹'}[cat]||'🛍️';}
-
-// ── VIEW COUNTER ──
-async function incrementViews(id){try{const viewed=JSON.parse(localStorage.getItem("bs_viewed")||"[]");if(viewed.includes(id))return;const snap=await getDoc(doc(db,"buy_sell_listings",id));if(!snap.exists())return;await updateDoc(doc(db,"buy_sell_listings",id),{views:(snap.data()?.views||0)+1});viewed.push(id);localStorage.setItem("bs_viewed",JSON.stringify(viewed));}catch(e){}}
-
-window.trackContact=async function(id,type){
-  try{const snap=await getDoc(doc(db,"buy_sell_listings",id));if(!snap.exists())return;const d=snap.data();await updateDoc(doc(db,"buy_sell_listings",id),{[`contacts_${type}`]:(d[`contacts_${type}`]||0)+1});if(d.plan==="premium"&&d.phone){sendSMS(d.phone,`Someone just ${type==="whatsapp"?"messaged you on WhatsApp":"called"} about your listing "${d.title}" on CityLinkGH!`);}}catch(e){}
-};
-
-// ── FETCH ──
-async function fetchListings(){
-  const q=query(collection(db,"buy_sell_listings"),orderBy("createdAt","desc"));
-  const snap=await getDocs(q);
-  allItems=[];
-  snap.forEach(d=>{
-    const data=d.data();
-    if(data.status==="pending"&&data.uid!==currentUser?.uid)return;
-    if(data.expiresAt){const exp=data.expiresAt.toDate?data.expiresAt.toDate():new Date(data.expiresAt);if(exp<new Date())return;}
-    allItems.push({id:d.id,...data});
-  });
-  const weekAgo=Date.now()-7*24*60*60*1000;
-  const newCount=allItems.filter(i=>i.createdAt&&new Date(i.createdAt?.toDate?.()??i.createdAt).getTime()>weekAgo).length;
-  document.getElementById('statTotal').textContent=allItems.length;
-  document.getElementById('statForSale').textContent=allItems.filter(i=>i.type==='sell'&&i.status!=='sold').length;
-  document.getElementById('statWanted').textContent=allItems.filter(i=>i.type==='buy').length;
-  document.getElementById('statNew').textContent=newCount;
-  document.getElementById('hotCount').textContent=newCount;
-  if(newCount>0)document.getElementById('hotBanner').style.display='flex';
-  renderNewThisWeek();renderDeals();updateSavedBadge();refresh();
+function renderFeatured(){
+  const featured = allStores.filter(s=>s.plan==='featured').slice(0,8);
+  const sec = document.getElementById('featuredSection');
+  if(!featured.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  document.getElementById('featuredTrack').innerHTML = featured.map(s=>`
+    <div class="featured-card" onclick="openStoreDetail('${s.id}')">
+      <div class="fc-img">${s.logoUrl?`<img src="${esc(s.logoUrl)}" alt="">`:catEmoji(s.category)}</div>
+      <div class="fc-body">
+        <div class="fc-name">${esc(s.name)}</div>
+        <div class="fc-meta">${esc(s.category||'')}</div>
+        <div class="fc-loc">📍 ${esc(s.location||'Ghana')}</div>
+      </div>
+    </div>`).join('');
 }
 
 function renderNewThisWeek(){
-  const weekAgo=Date.now()-7*24*60*60*1000;
-  const fresh=allItems.filter(i=>i.createdAt&&new Date(i.createdAt?.toDate?.()??i.createdAt).getTime()>weekAgo&&i.status!=='sold').slice(0,8);
-  const sec=document.getElementById('newWeekSection');
-  if(!fresh.length){sec.style.display='none';return;}
+  const weekAgo = Date.now()-7*24*60*60*1000;
+  const fresh = allStores.filter(s=>s.createdAt && new Date(s.createdAt?.toDate?.()??s.createdAt).getTime()>weekAgo).slice(0,8);
+  const sec = document.getElementById('newStoreSection');
+  if(!fresh.length){ sec.style.display='none'; return; }
   sec.style.display='block';
-  document.getElementById('newWeekTrack').innerHTML=fresh.map(i=>`<div class="nw-card" onclick="openDetailModal('${i.id}')"><div class="nw-img">${i.imageUrl?`<img src="${esc(i.imageUrl)}" alt="" loading="lazy">`:typeEmoji(i.category)}<div class="nw-badge">NEW</div></div><div class="nw-info"><div class="nw-price">${i.price?`GHS ${Number(i.price).toLocaleString()}`:'Negotiable'}</div><div class="nw-type">${esc(i.title)}</div><div class="nw-loc">📍 ${esc(i.location||'Ghana')}</div></div></div>`).join('');
+  document.getElementById('newWeekTrack').innerHTML = fresh.map(s=>`
+    <div class="nw-card" onclick="openStoreDetail('${s.id}')">
+      <div class="nw-img">${s.logoUrl?`<img src="${esc(s.logoUrl)}" alt="">`:catEmoji(s.category)}<div class="nw-badge">NEW</div></div>
+      <div class="nw-info">
+        <div class="nw-type">${esc(s.name)}</div>
+        <div class="nw-loc">📍 ${esc(s.location||'Ghana')}</div>
+      </div>
+    </div>`).join('');
 }
 
-function renderDeals(){
-  const withPrice=allItems.filter(i=>i.price&&i.status!=='sold').sort((a,b)=>parseFloat(a.price)-parseFloat(b.price)).slice(0,6);
-  const sec=document.getElementById('dealsSection');
-  if(!withPrice.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('dealsTrack').innerHTML=withPrice.map(i=>`<div class="deal-card" onclick="openDetailModal('${i.id}')"><div class="deal-img-wrap">${i.imageUrl?`<img src="${esc(i.imageUrl)}" alt="">`:typeEmoji(i.category)}</div><div class="deal-info"><div class="deal-name">${esc(i.title)}</div><div class="deal-desc">GHS ${Number(i.price).toLocaleString()}</div></div></div>`).join('');
-}
+window.filterNewStores=()=>{viewFilter='new';refresh();document.getElementById('stores-grid').scrollIntoView({behavior:'smooth',block:'start'});};
+window.filterFeaturedStores=()=>{viewFilter='featured';refresh();document.getElementById('stores-grid').scrollIntoView({behavior:'smooth',block:'start'});};
+window.filterCat=el=>{activeCat=el.dataset.cat;document.querySelectorAll('#categoryFilters .fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');viewFilter='all';refresh();};
 
-// ── FILTERS ──
-window.filterType=el=>{activeType=el.dataset.type;showSavedOnly=false;document.querySelectorAll('#typeFilters .fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');refresh();};
-window.filterCat=el=>{activeCat=el.dataset.cat;document.querySelectorAll('#categoryFilters .fchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');refresh();};
-
-function sortItems(items,sort){
-  if(sort==="price_asc")return[...items].sort((a,b)=>(parseFloat(a.price)||0)-(parseFloat(b.price)||0));
-  if(sort==="price_desc")return[...items].sort((a,b)=>(parseFloat(b.price)||0)-(parseFloat(a.price)||0));
-  return items;
-}
+// ════════════════════════════════════
+// RENDER GRID (with infinite scroll)
+// ════════════════════════════════════
+const PAGE_SIZE=12; let currentPage=1, currentList=[], infiniteObserver=null;
 
 window.refresh=function(){
-  const search=(document.getElementById('search-input').value||'').toLowerCase();
-  const sort=document.getElementById('sort-select').value;
-  const minP=Number(document.getElementById('priceMin').value)||0;
-  const maxP=Number(document.getElementById('priceMax').value)||Infinity;
-  let items=[...allItems];
-  if(showSavedOnly||sort==='saved')items=items.filter(i=>isSaved(i.id));
-  else if(activeType!=='all')items=items.filter(i=>i.type===activeType);
-  if(activeCat!=='all')items=items.filter(i=>i.category===activeCat);
-  if(search)items=items.filter(i=>(i.title||"").toLowerCase().includes(search)||(i.description||"").toLowerCase().includes(search)||(i.location||"").toLowerCase().includes(search));
-  if(minP)items=items.filter(i=>Number(i.price||0)>=minP);
-  if(maxP!==Infinity)items=items.filter(i=>Number(i.price||0)<=maxP);
+  const search = (document.getElementById('search-input').value||'').toLowerCase();
+  const sort = document.getElementById('sort-select').value;
+  let list = [...allStores];
 
-  const prem=sortItems(items.filter(i=>i.plan==="premium"),sort);
-  const std=sortItems(items.filter(i=>i.plan==="standard"),sort);
-  const bas=sortItems(items.filter(i=>!i.plan||i.plan==="basic"),sort);
-  items=[...prem,...std,...bas];
+  if(viewFilter==='new'){
+    const weekAgo = Date.now()-7*24*60*60*1000;
+    list = list.filter(s=>s.createdAt && new Date(s.createdAt?.toDate?.()??s.createdAt).getTime()>weekAgo);
+  } else if(viewFilter==='featured'){
+    list = list.filter(s=>s.plan==='featured');
+  }
+  if(activeCat!=='all') list = list.filter(s=>s.category===activeCat);
+  if(search) list = list.filter(s=>
+    (s.name||'').toLowerCase().includes(search) ||
+    (s.category||'').toLowerCase().includes(search) ||
+    (s.products||[]).some(p=>(p.name||'').toLowerCase().includes(search))
+  );
 
-  document.getElementById("listing-count").textContent=items.length+" listing"+(items.length!==1?"s":"");
-  renderGrid(items,search);
+  if(sort==='verified') list.sort((a,b)=>(b.verified?1:0)-(a.verified?1:0));
+  else if(sort==='products') list.sort((a,b)=>(b.products||[]).length-(a.products||[]).length);
+
+  const featuredFirst = list.filter(s=>s.plan==='featured');
+  const proFirst = list.filter(s=>s.plan==='pro');
+  const basicRest = list.filter(s=>!s.plan||s.plan==='basic');
+  list = [...featuredFirst, ...proFirst, ...basicRest];
+
+  document.getElementById('store-count').textContent = list.length+' store'+(list.length!==1?'s':'');
+  renderGrid(list, search);
 };
 
-// ── INFINITE SCROLL + RENDER ──
-const PAGE_SIZE=12;let currentPage=1,currentList=[],infiniteObserver=null;
-function renderGrid(items,search=''){
-  currentList=items;currentPage=1;
-  const grid=document.getElementById("listings-grid");
-  const empty=document.getElementById("empty-state");
+function renderGrid(items, search=''){
+  currentList=items; currentPage=1;
+  const grid=document.getElementById('stores-grid');
+  const empty=document.getElementById('empty-state');
   const sentinel=document.getElementById('scrollSentinel');
-  if(!items.length){grid.innerHTML='';empty.style.display="flex";sentinel.classList.remove('loading');return;}
-  empty.style.display="none";
-  grid.innerHTML=items.slice(0,PAGE_SIZE).map(item=>buildCard(item,search)).join('');
-  attachCardEvents(grid);
-  items.slice(0,PAGE_SIZE).forEach(item=>setTimeout(()=>incrementViews(item.id),1500));
-  if(items.length<=PAGE_SIZE){sentinel.classList.remove('loading');return;}
-  if(infiniteObserver)infiniteObserver.disconnect();
-  infiniteObserver=new IntersectionObserver(entries=>{
-    if(entries[0].isIntersecting&&currentPage*PAGE_SIZE<currentList.length){
+  if(!items.length){ grid.innerHTML=''; empty.style.display='flex'; sentinel.classList.remove('loading'); return; }
+  empty.style.display='none';
+  grid.innerHTML = items.slice(0,PAGE_SIZE).map(s=>buildStoreCard(s,search)).join('');
+  if(items.length<=PAGE_SIZE){ sentinel.classList.remove('loading'); return; }
+  if(infiniteObserver) infiniteObserver.disconnect();
+  infiniteObserver = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && currentPage*PAGE_SIZE<currentList.length){
       sentinel.classList.add('loading');
       setTimeout(()=>{
         currentPage++;
         const slice=currentList.slice(0,currentPage*PAGE_SIZE);
-        grid.innerHTML=slice.map(item=>buildCard(item,search)).join('');
-        attachCardEvents(grid);
-        if(currentPage*PAGE_SIZE>=currentList.length){sentinel.classList.remove('loading');infiniteObserver.disconnect();}
+        grid.innerHTML = slice.map(s=>buildStoreCard(s,search)).join('');
+        if(currentPage*PAGE_SIZE>=currentList.length){ sentinel.classList.remove('loading'); infiniteObserver.disconnect(); }
         else sentinel.classList.remove('loading');
-      },400);
+      },350);
     }
   },{rootMargin:'200px'});
   infiniteObserver.observe(sentinel);
@@ -521,238 +563,604 @@ function renderGrid(items,search=''){
 
 function hl(text,searchTerm){if(!searchTerm||!text)return text||"";const re=new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")})`,"gi");return text.replace(re,"<mark>$1</mark>");}
 
-function buildCard(item,searchTerm=""){
-  const saved=isSaved(item.id);
-  const isMine=currentUser&&item.uid===currentUser.uid;
-  const isSold=item.status==="sold";
-  const isPending=item.status==="pending";
-  const plan=item.plan||'basic';
-  const rawWa=(item.phone||'').replace(/\D/g,'');
-  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-  const planRibbon=plan==='premium'?'<div class="plan-ribbon ribbon-premium">⭐ Featured</div>':plan==='standard'?'<div class="plan-ribbon ribbon-standard">✓ Listed</div>':'';
-  const planClass=plan==='premium'?'card-premium':plan==='standard'?'card-standard':'';
-  const isNew=item.createdAt&&(Date.now()-new Date(item.createdAt?.toDate?.()??item.createdAt).getTime())<3*24*60*60*1000;
-  const timeAgo=item.createdAt?fmtAgo(item.createdAt?.toDate?item.createdAt.toDate():new Date(item.createdAt)):'Recently';
+function buildStoreCard(store, searchTerm=''){
+  const plan = store.plan || 'basic';
+  const planRibbon = plan==='featured' ? '<div class="plan-ribbon ribbon-premium">⭐ Featured</div>' : plan==='pro' ? '<div class="plan-ribbon ribbon-standard">✓ Pro</div>' : '';
+  const planClass = plan==='featured' ? 'card-premium' : plan==='pro' ? 'card-standard' : '';
+  const products = store.products||[];
+  const inStockCount = products.filter(p=>p.inStock).length;
 
-  return `<div class="item-card ${planClass}${isSold?' is-sold':''}${isPending?' is-pending':''}" data-id="${item.id}">
-    <div class="card-img-wrap" onclick="openDetailModal('${item.id}')">
-      ${item.imageUrl?`<img class="card-img" src="${esc(item.imageUrl)}" alt="${esc(item.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:''}
-      <div class="card-img-fallback" style="${item.imageUrl?'display:none':''}">${typeEmoji(item.category)}</div>
-      <div class="type-badge ${item.type}">${item.type==="sell"?"For Sale":"Wanted"}</div>
-      ${isSold?'<div class="sold-overlay">SOLD</div>':''}
-      ${isNew&&!isSold?'<div class="new-badge-overlay">NEW</div>':''}
-      ${isPending?'<div class="pending-badge">⏳ Pending</div>':''}
-      <button class="item-bm-btn${saved?' saved':''}" data-id="${item.id}" onclick="event.stopPropagation();handleSave('${item.id}')">${saved?'🏷️':'🔖'}</button>
+  return `<div class="item-card ${planClass}" data-id="${store.id}">
+    <div class="card-img-wrap" onclick="openStoreDetail('${store.id}')">
+      ${store.logoUrl ? `<img class="card-img" src="${esc(store.logoUrl)}" alt="${esc(store.name)}" loading="lazy">` : `<div class="card-img-fallback">${catEmoji(store.category)}</div>`}
       ${planRibbon}
-      ${item.views?`<span class="view-count">👁 ${item.views}</span>`:''}
     </div>
     <div class="card-body">
       <div class="card-meta-row">
-        <span class="card-cat">${typeEmoji(item.category)} ${esc(item.category||'General')}</span>
-        ${item.condition?`<span class="condition-tag">${esc(item.condition)}</span>`:''}
+        <span class="card-cat">${catEmoji(store.category)} ${esc(store.category||'General')}</span>
+        ${store.verified ? '<span class="condition-tag" style="color:var(--green);">✓ Verified</span>' : ''}
       </div>
-      <div class="card-name" ${plan==='premium'?'style="font-weight:900;"':''} onclick="openDetailModal('${item.id}')">${hl(esc(item.title),searchTerm)}</div>
-      ${item.location?`<div class="card-loc">📍 ${esc(item.location)}</div>`:''}
-      <div class="card-desc">${hl(esc(item.description),searchTerm)}</div>
-    </div>
-    <div class="card-footer">
-      <span class="cf-price">${item.price?`GHS ${parseFloat(item.price).toLocaleString()}`:'Negotiable'}</span>
-      <span class="cf-meta">${timeAgo}${isSold?' · Sold':''}</span>
+      <div class="card-name" ${plan==='featured'?'style="font-weight:900;"':''} onclick="openStoreDetail('${store.id}')">${hl(esc(store.name),searchTerm)}</div>
+      ${store.location?`<div class="card-loc">📍 ${esc(store.location)}</div>`:''}
+      <div class="card-desc">${hl(esc(store.description),searchTerm)}</div>
+      <div class="card-chip-row">
+        <span class="info-chip">${products.length} item${products.length!==1?'s':''} listed</span>
+        <span class="info-chip info-chip-green">${inStockCount} in stock</span>
+      </div>
     </div>
     <div class="card-actions">
-      ${item.phone?`<a class="ca-btn ca-call" href="tel:${esc(item.phone)}" onclick="event.stopPropagation();trackContact('${item.id}','call')">📞 Call</a>`:''}
-      ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hi, I saw your listing "'+item.title+'" on CityLinkGH. Is it still available?')}" target="_blank" onclick="event.stopPropagation();trackContact('${item.id}','whatsapp')">💬 Chat</a>`:''}
-      <button class="ca-btn ca-view" onclick="event.stopPropagation();openDetailModal('${item.id}')">View →</button>
+      ${store.whatsapp?`<a class="ca-btn ca-wa" href="${waLink(store.whatsapp, 'Hi! I found your store '+store.name+' on CityLinkGH. I would like to enquire.')}" target="_blank" onclick="event.stopPropagation()">💬 WhatsApp</a>`:''}
+      ${store.phone?`<a class="ca-btn ca-call" href="tel:${esc(store.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
+      <button class="ca-btn ca-view" onclick="event.stopPropagation();openStoreDetail('${store.id}')">View →</button>
     </div>
-    ${(isMine||!isMine)?`<div class="card-meta-actions">
-      ${isMine&&!isSold?`<button class="action-chip" onclick="markSold('${item.id}')">✓ Mark Sold</button>`:''}
-      ${isMine?`<button class="action-chip danger" onclick="deleteListing('${item.id}')">🗑 Remove</button>`:''}
-      ${isMine?`<button class="action-chip accent" onclick="openBumpModal('${item.id}','${esc(item.title)}')">⬆ Bump</button>`:''}
-      ${!isMine?`<button class="action-chip muted" onclick="openReportModal('${item.id}','${esc(item.title)}')">⚑ Report</button>`:''}
-      <button class="action-chip" onclick="shareItem('${item.id}','${esc(item.title)}')">↗ Share</button>
-    </div>`:''}
   </div>`;
 }
 
-function attachCardEvents(grid){}
+// ════════════════════════════════════
+// STORE DETAIL MODAL
+// ════════════════════════════════════
+window.openStoreDetail = async function(storeId){
+const snap = await getDoc(doc(db,'stores',storeId));
+if(!snap.exists()) return;
 
-window.handleSave=id=>{toggleSave(id);const btn=document.querySelector(`.item-bm-btn[data-id="${id}"]`);if(btn){const s=isSaved(id);btn.textContent=s?'🏷️':'🔖';btn.classList.toggle('saved',s);}showToast(isSaved(id)?'❤️ Saved!':'Removed from saved');};
-window.markSold=async id=>{if(!confirm('Mark this as sold?'))return;await updateDoc(doc(db,"buy_sell_listings",id),{status:"sold"});showToast('✅ Marked as sold!');await fetchListings();};
-window.deleteListing=async id=>{if(!confirm('Remove this listing permanently?'))return;await deleteDoc(doc(db,"buy_sell_listings",id));showToast('Listing removed');await fetchListings();};
-window.shareItem=async(id,title)=>{const url=location.origin+'/buy.html?listing='+id;if(navigator.share)await navigator.share({title,url});else{await navigator.clipboard.writeText(url);showToast('🔗 Link copied!');}};
+const store = {id:storeId, ...snap.data()};
+const products = store.products || [];
 
-// ── DETAIL MODAL ──
-window.openDetailModal=async function(id){
-  const snap=await getDoc(doc(db,"buy_sell_listings",id));
-  if(!snap.exists())return;
-  const item={id,...snap.data()};
-  const rawWa=(item.phone||'').replace(/\D/g,'');
-  const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;
-  const saved=isSaved(id);
-  document.getElementById('detail-body').innerHTML=`
-    <div style="position:relative;">
-      ${item.imageUrl?`<img src="${esc(item.imageUrl)}" style="width:100%;height:240px;object-fit:cover;" alt="">`:`<div style="height:200px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:56px;">${typeEmoji(item.category)}</div>`}
-      <button onclick="closeDetailModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;">✕</button>
+const countLabel =
+products.length === 1
+? '1 Product & Service'
+: `${products.length} Products & Services`;
+
+document.getElementById('detail-body').innerHTML = ` <div style="background:linear-gradient(135deg,#0A0F0D,#1A6B3C);padding:24px 18px;color:#fff;position:relative;"> <button onclick="closeDetailModal()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;">✕</button>
+
+``
+  <div style="display:flex;align-items:center;gap:16px;">
+    ${
+      store.logoUrl
+        ? `<img src="${esc(store.logoUrl)}" loading="lazy" style="width:64px;height:64px;border-radius:14px;object-fit:cover;flex-shrink:0;" alt="">`
+        : `<div style="width:64px;height:64px;border-radius:14px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;">${catEmoji(store.category)}</div>`
+    }
+
+    <div style="min-width:0;">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;">
+          ${esc(store.name)}
+        </div>
+
+        ${
+          store.plan === 'featured'
+            ? '<span style="background:var(--gold);color:var(--ink);font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;">FEATURED</span>'
+            : ''
+        }
+
+        ${
+          store.verified
+            ? '<span style="background:#22C55E;color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;">✓ VERIFIED</span>'
+            : ''
+        }
+      </div>
+
+      <div style="font-size:12px;opacity:.8;margin-top:4px;">
+        📍 ${esc(store.location || 'Ghana')} · ${esc(store.category || '')}
+      </div>
     </div>
-    <div style="padding:16px 16px 24px;">
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
-        <span class="dbadge dbadge-type">${item.type==="sell"?"For Sale":"Wanted"}</span>
-        <span class="dbadge">${typeEmoji(item.category)} ${esc(item.category||'General')}</span>
-        ${item.condition?`<span class="dbadge">${esc(item.condition)}</span>`:''}
-      </div>
-      <div class="detail-title">${esc(item.title)}</div>
-      <div class="detail-price">${item.price?`GHS ${parseFloat(item.price).toLocaleString()}`:'<span style="font-size:16px;color:var(--gray);">Price Negotiable</span>'}</div>
-      <div class="detail-desc">${esc(item.description)}</div>
-      ${item.location?`<div class="maps-link" style="margin-top:12px;"><span>📍</span><div>${esc(item.location)}</div></div>`:''}
-      <div class="detail-ctas">
-        ${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hi, I saw your listing "'+item.title+'". Is it still available?')}" target="_blank" class="detail-cta-btn cta-wa" onclick="trackContact('${id}','whatsapp')">💬 WhatsApp Seller</a>`:''}
-        ${item.phone?`<a href="tel:${esc(item.phone)}" class="detail-cta-btn cta-call" onclick="trackContact('${id}','call')">📞 Call Seller</a>`:''}
-      </div>
-      <div class="detail-stats">
-        <div class="dstat"><div class="dstat-n">${item.views||0}</div><div class="dstat-l">👁 Views</div></div>
-        <div class="dstat"><div class="dstat-n">${item.contacts_whatsapp||0}</div><div class="dstat-l">💬 WhatsApp</div></div>
-        <div class="dstat"><div class="dstat-n">${item.contacts_call||0}</div><div class="dstat-l">📞 Calls</div></div>
-      </div>
-      <div class="detail-actions">
-        <button onclick="handleSave('${id}');this.textContent=isSaved('${id}')?'✅ Saved':'🔖 Save'" class="detail-act-btn${saved?' detail-act-saved':''}">${saved?'✅ Saved':'🔖 Save'}</button>
-        <button onclick="shareItem('${id}','${esc(item.title)}')" class="detail-act-btn">📤 Share</button>
-        <button onclick="openReportModal('${id}','${esc(item.title)}')" class="detail-act-btn detail-act-report">🚩 Report</button>
-      </div>
-    </div>`;
-  document.getElementById('detail-modal').classList.add('show');
+  </div>
+
+  <p style="font-size:13px;opacity:.85;line-height:1.5;margin-top:12px;">
+    ${esc(store.description || '')}
+  </p>
+
+  <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
+    ${
+      store.whatsapp
+        ? `<a href="${waLink(
+            store.whatsapp,
+            `Hi! I found your store ${store.name} on CityLinkGH. I'd like to enquire.`
+          )}"
+          target="_blank"
+          style="background:#25D366;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;">
+          💬 WhatsApp ${store.owner ? esc(store.owner.split(' ')[0]) : 'Owner'}
+        </a>`
+        : ''
+    }
+
+    ${
+      store.phone
+        ? `<a href="tel:${esc(store.phone)}"
+            style="background:rgba(255,255,255,.18);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;">
+            📞 ${esc(store.phone)}
+          </a>`
+        : ''
+    }
+  </div>
+</div>
+
+<div style="padding:18px 16px 26px;">
+  <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;margin-bottom:14px;">
+    ${countLabel}
+  </div>
+
+  ${
+    products.length === 0
+      ? `<div style="text-align:center;padding:30px;color:var(--gray);">
+          No products listed yet.
+        </div>`
+      : `<div class="product-grid">
+          ${products.map(p => buildProductCard(p, store)).join('')}
+        </div>`
+  }
+</div>
+``
+
+`;
+
+document.getElementById('detail-modal').classList.add('show');
 };
-window.closeDetailModal=()=>document.getElementById('detail-modal').classList.remove('show');
 
-// ── SUBMIT LISTING ──
-window.submitListing=async function(){
-  const btn=document.getElementById("submit-btn");
-  const err=document.getElementById("form-error");
-  err.textContent="";
-  const title=document.getElementById("f-title").value.trim();
-  const desc=document.getElementById("f-desc").value.trim();
-  const price=document.getElementById("f-price").value.trim();
-  const phone=document.getElementById("f-phone").value.trim();
-  const email=document.getElementById("f-email").value.trim();
-  const location=document.getElementById("f-location").value.trim();
-  const category=document.getElementById("f-category").value;
-  const type=document.getElementById("f-type").value;
-  const condition=document.getElementById("f-condition").value;
-  const plan=PLANS[selectedPlan];
+window.closeDetailModal = () =>
+document.getElementById('detail-modal').classList.remove('show');
 
-  if(!title){err.textContent="Please add a title.";return;}
-  if(!desc){err.textContent="Please add a description.";return;}
-  if(!phone){err.textContent="Phone number is required.";return;}
-  if(!email&&plan.price>0){err.textContent="Email is required for paid plans.";return;}
-  if(uploadedImgs.length>plan.photos){err.textContent=`${plan.name} plan allows max ${plan.photos} photo${plan.photos>1?"s":""}.`;return;}
+function buildProductCard(product, store){
+const priceText =
+product.price ? fmt(product.price) : 'Contact for Price';
 
-  btn.disabled=true;document.getElementById('submitTxt').textContent="Processing…";
-  pendingListingData={title,description:desc,price,phone,email,location,category,type,condition,plan:selectedPlan};
+const msg = `Hi! I saw ${product.name} (${priceText}) on CityLinkGH. Is it available?`;
 
-  initiatePaystackPayment(selectedPlan,email,phone,async(paystackResponse)=>{
+return ` <div class="product-card">
+
+``
+  ${
+    product.imageUrl
+      ? `<img src="${esc(product.imageUrl)}"
+             alt=""
+             loading="lazy"
+             class="pc-img">`
+      : `<div class="pc-img-fallback">
+          ${product.image || '📦'}
+        </div>`
+  }
+
+  <div class="pc-name">${esc(product.name)}</div>
+
+  <div class="pc-desc">
+    ${esc(product.description || '')}
+  </div>
+
+  <div class="pc-footer">
+    <span class="pc-price">${priceText}</span>
+
+    ${
+      product.inStock
+        ? '<span class="pc-stock in">In Stock</span>'
+        : '<span class="pc-stock out">Out of Stock</span>'
+    }
+  </div>
+
+  ${
+    store.whatsapp
+      ? `<a href="${waLink(store.whatsapp, msg)}"
+           target="_blank"
+           class="pc-btn"
+           style="display:block;text-align:center;background:#25D366;color:#fff;text-decoration:none;padding:10px;border-radius:10px;font-weight:700;margin-top:10px;">
+           💬 Enquire on WhatsApp
+         </a>`
+      : ''
+  }
+
+</div>
+``
+
+`;
+}
+
+
+// ════════════════════════════════════
+// AUTH MODAL
+// ════════════════════════════════════
+let authCallback = null;
+window.openAuthModal = (callback) => {
+  authCallback = callback;
+  document.getElementById('authEmail').value='';
+  document.getElementById('authPwd').value='';
+  document.getElementById('authErr').textContent='';
+  authMode='login';
+  updateAuthModalUI();
+  document.getElementById('auth-modal').classList.add('show');
+};
+window.closeAuthModal = () => document.getElementById('auth-modal').classList.remove('show');
+window.toggleAuthMode = () => { authMode = authMode==='login'?'register':'login'; updateAuthModalUI(); };
+function updateAuthModalUI(){
+  const isLogin = authMode==='login';
+  document.getElementById('authModalTitle').textContent = isLogin ? 'Sign In to Open a Store' : 'Create Your Account';
+  document.getElementById('authSubmitBtn').textContent = isLogin ? 'Sign In →' : 'Create Account →';
+  document.getElementById('authSwitchText').textContent = isLogin ? 'New here?' : 'Already have an account?';
+  document.getElementById('authSwitchLink').textContent = isLogin ? 'Create account' : 'Sign in';
+}
+window.submitAuth = async () => {
+  const email = document.getElementById('authEmail').value.trim();
+  const pwd = document.getElementById('authPwd').value;
+  const err = document.getElementById('authErr');
+  err.textContent='';
+  if(!email||!pwd){ err.textContent='Enter email and password'; return; }
+  try{
+    let cred;
+    if(authMode==='login') cred = await signInWithEmailAndPassword(auth,email,pwd);
+    else cred = await createUserWithEmailAndPassword(auth,email,pwd);
+    closeAuthModal();
+    showToast(authMode==='login' ? '✅ Signed in!' : '✅ Account created!');
+    if(authCallback) authCallback(cred.user);
+  }catch(ex){ err.textContent = (ex.message||'').replace('Firebase: ','').replace(/\(auth\/.*\)\.?/,''); }
+};
+
+// ════════════════════════════════════
+// PRICING MODAL
+// ════════════════════════════════════
+window.openPricingModal = () => document.getElementById('pricing-modal').classList.add('show');
+window.closePricingModal = () => document.getElementById('pricing-modal').classList.remove('show');
+window.choosePlanAndRegister = (plan) => { closePricingModal(); goRegister(); setTimeout(()=>selectRegPlan(plan==='pro'?'pro':plan==='featured'?'featured':'basic'),250); };
+
+// ════════════════════════════════════
+// REGISTER STORE WIZARD
+// ════════════════════════════════════
+window.goRegister = () => {
+  if(!currentUser){ openAuthModal((user)=>{ openRegisterModal(); }); return; }
+  openRegisterModal();
+};
+function openRegisterModal(){
+  regStep=0; regForm={}; regProducts=[{name:'',price:'',description:'',imageUrl:'',inStock:true}]; regPlan='basic'; regLogoUrl='';
+  ['regName','regOwner','regLocation','regPhone','regWhatsapp','regDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('regCategory').value='';
+  document.getElementById('logoUploadWrap').style.backgroundImage='';
+  document.getElementById('logoUploadIcon').textContent='📷';
+  document.getElementById('logoUploadIcon').style.display='inline';
+  document.getElementById('logoUploadTxt').textContent='Upload';
+  renderProductRows();
+  showRegPanel(0);
+  document.getElementById('regSuccessPanel').style.display='none';
+  document.getElementById('regPanel0').style.display='block';
+  document.getElementById('register-modal').classList.add('show');
+}
+window.closeRegisterModal = () => document.getElementById('register-modal').classList.remove('show');
+
+function showRegPanel(step){
+  regStep=step;
+  for(let i=0;i<3;i++){
+    document.getElementById('regPanel'+i).style.display = i===step?'block':'none';
+    const stepEl = document.getElementById('regStep'+i);
+    stepEl.classList.remove('active','done');
+    if(i<step) stepEl.classList.add('done');
+    if(i===step) stepEl.classList.add('active');
+  }
+  for(let i=0;i<2;i++){
+    document.getElementById('regLine'+i).classList.toggle('done', i<step);
+  }
+}
+
+window.regNextStep = (fromStep) => {
+  if(fromStep===0){
+    const name = document.getElementById('regName').value.trim();
+    const cat = document.getElementById('regCategory').value;
+    if(!name){ showToast('⚠️ Business name required'); return; }
+    if(!cat){ showToast('⚠️ Category required'); return; }
+    showRegPanel(1);
+  } else if(fromStep===1){
+    if(!regProducts.some(p=>p.name&&p.price)){ showToast('⚠️ Add at least one product with a name and price'); return; }
+    showRegPanel(2);
+  }
+};
+window.regPrevStep = (fromStep) => showRegPanel(fromStep-1);
+
+// ── Product rows ──
+function renderProductRows(){
+  document.getElementById('productRows').innerHTML = regProducts.map((p,i)=>`
+    <div class="reg-product-row">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-weight:700;font-size:13px;">Item ${i+1}</span>
+        ${regProducts.length>1?`<button onclick="removeProductRow(${i})" style="background:#fdecea;color:var(--red);border:none;border-radius:6px;padding:4px 10px;font-weight:700;font-size:11px;cursor:pointer;">Remove</button>`:''}
+      </div>
+      <div class="reg-product-grid">
+        <div class="reg-img-upload" onclick="document.getElementById('prodImgInput${i}').click()" id="prodImgWrap${i}" style="${p.imageUrl?`background-image:url(${esc(p.imageUrl)});`:''}">
+          ${!p.imageUrl?'<span>📷</span>':''}
+        </div>
+        <input type="file" id="prodImgInput${i}" accept="image/*" style="display:none;" onchange="uploadProductImg(this,${i})">
+        <div style="display:grid;gap:8px;">
+          <div class="r2">
+            <input type="text" placeholder="Product name" value="${esc(p.name)}" onchange="updateProductField(${i},'name',this.value)" class="reg-input">
+            <input type="number" placeholder="Price (GHS)" value="${esc(p.price)}" onchange="updateProductField(${i},'price',this.value)" class="reg-input">
+          </div>
+          <input type="text" placeholder="Brief description" value="${esc(p.description)}" onchange="updateProductField(${i},'description',this.value)" class="reg-input">
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer;">
+            <input type="checkbox" ${p.inStock?'checked':''} onchange="updateProductField(${i},'inStock',this.checked)"> In stock / available
+          </label>
+        </div>
+      </div>
+    </div>`).join('');
+}
+window.addProductRow = () => { regProducts.push({name:'',price:'',description:'',imageUrl:'',inStock:true}); renderProductRows(); };
+window.removeProductRow = (i) => { regProducts.splice(i,1); renderProductRows(); };
+window.updateProductField = (i,field,val) => { regProducts[i][field] = val; };
+
+window.uploadProductImg = async (input, idx) => {
+  const f = input.files[0]; if(!f) return;
+  if(f.size>5*1024*1024){ showToast('❌ Max 5MB'); return; }
+  showToast('⏳ Uploading…');
+  try{
+    const url = await uploadToCloudinary(f);
+    regProducts[idx].imageUrl = url;
+    renderProductRows();
+    showToast('✅ Photo added!');
+  }catch(e){ showToast('❌ Upload failed'); }
+};
+
+window.uploadLogo = async (input) => {
+  const f = input.files[0]; if(!f) return;
+  if(f.size>5*1024*1024){ showToast('❌ Max 5MB'); return; }
+  showToast('⏳ Uploading…');
+  try{
+    const url = await uploadToCloudinary(f);
+    regLogoUrl = url;
+    document.getElementById('logoUploadWrap').style.backgroundImage = `url(${url})`;
+    document.getElementById('logoUploadIcon').style.display='none';
+    document.getElementById('logoUploadTxt').textContent='';
+    showToast('✅ Logo uploaded!');
+  }catch(e){ showToast('❌ Upload failed'); }
+};
+
+async function uploadToCloudinary(file){
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET);
+  fd.append('folder', 'citylinkgh_stores');
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+  const data = await res.json();
+  if(!data.secure_url) throw new Error('Upload failed');
+  return data.secure_url;
+}
+
+// ── PLAN SELECTION (step 2) ──
+window.selectRegPlan = (plan) => {
+  regPlan = plan;
+  document.querySelectorAll('.reg-plan-opt').forEach(o=>o.classList.remove('sel'));
+  document.querySelector(`.reg-plan-opt[data-plan="${plan}"]`).classList.add('sel');
+  const note = document.getElementById('regPaymentNote');
+  note.style.display = PLANS[plan].price>0 ? 'flex' : 'none';
+  document.getElementById('launchBtnTxt').textContent = PLANS[plan].price>0 ? 'Pay & Launch' : 'Launch My Store';
+};
+
+// ── PAYSTACK ──
+function loadPaystackScript(){
+  return new Promise((resolve,reject)=>{
+    if(window.PaystackPop){ resolve(); return; }
+    const s=document.createElement('script');
+    s.src='https://js.paystack.co/v1/inline.js';
+    s.onload=resolve; s.onerror=()=>reject(new Error('Failed to load Paystack'));
+    document.head.appendChild(s);
+  });
+}
+async function payWithPaystack({email, amountGHS, metadata, onSuccess, onClose}){
+  await loadPaystackScript();
+  const handler = window.PaystackPop.setup({
+    key: PAYSTACK_KEY, email, amount: Math.round(amountGHS*100), currency:'GHS',
+    channels:['mobile_money','card'], metadata,
+    callback: (res)=>onSuccess(res),
+    onClose: ()=>{ if(onClose) onClose(); }
+  });
+  handler.openIframe();
+}
+
+// ── LAUNCH STORE ──
+window.launchStore = async () => {
+  if(!currentUser){ showToast('⚠️ Please sign in first'); openAuthModal(()=>{}); return; }
+  const err = document.getElementById('regError'); err.textContent='';
+  const btn = document.getElementById('launchBtn');
+  btn.disabled=true; document.getElementById('launchBtnTxt').textContent='Processing…';
+
+  const cleanProducts = regProducts.filter(p=>p.name&&p.price).map((p,i)=>({...p, id:Date.now()+i, price:Number(p.price)}));
+  const storeData = {
+    name: document.getElementById('regName').value.trim(),
+    category: document.getElementById('regCategory').value,
+    owner: document.getElementById('regOwner').value.trim(),
+    location: document.getElementById('regLocation').value.trim(),
+    phone: document.getElementById('regPhone').value.trim(),
+    whatsapp: document.getElementById('regWhatsapp').value.trim(),
+    description: document.getElementById('regDesc').value.trim(),
+    logoUrl: regLogoUrl,
+    products: cleanProducts,
+    plan: regPlan,
+    ownerUid: currentUser.uid,
+    ownerEmail: currentUser.email,
+    verified: false,
+    createdAt: serverTimestamp()
+  };
+
+  const finish = async (paymentRef=null) => {
     try{
-      document.getElementById('submitTxt').textContent="Saving…";
-      const expiresAt=new Date(Date.now()+plan.duration*86400000);
-      await addDoc(collection(db,"buy_sell_listings"),{
-        ...pendingListingData,imageUrl:uploadedImgs[0]||'',
-        status:"active",paymentRef:paystackResponse.reference||"free",
-        uid:currentUser?currentUser.uid:"anon",createdAt:serverTimestamp(),
-        expiresAt,views:0,contacts_whatsapp:0,contacts_call:0
-      });
-      await sendSMS(phone,`Hi! Your "${title}" listing is now LIVE on CityLinkGH under the ${plan.name} plan. Active for ${plan.duration} days. Good luck! 🎉`);
-      document.getElementById('f-title').value='';document.getElementById('f-desc').value='';document.getElementById('f-price').value='';document.getElementById('f-phone').value='';document.getElementById('f-email').value='';document.getElementById('f-location').value='';document.getElementById('f-condition').value='';
-      uploadedImgs=[];renderImgGrid();
-      window.selectPlan("basic");closeModal();await fetchListings();
-      showToast(`🎉 Your listing is live!`);
-    }catch(e){err.textContent="Something went wrong — please try again.";console.error(e);}
-    finally{btn.disabled=false;document.getElementById('submitTxt').textContent="Post Listing";}
+      if(paymentRef) storeData.lastPaymentRef = paymentRef;
+      await addDoc(collection(db,'stores'), storeData);
+      document.getElementById('regPanel2').style.display='none';
+      document.getElementById('regSuccessPanel').style.display='block';
+      document.getElementById('regSuccessMsg').textContent = `${storeData.name} is now live on CityLinkGH. Customers can find your store and contact you directly.`;
+      document.getElementById('regSuccessSummary').innerHTML = `
+        <div style="font-weight:700;margin-bottom:8px;">Your store summary</div>
+        <div style="font-size:13px;color:var(--gray);line-height:1.8;">
+          📍 ${esc(storeData.location||'—')}<br>
+          📞 ${esc(storeData.phone||'—')}<br>
+          📦 ${cleanProducts.length} product${cleanProducts.length!==1?'s':''} listed<br>
+          💳 Plan: <strong>${PLANS[regPlan].name}</strong>
+        </div>`;
+    }catch(e){
+      err.textContent = 'Something went wrong: '+e.message;
+    }finally{
+      btn.disabled=false; document.getElementById('launchBtnTxt').textContent = PLANS[regPlan].price>0?'Pay & Launch':'Launch My Store';
+    }
+  };
+
+  const plan = PLANS[regPlan];
+  if(plan.price>0){
+    await payWithPaystack({
+      email: currentUser.email, amountGHS: plan.price,
+      metadata:{businessName:storeData.name, plan:regPlan},
+      onSuccess: (res)=>finish(res.reference),
+      onClose: ()=>{ btn.disabled=false; document.getElementById('launchBtnTxt').textContent='Pay & Launch'; }
+    });
+  } else {
+    await finish();
+  }
+};
+
+// ════════════════════════════════════
+// OWNER DASHBOARD
+// ════════════════════════════════════
+window.openDashboard = async () => {
+  if(!currentUser){ openAuthModal(()=>openDashboard()); return; }
+  document.getElementById('dashboard-modal').classList.add('show');
+  const content = document.getElementById('dashboardContent');
+  content.innerHTML = '<div class="loading-row"><div class="spinner"></div> Loading…</div>';
+  try{
+    const snap = await getDocs(query(collection(db,'stores'), where('ownerUid','==',currentUser.uid)));
+    if(snap.empty){
+      content.innerHTML = `<div style="text-align:center;padding:30px 16px;">
+        <div style="font-size:40px;margin-bottom:10px;">🏪</div>
+        <div style="font-weight:700;margin-bottom:6px;">No store linked to your account yet</div>
+        <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">Open a store and it'll appear here for you to manage.</p>
+        <button class="submit-btn" onclick="closeDashboard();goRegister();" style="max-width:240px;margin:0 auto;">+ Open a Store</button>
+      </div>`;
+      return;
+    }
+    const store = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    renderDashboardContent(store);
+  }catch(e){
+    content.innerHTML = `<div style="text-align:center;padding:30px;color:var(--red);">⚠️ ${esc(e.message)}</div>`;
+  }
+};
+window.closeDashboard = () => document.getElementById('dashboard-modal').classList.remove('show');
+
+function renderDashboardContent(store){
+  const plan = PLANS[store.plan] || PLANS.basic;
+  const products = store.products || [];
+  document.getElementById('dashboardContent').innerHTML = `
+    <div style="background:var(--mist);border-radius:12px;padding:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;">${esc(store.name)}</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:2px;">Plan: <strong>${plan.name}</strong> · ${products.length} product${products.length!==1?'s':''}</div>
+      </div>
+      <button class="submit-btn-outline" onclick="openStoreDetail('${store.id}');closeDashboard();" style="width:auto;padding:8px 16px;font-size:12px;">👁 View Public Page</button>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;">
+      <button class="dash-tab active" data-dt="products" onclick="switchDashTab(this,'${store.id}')">Products</button>
+      <button class="dash-tab" data-dt="plan" onclick="switchDashTab(this,'${store.id}')">Plan</button>
+    </div>
+    <div id="dashTabBody"></div>`;
+  window._dashStore = store;
+  renderDashProducts(store);
+}
+
+window.switchDashTab = (btn, storeId) => {
+  document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const tab = btn.dataset.dt;
+  if(tab==='products') renderDashProducts(window._dashStore);
+  else renderDashPlan(window._dashStore);
+};
+
+function renderDashProducts(store){
+  const products = store.products || [];
+  const plan = PLANS[store.plan] || PLANS.basic;
+  document.getElementById('dashTabBody').innerHTML = `
+    <div style="font-size:12px;color:var(--gray);margin-bottom:10px;">${products.length} / ${plan.limit===Infinity?'∞':plan.limit} products used</div>
+    <div id="dashProductRows">${products.map((p,i)=>dashProductRow(p,i)).join('')}</div>
+    <button class="submit-btn-outline" onclick="dashAddProduct()" style="margin-top:10px;">+ Add Product</button>`;
+}
+
+function dashProductRow(p,i){
+  return `<div class="reg-product-row">
+    <div class="reg-product-grid">
+      <div class="reg-img-upload" onclick="document.getElementById('dashProdImg${i}').click()" style="${p.imageUrl?`background-image:url(${esc(p.imageUrl)});`:''}">
+        ${!p.imageUrl?'<span>📷</span>':''}
+      </div>
+      <input type="file" id="dashProdImg${i}" accept="image/*" style="display:none;" onchange="dashUploadProductImg(this,${i})">
+      <div style="display:grid;gap:8px;">
+        <input type="text" class="reg-input" value="${esc(p.name)}" placeholder="Name" onchange="dashUpdateProduct(${i},'name',this.value)">
+        <div class="r2">
+          <input type="number" class="reg-input" value="${esc(p.price)}" placeholder="Price" onchange="dashUpdateProduct(${i},'price',this.value)">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" ${p.inStock?'checked':''} onchange="dashUpdateProduct(${i},'inStock',this.checked)"> In stock</label>
+        </div>
+        <input type="text" class="reg-input" value="${esc(p.description||'')}" placeholder="Description" onchange="dashUpdateProduct(${i},'description',this.value)">
+        <button onclick="dashRemoveProduct(${i})" style="background:#fdecea;color:var(--red);border:none;border-radius:6px;padding:5px 10px;font-weight:700;font-size:11px;cursor:pointer;justify-self:start;">Remove</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function dashSave(updates){
+  await updateDoc(doc(db,'stores',window._dashStore.id), updates);
+  window._dashStore = {...window._dashStore, ...updates};
+  showToast('✅ Saved!');
+}
+window.dashUpdateProduct = (i,field,val) => {
+  const products = [...window._dashStore.products];
+  products[i] = {...products[i], [field]: field==='price'?Number(val):val};
+  dashSave({products});
+};
+window.dashAddProduct = () => {
+  const plan = PLANS[window._dashStore.plan]||PLANS.basic;
+  const products = window._dashStore.products||[];
+  if(products.length>=plan.limit){ showToast(`⚠️ Your ${plan.name} plan allows up to ${plan.limit} products. Upgrade to add more.`); return; }
+  const newProducts = [...products, {id:Date.now(),name:'New product',price:0,description:'',imageUrl:'',inStock:true}];
+  dashSave({products:newProducts}).then(()=>renderDashProducts(window._dashStore));
+};
+window.dashRemoveProduct = (i) => {
+  const products = window._dashStore.products.filter((_,idx)=>idx!==i);
+  dashSave({products}).then(()=>renderDashProducts(window._dashStore));
+};
+window.dashUploadProductImg = async (input,i) => {
+  const f=input.files[0]; if(!f) return;
+  if(f.size>5*1024*1024){ showToast('❌ Max 5MB'); return; }
+  showToast('⏳ Uploading…');
+  try{
+    const url = await uploadToCloudinary(f);
+    const products = [...window._dashStore.products];
+    products[i] = {...products[i], imageUrl:url};
+    await dashSave({products});
+    renderDashProducts(window._dashStore);
+  }catch(e){ showToast('❌ Upload failed'); }
+};
+
+function renderDashPlan(store){
+  const plan = PLANS[store.plan]||PLANS.basic;
+  document.getElementById('dashTabBody').innerHTML = `
+    <div style="background:#f0fff6;border-radius:10px;padding:12px;font-size:13px;color:var(--green);font-weight:600;margin-bottom:14px;">Current plan: ${plan.name}</div>
+    <div style="display:grid;gap:10px;" id="dashPlanOpts">
+      ${Object.entries(PLANS).map(([key,p])=>`
+        <div style="border:2px solid ${store.plan===key?'var(--green)':'var(--border)'};background:${store.plan===key?'#f0fff6':'var(--card)'};border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;">${p.name}</div>
+            <div style="font-size:12px;color:var(--gray);">${p.limit===Infinity?'Unlimited':'Up to '+p.limit} products</div>
+            <div style="font-weight:700;color:var(--green);margin-top:3px;font-size:13px;">${p.price===0?'Free':fmt(p.price)+'/mo'}</div>
+          </div>
+          <button ${store.plan===key?'disabled':''} onclick="dashUpgrade('${key}')" style="background:${store.plan===key?'#ccc':'var(--green)'};color:#fff;border:none;border-radius:9px;padding:9px 16px;font-weight:700;font-size:12px;cursor:${store.plan===key?'default':'pointer'};">
+            ${store.plan===key?'Current Plan':(p.price===0?'Switch':'Upgrade & Pay')}
+          </button>
+        </div>`).join('')}
+    </div>`;
+}
+window.dashUpgrade = async (planKey) => {
+  const plan = PLANS[planKey];
+  if(plan.price===0){ await dashSave({plan:planKey}); renderDashPlan(window._dashStore); return; }
+  await payWithPaystack({
+    email: currentUser.email, amountGHS: plan.price,
+    metadata:{storeId:window._dashStore.id, plan:planKey},
+    onSuccess: async (res)=>{ await dashSave({plan:planKey, lastPaymentRef:res.reference}); renderDashPlan(window._dashStore); showToast(`✅ Upgraded to ${plan.name}!`); },
+    onClose: ()=>{}
   });
 };
 
-// ── IMAGE UPLOAD ──
-function renderImgGrid(){
-  const limit=PLANS[selectedPlan].photos;
-  const grid=document.getElementById('imgUpGrid');
-  let html=uploadedImgs.map((img,i)=>`<div class="img-up-slot"><img src="${esc(img)}" alt=""><button class="img-up-del" onclick="removeImg(${i})">×</button></div>`).join('');
-  if(uploadedImgs.length<limit)html+=`<div class="img-up-add"><input type="file" accept="image/*" onchange="uploadImg(this)"><span>📷</span><span>Add</span></div>`;
-  grid.innerHTML=html;
-}
-window.removeImg=idx=>{uploadedImgs.splice(idx,1);renderImgGrid();};
-window.uploadImg=async input=>{
-  const f=input.files[0];if(!f)return;
-  if(f.size>5*1024*1024){showToast('Max 5MB');return;}
-  const limit=PLANS[selectedPlan].photos;
-  if(uploadedImgs.length>=limit){showToast(`Max ${limit} photos for ${PLANS[selectedPlan].name}`);return;}
-  const bar=document.getElementById('ubar'),fill=document.getElementById('ufill'),stat=document.getElementById('ustat');
-  bar.style.display='block';stat.textContent='Uploading…';fill.style.width='10%';
-  try{
-    let p=10;const iv=setInterval(()=>{p=Math.min(p+12,85);fill.style.width=p+'%';},300);
-    const url=await uploadToCloudinary(f);
-    clearInterval(iv);fill.style.width='100%';stat.textContent='✅ Uploaded!';
-    uploadedImgs.push(url);renderImgGrid();setTimeout(()=>bar.style.display='none',800);
-  }catch(e){stat.textContent='❌ Failed';fill.style.width='0%';}
-};
-
-// ── BUMP ──
-window.openBumpModal=function(id,title){document.getElementById("bump-id").value=id;document.getElementById("bump-title").textContent=`"${title}"`;document.getElementById("bump-modal").classList.add("show");};
-window.closeBumpModal=function(){document.getElementById("bump-modal").classList.remove("show");};
-window.payBump=function(){
-  const id=document.getElementById("bump-id").value;
-  const email=document.getElementById("bump-email").value.trim();
-  if(!email){showToast("Enter your email to continue.");return;}
-  const handler=PaystackPop.setup({key:PAYSTACK_KEY,email,amount:1000,currency:"GHS",ref:"BUMP_"+Date.now(),onSuccess:async()=>{await updateDoc(doc(db,"buy_sell_listings",id),{plan:"premium",bumpedAt:serverTimestamp(),expiresAt:new Date(Date.now()+30*86400000)});closeBumpModal();await fetchListings();showToast("⬆️ Listing bumped to top for 30 days!");},onClose:()=>showToast("Bump cancelled.")});
-  handler.openIframe();
-};
-
-// ── REPORT ──
-window.openReportModal=function(id,title){document.getElementById("report-listing-id").value=id;document.getElementById("report-modal-title").textContent=`Report: "${title}"`;document.getElementById("report-modal").classList.add("show");};
-window.closeReportModal=function(){document.getElementById("report-modal").classList.remove("show");};
-window.submitReport=async function(){
-  const id=document.getElementById("report-listing-id").value;
-  const reason=document.getElementById("report-reason").value;
-  const details=document.getElementById("report-details").value.trim();
-  if(!reason){showToast("Please select a reason.");return;}
-  await addDoc(collection(db,"listing_reports"),{listingId:id,reason,details,reportedBy:currentUser?currentUser.uid:"anon",createdAt:serverTimestamp()});
-  closeReportModal();showToast("Report submitted — thank you!");
-};
-
-// ── PLAN PICKER ──
-window.selectPlan=function(plan){
-  selectedPlan=plan;
-  document.querySelectorAll(".plan-opt").forEach(c=>c.classList.remove("sel"));
-  document.getElementById("pick-"+plan).classList.add("sel");
-  const p=PLANS[plan];
-  document.getElementById("plan-photo-tip").textContent=`Up to ${p.photos} photo${p.photos>1?"s":""} · Listing stays live for ${p.duration} days`;
-  const note=document.getElementById("payment-note");
-  if(plan==="basic"){note.style.display='none';}
-  else{note.style.display='flex';document.getElementById("payment-plan-name").textContent=p.name;document.getElementById("payment-plan-price").textContent=`GHS ${p.price} via Paystack`;}
-  renderImgGrid();
-};
-window.choosePlanAndPost=function(plan){closePricingModal();openModal();setTimeout(()=>window.selectPlan(plan),120);};
-
-window.openModal=()=>{document.getElementById("post-modal").classList.add("show");};
-window.closeModal=()=>{document.getElementById("post-modal").classList.remove("show");};
-window.openPricingModal=()=>{document.getElementById("pricing-modal").classList.add("show");};
-window.closePricingModal=()=>{document.getElementById("pricing-modal").classList.remove("show");};
-
-function fmtAgo(date){if(!date)return'Recently';const d=Date.now()-new Date(date).getTime();if(isNaN(d))return'Recently';const m=Math.floor(d/60000);if(m<60)return`${m}m ago`;const h=Math.floor(m/60);if(h<24)return`${h}h ago`;return`${Math.floor(h/24)}d ago`;}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-let toastT;window.showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);};
-
-document.getElementById('sort-select').addEventListener('change',refresh);
-const descEl=document.getElementById('f-desc');
-const counter=document.getElementById('desc-counter');
-descEl.addEventListener('input',()=>{const len=descEl.value.length;counter.textContent=`${len}/500`;counter.className='char-counter'+(len>450?' warn':'')+(len>500?' over':'');});
-
-const urlParams=new URLSearchParams(location.search);
-if(urlParams.get("listing"))setTimeout(()=>openDetailModal(urlParams.get("listing")),600);
-
-fetchListings();renderImgGrid();
-
-window.toggleDrawer=()=>{const h=document.getElementById('hamburger'),d=document.getElementById('navDrawer'),o=document.getElementById('navOverlay');h.classList.toggle('open');d.classList.toggle('open');o.classList.toggle('open');document.body.style.overflow=d.classList.contains('open')?'hidden':'';};
-</script>
-
-<script>
+// ── BACK TO TOP ──
 window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>400);},{passive:true});
+
+// ── URL param: open a specific store ──
+const urlParams = new URLSearchParams(location.search);
+if(urlParams.get('store')) setTimeout(()=>openStoreDetail(urlParams.get('store')),700);
 </script>
 </body>
 </html>

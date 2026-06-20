@@ -58,7 +58,7 @@
     <button class="sec-tab active" onclick="switchSection('businesses',this)">🏪 Biz</button>
     <button class="sec-tab" onclick="switchSection('jobs',this)">💼 Jobs</button>
     <button class="sec-tab" onclick="switchSection('rooms',this)">🏠 Rooms</button>
-    <button class="sec-tab" onclick="switchSection('buy',this)">🛍️ Buy&Sell</button>
+    <button class="sec-tab" onclick="switchSection('buy',this)">🛍️ Stores</button>
     <button class="sec-tab" onclick="switchSection('news',this)">📰 News</button>
     <button class="sec-tab" onclick="switchSection('analytics',this)">📊 Stats</button>
   </div>
@@ -314,25 +314,37 @@
 
     <div class="section-panel" id="panel-buy">
       <div class="stats">
-        <div class="stat"><div class="stat-n" id="bsTotal" style="color:var(--ink);">—</div><div class="stat-l">Total Items</div></div>
-        <div class="stat"><div class="stat-n" id="bsActive" style="color:var(--green);">—</div><div class="stat-l">Active</div></div>
-        <div class="stat"><div class="stat-n" id="bsSold" style="color:var(--gray);">—</div><div class="stat-l">Sold</div></div>
-        <div class="stat"><div class="stat-n" id="bsCities" style="color:var(--blue);">—</div><div class="stat-l">Cities</div></div>
+        <div class="stat"><div class="stat-n" id="stTotal2" style="color:var(--ink);">—</div><div class="stat-l">Total Stores</div></div>
+        <div class="stat"><div class="stat-n" id="stVerified" style="color:var(--green);">—</div><div class="stat-l">Verified</div></div>
+        <div class="stat"><div class="stat-n" id="stFeatured2" style="color:var(--gold);">—</div><div class="stat-l">Featured</div></div>
+        <div class="stat"><div class="stat-n" id="stProducts" style="color:var(--blue);">—</div><div class="stat-l">Products</div></div>
       </div>
-      <div class="revenue-card" style="background:linear-gradient(135deg,#c0395a,#8c1a35);">
-        <div><div class="rev-lbl">Buy &amp; Sell Listings</div><div class="rev-amt" id="bsRevAmt">0 items</div><div class="rev-sub" id="bsRevSub">across all categories</div></div>
+      <div class="revenue-card" style="background:linear-gradient(135deg,#0d3a20,#1A6B3C);">
+        <div><div class="rev-lbl">Shop Local Stores</div><div class="rev-amt" id="storeRevAmt">0 stores</div><div class="rev-sub" id="storeRevSub">across all categories</div></div>
         <div style="font-size:40px;opacity:.6;">🛍️</div>
       </div>
-      <div class="sec-t">Manage Listings</div>
-      <div class="asearch"><input type="text" id="bssearch" placeholder="🔍  Search items…" oninput="renderBuyList()"></div>
+      <div class="sec-t">Manage Stores</div>
+      <div class="asearch"><input type="text" id="storesearch" placeholder="🔍  Search stores…" oninput="renderStoreList()"></div>
       <div class="tabs">
-        <button class="tab active" onclick="setBuyTab('all',this)">All</button>
-        <button class="tab" onclick="setBuyTab('available',this)">Available</button>
-        <button class="tab" onclick="setBuyTab('sold',this)">Sold</button>
-        <button class="tab" onclick="setBuyTab('featured',this)">⭐ Featured</button>
-        <button class="tab" onclick="setBuyTab('free',this)">Free</button>
+        <button class="tab active" onclick="setStoreTab('all',this)">All</button>
+        <button class="tab" onclick="setStoreTab('verified',this)">✓ Verified</button>
+        <button class="tab" onclick="setStoreTab('unverified',this)">Unverified</button>
+        <button class="tab" onclick="setStoreTab('featured',this)">⭐ Featured</button>
+        <button class="tab" onclick="setStoreTab('pro',this)">Pro</button>
+        <button class="tab" onclick="setStoreTab('basic',this)">Basic</button>
       </div>
-      <div class="biz-list" id="buyList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
+      <div class="biz-list" id="storeList"><div class="loading"><div class="spinner"></div> Loading…</div></div>
+    </div>
+
+    <!-- ══ STORE PRODUCTS MODAL ══ -->
+    <div id="storeProductsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:86vh;overflow-y:auto;padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;" id="spmStoreName">Store Products</div>
+          <button onclick="closeStoreProductsModal()" style="background:var(--cream);border:none;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;">✕</button>
+        </div>
+        <div id="spmProductList"></div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -404,8 +416,8 @@
         <div class="anal-stat"><div class="anal-n" id="anRevenue" style="color:var(--gold);">—</div><div class="anal-l">Est. Monthly Revenue</div></div>
         <div class="anal-stat"><div class="anal-n" id="anJobs" style="color:var(--blue);">—</div><div class="anal-l">Active Jobs</div></div>
         <div class="anal-stat"><div class="anal-n" id="anRooms" style="color:var(--purple);">—</div><div class="anal-l">Available Rooms</div></div>
-        <div class="anal-stat"><div class="anal-n" id="anItems" style="color:#c0395a;">—</div><div class="anal-l">Buy &amp; Sell Items</div></div>
-        <div class="anal-stat"><div class="anal-n" id="anSold" style="color:var(--gray);">—</div><div class="anal-l">Items Sold</div></div>
+        <div class="anal-stat"><div class="anal-n" id="anStores" style="color:#1A6B3C;">—</div><div class="anal-l">Stores</div></div>
+        <div class="anal-stat"><div class="anal-n" id="anStoreProducts" style="color:var(--gray);">—</div><div class="anal-l">Store Products</div></div>
       </div>
       <div class="analytics-card">
         <div class="sec-t">Businesses by Plan</div>
@@ -450,7 +462,7 @@ const auth=getAuth(app);
 let allBiz=[],bizTab='all',selRating=0,currentBizPlan='basic',uploadedBizImgs=[];
 let allJobs=[],jobTab='all',currentJobPlan='free',currentJobPrice=0;
 let allRooms=[],roomTab='all',currentRoomPlan='free',currentRoomPrice=0,uploadedRoomImgs=[];
-let allItems=[], buyTab='all';
+let allStores=[], storeTab='all';
 let allArticles=[],newsTab='all',uploadedNewsImg='';
 
 window.switchSection=(name,el)=>{
@@ -460,7 +472,7 @@ window.switchSection=(name,el)=>{
   el.classList.add('active');
   if(name==='jobs'&&!allJobs.length)fetchJobs();
   if(name==='rooms'&&!allRooms.length)fetchRooms();
-  if(name==='buy'&&!allItems.length)fetchBuyItems();
+  if(name==='buy'&&!allStores.length)fetchStores();
   if(name==='news'&&!allArticles.length)fetchArticles();
   if(name==='analytics')loadAnalytics();
 };
@@ -734,13 +746,13 @@ window.renderRoomList=()=>{
   if(!list.length){el.innerHTML='<div class="empty">📭 No rooms found</div>';return;}
   el.innerHTML=list.map(r=>{
     const plan=r.plan||'free',avail=r.available!==false;
-    return `<div class="biz-row plan-${plan==='featured'?'featured-r':plan}"><div class="biz-row-thumb">${r.imageUrl||r.images?.[0]?`<img src="${esc(r.imageUrl||r.images[0])}" alt="">`:'🏠'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(r.title||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(r.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${avail?'<span class="badge blive">● Available</span>':'<span class="badge bpend">Unavailable</span>'}${r.type?`<span class="badge bc">${esc(r.type)}</span>`:''}<span class="badge bc">📷 ${(r.images||[]).length||(r.imageUrl?1:0)}</span></div><div class="biz-row-loc">💰 GHS ${Number(r.price||0).toLocaleString()} ${r.period||''} · 📍 ${esc(r.district||'')} ${esc(r.city||'')} · 👁 ${r.views||0}</div></div><div class="row-acts"><button class="ibtn" onclick="editRoom('${r.id}')">✏️</button><button class="ibtn" onclick="toggleRoomAvail('${r.id}')">${avail?'🔴':'✅'}</button><button class="ibtn del" onclick="deleteRoom('${r.id}')">🗑</button></div></div>`;
+return `<div class="biz-row plan-${plan==='featured'?'featured-r':plan}"><div class="biz-row-thumb">${r.imageUrl||r.images?.[0]?`<img src="${esc(r.imageUrl||r.images[0])}" alt="">`:'🏠'}</div><div class="biz-row-body"><div class="biz-row-name">${esc(r.title||'Untitled')}</div><div class="biz-row-meta"><span class="badge bc">${esc(r.city||'—')}</span><span class="badge b${plan}">${plan==='urgent'?'🔴':plan==='featured'?'🌟':''} ${plan}</span>${avail?'<span class="badge blive">● Available</span>':'<span class="badge bpend">Unavailable</span>'}${r.type?`<span class="badge bc">${esc(r.type)}</span>`:''}<span class="badge bc">📷 ${(r.images||[]).length||(r.imageUrl?1:0)}</span></div><div class="biz-row-loc">💰 GHS ${Number(r.price||0).toLocaleString()} ${r.period||''} · 📍 ${esc(r.district||'')} ${esc(r.city||'')} · 👁 ${r.views||0}</div></div><div class="row-acts"><button class="ibtn" onclick="editRoom('${r.id}')">✏️</button><button class="ibtn" onclick="toggleRoomAvail('${r.id}')">${avail?'🔴':'✅'}</button><button class="ibtn del" onclick="deleteRoom('${r.id}')">🗑</button></div></div>`;
   }).join('');
 };
 function updateRoomStats(){
   document.getElementById('rTotal').textContent=allRooms.length;document.getElementById('rAvail').textContent=allRooms.filter(r=>r.available!==false).length;document.getElementById('rFeatured').textContent=allRooms.filter(r=>r.plan==='featured'||r.plan==='urgent').length;document.getElementById('rCities').textContent=[...new Set(allRooms.map(r=>r.city).filter(Boolean))].length;
   const paid=allRooms.filter(r=>r.paid),rev=paid.reduce((s,r)=>s+(r.plan==='urgent'?100:r.plan==='featured'?60:30),0);
-document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;
+  document.getElementById('rRevAmt').textContent=`GHS ${rev.toLocaleString()}`;document.getElementById('rRevSub').textContent=`${paid.length} paid room listing${paid.length!==1?'s':''}`;
 }
 
 // ── HELPERS ──
@@ -748,68 +760,110 @@ const catEmoji=c=>({Restaurant:'🍽️',Hospital:'🏥',Hotel:'🏨',Salon:'�
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ════════════════════════════════════
-// BUY & SELL
+// STORES (Shop Local — buy.html)
 // ════════════════════════════════════
-async function fetchBuyItems(){
+async function fetchStores(){
   try{
-    const snap=await getDocs(query(collection(db,'listings'),orderBy('createdAt','desc')));
-    allItems=snap.docs.map(d=>({id:d.id,...d.data()}));
-    updateBuyStats();renderBuyList();
-  }catch(e){document.getElementById('buyList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
+    const snap=await getDocs(query(collection(db,'stores'),orderBy('createdAt','desc')));
+    allStores=snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateStoreStats();renderStoreList();
+  }catch(e){document.getElementById('storeList').innerHTML=`<div class="empty">❌ ${e.message}</div>`;}
 }
 
-window.setBuyTab=(tab,el)=>{buyTab=tab;document.querySelectorAll('#panel-buy .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderBuyList();};
+window.setStoreTab=(tab,el)=>{storeTab=tab;document.querySelectorAll('#panel-buy .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderStoreList();};
 
-window.renderBuyList=()=>{
-  const q=(document.getElementById('bssearch').value||'').toLowerCase();
-  let list=[...allItems].filter(i=>!q||(i.title||'').toLowerCase().includes(q)||(i.category||'').toLowerCase().includes(q)||(i.city||'').toLowerCase().includes(q));
-  if(buyTab==='available')list=list.filter(i=>!i.sold);
-  else if(buyTab==='sold')list=list.filter(i=>i.sold);
-  else if(buyTab==='featured')list=list.filter(i=>i.plan==='featured');
-  else if(buyTab==='free')list=list.filter(i=>!i.plan||i.plan==='free');
-  const el=document.getElementById('buyList');
-  if(!list.length){el.innerHTML='<div class="empty">📭 No items found</div>';return;}
-  el.innerHTML=list.map(i=>{
-    const img=i.images?.[0]||i.imageUrl||'';
-    return `<div class="biz-row plan-${i.plan||'basic'}">
-      <div class="biz-row-thumb">${img?`<img src="${esc(img)}" alt="">`:i.sold?'✅':'🛍️'}</div>
+window.renderStoreList=()=>{
+  const q=(document.getElementById('storesearch').value||'').toLowerCase();
+  let list=[...allStores].filter(s=>!q||(s.name||'').toLowerCase().includes(q)||(s.category||'').toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q));
+  if(storeTab==='verified')list=list.filter(s=>s.verified);
+  else if(storeTab==='unverified')list=list.filter(s=>!s.verified);
+  else if(storeTab==='featured')list=list.filter(s=>s.plan==='featured');
+  else if(storeTab==='pro')list=list.filter(s=>s.plan==='pro');
+  else if(storeTab==='basic')list=list.filter(s=>!s.plan||s.plan==='basic');
+  const el=document.getElementById('storeList');
+  if(!list.length){el.innerHTML='<div class="empty">📭 No stores found</div>';return;}
+  el.innerHTML=list.map(s=>{
+    const products=s.products||[];
+    const inStock=products.filter(p=>p.inStock).length;
+    const plan=s.plan||'basic';
+    return `<div class="biz-row plan-${plan}">
+      <div class="biz-row-thumb">${s.logoUrl?`<img src="${esc(s.logoUrl)}" alt="">`:catEmoji(s.category)}</div>
       <div class="biz-row-body">
-        <div class="biz-row-name">${esc(i.title||'Untitled')}</div>
+        <div class="biz-row-name">${esc(s.name||'Untitled Store')}</div>
         <div class="biz-row-meta">
-          <span class="badge bc">${esc(i.category||'—')}</span>
-          <span class="badge bc">📍 ${esc(i.city||'—')}</span>
-          ${i.sold?'<span class="badge bstandard">✅ Sold</span>':'<span class="badge blive">● Available</span>'}
-          ${i.plan==='featured'?'<span class="badge bfeatured">⭐ Featured</span>':''}
-          <span class="badge bc">📷 ${(i.images||[]).length||0}</span>
+          <span class="badge bc">${esc(s.category||'—')}</span>
+          <span class="badge bc">📍 ${esc(s.location||'—')}</span>
+          <span class="badge b${plan}">${plan==='featured'?'⭐':plan==='pro'?'✓':''} ${plan}</span>
+          ${s.verified?'<span class="badge bverified">✓ Verified</span>':'<span class="badge bpend">Unverified</span>'}
+          <span class="badge bc">📦 ${products.length} product${products.length!==1?'s':''}</span>
         </div>
-        <div class="biz-row-loc">💰 GHS ${Number(i.price||0).toLocaleString()} · 👤 ${esc(i.sellerName||'')} · 👁 ${i.views||0}</div>
+        <div class="biz-row-loc">👤 ${esc(s.owner||s.ownerEmail||'—')} · ${inStock} in stock</div>
       </div>
       <div class="row-acts">
-        <button class="ibtn" onclick="toggleItemSold('${i.id}',${!!i.sold})">${i.sold?'🔄':'✅'}</button>
-        <button class="ibtn del" onclick="deleteItem('${i.id}')">🗑</button>
+        <button class="ibtn" onclick="viewStoreProducts('${s.id}')">📦</button>
+        <button class="ibtn" onclick="toggleStoreVerified('${s.id}',${!!s.verified})">${s.verified?'⏸':'✅'}</button>
+        <button class="ibtn del" onclick="deleteStore('${s.id}')">🗑</button>
       </div>
     </div>`;
   }).join('');
 };
 
-window.toggleItemSold=async(id,currentlySold)=>{
-  try{await updateDoc(doc(db,'listings',id),{sold:!currentlySold});showToast(currentlySold?'🔄 Marked Available':'✅ Marked Sold');await fetchBuyItems();}
+window.toggleStoreVerified=async(id,currentlyVerified)=>{
+  try{await updateDoc(doc(db,'stores',id),{verified:!currentlyVerified});showToast(currentlyVerified?'⏸ Unverified':'✅ Verified!');await fetchStores();}
   catch(e){showToast('❌ '+e.message);}
 };
 
-window.deleteItem=async id=>{
-  if(!confirm('Delete this listing permanently?'))return;
-  try{await deleteDoc(doc(db,'listings',id));showToast('🗑 Deleted');await fetchBuyItems();}
+window.deleteStore=async id=>{
+  if(!confirm('Delete this store permanently? This removes all its products too.'))return;
+  try{await deleteDoc(doc(db,'stores',id));showToast('🗑 Store deleted');await fetchStores();}
   catch(e){showToast('❌ '+e.message);}
 };
 
-function updateBuyStats(){
-  document.getElementById('bsTotal').textContent=allItems.length;
-  document.getElementById('bsActive').textContent=allItems.filter(i=>!i.sold).length;
-  document.getElementById('bsSold').textContent=allItems.filter(i=>i.sold).length;
-  document.getElementById('bsCities').textContent=[...new Set(allItems.map(i=>i.city).filter(Boolean))].length;
-  document.getElementById('bsRevAmt').textContent=allItems.length+' items';
-  document.getElementById('bsRevSub').textContent=allItems.filter(i=>!i.sold).length+' available · '+allItems.filter(i=>i.sold).length+' sold';
+// ── STORE PRODUCTS MODAL ──
+window.viewStoreProducts=(storeId)=>{
+  const store=allStores.find(s=>s.id===storeId);
+  if(!store)return;
+  document.getElementById('spmStoreName').textContent=`${store.name} — Products`;
+  const products=store.products||[];
+  const list=document.getElementById('spmProductList');
+  if(!products.length){
+    list.innerHTML='<div class="empty">📭 No products listed yet</div>';
+  } else {
+    list.innerHTML=products.map((p,i)=>`
+      <div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:center;">
+        <div style="width:48px;height:48px;border-radius:8px;background:var(--cream);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;">
+          ${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="" style="width:100%;height:100%;object-fit:cover;">`:'📦'}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:700;font-size:13px;">${esc(p.name||'Unnamed')}</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:2px;">GHS ${Number(p.price||0).toLocaleString()} · ${p.inStock?'<span style="color:var(--green);font-weight:700;">In Stock</span>':'<span style="color:var(--red);">Out of Stock</span>'}</div>
+        </div>
+        <button class="ibtn del" onclick="deleteStoreProduct('${storeId}',${i})">🗑</button>
+      </div>`).join('');
+  }
+  document.getElementById('storeProductsModal').style.display='flex';
+};
+window.closeStoreProductsModal=()=>{document.getElementById('storeProductsModal').style.display='none';};
+
+window.deleteStoreProduct=async(storeId,productIdx)=>{
+  if(!confirm('Remove this product from the store?'))return;
+  try{
+    const store=allStores.find(s=>s.id===storeId);
+    const products=(store.products||[]).filter((_,i)=>i!==productIdx);
+    await updateDoc(doc(db,'stores',storeId),{products});
+    showToast('🗑 Product removed');
+    await fetchStores();
+    viewStoreProducts(storeId);
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+function updateStoreStats(){
+  document.getElementById('stTotal2').textContent=allStores.length;
+  document.getElementById('stVerified').textContent=allStores.filter(s=>s.verified).length;
+  document.getElementById('stFeatured2').textContent=allStores.filter(s=>s.plan==='featured').length;
+  document.getElementById('stProducts').textContent=allStores.reduce((sum,s)=>sum+(s.products||[]).length,0);
+  document.getElementById('storeRevAmt').textContent=allStores.length+' stores';
+  document.getElementById('storeRevSub').textContent=allStores.filter(s=>s.plan==='pro').length+' pro · '+allStores.filter(s=>s.plan==='featured').length+' featured';
 }
 
 // ════════════════════════════════════
@@ -994,6 +1048,7 @@ async function loadAnalytics(){
   });
 
   if(!allBiz.length) await fetchAll();
+  if(!allStores.length) await fetchStores();
 
   const now = Date.now();
   const paid = allBiz.filter(b=>b.plan&&b.plan!=='basic'&&b.approved);
@@ -1006,8 +1061,8 @@ async function loadAnalytics(){
     return e>now;
   }).length;
   document.getElementById('anRooms').textContent = allRooms.filter(r=>r.available!==false).length;
-  document.getElementById('anItems').textContent = allItems.length||0;
-  if(document.getElementById('anSold')) document.getElementById('anSold').textContent = allItems.filter(i=>i.sold).length||0;
+  document.getElementById('anStores').textContent = allStores.length||0;
+  if(document.getElementById('anStoreProducts')) document.getElementById('anStoreProducts').textContent = allStores.reduce((sum,s)=>sum+(s.products||[]).length,0)||0;
 
   const chartDefaults = {
     responsive:true, maintainAspectRatio:false,
@@ -1060,10 +1115,10 @@ window.switchSection = (name, el) => {
   if(name==='analytics') loadAnalytics();
   if(name==='jobs'&&!allJobs.length) fetchJobs();
   if(name==='rooms'&&!allRooms.length) fetchRooms();
-  if(name==='buy'&&!allItems.length) fetchBuyItems();
+  if(name==='buy'&&!allStores.length) fetchStores();
   if(name==='news'&&!allArticles.length) fetchArticles();
 };
 
 </script>
 </body>
-</html>
+</html

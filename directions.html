@@ -1047,7 +1047,7 @@ async function dGetRoute(silent=false){
     dRoutePoly=route.geometry.coordinates.map(c=>[c[1],c[0]]);
     dRouteSteps=route.legs[0].steps; dCurrentStep=0;
     if(dRouteLayer) dMap.removeLayer(dRouteLayer);
-dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
+    dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
     if(!silent) dMap.fitBounds(dRouteLayer.getBounds(),{padding:[26,26],animate:true});
     const d=(route.distance/1000).toFixed(1), m=Math.round(route.duration/60);
     document.getElementById('d-rs-dist').textContent=dist(route.distance);

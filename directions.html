@@ -744,6 +744,17 @@ const _db = firebase.database();
 
 function _safeKey(k) { return k.replace(/[.#$\[\]]/g,'_'); }
 
+/* ── One-time connectivity / permissions self-test ── */
+(async()=>{
+  try {
+    await _db.ref('clgh/_healthcheck').set({ts:Date.now()});
+    console.log('[CityLinkGH] Firebase write OK — database rules allow access.');
+  } catch(e) {
+    console.error('[CityLinkGH] Firebase write FAILED:', e.code||e.message||e);
+    showToast(`⚠️ Live sync unavailable: ${e.code||e.message||'connection error'}. Check Firebase database rules / internet.`, 7000);
+  }
+})();
+
 /* ═══════════════════════════════════════════
    GLOBALS & SHARED UTILS
 ═══════════════════════════════════════════ */
@@ -1047,7 +1058,7 @@ async function dGetRoute(silent=false){
     dRoutePoly=route.geometry.coordinates.map(c=>[c[1],c[0]]);
     dRouteSteps=route.legs[0].steps; dCurrentStep=0;
     if(dRouteLayer) dMap.removeLayer(dRouteLayer);
-dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
+    dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
     if(!silent) dMap.fitBounds(dRouteLayer.getBounds(),{padding:[26,26],animate:true});
     const d=(route.distance/1000).toFixed(1), m=Math.round(route.duration/60);
     document.getElementById('d-rs-dist').textContent=dist(route.distance);
@@ -1287,6 +1298,7 @@ async function muJoin(){
   // Step 2: always scan all 5 slots so stale slots from ANY prior session size are freed
   const slots=MU_SLOTS; // A B C D E
   let assigned=null;
+  let lastErr=null;
 
   for(const slot of slots){
     // Only assign slots within current group size (or reclaim own slot from any position)
@@ -1303,11 +1315,20 @@ async function muJoin(){
         return {name:muMyName,lat:null,lng:null,ts:now,online:true,speed:0,isHost:slot==='A'};
       }
       return undefined;
-    }).then(r=>{ if(r && r.committed && gotIt && !assigned) assigned=slot; }).catch(()=>{});
+    }).then(r=>{ if(r && r.committed && gotIt && !assigned) assigned=slot; })
+      .catch(err=>{ lastErr=err; console.error('[CityLinkGH] join transaction failed on slot',slot,err.code||err.message||err); });
     if(assigned) break;
   }
 
   if(!assigned){
+    // If every transaction errored out (e.g. permission-denied), say so explicitly —
+    // don't report "session full" when we never actually got a real answer from the DB.
+    if(lastErr){
+      const code=lastErr.code||lastErr.message||'unknown error';
+      document.getElementById('mu-err').textContent=
+        `⚠️ Could not reach the live database (${code}). This usually means your Firebase Realtime Database security rules are blocking writes — they need to allow read/write for this app to work.`;
+      muJoinEl.disabled=false; muJoinEl.textContent='📍 Join Session'; return;
+    }
     // Give a more helpful message
     const takenNames=[];
     for(const slot of MU_SLOTS.slice(0,muGroupSize)){

@@ -61,16 +61,16 @@
     /* ── TAB BAR ── */
     .tab-bar {
       width:100%; max-width:600px;
-      display:grid; grid-template-columns:1fr 1fr;
+      display:grid; grid-template-columns:1fr 1fr 1fr;
       background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
       border-radius:14px; padding:4px; gap:4px;
     }
     .tab-btn {
-      display:flex; align-items:center; justify-content:center; gap:7px;
-      padding:11px 14px; border-radius:10px; border:none;
-      font-family:'Syne',sans-serif; font-size:13px; font-weight:800;
+      display:flex; align-items:center; justify-content:center; gap:5px;
+      padding:10px 6px; border-radius:10px; border:none;
+      font-family:'Syne',sans-serif; font-size:11.5px; font-weight:800;
       color:rgba(255,255,255,0.5); background:transparent;
-      cursor:pointer; transition:all .2s;
+      cursor:pointer; transition:all .2s; white-space:nowrap;
     }
     .tab-btn.active { background:#fff; color:var(--ink); box-shadow:0 2px 12px rgba(0,0,0,0.15); }
 
@@ -91,6 +91,8 @@
     .spinner { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.35); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; vertical-align:middle; }
     @keyframes spin { to { transform:rotate(360deg); } }
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+    @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes bounceIn { 0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
     .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(70px); background:#111; color:#fff; padding:10px 20px; border-radius:9px; font-size:13px; font-family:'Epilogue',sans-serif; box-shadow:0 4px 20px rgba(0,0,0,.3); transition:transform .3s; z-index:9999; white-space:nowrap; }
     .toast.show { transform:translateX(-50%) translateY(0); }
     .card-footer { border-top:1px solid var(--border); padding:10px 22px; display:flex; align-items:center; justify-content:space-between; background:var(--cream); }
@@ -308,6 +310,22 @@
     .wb-text { font-size:0.78rem; font-weight:600; color:#92400e; flex:1; }
     .wb-text strong { font-family:'Syne',sans-serif; }
 
+    /* ── LIVE TRACKING PANEL (new) ── */
+    #mu-live-track-panel { display:none; background:linear-gradient(135deg,#0e2800,#1a3c1a); border-bottom:2px solid rgba(74,222,128,0.3); padding:10px 16px; }
+    #mu-live-track-panel.show { display:block; }
+    .ltp-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .ltp-title { font-family:'Syne',sans-serif; font-size:11px; font-weight:800; color:#4ade80; text-transform:uppercase; letter-spacing:.07em; display:flex; align-items:center; gap:5px; }
+    .ltp-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; animation:pulse 1.2s ease-in-out infinite; }
+    .ltp-members { display:flex; flex-direction:column; gap:6px; }
+    .ltp-member { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:7px 10px; }
+    .ltp-avatar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:11px; font-weight:900; color:#fff; flex-shrink:0; }
+    .ltp-info { flex:1; }
+    .ltp-name { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; color:#fff; }
+    .ltp-detail { font-size:10px; color:rgba(255,255,255,0.5); margin-top:1px; }
+    .ltp-dist { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; color:#4ade80; }
+    .ltp-spd { font-size:10px; color:rgba(255,255,255,0.4); }
+    .ltp-eta-badge { background:rgba(212,160,23,0.2); border:1px solid rgba(212,160,23,0.4); border-radius:20px; padding:2px 8px; font-family:'Syne',sans-serif; font-size:10px; font-weight:800; color:var(--gold); }
+
     #mu-map { width:100%; height:50vh; min-height:280px; background:var(--mist); }
 
     .mu-panel { padding:14px 18px 18px; background:var(--panel-bg); }
@@ -354,50 +372,119 @@
     .dc-step { font-size:0.8rem; color:var(--ink); font-weight:600; }
     .dc-dist { font-size:0.7rem; color:var(--gray); margin-top:2px; }
 
-    #mu-chat { border-top:1px solid var(--border); }
-    #mu-chat.hidden { display:none; }
-    .chat-header { display:flex; align-items:center; justify-content:space-between; padding:10px 18px 8px; }
-    .chat-title { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); }
-    .chat-toggle { font-size:12px; color:var(--purple); cursor:pointer; font-weight:600; background:none; border:none; font-family:'Epilogue',sans-serif; }
-    #chat-messages { max-height:180px; overflow-y:auto; padding:0 18px 10px; display:flex; flex-direction:column; gap:7px; }
-    .chat-msg { max-width:80%; padding:8px 12px; border-radius:14px; font-size:0.81rem; line-height:1.4; }
-    .chat-msg.mine { background:var(--green); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+    /* ════════════════════════════════════
+       FLOATING CHAT BUBBLE (new)
+    ════════════════════════════════════ */
+    #chat-fab {
+      display:none;
+      position:fixed;
+      bottom:24px;
+      right:20px;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--purple),#a855f7);
+      border:none;
+      box-shadow:0 6px 24px rgba(124,58,237,0.45);
+      cursor:pointer;
+      align-items:center;
+      justify-content:center;
+      font-size:1.4rem;
+      z-index:1000;
+      transition:transform .2s,box-shadow .2s;
+      animation:bounceIn .4s ease;
+    }
+    #chat-fab.show { display:flex; }
+    #chat-fab:hover { transform:scale(1.08); box-shadow:0 8px 32px rgba(124,58,237,0.6); }
+    #chat-fab:active { transform:scale(0.95); }
+
+    .chat-fab-badge {
+      position:absolute;
+      top:-4px;
+      right:-4px;
+      min-width:20px;
+      height:20px;
+      background:var(--red);
+      border:2px solid #fff;
+      border-radius:10px;
+      font-family:'Syne',sans-serif;
+      font-size:10px;
+      font-weight:900;
+      color:#fff;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:0 4px;
+    }
+    .chat-fab-badge.show { display:flex; }
+
+    /* Chat modal overlay */
+    #chat-modal-overlay {
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.55);
+      z-index:1001;
+      backdrop-filter:blur(3px);
+      animation:fadeIn .2s ease;
+    }
+    #chat-modal-overlay.show { display:flex; align-items:flex-end; justify-content:center; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    #chat-modal {
+      width:100%;
+      max-width:600px;
+      max-height:85vh;
+      background:var(--card-bg);
+      border-radius:22px 22px 0 0;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      animation:slideUpModal .3s ease;
+      box-shadow:0 -8px 40px rgba(0,0,0,0.3);
+    }
+    @keyframes slideUpModal { from{transform:translateY(100%)} to{transform:translateY(0)} }
+
+    .chat-modal-handle {
+      width:40px; height:4px; background:var(--border); border-radius:2px;
+      margin:10px auto 0; flex-shrink:0;
+    }
+
+    .chat-modal-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 18px 10px; border-bottom:1px solid var(--border); flex-shrink:0;
+    }
+    .chat-modal-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:900; color:var(--ink); display:flex; align-items:center; gap:8px; }
+    .chat-modal-session { font-size:10px; font-weight:700; color:var(--gray); background:var(--mist); border-radius:20px; padding:2px 8px; }
+    .chat-modal-close { width:30px; height:30px; border-radius:50%; background:var(--mist); border:none; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; color:var(--gray); transition:background .15s; }
+    .chat-modal-close:hover { background:var(--border); color:var(--ink); }
+
+    /* Online indicators strip */
+    .chat-online-strip {
+      display:flex; gap:6px; flex-wrap:wrap; padding:8px 18px;
+      border-bottom:1px solid var(--border); flex-shrink:0; background:var(--cream);
+    }
+    .cos-pill { display:flex; align-items:center; gap:4px; background:var(--card-bg); border:1.5px solid var(--border); border-radius:20px; padding:3px 9px; }
+    .cos-dot { width:7px; height:7px; border-radius:50%; animation:pulse 1.2s ease-in-out infinite; }
+    .cos-name { font-family:'Syne',sans-serif; font-size:10px; font-weight:800; color:var(--ink); }
+
+    #chat-modal-messages {
+      flex:1; overflow-y:auto; padding:14px 18px; display:flex; flex-direction:column; gap:8px;
+      scroll-behavior:smooth;
+    }
+
+    .chat-msg { max-width:80%; padding:9px 13px; border-radius:16px; font-size:0.82rem; line-height:1.45; animation:slideUp .2s ease; }
+    .chat-msg.mine { background:linear-gradient(135deg,var(--green),#25a05a); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
     .chat-msg.theirs { background:var(--cream); color:var(--ink); align-self:flex-start; border:1.5px solid var(--border); border-bottom-left-radius:4px; }
-    .chat-msg .msg-who { font-family:'Syne',sans-serif; font-size:0.65rem; font-weight:800; margin-bottom:2px; opacity:.7; }
+    .chat-msg .msg-who { font-family:'Syne',sans-serif; font-size:0.65rem; font-weight:800; margin-bottom:3px; opacity:.7; }
     .chat-msg.theirs .msg-who { color:var(--purple); }
-    .chat-msg .msg-time { font-size:0.62rem; opacity:.55; margin-top:3px; text-align:right; }
-    .chat-input-row { display:flex; gap:8px; padding:8px 18px 14px; border-top:1px solid var(--border); }
-    .chat-input-row input { flex:1; background:var(--cream); border:1.5px solid var(--border); border-radius:11px; padding:9px 12px; font-family:'Epilogue',sans-serif; font-size:0.84rem; color:var(--ink); outline:none; }
-    .chat-input-row input:focus { border-color:var(--purple); }
-    .chat-send { padding:9px 14px; background:var(--purple); color:#fff; border:none; border-radius:11px; font-family:'Syne',sans-serif; font-size:12px; font-weight:800; cursor:pointer; }
-    .chat-send:hover { background:#6d28d9; }
-
-    #mu-im-here-btn { display:none; width:100%; padding:12px; background:linear-gradient(90deg,#1A6B3C,#25a05a); color:#fff; border:none; border-radius:11px; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:800; cursor:pointer; margin-bottom:10px; transition:opacity .15s; }
-    #mu-im-here-btn.show { display:block; }
-    #mu-im-here-btn:hover { opacity:.9; }
-
-    .leave-btn { width:100%; padding:10px; background:var(--card-bg); border:1.5px solid var(--border); border-radius:11px; font-family:'Syne',sans-serif; font-size:0.81rem; font-weight:800; color:var(--red); cursor:pointer; transition:background .15s; margin-top:6px; }
-    .leave-btn:hover { background:#fef2f2; border-color:var(--red); }
-
-    .chat-system { text-align:center; font-size:0.72rem; color:var(--gray); padding:4px 0; font-style:italic; }
-
-    .pin-row { display:flex; gap:8px; }
-    .pin-row .field-input { flex:1; letter-spacing:.2em; font-weight:700; }
-
-    .host-badge { display:inline-flex; align-items:center; gap:4px; background:rgba(212,160,23,0.15); border:1px solid rgba(212,160,23,0.4); border-radius:20px; padding:2px 8px; font-size:10px; font-weight:800; color:var(--gold); font-family:'Syne',sans-serif; margin-left:4px; }
-    .host-lock { background:var(--mist); border:1.5px solid var(--border); border-radius:10px; padding:10px 13px; margin-bottom:11px; font-size:0.78rem; color:var(--gray); display:flex; align-items:center; gap:8px; }
-    .host-lock.hidden { display:none; }
-
-    #mu-typing { min-height:18px; padding:0 18px 4px; font-size:0.72rem; color:var(--gray); font-style:italic; }
-    .typing-dots span { display:inline-block; animation:typingBounce 1s infinite; }
-    .typing-dots span:nth-child(2) { animation-delay:.15s; }
-    .typing-dots span:nth-child(3) { animation-delay:.3s; }
-    @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
+    .chat-msg .msg-time { font-size:0.62rem; opacity:.5; margin-top:4px; text-align:right; }
+    .chat-system { text-align:center; font-size:0.72rem; color:var(--gray); padding:6px 0; font-style:italic; background:var(--cream); border-radius:20px; margin:0 auto; padding:4px 14px; }
 
     .msg-seen { font-size:0.6rem; color:rgba(255,255,255,0.55); text-align:right; margin-top:2px; }
     .chat-msg.theirs .msg-seen { color:var(--gray); }
 
-    .msg-reactions { display:flex; gap:4px; flex-wrap:wrap; margin-top:4px; }
+    .msg-reactions { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
     .reaction-btn { background:var(--cream); border:1.5px solid var(--border); border-radius:20px; padding:2px 7px; font-size:0.78rem; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:3px; }
     .reaction-btn:hover { border-color:var(--gold); background:var(--gold-lt); }
     .reaction-btn.mine { background:var(--gold-lt); border-color:var(--gold); }
@@ -409,10 +496,177 @@
     .react-toggle { font-size:0.7rem; color:var(--gray); cursor:pointer; background:none; border:none; padding:2px 5px; border-radius:6px; }
     .react-toggle:hover { background:var(--mist); }
 
+    #chat-modal-typing { min-height:18px; padding:0 18px 4px; font-size:0.72rem; color:var(--gray); font-style:italic; flex-shrink:0; }
+    .typing-dots span { display:inline-block; animation:typingBounce 1s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay:.15s; }
+    .typing-dots span:nth-child(3) { animation-delay:.3s; }
+    @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
+
+    .chat-modal-input-row {
+      display:flex; gap:8px; padding:10px 16px 16px; border-top:1px solid var(--border); flex-shrink:0;
+      background:var(--card-bg);
+    }
+    .chat-modal-input-row input {
+      flex:1; background:var(--cream); border:1.5px solid var(--border); border-radius:22px;
+      padding:10px 16px; font-family:'Epilogue',sans-serif; font-size:0.86rem; color:var(--ink); outline:none;
+      transition:border-color .18s;
+    }
+    .chat-modal-input-row input:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(124,58,237,0.1); }
+    .chat-modal-send {
+      width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,var(--purple),#a855f7);
+      border:none; cursor:pointer; font-size:1rem; color:#fff; display:flex; align-items:center; justify-content:center;
+      transition:transform .15s,box-shadow .15s; flex-shrink:0;
+    }
+    .chat-modal-send:hover { transform:scale(1.05); box-shadow:0 4px 14px rgba(124,58,237,0.4); }
+
+    #mu-im-here-btn { display:none; width:100%; padding:12px; background:linear-gradient(90deg,#1A6B3C,#25a05a); color:#fff; border:none; border-radius:11px; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:800; cursor:pointer; margin-bottom:10px; transition:opacity .15s; }
+    #mu-im-here-btn.show { display:block; }
+    #mu-im-here-btn:hover { opacity:.9; }
+
+    .leave-btn { width:100%; padding:10px; background:var(--card-bg); border:1.5px solid var(--border); border-radius:11px; font-family:'Syne',sans-serif; font-size:0.81rem; font-weight:800; color:var(--red); cursor:pointer; transition:background .15s; margin-top:6px; }
+    .leave-btn:hover { background:#fef2f2; border-color:var(--red); }
+
+    .pin-row { display:flex; gap:8px; }
+    .pin-row .field-input { flex:1; letter-spacing:.2em; font-weight:700; }
+
+    .host-badge { display:inline-flex; align-items:center; gap:4px; background:rgba(212,160,23,0.15); border:1px solid rgba(212,160,23,0.4); border-radius:20px; padding:2px 8px; font-size:10px; font-weight:800; color:var(--gold); font-family:'Syne',sans-serif; margin-left:4px; }
+    .host-lock { background:var(--mist); border:1.5px solid var(--border); border-radius:10px; padding:10px 13px; margin-bottom:11px; font-size:0.78rem; color:var(--gray); display:flex; align-items:center; gap:8px; }
+    .host-lock.hidden { display:none; }
+
+    /* ════════════════════════════════════
+       SOCIAL UPGRADES — MEETUP
+    ════════════════════════════════════ */
+
+    /* Countdown */
+    #mu-countdown { display:none; background:linear-gradient(90deg,#0e2800,#1a6b3c); padding:10px 18px; align-items:center; gap:12px; border-bottom:2px solid rgba(74,222,128,0.3); }
+    #mu-countdown.show { display:flex; }
+    .cd-label { font-family:'Syne',sans-serif; font-size:10px; font-weight:800; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:.07em; }
+    #mu-countdown-val { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:900; color:#4ade80; letter-spacing:-0.02em; }
+    .cd-dest { font-size:11px; color:rgba(255,255,255,0.55); flex:1; }
+    .cd-cancel { background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); border-radius:8px; padding:4px 10px; font-family:'Syne',sans-serif; font-size:11px; font-weight:800; color:#fca5a5; cursor:pointer; }
+
+    /* SOS button */
+    #mu-sos-btn { display:none; position:fixed; bottom:90px; right:20px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#EF4444,#dc2626); border:3px solid #fff; box-shadow:0 4px 20px rgba(239,68,68,0.5); cursor:pointer; font-family:'Syne',sans-serif; font-size:10px; font-weight:900; color:#fff; align-items:center; justify-content:center; z-index:999; flex-direction:column; line-height:1; animation:sosPulse 2s ease-in-out infinite; }
+    #mu-sos-btn.show { display:flex; }
+    @keyframes sosPulse { 0%,100%{box-shadow:0 4px 20px rgba(239,68,68,0.5)} 50%{box-shadow:0 4px 30px rgba(239,68,68,0.85),0 0 0 8px rgba(239,68,68,0.15)} }
+
+    /* Status Feed */
+    #mu-status-feed-wrap { border-top:1px solid var(--border); padding:12px 18px; }
+    #mu-status-feed-wrap.hidden { display:none; }
+    .sfeed-title { font-family:'Syne',sans-serif; font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-bottom:8px; }
+    #mu-status-feed { display:flex; flex-direction:column; gap:5px; }
+    .feed-item { display:flex; align-items:flex-start; gap:8px; padding:6px 10px; border-radius:9px; border:1px solid var(--border); background:var(--cream); animation:slideUp .25s ease; }
+    .feed-info { background:var(--blue-lt); border-color:rgba(37,99,235,0.2); }
+    .feed-arrive { background:var(--green-lt); border-color:rgba(26,107,60,0.2); }
+    .feed-sos { background:#fef2f2; border-color:rgba(239,68,68,0.3); }
+    .feed-chat { background:var(--purple-lt); border-color:rgba(124,58,237,0.2); }
+    .feed-icon { font-size:1rem; flex-shrink:0; line-height:1.3; }
+    .feed-body { flex:1; }
+    .feed-text { font-size:0.78rem; color:var(--ink); font-weight:500; }
+    .feed-time { font-size:0.65rem; color:var(--gray); margin-top:1px; }
+
+    /* ════════════════════════════════════
+       CHAT UPGRADES
+    ════════════════════════════════════ */
+    .chat-actions-row { display:flex; gap:6px; padding:6px 16px 0; flex-shrink:0; }
+    .chat-action-btn { display:flex; align-items:center; gap:4px; padding:5px 10px; border-radius:20px; border:1.5px solid var(--border); background:var(--cream); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; font-family:'Epilogue',sans-serif; transition:all .15s; white-space:nowrap; }
+    .chat-action-btn:hover { border-color:var(--purple); color:var(--purple); background:var(--purple-lt); }
+
+    .quick-reply-row { display:flex; gap:6px; padding:6px 16px 4px; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
+    .quick-reply-row::-webkit-scrollbar { display:none; }
+    .qr-chip { white-space:nowrap; padding:5px 11px; border-radius:20px; border:1.5px solid var(--border); background:var(--cream); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; transition:all .15s; flex-shrink:0; }
+    .qr-chip:hover { border-color:var(--green); color:var(--green); background:var(--green-lt); }
+
+    .location-pin-msg { display:flex; align-items:center; gap:6px; background:rgba(26,107,60,0.08); border:1.5px solid rgba(26,107,60,0.2); border-radius:10px; padding:7px 10px; margin-top:4px; text-decoration:none; color:var(--green); font-size:12px; font-weight:600; }
+
+    .sos-msg { background:#fef2f2 !important; border:1.5px solid rgba(239,68,68,0.3) !important; border-radius:12px !important; padding:10px 13px !important; align-self:center !important; max-width:90% !important; text-align:center; }
+    .sos-msg-text { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:800; color:var(--red); }
+    .sos-link { display:inline-flex; align-items:center; gap:5px; margin-top:5px; background:var(--red); color:#fff; border-radius:8px; padding:4px 12px; font-size:11px; font-weight:700; text-decoration:none; font-family:'Syne',sans-serif; }
+
+    /* ════════════════════════════════════
+       DASHBOARD TAB
+    ════════════════════════════════════ */
+    .dash-header { background:linear-gradient(135deg,#0e2800 0%,#1A6B3C 60%,#25a05a 100%); padding:22px 24px 18px; position:relative; overflow:hidden; }
+    .dash-header::before { content:''; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border-radius:50%; background:rgba(212,160,23,0.08); }
+    .dash-eyebrow { display:inline-flex; align-items:center; gap:6px; background:rgba(212,160,23,0.18); border:1px solid rgba(212,160,23,0.35); border-radius:20px; padding:3px 11px; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; position:relative; z-index:1; }
+    .dash-header h1 { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:900; color:#fff; letter-spacing:-0.02em; position:relative; z-index:1; }
+    .dash-header h1 span { color:var(--gold); }
+    .dash-header p { font-size:0.78rem; color:rgba(255,255,255,0.6); margin-top:3px; position:relative; z-index:1; }
+
+    .dash-body { padding:18px 20px 24px; }
+
+    /* Hero stats strip */
+    .dash-hero-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:0; background:linear-gradient(135deg,var(--green-lt),var(--card-bg)); border:1.5px solid rgba(26,107,60,0.2); border-radius:14px; padding:14px 0; margin-bottom:18px; }
+    .dhs-item { text-align:center; padding:4px 8px; }
+    .dhs-item:not(:last-child) { border-right:1px solid rgba(26,107,60,0.15); }
+    .dhs-val { font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:900; color:var(--green); }
+    .dhs-lbl { font-size:0.63rem; color:var(--gray); margin-top:2px; text-transform:uppercase; letter-spacing:.06em; }
+
+    /* Section */
+    .dash-section { margin-bottom:20px; }
+    .dash-section-title { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--gray); margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
+    .dash-section-title button { font-family:'Epilogue',sans-serif; font-size:11px; font-weight:600; color:var(--red); background:none; border:none; cursor:pointer; }
+
+    /* Trip cards */
+    .trip-cards { display:flex; flex-direction:column; gap:8px; }
+    .trip-card { display:flex; align-items:center; gap:12px; padding:11px 13px; background:var(--cream); border:1.5px solid var(--border); border-radius:12px; transition:border-color .15s; }
+    .trip-card:hover { border-color:var(--green); }
+    .trip-mode-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .trip-mode-icon.driving { background:var(--green-lt); }
+    .trip-mode-icon.walking { background:var(--blue-lt); }
+    .trip-mode-icon.cycling { background:var(--gold-lt); }
+    .trip-mode-icon.transit { background:var(--purple-lt); }
+    .trip-info { flex:1; min-width:0; }
+    .trip-dest { font-size:0.82rem; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .trip-meta { font-size:0.68rem; color:var(--gray); margin-top:2px; }
+    .trip-dist { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:800; color:var(--green); flex-shrink:0; }
+
+    /* Mode breakdown */
+    .mode-bars { display:flex; flex-direction:column; gap:8px; }
+    .mode-bar-row { display:flex; align-items:center; gap:10px; }
+    .mode-bar-label { width:60px; font-size:0.72rem; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:5px; }
+    .mode-bar-track { flex:1; height:8px; background:var(--mist); border-radius:4px; overflow:hidden; }
+    .mode-bar-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+    .mode-bar-val { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:800; color:var(--gray); width:36px; text-align:right; }
+
+    /* Heatmap (simple grid) */
+    .heatmap-wrap { background:var(--cream); border:1.5px solid var(--border); border-radius:12px; padding:14px; overflow:hidden; }
+    .heatmap-days { display:flex; gap:3px; margin-bottom:6px; }
+    .hm-day-label { font-size:9px; color:var(--gray); width:14px; text-align:center; font-family:'Syne',sans-serif; font-weight:700; }
+    .heatmap-grid { display:flex; gap:3px; }
+    .hm-col { display:flex; flex-direction:column; gap:3px; }
+    .hm-cell { width:14px; height:14px; border-radius:3px; cursor:pointer; transition:transform .1s; }
+    .hm-cell:hover { transform:scale(1.3); }
+    .hm-legend { display:flex; align-items:center; gap:6px; margin-top:10px; }
+    .hm-legend-label { font-size:10px; color:var(--gray); }
+    .hm-legend-swatch { width:12px; height:12px; border-radius:2px; }
+
+    /* Weekly chart */
+    .week-chart { display:flex; align-items:flex-end; gap:6px; height:70px; padding:0 4px; }
+    .wc-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; }
+    .wc-bar { width:100%; border-radius:4px 4px 0 0; background:var(--green); transition:height .6s ease; min-height:3px; }
+    .wc-bar.today { background:var(--gold); }
+    .wc-day { font-family:'Syne',sans-serif; font-size:9px; font-weight:800; color:var(--gray); }
+
+    /* Streak badge */
+    .streak-badge { display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--gold-lt),#fff); border:1.5px solid rgba(212,160,23,0.3); border-radius:14px; padding:12px 16px; margin-bottom:18px; }
+    .streak-fire { font-size:2rem; flex-shrink:0; }
+    .streak-body { flex:1; }
+    .streak-val { font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:900; color:var(--gold); }
+    .streak-lbl { font-size:0.72rem; color:#92400e; margin-top:1px; }
+    .streak-best { font-size:10px; color:var(--gray); margin-top:4px; }
+
+    /* Empty state */
+    .dash-empty { text-align:center; padding:32px 16px; }
+    .dash-empty-icon { font-size:2.5rem; margin-bottom:10px; }
+    .dash-empty-text { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:800; color:var(--ink); }
+    .dash-empty-sub { font-size:0.76rem; color:var(--gray); margin-top:4px; }
+
     @media(max-width:440px) {
       .dir-body,.mu-panel,.mu-login-body { padding-left:14px; padding-right:14px; }
       #d-steps-panel,#d-nearby,#d-history-panel { padding-left:14px; padding-right:14px; }
       #d-summary.show { grid-template-columns:repeat(2,1fr); }
+      #chat-modal { max-height:92vh; }
     }
   </style>
 </head>
@@ -430,6 +684,7 @@
 <div class="tab-bar">
   <button class="tab-btn active" id="tab-directions" onclick="switchTab('directions')">🗺️ Directions</button>
   <button class="tab-btn" id="tab-meetup" onclick="switchTab('meetup')">👥 Meet Up</button>
+  <button class="tab-btn" id="tab-dashboard" onclick="switchTab('dashboard')">📊 Stats</button>
 </div>
 
 <div class="card">
@@ -642,6 +897,25 @@
         <div class="wb-text">Waiting for others. Share the <strong>Session ID + PIN</strong> above.</div>
       </div>
 
+      <!-- ARRIVAL COUNTDOWN -->
+      <div id="mu-countdown">
+        <div>
+          <div class="cd-label">Your ETA</div>
+          <div id="mu-countdown-val">—</div>
+        </div>
+        <div class="cd-dest" id="mu-countdown-dest">to meetup point</div>
+        <button class="cd-cancel" onclick="muCancelCountdown()">✕</button>
+      </div>
+
+      <!-- LIVE TRACKING PANEL (new) -->
+      <div id="mu-live-track-panel">
+        <div class="ltp-header">
+          <div class="ltp-title"><div class="ltp-dot"></div>Live Positions</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-family:'Syne',sans-serif;">Updates every 3s</div>
+        </div>
+        <div class="ltp-members" id="ltp-members-list"></div>
+      </div>
+
       <div id="mu-map"></div>
 
       <div class="mu-panel">
@@ -682,7 +956,7 @@
             <div class="dc-icon">🔵</div>
             <div>
               <div class="dc-who" id="mu-you-who">YOUR ROUTE</div>
-              <div class="dc-step" id="mu-you-step">—</div>
+            <div class="dc-step" id="mu-you-step">—</div>
               <div class="dc-dist" id="mu-you-dist">—</div>
             </div>
           </div>
@@ -699,17 +973,10 @@
         <button class="leave-btn" onclick="muLeave()">Leave Session</button>
       </div>
 
-      <div id="mu-chat" class="hidden">
-        <div class="chat-header">
-          <div class="chat-title">💬 Group Chat</div>
-          <button class="chat-toggle" onclick="muToggleChat()">Hide ▲</button>
-        </div>
-        <div id="chat-messages"></div>
-        <div id="mu-typing"></div>
-        <div class="chat-input-row">
-          <input id="chat-input" type="text" placeholder="Type a message…" maxlength="200" onkeydown="if(event.key==='Enter')muSendChat()" oninput="muTyping()"/>
-          <button class="chat-send" onclick="muSendChat()">Send</button>
-        </div>
+      <!-- STATUS FEED -->
+      <div id="mu-status-feed-wrap" class="hidden">
+        <div class="sfeed-title">⚡ Session activity</div>
+        <div id="mu-status-feed"></div>
       </div>
 
       <div class="card-footer">
@@ -718,9 +985,129 @@
       </div>
     </div>
   </div>
+
+  <!-- ══════════════ TAB 3: DASHBOARD ══════════════ -->
+  <div class="tab-panel" id="panel-dashboard">
+    <div class="dash-header">
+      <div class="dash-eyebrow">📊 Your Stats</div>
+      <h1>Trip <span>Dashboard</span></h1>
+      <p>All-time summary · Weekly activity · Mode breakdown</p>
+    </div>
+    <div class="dash-body">
+
+      <!-- Streak -->
+      <div class="streak-badge" id="dash-streak">
+        <div class="streak-fire">🔥</div>
+        <div class="streak-body">
+          <div class="streak-val" id="dash-streak-val">0 days</div>
+          <div class="streak-lbl">Active streak</div>
+          <div class="streak-best" id="dash-streak-best">Best: 0 days</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:900;color:var(--green)" id="dash-total-trips">0</div>
+          <div style="font-size:10px;color:var(--gray)">total trips</div>
+        </div>
+      </div>
+
+      <!-- Hero stats -->
+      <div class="dash-hero-stats">
+        <div class="dhs-item"><div class="dhs-val" id="dash-total-dist">0</div><div class="dhs-lbl">km travelled</div></div>
+        <div class="dhs-item"><div class="dhs-val" id="dash-total-time">0</div><div class="dhs-lbl">hrs navigating</div></div>
+        <div class="dhs-item"><div class="dhs-val" id="dash-total-sessions">0</div><div class="dhs-lbl">meetup sessions</div></div>
+      </div>
+
+      <!-- Weekly activity -->
+      <div class="dash-section">
+        <div class="dash-section-title">📅 This week's activity</div>
+        <div class="week-chart" id="dash-week-chart"></div>
+      </div>
+
+      <!-- Trip heatmap -->
+      <div class="dash-section">
+        <div class="dash-section-title">🗓️ Activity heatmap <span style="font-size:10px;color:var(--gray);font-weight:400;font-family:Epilogue">last 12 weeks</span></div>
+        <div class="heatmap-wrap">
+          <div class="heatmap-days" id="hm-day-labels"></div>
+          <div class="heatmap-grid" id="hm-grid"></div>
+          <div class="hm-legend">
+            <span class="hm-legend-label">Less</span>
+            <div class="hm-legend-swatch" style="background:#e8f5ee"></div>
+            <div class="hm-legend-swatch" style="background:#86efac"></div>
+            <div class="hm-legend-swatch" style="background:#4ade80"></div>
+            <div class="hm-legend-swatch" style="background:#16a34a"></div>
+            <div class="hm-legend-swatch" style="background:#14532d"></div>
+            <span class="hm-legend-label">More</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode breakdown -->
+      <div class="dash-section">
+        <div class="dash-section-title">🚗 Travel mode breakdown</div>
+        <div class="mode-bars" id="dash-mode-bars"></div>
+      </div>
+
+      <!-- Recent trips -->
+      <div class="dash-section">
+        <div class="dash-section-title">🕓 Recent trips <button onclick="dashClearHistory()">Clear all</button></div>
+        <div class="trip-cards" id="dash-trip-cards">
+          <div class="dash-empty">
+            <div class="dash-empty-icon">🗺️</div>
+            <div class="dash-empty-text">No trips yet</div>
+            <div class="dash-empty-sub">Head to Directions to get started</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer">
+      <div class="cf-brand">CityLink<span>GH</span></div>
+      <div class="cf-note">Local stats · Private</div>
+    </div>
+  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Floating Chat Button (shown when in session) -->
+<button id="chat-fab" onclick="muOpenChat()">
+  💬
+  <div class="chat-fab-badge" id="chat-fab-badge">0</div>
+</button>
+
+<!-- Chat Modal -->
+<div id="chat-modal-overlay" onclick="muCloseChat(event)">
+  <div id="chat-modal">
+    <div class="chat-modal-handle"></div>
+    <div class="chat-modal-header">
+      <div class="chat-modal-title">
+        💬 Group Chat
+        <span class="chat-modal-session" id="chat-modal-session-lbl"></span>
+      </div>
+      <button class="chat-modal-close" onclick="muCloseChat(null,true)">✕</button>
+    </div>
+    <div class="chat-online-strip" id="chat-online-strip"></div>
+    <div class="quick-reply-row" id="quick-reply-row"></div>
+    <div id="chat-modal-messages"></div>
+    <div id="chat-modal-typing"></div>
+    <div class="chat-actions-row">
+      <button class="chat-action-btn" onclick="muShareLocationInChat()">📍 My location</button>
+      <button class="chat-action-btn" onclick="muSendSOS()" style="color:var(--red);border-color:rgba(239,68,68,0.4)">🆘 SOS</button>
+    </div>
+    <div class="chat-modal-input-row">
+      <input id="chat-modal-input" type="text" placeholder="Message the group…" maxlength="200"
+        onkeydown="if(event.key==='Enter')muSendChat()"
+        oninput="muTyping()"/>
+      <button class="chat-modal-send" onclick="muSendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- SOS floating button (shown in session) -->
+<button id="mu-sos-btn" onclick="muSendSOS()">
+  <span style="font-size:1.1rem">🆘</span>
+  <span>SOS</span>
+</button>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -744,22 +1131,19 @@ const _db = firebase.database();
 
 function _safeKey(k) { return k.replace(/[.#$\[\]]/g,'_'); }
 
-/* ── One-time connectivity / permissions self-test ── */
 (async()=>{
   try {
     await _db.ref('clgh/_healthcheck').set({ts:Date.now()});
-    console.log('[CityLinkGH] Firebase write OK — database rules allow access.');
+    console.log('[CityLinkGH] Firebase OK');
   } catch(e) {
-    console.error('[CityLinkGH] Firebase write FAILED:', e.code||e.message||e);
-    showToast(`⚠️ Live sync unavailable: ${e.code||e.message||'connection error'}. Check Firebase database rules / internet.`, 7000);
+    showToast(`⚠️ Live sync unavailable: ${e.code||e.message||'connection error'}`,7000);
   }
 })();
 
 /* ═══════════════════════════════════════════
    GLOBALS & SHARED UTILS
 ═══════════════════════════════════════════ */
-let useMetric = true;
-let darkMode  = false;
+let useMetric = true, darkMode = false;
 
 function dist(m) {
   if (useMetric) return m < 1000 ? `${Math.round(m)} m` : `${(m/1000).toFixed(1)} km`;
@@ -771,10 +1155,7 @@ function distShort(m) {
   const ft = m * 3.28084;
   return ft < 5280 ? `${Math.round(ft)}ft` : `${(ft/5280).toFixed(1)}mi`;
 }
-function speed(ms) {
-  if (useMetric) return Math.round(ms * 3.6);
-  return Math.round(ms * 2.23694);
-}
+function speed(ms) { return useMetric ? Math.round(ms*3.6) : Math.round(ms*2.23694); }
 
 function toggleUnits() {
   useMetric = !useMetric;
@@ -782,20 +1163,17 @@ function toggleUnits() {
   document.getElementById('d-spd-unit').textContent = useMetric ? 'km/h' : 'mph';
   showToast(useMetric ? 'Using kilometres' : 'Using miles');
 }
-
 function toggleDark() {
   darkMode = !darkMode;
   document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
   document.getElementById('dark-btn').textContent = darkMode ? '☀️ Light' : '🌙 Dark';
 }
-
 function showToast(msg, dur=3200) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   clearTimeout(t._tid);
   t._tid = setTimeout(() => t.classList.remove('show'), dur);
 }
-
 function haversine(lat1,lng1,lat2,lng2) {
   const R=6371000, dl=(lat2-lat1)*Math.PI/180, dg=(lng2-lng1)*Math.PI/180;
   const a=Math.sin(dl/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dg/2)**2;
@@ -819,7 +1197,6 @@ async function fetchOSRM(from,to,profile='driving') {
   const res=await fetch(`https://router.project-osrm.org/route/v1/${profile}/${from.lng},${from.lat};${to.lng},${to.lat}?overview=full&geometries=geojson&steps=true`);
   const data=await res.json(); if(data.code!=='Ok') throw new Error('No route'); return data;
 }
-
 function maneuverIcon(type,mod,isLast) {
   if(isLast||type==='arrive') return '🏁';
   if(type==='depart') return '🚀';
@@ -856,109 +1233,79 @@ function switchTab(tab) {
   if(tab==='meetup'&&muMap) setTimeout(()=>muMap.invalidateSize(),50);
 }
 
-/* ═══════════════════════════════════════════
-   STORAGE — Firebase Realtime Database
-═══════════════════════════════════════════ */
+/* ── Storage ── */
 async function dbSet(key, val) {
-  try { await _db.ref('clgh/' + _safeKey(key)).set(val); } catch(e){ console.warn('dbSet',e); }
+  try { await _db.ref('clgh/'+_safeKey(key)).set(val); } catch(e){ console.warn('dbSet',e); }
 }
 async function dbGet(key) {
-  try { const snap = await _db.ref('clgh/' + _safeKey(key)).once('value'); return snap.val(); }
-  catch(e){ return null; }
+  try { const snap=await _db.ref('clgh/'+_safeKey(key)).once('value'); return snap.val(); } catch(e){ return null; }
 }
-function dbListen(key, cb) {
-  _db.ref('clgh/' + _safeKey(key)).on('value', snap => cb(snap.val()));
-}
-function dbUnlisten(key) {
-  _db.ref('clgh/' + _safeKey(key)).off();
-}
+function dbListen(key, cb) { _db.ref('clgh/'+_safeKey(key)).on('value', snap=>cb(snap.val())); }
+function dbUnlisten(key) { _db.ref('clgh/'+_safeKey(key)).off(); }
 
-/* ═══════════════════════════════════════════
-   FAVOURITES (local only)
-═══════════════════════════════════════════ */
+/* ── Favourites ── */
 let favs = JSON.parse(localStorage.getItem('clgh_favs')||'[]');
-
-function saveFavsLocal() { localStorage.setItem('clgh_favs', JSON.stringify(favs)); }
-
+function saveFavsLocal() { localStorage.setItem('clgh_favs',JSON.stringify(favs)); }
 function renderFavs() {
-  const row = document.getElementById('fav-row');
-  row.innerHTML = '';
-  favs.forEach((f,i) => {
-    const chip = document.createElement('div');
-    chip.className = 'fav-chip';
-    chip.innerHTML = `${f.icon} ${f.name} <span class="fav-del" onclick="dDelFav(${i});event.stopPropagation()">✕</span>`;
-    chip.onclick = () => { document.getElementById('d-dest').value = f.dest; dCheckReady(); showToast(`📍 ${f.name} set as destination`); };
+  const row=document.getElementById('fav-row'); row.innerHTML='';
+  favs.forEach((f,i)=>{
+    const chip=document.createElement('div'); chip.className='fav-chip';
+    chip.innerHTML=`${f.icon} ${f.name} <span class="fav-del" onclick="dDelFav(${i});event.stopPropagation()">✕</span>`;
+    chip.onclick=()=>{ document.getElementById('d-dest').value=f.dest; dCheckReady(); showToast(`📍 ${f.name} set as destination`); };
     row.appendChild(chip);
   });
-  const addBtn = document.createElement('div');
-  addBtn.className = 'fav-chip add-fav';
-  addBtn.textContent = '＋ Add current';
-  addBtn.onclick = dAddFavPrompt;
-  row.appendChild(addBtn);
+  const addBtn=document.createElement('div'); addBtn.className='fav-chip add-fav';
+  addBtn.textContent='＋ Add current'; addBtn.onclick=dAddFavPrompt; row.appendChild(addBtn);
 }
-
 function dAddFavPrompt() {
-  const dest = document.getElementById('d-dest').value.trim();
-  if (!dest) { showToast('Enter a destination first'); return; }
-  const name = prompt('Name this favourite (e.g. Home, Work):');
-  if (!name) return;
-  const icons = ['🏠','💼','🏫','🏥','🏬','📍'];
-  const icon = icons[favs.length % icons.length];
-  favs.push({ name: name.trim(), dest, icon });
-  saveFavsLocal(); renderFavs();
-  showToast(`⭐ Saved "${name.trim()}" as favourite!`);
+  const dest=document.getElementById('d-dest').value.trim();
+  if(!dest){showToast('Enter a destination first');return;}
+  const name=prompt('Name this favourite:'); if(!name) return;
+  const icons=['🏠','💼','🏫','🏥','🏬','📍'];
+  favs.push({name:name.trim(),dest,icon:icons[favs.length%icons.length]});
+  saveFavsLocal(); renderFavs(); showToast(`⭐ Saved "${name.trim()}"!`);
 }
-
-function dSaveFav() { dAddFavPrompt(); }
-function dDelFav(i) { favs.splice(i,1); saveFavsLocal(); renderFavs(); }
+function dSaveFav(){dAddFavPrompt();}
+function dDelFav(i){favs.splice(i,1);saveFavsLocal();renderFavs();}
 renderFavs();
 
-/* ═══════════════════════════════════════════
-   ROUTE HISTORY (local only)
-═══════════════════════════════════════════ */
-let routeHistory = JSON.parse(localStorage.getItem('clgh_history')||'[]');
-const MAX_HIST = 8;
-
-function addToHistory(dest, distKm, durMins) {
-  routeHistory = routeHistory.filter(h => h.dest !== dest);
-  routeHistory.unshift({ dest, distKm, durMins, ts: Date.now() });
-  if (routeHistory.length > MAX_HIST) routeHistory.pop();
-  localStorage.setItem('clgh_history', JSON.stringify(routeHistory));
-  renderHistory();
+/* ── Route History ── */
+let routeHistory=JSON.parse(localStorage.getItem('clgh_history')||'[]');
+const MAX_HIST=8;
+function addToHistory(dest,distKm,durMins) {
+  routeHistory=routeHistory.filter(h=>h.dest!==dest);
+  routeHistory.unshift({dest,distKm,durMins,ts:Date.now()});
+  if(routeHistory.length>MAX_HIST) routeHistory.pop();
+  localStorage.setItem('clgh_history',JSON.stringify(routeHistory)); renderHistory();
 }
-
 function renderHistory() {
-  const panel = document.getElementById('d-history-panel');
-  const list  = document.getElementById('hist-list');
-  if (!routeHistory.length) { panel.classList.add('hidden'); return; }
-  panel.classList.remove('hidden');
-  list.innerHTML = '';
-  routeHistory.forEach((h,i) => {
-    const ago = Math.round((Date.now()-h.ts)/60000);
-    const agoStr = ago < 60 ? `${ago}m ago` : ago < 1440 ? `${Math.floor(ago/60)}h ago` : `${Math.floor(ago/1440)}d ago`;
-    const div = document.createElement('div');
-    div.className = 'hist-item';
-    div.innerHTML = `<div class="hist-icon">🕓</div><div class="hist-body"><div class="hist-dest">${h.dest}</div><div class="hist-meta">${h.distKm} km · ${fmtDur(h.durMins)} · ${agoStr}</div></div><div class="hist-del" onclick="delHistory(${i});event.stopPropagation()">✕</div>`;
-    div.onclick = () => { document.getElementById('d-dest').value = h.dest; dCheckReady(); showToast('🕓 Destination set from history'); };
+  const panel=document.getElementById('d-history-panel'), list=document.getElementById('hist-list');
+  if(!routeHistory.length){panel.classList.add('hidden');return;}
+  panel.classList.remove('hidden'); list.innerHTML='';
+  routeHistory.forEach((h,i)=>{
+    const ago=Math.round((Date.now()-h.ts)/60000);
+    const agoStr=ago<60?`${ago}m ago`:ago<1440?`${Math.floor(ago/60)}h ago`:`${Math.floor(ago/1440)}d ago`;
+    const div=document.createElement('div'); div.className='hist-item';
+    div.innerHTML=`<div class="hist-icon">🕓</div><div class="hist-body"><div class="hist-dest">${h.dest}</div><div class="hist-meta">${h.distKm} km · ${fmtDur(h.durMins)} · ${agoStr}</div></div><div class="hist-del" onclick="delHistory(${i});event.stopPropagation()">✕</div>`;
+    div.onclick=()=>{document.getElementById('d-dest').value=h.dest;dCheckReady();showToast('🕓 Destination set from history');};
     list.appendChild(div);
   });
 }
-
-function delHistory(i) { routeHistory.splice(i,1); localStorage.setItem('clgh_history',JSON.stringify(routeHistory)); renderHistory(); }
+function delHistory(i){routeHistory.splice(i,1);localStorage.setItem('clgh_history',JSON.stringify(routeHistory));renderHistory();}
 renderHistory();
 
 /* ═══════════════════════════════════════════
    DIRECTIONS TAB
 ═══════════════════════════════════════════ */
-let dMap, dMyMarker, dDestMarker, dRouteLayer, dAccCircle;
-let dUserCoords=null, dDestCoords=null, dDestQuery='';
-let dTravelMode='driving', dAvoid={tolls:false,highways:false,ferries:false};
-let dRouteSteps=[], dRoutePoly=[];
-let dCurrentStep=0, dMapsUrl='', dStepsVisible=true;
-let dIsTracking=false, dWatchId=null;
-let dOffRouteCooldown=false, dArrivedDismissed=false;
-let dPrevCoords=null, dPrevTs=null;
-let dLiveShareActive=false, dLiveShareKey='';
+let dMap,dMyMarker,dDestMarker,dRouteLayer,dAccCircle;
+let dUserCoords=null,dDestCoords=null,dDestQuery='';
+let dTravelMode='driving',dAvoid={tolls:false,highways:false,ferries:false};
+let dRouteSteps=[],dRoutePoly=[];
+let dCurrentStep=0,dMapsUrl='',dStepsVisible=true;
+let dIsTracking=false,dWatchId=null;
+let dOffRouteCooldown=false,dArrivedDismissed=false;
+let dPrevCoords=null,dPrevTs=null;
+let dLiveShareActive=false,dLiveShareKey='';
 
 (function(){
   dMap=L.map('d-map',{zoomControl:false,attributionControl:false}).setView([7.9465,-1.0232],6);
@@ -979,33 +1326,24 @@ function dDetectLocation(){
   document.getElementById('d-locate-btn').textContent='⏳';
   dSetStatus('Requesting location…','info');
   navigator.geolocation.getCurrentPosition(async pos=>{
-    dUpdatePos(pos);
-    document.getElementById('d-locate-btn').textContent='📍';
+    dUpdatePos(pos); document.getElementById('d-locate-btn').textContent='📍';
     try{
       const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${dUserCoords.lat}&lon=${dUserCoords.lng}&format=json`);
       const d=await r.json(); const a=d.address;
       document.getElementById('d-origin').value=a.road?`${a.house_number?a.house_number+' ':''}${a.road}, ${a.city||a.town||a.village||''}`:d.display_name.split(',').slice(0,2).join(',');
     }catch{ document.getElementById('d-origin').value=`${dUserCoords.lat.toFixed(4)}, ${dUserCoords.lng.toFixed(4)}`; }
-    dSetStatus('✅ Location found. Enter destination.','ok');
-    dCheckReady();
+    dSetStatus('✅ Location found. Enter destination.','ok'); dCheckReady();
     document.getElementById('d-nearby').classList.add('show');
   },()=>{
-    document.getElementById('d-locate-btn').textContent='📍';
-    document.getElementById('d-origin').value='';
+    document.getElementById('d-locate-btn').textContent='📍'; document.getElementById('d-origin').value='';
     dSetStatus('Location denied. Please enable GPS.','err');
   },{enableHighAccuracy:true,timeout:12000});
 }
-
 function dUpdatePos(pos){
   dUserCoords={lat:pos.coords.latitude,lng:pos.coords.longitude};
-  const acc=pos.coords.accuracy||0;
-  const rawSpd=pos.coords.speed;
+  const acc=pos.coords.accuracy||0; const rawSpd=pos.coords.speed;
   let spd=rawSpd!=null?speed(rawSpd):null;
-  if(spd===null&&dPrevCoords&&dPrevTs){
-    const dt=(pos.timestamp-dPrevTs)/1000;
-    const dm=haversine(dPrevCoords.lat,dPrevCoords.lng,dUserCoords.lat,dUserCoords.lng);
-    spd=dt>0?speed(dm/dt):0;
-  }
+  if(spd===null&&dPrevCoords&&dPrevTs){ const dt=(pos.timestamp-dPrevTs)/1000,dm=haversine(dPrevCoords.lat,dPrevCoords.lng,dUserCoords.lat,dUserCoords.lng); spd=dt>0?speed(dm/dt):0; }
   dPrevCoords={...dUserCoords}; dPrevTs=pos.timestamp;
   const hdg=pos.coords.heading&&!isNaN(pos.coords.heading)?pos.coords.heading:null;
   if(dMyMarker) dMap.removeLayer(dMyMarker);
@@ -1019,13 +1357,8 @@ function dUpdatePos(pos){
   }
   if(dLiveShareActive) dbSet(dLiveShareKey,{lat:dUserCoords.lat,lng:dUserCoords.lng,ts:Date.now()});
 }
-
-function dSetMode(btn,mode){
-  document.querySelectorAll('.modes .mode').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); dTravelMode=mode;
-}
+function dSetMode(btn,mode){ document.querySelectorAll('.modes .mode').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); dTravelMode=mode; }
 function dToggleAvoid(k){ dAvoid[k]=!dAvoid[k]; document.getElementById('av-'+k).classList.toggle('on',dAvoid[k]); }
-
 function dClearDest(){
   dStopTracking(); dStopLiveShare();
   document.getElementById('d-dest').value=''; dDestCoords=null; dDestQuery=''; dRouteSteps=[]; dRoutePoly=[];
@@ -1037,7 +1370,6 @@ function dClearDest(){
   ['d-maps-btn','d-route-share-btn','d-live-share-btn','d-save-fav-btn'].forEach(id=>document.getElementById(id).classList.remove('show'));
   dCheckReady(); dSetStatus('Destination cleared.','');
 }
-
 function dCheckReady(){ document.getElementById('d-go-btn').disabled=!(dUserCoords&&document.getElementById('d-dest').value.trim()); }
 document.getElementById('d-dest').addEventListener('input',dCheckReady);
 
@@ -1048,19 +1380,16 @@ async function dGetRoute(silent=false){
   document.getElementById('d-steps-panel').classList.remove('show');
   document.getElementById('d-summary').classList.remove('show');
   try{
-    const dest=await geocodePlace(destQ);
-    dDestCoords={lat:dest.lat,lng:dest.lng}; dDestQuery=destQ;
+    const dest=await geocodePlace(destQ); dDestCoords={lat:dest.lat,lng:dest.lng}; dDestQuery=destQ;
     if(dDestMarker) dMap.removeLayer(dDestMarker);
     dDestMarker=L.marker([dest.lat,dest.lng],{icon:dRedIcon}).bindPopup(`<b>${dest.name.split(',').slice(0,2).join(',')}</b>`).addTo(dMap);
     const profile=dTravelMode==='walking'?'foot':dTravelMode==='cycling'?'cycling':'driving';
     const data=await fetchOSRM(dUserCoords,dDestCoords,profile);
-    const route=data.routes[0];
-    dRoutePoly=route.geometry.coordinates.map(c=>[c[1],c[0]]);
-    dRouteSteps=route.legs[0].steps; dCurrentStep=0;
+    const route=data.routes[0]; dRoutePoly=route.geometry.coordinates.map(c=>[c[1],c[0]]); dRouteSteps=route.legs[0].steps; dCurrentStep=0;
     if(dRouteLayer) dMap.removeLayer(dRouteLayer);
     dRouteLayer=L.polyline(dRoutePoly,{color:'#1A6B3C',weight:5,opacity:.85,lineCap:'round',lineJoin:'round'}).addTo(dMap);
     if(!silent) dMap.fitBounds(dRouteLayer.getBounds(),{padding:[26,26],animate:true});
-    const d=(route.distance/1000).toFixed(1), m=Math.round(route.duration/60);
+    const d=(route.distance/1000).toFixed(1),m=Math.round(route.duration/60);
     document.getElementById('d-rs-dist').textContent=dist(route.distance);
     document.getElementById('d-rs-time').textContent=fmtDur(m);
     document.getElementById('d-rs-turns').textContent=dRouteSteps.length;
@@ -1070,26 +1399,21 @@ async function dGetRoute(silent=false){
     dStepsVisible=true; document.querySelector('.steps-toggle').textContent='Hide ▲';
     dMapsUrl=`https://www.google.com/maps/dir/?api=1&origin=${dUserCoords.lat},${dUserCoords.lng}&destination=${encodeURIComponent(destQ)}&travelmode=${dTravelMode==='cycling'?'bicycling':dTravelMode}`;
     ['d-maps-btn','d-route-share-btn','d-live-share-btn','d-save-fav-btn','d-track-btn'].forEach(id=>document.getElementById(id).classList.add('show'));
-    addToHistory(destQ, d, m);
+    addToHistory(destQ,d,m);
     if(!silent){ dSetStatus(`✅ ${dist(route.distance)} · ~${fmtDur(m)}`,'ok'); showToast('🗺️ Route ready! Tap 📡 Track to navigate.'); }
     else { dSetStatus(`🔄 Re-routed · ${dist(route.distance)} · ~${fmtDur(m)}`,'ok'); showToast('🔄 Re-routed!'); }
   }catch(e){ dSetStatus(e.message||'Something went wrong.','err'); }
   if(!silent){ document.getElementById('d-go-label').textContent='Get Directions'; document.getElementById('d-go-btn').disabled=false; dCheckReady(); }
 }
-
 function dRenderSteps(){
   const list=document.getElementById('d-step-list'); list.innerHTML='';
   dRouteSteps.forEach((s,i)=>{
-    const isLast=i===dRouteSteps.length-1;
-    const type=s.maneuver.type, mod=s.maneuver.modifier||'';
-    const div=document.createElement('div');
-    div.className='step-item'+(i===dCurrentStep&&dIsTracking?' active-step':'');
-    div.id=`dstep-${i}`;
+    const isLast=i===dRouteSteps.length-1,type=s.maneuver.type,mod=s.maneuver.modifier||'';
+    const div=document.createElement('div'); div.className='step-item'+(i===dCurrentStep&&dIsTracking?' active-step':''); div.id=`dstep-${i}`;
     div.innerHTML=`<div class="step-num${i<dCurrentStep?' done':''}">${i<dCurrentStep?'✓':maneuverIcon(type,mod,isLast)}</div><div><div class="step-text">${humanStep(type,mod,isLast)}${s.name?` on <b>${s.name}</b>`:''}</div>${!isLast?`<div class="step-dist">${dist(s.distance)}</div>`:''}</div>`;
     list.appendChild(div);
   });
 }
-
 function dStartTracking(){
   if(!navigator.geolocation){showToast('Geolocation not supported');return;}
   if(!dDestCoords){showToast('Get directions first!');return;}
@@ -1102,10 +1426,8 @@ function dStartTracking(){
   dUpdateNSB(); dRenderSteps();
   dWatchId=navigator.geolocation.watchPosition(dUpdatePos,err=>console.warn(err),{enableHighAccuracy:true,maximumAge:2000,timeout:10000});
   dMap.setView([dUserCoords.lat,dUserCoords.lng],16,{animate:true});
-  showToast('📡 Live tracking started!');
-  dSetStatus('📡 Tracking your journey…','info');
+  showToast('📡 Live tracking started!'); dSetStatus('📡 Tracking your journey…','info');
 }
-
 function dStopTracking(){
   dIsTracking=false;
   if(dWatchId!=null){navigator.geolocation.clearWatch(dWatchId);dWatchId=null;}
@@ -1116,43 +1438,37 @@ function dStopTracking(){
   dSetStatus('Tracking stopped.','');
   if(dRouteLayer) dMap.fitBounds(dRouteLayer.getBounds(),{padding:[26,26],animate:true});
 }
-
 function dAdvanceStep(){
   if(!dRouteSteps.length||!dUserCoords) return;
   if(dDestCoords&&haversine(dUserCoords.lat,dUserCoords.lng,dDestCoords.lat,dDestCoords.lng)<50&&!dArrivedDismissed){dShowArrived();return;}
-  let cStep=dCurrentStep, cDist=Infinity;
+  let cStep=dCurrentStep,cDist=Infinity;
   for(let i=dCurrentStep;i<dRouteSteps.length;i++){
-    const wp=dRouteSteps[i].maneuver.location;
-    const d=haversine(dUserCoords.lat,dUserCoords.lng,wp[1],wp[0]);
+    const wp=dRouteSteps[i].maneuver.location,d=haversine(dUserCoords.lat,dUserCoords.lng,wp[1],wp[0]);
     if(d<cDist){cDist=d;cStep=i;}
   }
   if(cStep>dCurrentStep&&cDist<40){ dCurrentStep=cStep; dRenderSteps(); dUpdateNSB(); const el=document.getElementById(`dstep-${dCurrentStep}`); if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
   dUpdateNSB();
 }
-
 function dUpdateNSB(){
   if(!dRouteSteps.length) return;
-  const s=dRouteSteps[dCurrentStep], isLast=dCurrentStep===dRouteSteps.length-1;
+  const s=dRouteSteps[dCurrentStep],isLast=dCurrentStep===dRouteSteps.length-1;
   document.getElementById('d-nsb-icon').textContent=maneuverIcon(s.maneuver.type,s.maneuver.modifier||'',isLast);
   document.getElementById('d-nsb-main').textContent=humanStep(s.maneuver.type,s.maneuver.modifier||'',isLast)+(s.name?` on ${s.name}`:'');
-  if(dUserCoords&&!isLast){ const wp=s.maneuver.location, d=haversine(dUserCoords.lat,dUserCoords.lng,wp[1],wp[0]); document.getElementById('d-nsb-dist').textContent=`In ${dist(d)}`; }
+  if(dUserCoords&&!isLast){ const wp=s.maneuver.location,d=haversine(dUserCoords.lat,dUserCoords.lng,wp[1],wp[0]); document.getElementById('d-nsb-dist').textContent=`In ${dist(d)}`; }
   else document.getElementById('d-nsb-dist').textContent=isLast?'Arriving…':'';
 }
-
 function dCheckOffRoute(){
   if(!dRoutePoly.length||!dUserCoords||dOffRouteCooldown) return;
   let min=Infinity;
   for(let i=0;i<dRoutePoly.length-1;i++){
-    const dx=dRoutePoly[i+1][0]-dRoutePoly[i][0], dy=dRoutePoly[i+1][1]-dRoutePoly[i][1];
+    const dx=dRoutePoly[i+1][0]-dRoutePoly[i][0],dy=dRoutePoly[i+1][1]-dRoutePoly[i][1];
     const t=dx===0&&dy===0?0:Math.max(0,Math.min(1,((dUserCoords.lat-dRoutePoly[i][0])*dx+(dUserCoords.lng-dRoutePoly[i][1])*dy)/(dx*dx+dy*dy)));
     const d=haversine(dUserCoords.lat,dUserCoords.lng,dRoutePoly[i][0]+t*dx,dRoutePoly[i][1]+t*dy);
     if(d<min)min=d;
   }
   document.getElementById('d-offroute').classList.toggle('show',min>(dTravelMode==='walking'?80:120));
 }
-
 async function dReroute(){ document.getElementById('d-offroute').classList.remove('show'); dOffRouteCooldown=true; setTimeout(()=>dOffRouteCooldown=false,20000); await dGetRoute(true); }
-
 function dUpdateLiveETA(){
   if(!dDestCoords||!dUserCoords) return;
   const rem=haversine(dUserCoords.lat,dUserCoords.lng,dDestCoords.lat,dDestCoords.lng);
@@ -1161,16 +1477,13 @@ function dUpdateLiveETA(){
   document.getElementById('d-tb-left').textContent=distShort(rem);
   if(m!==null) document.getElementById('d-tb-eta').textContent=calcETA(m);
 }
-
 function dShowArrived(){
   dStopTracking(); dStopLiveShare();
   document.getElementById('d-arrived-sub').textContent=`You reached ${dDestQuery||'your destination'}.`;
   document.getElementById('d-arrived').classList.add('show');
-  showToast('🎉 You have arrived!',5000);
-  dSetStatus('🎉 Arrived!','ok');
+  showToast('🎉 You have arrived!',5000); dSetStatus('🎉 Arrived!','ok');
 }
 function dDismissArrived(){ dArrivedDismissed=true; document.getElementById('d-arrived').classList.remove('show'); }
-
 function dOpenMaps(){ window.open(dMapsUrl,'_blank'); }
 function dShareRoute(){
   if(navigator.share) navigator.share({title:'Route on CityLinkGH',url:dMapsUrl}).catch(()=>{});
@@ -1182,12 +1495,10 @@ function dToggleSteps(){
   document.querySelector('.steps-toggle').textContent=dStepsVisible?'Hide ▲':'Show ▼';
 }
 function dSetStatus(msg,cls){ const el=document.getElementById('d-status'); el.textContent=msg; el.className=cls||''; }
-
 function dToggleLiveShare(){
-  if(dLiveShareActive){ dStopLiveShare(); return; }
+  if(dLiveShareActive){dStopLiveShare();return;}
   if(!dUserCoords){showToast('Detect your location first');return;}
-  dLiveShareActive=true;
-  dLiveShareKey='live:'+Math.random().toString(36).slice(2,8).toUpperCase();
+  dLiveShareActive=true; dLiveShareKey='live:'+Math.random().toString(36).slice(2,8).toUpperCase();
   document.getElementById('d-share-live-bar').classList.add('show');
   document.getElementById('d-live-share-btn').textContent='📡 Stop Sharing';
   dbSet(dLiveShareKey,{lat:dUserCoords.lat,lng:dUserCoords.lng,ts:Date.now()});
@@ -1212,25 +1523,25 @@ const MU_DOTS=['blue','purple','green2','orange2','pink2'];
 const MU_SLOTS=['A','B','C','D','E'];
 const MU_EMOJIS=['👍','❤️','😂','😮','🙏','🔥'];
 
-let muMap, muMapInited=false;
-let muMarkers={}, muRouteLayerMe=null, muRouteLayerThem=null, muMeetLayer=null, muBetweenLayer=null;
-let muMyCoords=null, muMeetupCoords=null;
-let muMyName='', muRole='', muSessionId='', muPin='', muGroupSize=2;
-let muWatchId=null, muPollTimer=null, muTypingTimer=null;
+let muMap,muMapInited=false;
+let muMarkers={},muRouteLayerMe=null,muRouteLayerThem=null,muMeetLayer=null,muBetweenLayer=null;
+let muMyCoords=null,muMeetupCoords=null;
+let muMyName='',muRole='',muSessionId='',muPin='',muGroupSize=2;
+let muWatchId=null,muPollTimer=null,muTypingTimer=null;
 let muMembers={};
-let muChatVisible=true, muLastChatTs=0;
+let muLastChatTs=0,muUnreadCount=0,muChatOpen=false;
 const MU_POLL=3000;
 
 function muPlaySound(){
   try{
     const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator(), g=ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
     o.frequency.setValueAtTime(880,ctx.currentTime);
     o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+0.2);
     g.gain.setValueAtTime(0.3,ctx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);
-    o.start(); o.stop(ctx.currentTime+0.3);
+    o.start();o.stop(ctx.currentTime+0.3);
   }catch(e){}
 }
 
@@ -1251,7 +1562,7 @@ function muMeetIcon(){
 
 const muNameEl=document.getElementById('mu-name');
 const muSessEl=document.getElementById('mu-session');
-const muPinEl =document.getElementById('mu-pin');
+const muPinEl=document.getElementById('mu-pin');
 const muJoinEl=document.getElementById('mu-join-btn');
 function muCheckJoin(){ muJoinEl.disabled=!(muNameEl.value.trim()&&muSessEl.value.trim()&&muPinEl.value.trim()); }
 muNameEl.addEventListener('input',muCheckJoin);
@@ -1263,96 +1574,54 @@ function muGenSession(){
   muSessEl.value=`${w[Math.floor(Math.random()*w.length)]}-${Math.floor(10+Math.random()*89)}`;
   muCheckJoin();
 }
-function muGenPin(){
-  muPinEl.value=Math.floor(1000+Math.random()*9000).toString();
-  muCheckJoin();
-}
-
-function muSetGroupSize(btn,n){
-  document.querySelectorAll('.gs-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); muGroupSize=n;
-}
-
+function muGenPin(){ muPinEl.value=Math.floor(1000+Math.random()*9000).toString(); muCheckJoin(); }
+function muSetGroupSize(btn,n){ document.querySelectorAll('.gs-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); muGroupSize=n; }
 function muSK(){ return `sess_${muSessionId}_${btoa(muPin).replace(/[=+/]/g,'_')}`; }
 
 async function muJoin(){
-  muMyName=muNameEl.value.trim();
-  muSessionId=muSessEl.value.trim().toUpperCase();
-  muPin=muPinEl.value.trim();
+  muMyName=muNameEl.value.trim(); muSessionId=muSessEl.value.trim().toUpperCase(); muPin=muPinEl.value.trim();
   if(!muMyName||!muSessionId||!muPin) return;
   muJoinEl.disabled=true; muJoinEl.innerHTML='<span class="spinner"></span> Joining…';
   document.getElementById('mu-err').textContent='';
-
-  const sk=muSK();
-  const now=Date.now();
-
-  // Step 1: read existing meta to get group size (host sets it first)
+  const sk=muSK(),now=Date.now();
   const existingMeta=await dbGet(`${sk}:meta`);
-  if(existingMeta && existingMeta.groupSize){
-    muGroupSize=existingMeta.groupSize;
-    document.querySelectorAll('.gs-btn').forEach(b=>{
-      b.classList.toggle('active', parseInt(b.textContent)===muGroupSize);
-    });
-  }
-
-  // Step 2: always scan all 5 slots so stale slots from ANY prior session size are freed
-  const slots=MU_SLOTS; // A B C D E
-  let assigned=null;
-  let lastErr=null;
-
+  if(existingMeta&&existingMeta.groupSize){ muGroupSize=existingMeta.groupSize; document.querySelectorAll('.gs-btn').forEach(b=>{ b.classList.toggle('active',parseInt(b.textContent)===muGroupSize); }); }
+  const slots=MU_SLOTS;
+  let assigned=null,lastErr=null;
   for(const slot of slots){
-    // Only assign slots within current group size (or reclaim own slot from any position)
-    const withinSize = MU_SLOTS.indexOf(slot) < muGroupSize;
+    const withinSize=MU_SLOTS.indexOf(slot)<muGroupSize;
     const ref=_db.ref('clgh/'+_safeKey(`${sk}:${slot}`));
     let gotIt=false;
     await ref.transaction(current=>{
-      const isMine   = current && current.name===muMyName;
-      // Stale = no heartbeat for 30s (crashed/refreshed browser)
-      const isStale  = current && current.ts && (now - current.ts > 30000);
-      const isEmpty  = !current;
-      if(isMine || ((isEmpty || isStale) && withinSize)){
-        gotIt=true;
-        return {name:muMyName,lat:null,lng:null,ts:now,online:true,speed:0,isHost:slot==='A'};
-      }
+      const isMine=current&&current.name===muMyName;
+      const isStale=current&&current.ts&&(now-current.ts>30000);
+      const isEmpty=!current;
+      if(isMine||((isEmpty||isStale)&&withinSize)){ gotIt=true; return {name:muMyName,lat:null,lng:null,ts:now,online:true,speed:0,isHost:slot==='A'}; }
       return undefined;
-    }).then(r=>{ if(r && r.committed && gotIt && !assigned) assigned=slot; })
-      .catch(err=>{ lastErr=err; console.error('[CityLinkGH] join transaction failed on slot',slot,err.code||err.message||err); });
+    }).then(r=>{ if(r&&r.committed&&gotIt&&!assigned) assigned=slot; }).catch(err=>{ lastErr=err; });
     if(assigned) break;
   }
-
   if(!assigned){
-    // If every transaction errored out (e.g. permission-denied), say so explicitly —
-    // don't report "session full" when we never actually got a real answer from the DB.
-    if(lastErr){
-      const code=lastErr.code||lastErr.message||'unknown error';
-      document.getElementById('mu-err').textContent=
-        `⚠️ Could not reach the live database (${code}). This usually means your Firebase Realtime Database security rules are blocking writes — they need to allow read/write for this app to work.`;
-      muJoinEl.disabled=false; muJoinEl.textContent='📍 Join Session'; return;
-    }
-    // Give a more helpful message
+    if(lastErr){ const code=lastErr.code||lastErr.message||'unknown'; document.getElementById('mu-err').textContent=`⚠️ Database error (${code}). Check Firebase rules.`; muJoinEl.disabled=false; muJoinEl.textContent='📍 Join Session'; return; }
     const takenNames=[];
-    for(const slot of MU_SLOTS.slice(0,muGroupSize)){
-      const d=await dbGet(`${sk}:${slot}`);
-      if(d && d.name && d.name!==muMyName && d.ts && (now-d.ts)<30000) takenNames.push(d.name);
-    }
-    const msg = takenNames.length
-      ? `Session full (${takenNames.join(', ')} already in). Use a different Session ID or wait 30s for stale slots to clear.`
-      : 'Could not join. Check your Session ID and PIN match the host exactly.';
-    document.getElementById('mu-err').textContent=msg;
+    for(const slot of MU_SLOTS.slice(0,muGroupSize)){ const d=await dbGet(`${sk}:${slot}`); if(d&&d.name&&d.name!==muMyName&&d.ts&&(now-d.ts)<30000) takenNames.push(d.name); }
+    document.getElementById('mu-err').textContent=takenNames.length?`Session full (${takenNames.join(', ')} in). Try a different ID.`:'Could not join. Check Session ID and PIN.';
     muJoinEl.disabled=false; muJoinEl.textContent='📍 Join Session'; return;
   }
-
-  muRole=assigned;
-  const isHost=muRole==='A';
+  muRole=assigned; const isHost=muRole==='A';
   await dbSet(`${sk}:meta`,{groupSize:muGroupSize,ts:now,hostSlot:'A'});
-
   muInitMap();
   document.getElementById('mu-login').classList.remove('active');
   document.getElementById('mu-map-screen').classList.add('active');
   document.getElementById('mu-session-display').textContent=muSessionId;
+  document.getElementById('chat-modal-session-lbl').textContent=muSessionId;
   muUpdateHostUI(isHost);
   setTimeout(()=>muMap.invalidateSize(),60);
   muStartGPS(); muStartPolling();
+
+  // Show floating chat button
+  document.getElementById('chat-fab').classList.add('show');
+
   showToast(isHost?`👑 You are the host, ${muMyName}!`:`👋 Welcome, ${muMyName}!`);
 }
 
@@ -1385,32 +1654,35 @@ function muStartPolling(){
   muPollTimer=setInterval(muPoll,MU_POLL);
   const sk=muSK();
 
-  dbListen(`${sk}:chat`, data=>{
+  dbListen(`${sk}:chat`,data=>{
     if(!data||!data.messages) return;
     const latest=data.messages.length?data.messages[data.messages.length-1].ts:0;
     if(latest>muLastChatTs){
       const isNew=muLastChatTs>0;
       muLastChatTs=latest;
       muRenderChat(data.messages);
-      if(isNew){ muPlaySound(); }
+      if(isNew){
+        muPlaySound();
+        if(!muChatOpen){
+          muUnreadCount++;
+          muUpdateFabBadge();
+        }
+      }
     }
   });
 
-  dbListen(`${sk}:typing`, data=>{
+  dbListen(`${sk}:typing`,data=>{
     if(!data) return;
-    const typers=Object.entries(data)
-      .filter(([role,d])=>role!==muRole&&d.active&&(Date.now()-d.ts<4000))
-      .map(([,d])=>d.name);
-    const el=document.getElementById('mu-typing');
+    const typers=Object.entries(data).filter(([role,d])=>role!==muRole&&d.active&&(Date.now()-d.ts<4000)).map(([,d])=>d.name);
+    const el=document.getElementById('chat-modal-typing');
     if(typers.length){ el.innerHTML=`<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span> ${typers.join(', ')} ${typers.length>1?'are':'is'} typing`; }
     else { el.textContent=''; }
   });
 
-  dbListen(`${sk}:here`, data=>{
+  dbListen(`${sk}:here`,data=>{
     if(!data) return;
     if(data.ts>(window._muLastHere||0)&&data.role!==muRole){
-      window._muLastHere=data.ts;
-      muPlaySound();
+      window._muLastHere=data.ts; muPlaySound();
       showToast(`✅ ${data.name} has arrived at the meetup!`,5000);
     }
   });
@@ -1421,7 +1693,6 @@ async function muPoll(){
   const meta=await dbGet(`${sk}:meta`);
   const gSize=meta?meta.groupSize:muGroupSize;
   const now=Date.now(); let anyOnline=false;
-
   for(const slot of MU_SLOTS.slice(0,gSize)){
     if(slot===muRole) continue;
     const pd=await dbGet(`${sk}:${slot}`);
@@ -1435,9 +1706,7 @@ async function muPoll(){
       else muMarkers[slot].setLatLng([pd.lat,pd.lng]);
     } else if(muMarkers[slot]&&!online){ muMap.removeLayer(muMarkers[slot]); delete muMarkers[slot]; }
   }
-
   document.getElementById('mu-waiting').classList.toggle('hidden',anyOnline);
-
   const mdata=await dbGet(`${sk}:meetup`);
   if(mdata&&(!muMeetupCoords||mdata.ts>(window._muLastMeet||0))){
     window._muLastMeet=mdata.ts;
@@ -1445,15 +1714,50 @@ async function muPoll(){
     muMeetupCoords={lat:mdata.lat,lng:mdata.lng};
     muRenderMeetMarker(); muCalcBothRoutes();
   }
+  muMarkSeen(); muUpdateUI(); muRenderMemberPills(gSize);
+  muRenderLiveTrackPanel(gSize);
+}
 
-  muMarkSeen();
-  muUpdateUI();
-  muRenderMemberPills(gSize);
+/* ── Live Tracking Panel ── */
+function muRenderLiveTrackPanel(gSize){
+  const allSlots=[muRole,...MU_SLOTS.slice(0,gSize).filter(s=>s!==muRole)];
+  const hasAny=allSlots.some(s=>s===muRole?muMyCoords:muMembers[s]&&muMembers[s].online&&muMembers[s].lat);
+  const panel=document.getElementById('mu-live-track-panel');
+  if(!hasAny){panel.classList.remove('show');return;}
+  panel.classList.add('show');
+  const list=document.getElementById('ltp-members-list'); list.innerHTML='';
+  allSlots.forEach(slot=>{
+    const isMe=slot===muRole;
+    const data=isMe?{name:muMyName,lat:muMyCoords?.lat,lng:muMyCoords?.lng,online:true,speed:0,isHost:muRole==='A',ts:Date.now()}:(muMembers[slot]||{});
+    if(!data.name&&!isMe) return;
+    if(!isMe&&(!data.online||!data.lat)) return;
+    const color=MU_COLORS[MU_SLOTS.indexOf(slot)%MU_COLORS.length];
+    const init=(data.name||'?').slice(0,2).toUpperCase();
+    let distStr='', etaStr='', spdStr='';
+    if(muMeetupCoords&&data.lat&&data.lng){
+      const dm=haversine(data.lat,data.lng,muMeetupCoords.lat,muMeetupCoords.lng);
+      distStr=distShort(dm);
+      const spd=data.speed||30;
+      if(spd>1){ const mins=(dm/1000)/spd*60; etaStr=calcETA(mins); }
+    }
+    if(data.speed&&data.speed>0) spdStr=`${Math.round(data.speed)}${useMetric?'km/h':'mph'}`;
+    const age=isMe?0:Math.round((Date.now()-(data.ts||Date.now()))/1000);
+    const ageStr=isMe?'live':age<5?'just now':age<60?`${age}s ago`:`${Math.floor(age/60)}m ago`;
+    const div=document.createElement('div'); div.className='ltp-member';
+    div.innerHTML=`
+      <div class="ltp-avatar" style="background:${color}">${init}</div>
+      <div class="ltp-info">
+        <div class="ltp-name">${data.name}${data.isHost?' 👑':''}${isMe?' (you)':''}</div>
+        <div class="ltp-detail">${ageStr}${spdStr?` · ${spdStr}`:''}</div>
+      </div>
+      ${distStr?`<div style="text-align:right"><div class="ltp-dist">${distStr}</div>${etaStr?`<div class="ltp-eta-badge">${etaStr}</div>`:''}</div>`:''}
+    `;
+    list.appendChild(div);
+  });
 }
 
 function muRenderMemberPills(gSize){
-  const pillsEl=document.getElementById('mu-user-pills');
-  const membersEl=document.getElementById('mu-members');
+  const pillsEl=document.getElementById('mu-user-pills'),membersEl=document.getElementById('mu-members');
   pillsEl.innerHTML=''; membersEl.innerHTML='';
   const allSlots=[muRole,...MU_SLOTS.slice(0,gSize).filter(s=>s!==muRole)];
   allSlots.forEach(slot=>{
@@ -1471,6 +1775,21 @@ function muRenderMemberPills(gSize){
     membersEl.appendChild(badge);
   });
   if(muMeetupCoords&&muMyCoords) document.getElementById('mu-im-here-btn').classList.add('show');
+  // Update online strip in chat modal
+  muRenderChatOnlineStrip(gSize, allSlots);
+}
+
+function muRenderChatOnlineStrip(gSize, allSlots){
+  const strip=document.getElementById('chat-online-strip'); strip.innerHTML='';
+  allSlots.forEach(slot=>{
+    const isMe=slot===muRole;
+    const data=isMe?{name:muMyName,online:true}:(muMembers[slot]||{});
+    if(!data.name&&!isMe) return;
+    const dotClass=MU_DOTS[MU_SLOTS.indexOf(slot)%MU_DOTS.length];
+    const pill=document.createElement('div'); pill.className='cos-pill';
+    pill.innerHTML=`<div class="cos-dot ${dotClass}"></div><div class="cos-name">${data.name||muMyName}${isMe?' (you)':''}</div>`;
+    strip.appendChild(pill);
+  });
 }
 
 function muUpdateUI(){
@@ -1532,8 +1851,7 @@ async function muCalcBothRoutes(){
       const r=data.routes[0];
       if(muRouteLayerMe) muMap.removeLayer(muRouteLayerMe);
       muRouteLayerMe=L.polyline(r.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#2563EB',weight:4,opacity:.75,lineCap:'round',lineJoin:'round'}).addTo(muMap);
-      const m=Math.round(r.duration/60);
-      const s=r.legs[0].steps[0];
+      const m=Math.round(r.duration/60),s=r.legs[0].steps[0];
       document.getElementById('mu-you-who').textContent=muMyName.toUpperCase()+' (YOU)';
       document.getElementById('mu-you-step').textContent=humanStep(s.maneuver.type,s.maneuver.modifier||'',false)+(s.name?` on ${s.name}`:'');
       document.getElementById('mu-you-dist').textContent=`${dist(r.distance)} · ~${fmtDur(m)}`;
@@ -1550,8 +1868,7 @@ async function muCalcBothRoutes(){
       const r=data.routes[0];
       if(muRouteLayerThem) muMap.removeLayer(muRouteLayerThem);
       muRouteLayerThem=L.polyline(r.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#7C3AED',weight:4,opacity:.75,lineCap:'round',lineJoin:'round'}).addTo(muMap);
-      const m=Math.round(r.duration/60);
-      const s=r.legs[0].steps[0];
+      const m=Math.round(r.duration/60),s=r.legs[0].steps[0];
       document.getElementById('mu-them-who').textContent=pd.name.toUpperCase()+"'S ROUTE";
       document.getElementById('mu-them-step').textContent=humanStep(s.maneuver.type,s.maneuver.modifier||'',false)+(s.name?` on ${s.name}`:'');
       document.getElementById('mu-them-dist').textContent=`${dist(r.distance)} · ~${fmtDur(m)}`;
@@ -1560,18 +1877,34 @@ async function muCalcBothRoutes(){
   }
 }
 
-/* ── CHAT ── */
-function muToggleChat(){
-  muChatVisible=!muChatVisible;
-  document.getElementById('chat-messages').style.display=muChatVisible?'':'none';
-  document.querySelector('.chat-input-row').style.display=muChatVisible?'':'none';
-  document.getElementById('mu-typing').style.display=muChatVisible?'':'none';
-  document.querySelector('.chat-toggle').textContent=muChatVisible?'Hide ▲':'Show ▼';
+/* ════════════════════════════════════
+   FLOATING CHAT (replaces inline chat)
+════════════════════════════════════ */
+function muOpenChat(){
+  muChatOpen=true; muUnreadCount=0; muUpdateFabBadge();
+  document.getElementById('chat-modal-overlay').classList.add('show');
+  setTimeout(()=>{
+    const box=document.getElementById('chat-modal-messages');
+    box.scrollTop=box.scrollHeight;
+    document.getElementById('chat-modal-input').focus();
+  },100);
+}
+
+function muCloseChat(e, force=false){
+  if(force||(e&&e.target===document.getElementById('chat-modal-overlay'))){
+    muChatOpen=false;
+    document.getElementById('chat-modal-overlay').classList.remove('show');
+  }
+}
+
+function muUpdateFabBadge(){
+  const badge=document.getElementById('chat-fab-badge');
+  if(muUnreadCount>0){ badge.textContent=muUnreadCount>9?'9+':muUnreadCount; badge.classList.add('show'); }
+  else { badge.classList.remove('show'); }
 }
 
 async function muTyping(){
-  const sk=muSK();
-  clearTimeout(muTypingTimer);
+  const sk=muSK(); clearTimeout(muTypingTimer);
   await dbSet(`${sk}:typing:${muRole}`,{name:muMyName,role:muRole,active:true,ts:Date.now()});
   muTypingTimer=setTimeout(async()=>{
     await dbSet(`${sk}:typing:${muRole}`,{name:muMyName,role:muRole,active:false,ts:Date.now()});
@@ -1585,31 +1918,28 @@ async function muMarkSeen(){
 
 async function muSendChat(){
   const sk=muSK();
-  const inp=document.getElementById('chat-input');
+  const inp=document.getElementById('chat-modal-input');
   const msg=inp.value.trim(); if(!msg) return;
-  inp.value='';
-  clearTimeout(muTypingTimer);
+  inp.value=''; clearTimeout(muTypingTimer);
   await dbSet(`${sk}:typing:${muRole}`,{name:muMyName,role:muRole,active:false,ts:Date.now()});
   const existing=await dbGet(`${sk}:chat`);
   const msgs=(existing&&existing.messages)||[];
-  msgs.push({id:Date.now()+'_'+muRole, who:muMyName, role:muRole, text:msg, ts:Date.now(), reactions:{}, seenBy:[]});
+  msgs.push({id:Date.now()+'_'+muRole,who:muMyName,role:muRole,text:msg,ts:Date.now(),reactions:{},seenBy:[]});
   if(msgs.length>50) msgs.shift();
   await dbSet(`${sk}:chat`,{messages:msgs,ts:Date.now()});
   muLastChatTs=Date.now(); muRenderChat(msgs);
 }
 
-async function muReact(msgId, emoji){
+async function muReact(msgId,emoji){
   const sk=muSK();
   const existing=await dbGet(`${sk}:chat`);
   if(!existing||!existing.messages) return;
   const msgs=existing.messages.map(m=>{
     if(m.id!==msgId) return m;
-    const reactions=m.reactions||{};
-    const key=`${emoji}`;
+    const reactions=m.reactions||{},key=`${emoji}`;
     if(!reactions[key]) reactions[key]=[];
     const idx=reactions[key].indexOf(muRole);
-    if(idx>-1) reactions[key].splice(idx,1);
-    else reactions[key].push(muRole);
+    if(idx>-1) reactions[key].splice(idx,1); else reactions[key].push(muRole);
     if(!reactions[key].length) delete reactions[key];
     return {...m,reactions};
   });
@@ -1618,33 +1948,27 @@ async function muReact(msgId, emoji){
 }
 
 function muRenderChat(msgs){
-  const box=document.getElementById('chat-messages');
-  document.getElementById('mu-chat').classList.remove('hidden');
-  const wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<40;
+  const box=document.getElementById('chat-modal-messages');
+  const wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<60;
   box.innerHTML='';
-
   msgs.forEach(m=>{
     if(m.system){
       const d=document.createElement('div'); d.className='chat-system'; d.textContent=m.text; box.appendChild(d); return;
     }
     const mine=m.role===muRole;
     const div=document.createElement('div'); div.className='chat-msg '+(mine?'mine':'theirs');
-
     const reactions=m.reactions||{};
     const reactionsHtml=Object.entries(reactions).map(([emoji,roles])=>{
       const iMine=roles.includes(muRole);
       return `<button class="reaction-btn${iMine?' mine':''}" onclick="muReact('${m.id}','${emoji}')">${emoji}<span class="reaction-count">${roles.length}</span></button>`;
     }).join('');
-
     const seenBy=(m.seenBy||[]).filter(r=>r!==m.role);
     const seenHtml=mine&&seenBy.length?`<div class="msg-seen">✓ Seen by ${seenBy.map(r=>muMembers[r]?.name||r).join(', ')}</div>`:'';
-
     const pickerHtml=`<div class="msg-emoji-picker" id="picker-${m.id}">${MU_EMOJIS.map(e=>`<button class="ep-btn" onclick="muReact('${m.id}','${e}');document.getElementById('picker-${m.id}').classList.remove('show')">${e}</button>`).join('')}</div>`;
-
     div.innerHTML=`
       ${!mine?`<div class="msg-who">${m.who}</div>`:''}
       <div>${m.text}</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap">
         <div class="msg-reactions">${reactionsHtml}</div>
         <button class="react-toggle" onclick="document.getElementById('picker-${m.id}').classList.toggle('show')">😀</button>
       </div>
@@ -1653,7 +1977,7 @@ function muRenderChat(msgs){
       ${seenHtml}`;
     box.appendChild(div);
   });
-  if(wasAtBottom) box.scrollTop=box.scrollHeight;
+  if(wasAtBottom||muChatOpen) box.scrollTop=box.scrollHeight;
 }
 
 async function muImHere(){
@@ -1675,20 +1999,432 @@ async function muLeave(){
   const sk=muSK();
   if(muWatchId) navigator.geolocation.clearWatch(muWatchId);
   if(muPollTimer) clearInterval(muPollTimer);
-  dbUnlisten(`${sk}:chat`);
-  dbUnlisten(`${sk}:typing`);
-  dbUnlisten(`${sk}:here`);
+  dbUnlisten(`${sk}:chat`); dbUnlisten(`${sk}:typing`); dbUnlisten(`${sk}:here`);
   const d=await dbGet(`${sk}:${muRole}`);
   if(d) await dbSet(`${sk}:${muRole}`,{...d,online:false,ts:Date.now()-20000});
   document.getElementById('mu-map-screen').classList.remove('active');
   document.getElementById('mu-login').classList.add('active');
+  document.getElementById('chat-fab').classList.remove('show');
+  document.getElementById('chat-modal-overlay').classList.remove('show');
+  document.getElementById('mu-live-track-panel').classList.remove('show');
   muMyCoords=null; muMeetupCoords=null; muMembers={}; muPin='';
   Object.values(muMarkers).forEach(m=>{ try{muMap.removeLayer(m);}catch(e){} }); muMarkers={};
-  muMap=null; muMapInited=false; muLastChatTs=0;
-  document.getElementById('mu-chat').classList.add('hidden');
-  document.getElementById('chat-messages').innerHTML='';
+  muMap=null; muMapInited=false; muLastChatTs=0; muUnreadCount=0; muChatOpen=false;
+  document.getElementById('chat-modal-messages').innerHTML='';
   showToast('You left the session.');
 }
+
+// Close chat on Escape
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&muChatOpen) muCloseChat(null,true); });
+
+/* ═══════════════════════════════════════════
+   SOCIAL UPGRADES — ARRIVAL COUNTDOWN
+═══════════════════════════════════════════ */
+let muCountdownTimer = null;
+
+function muStartCountdown(etaMins, destLabel) {
+  clearInterval(muCountdownTimer);
+  const endTs = Date.now() + etaMins * 60000;
+  const cdEl = document.getElementById('mu-countdown');
+  const destEl = document.getElementById('mu-countdown-dest');
+  if(destLabel) destEl.textContent = `to ${destLabel}`;
+  cdEl.classList.add('show');
+  muCountdownTimer = setInterval(() => {
+    const rem = Math.max(0, endTs - Date.now());
+    const mins = Math.floor(rem / 60000);
+    const secs = Math.floor((rem % 60000) / 1000);
+    const el = document.getElementById('mu-countdown-val');
+    if(el) el.textContent = rem > 0 ? `${mins}m ${secs.toString().padStart(2,'0')}s` : '🎉 Arriving!';
+    if(rem === 0) { clearInterval(muCountdownTimer); setTimeout(()=>{ document.getElementById('mu-countdown').classList.remove('show'); }, 5000); }
+  }, 1000);
+}
+
+function muCancelCountdown() {
+  clearInterval(muCountdownTimer);
+  document.getElementById('mu-countdown').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════════
+   SOS ALERT
+═══════════════════════════════════════════ */
+async function muSendSOS() {
+  if(!muMyCoords){showToast('Enable GPS first');return;}
+  if(!confirm('Send SOS alert to your group?')) return;
+  const sk = muSK();
+  const mapsLink = `https://maps.google.com/?q=${muMyCoords.lat},${muMyCoords.lng}`;
+  await dbSet(`${sk}:sos`,{name:muMyName,role:muRole,lat:muMyCoords.lat,lng:muMyCoords.lng,ts:Date.now(),link:mapsLink});
+  const existing = await dbGet(`${sk}:chat`);
+  const msgs = (existing&&existing.messages)||[];
+  msgs.push({id:Date.now()+'_SOS',who:muMyName,role:muRole,text:`🆘 SOS! I need help. My location: ${mapsLink}`,sos:true,ts:Date.now(),reactions:{},seenBy:[]});
+  await dbSet(`${sk}:chat`,{messages:msgs,ts:Date.now()});
+  muLastChatTs=Date.now(); muRenderChat(msgs);
+  muAddFeed('🆘',`${muMyName} sent an SOS alert`,'sos');
+  showToast('🆘 SOS sent to your group!',5000);
+  if(muChatOpen) muOpenChat();
+}
+
+/* ═══════════════════════════════════════════
+   STATUS FEED
+═══════════════════════════════════════════ */
+let muFeedItems = [];
+function muAddFeed(icon, text, type='info') {
+  muFeedItems.unshift({icon,text,ts:Date.now(),type});
+  if(muFeedItems.length>20) muFeedItems.pop();
+  const wrap = document.getElementById('mu-status-feed-wrap');
+  if(wrap) wrap.classList.remove('hidden');
+  muRenderFeed();
+}
+function muRenderFeed() {
+  const el = document.getElementById('mu-status-feed'); if(!el) return;
+  el.innerHTML = muFeedItems.slice(0,5).map(f=>{
+    const ago = Math.round((Date.now()-f.ts)/1000);
+    const agoStr = ago<10?'just now':ago<60?`${ago}s ago`:`${Math.floor(ago/60)}m ago`;
+    return `<div class="feed-item feed-${f.type}"><span class="feed-icon">${f.icon}</span><div class="feed-body"><div class="feed-text">${f.text}</div><div class="feed-time">${agoStr}</div></div></div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════
+   CHAT UPGRADES — LOCATION PIN & QUICK REPLIES
+═══════════════════════════════════════════ */
+const MU_QUICK_REPLIES=['On my way! 🚗','Almost there ⏳','At the spot 📍','Running late 😅','5 mins away ⚡','Where are you? 🔍'];
+
+function muRenderQuickReplies(){
+  const row=document.getElementById('quick-reply-row'); if(!row) return;
+  row.innerHTML=MU_QUICK_REPLIES.map(r=>`<div class="qr-chip" onclick="muQuickReply('${r}')">${r}</div>`).join('');
+}
+
+async function muQuickReply(text){
+  document.getElementById('chat-modal-input').value=text;
+  await muSendChat();
+}
+
+async function muShareLocationInChat(){
+  if(!muMyCoords){showToast('Enable GPS first');return;}
+  const sk=muSK();
+  const mapsLink=`https://maps.google.com/?q=${muMyCoords.lat},${muMyCoords.lng}`;
+  const existing=await dbGet(`${sk}:chat`);
+  const msgs=(existing&&existing.messages)||[];
+  msgs.push({id:Date.now()+'_'+muRole,who:muMyName,role:muRole,text:`📍 My current location`,locationPin:{lat:muMyCoords.lat,lng:muMyCoords.lng,link:mapsLink},ts:Date.now(),reactions:{},seenBy:[]});
+  if(msgs.length>50) msgs.shift();
+  await dbSet(`${sk}:chat`,{messages:msgs,ts:Date.now()});
+  muLastChatTs=Date.now(); muRenderChat(msgs);
+  showToast('📍 Location shared in chat!');
+  muAddFeed('📍',`${muMyName} shared their location in chat`,'chat');
+}
+
+// Override muRenderChat to handle SOS and location pin messages
+muRenderChat = function(msgs){
+  const box=document.getElementById('chat-modal-messages');
+  if(!box) return;
+  const wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<60;
+  box.innerHTML='';
+  msgs.forEach(m=>{
+    if(m.system){
+      const d=document.createElement('div');
+      if(m.sos){
+        d.className='chat-msg sos-msg';
+        const link=(m.text.match(/https?:\/\/\S+/)||['#'])[0];
+        d.innerHTML=`<div class="sos-msg-text">🆘 SOS Alert from ${m.who||'group member'}</div><a class="sos-link" href="${link}" target="_blank">📍 Open location</a>`;
+      } else {
+        d.className='chat-system'; d.textContent=m.text;
+      }
+      box.appendChild(d); return;
+    }
+    const mine=m.role===muRole;
+    const div=document.createElement('div'); div.className='chat-msg '+(mine?'mine':'theirs');
+    const reactions=m.reactions||{};
+    const reactionsHtml=Object.entries(reactions).map(([emoji,roles])=>{
+      const iMine=roles.includes(muRole);
+      return `<button class="reaction-btn${iMine?' mine':''}" onclick="muReact('${m.id}','${emoji}')">${emoji}<span class="reaction-count">${roles.length}</span></button>`;
+    }).join('');
+    const seenBy=(m.seenBy||[]).filter(r=>r!==m.role);
+    const seenHtml=mine&&seenBy.length?`<div class="msg-seen">✓ Seen by ${seenBy.map(r=>(muMembers[r]&&muMembers[r].name)||r).join(', ')}</div>`:'';
+    const pickerHtml=`<div class="msg-emoji-picker" id="picker-${m.id}">${MU_EMOJIS.map(e=>`<button class="ep-btn" onclick="muReact('${m.id}','${e}');document.getElementById('picker-${m.id}').classList.remove('show')">${e}</button>`).join('')}</div>`;
+    const pinHtml=m.locationPin?`<a class="location-pin-msg" href="${m.locationPin.link}" target="_blank">📍 View on map</a>`:'';
+    // SOS badge only for non-system SOS messages (normal messages flagged sos:true)
+    const sosBadge=(!m.system&&m.sos)?`<span style="display:inline-block;background:#fef2f2;color:var(--red);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;margin-bottom:3px">🆘 SOS</span><br>`:'';
+    div.innerHTML=`
+      ${!mine?`<div class="msg-who">${m.who}</div>`:''}
+      ${sosBadge}<div>${m.text}</div>
+      ${pinHtml}
+      <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap">
+        <div class="msg-reactions">${reactionsHtml}</div>
+        <button class="react-toggle" onclick="document.getElementById('picker-${m.id}').classList.toggle('show')">😀</button>
+      </div>
+      ${pickerHtml}
+      <div class="msg-time">${new Date(m.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      ${seenHtml}`;
+    box.appendChild(div);
+  });
+  if(wasAtBottom||muChatOpen) box.scrollTop=box.scrollHeight;
+};
+
+// Patch muOpenChat to render quick replies
+muOpenChat = function(){
+  muChatOpen=true; muUnreadCount=0; muUpdateFabBadge();
+  muRenderQuickReplies();
+  document.getElementById('chat-modal-overlay').classList.add('show');
+  setTimeout(()=>{
+    const box=document.getElementById('chat-modal-messages');
+    if(box) box.scrollTop=box.scrollHeight;
+    const inp=document.getElementById('chat-modal-input');
+    if(inp) inp.focus();
+  },100);
+};
+
+// Patch muLeave ONCE — clean up all new elements then call original leave logic
+const _origLeave = muLeave;
+muLeave = async function(){
+  muCancelCountdown();
+  muFeedItems=[];
+  const sosBtn=document.getElementById('mu-sos-btn');
+  if(sosBtn) sosBtn.classList.remove('show');
+  const cdEl=document.getElementById('mu-countdown');
+  if(cdEl) cdEl.classList.remove('show');
+  const feedWrap=document.getElementById('mu-status-feed-wrap');
+  if(feedWrap) feedWrap.classList.add('hidden');
+  await _origLeave();
+};
+
+// Patch muJoin ONCE — show SOS after join, record dashboard session
+const _origJoin = muJoin;
+muJoin = async function(){
+  await _origJoin.call(this,...arguments);
+  setTimeout(()=>{
+    if(document.getElementById('mu-map-screen').classList.contains('active')){
+      const sosBtn=document.getElementById('mu-sos-btn');
+      if(sosBtn) sosBtn.classList.add('show');
+      dashRecordSession();
+    }
+  }, 600);
+};
+
+// Patch muCalcBothRoutes ONCE — start countdown from computed ETA
+const _origCalcRoutes = muCalcBothRoutes;
+muCalcBothRoutes = async function(){
+  await _origCalcRoutes();
+  const etaEl=document.getElementById('mu-st-myeta');
+  if(etaEl && etaEl.textContent!=='—' && muMeetupCoords){
+    const meetLabel=document.getElementById('mu-meetup-input').value||'meetup point';
+    const eta=etaEl.textContent;
+    if(eta.includes(':')){
+      const [hh,mm]=eta.split(':').map(Number);
+      const etaDate=new Date(); etaDate.setHours(hh,mm,0,0);
+      const now=new Date();
+      if(etaDate<=now) etaDate.setDate(etaDate.getDate()+1);
+      const mins=Math.round((etaDate-now)/60000);
+      if(mins>0&&mins<300) muStartCountdown(mins,meetLabel);
+    }
+  }
+};
+
+// Patch muPoll ONCE — detect member join/leave for status feed
+const _origPoll = muPoll;
+muPoll = async function(){
+  const prevOnline=Object.entries(muMembers).filter(([,d])=>d&&d.online).map(([k])=>k);
+  await _origPoll();
+  const nowOnline=Object.entries(muMembers).filter(([,d])=>d&&d.online).map(([k])=>k);
+  nowOnline.forEach(slot=>{
+    if(!prevOnline.includes(slot)&&muMembers[slot]&&muMembers[slot].name){
+      muAddFeed('👋',`${muMembers[slot].name} joined the session`,'info');
+      muPlaySound();
+    }
+  });
+  prevOnline.forEach(slot=>{
+    if(!nowOnline.includes(slot)&&muMembers[slot]&&muMembers[slot].name){
+      muAddFeed('👤',`${muMembers[slot].name} went offline`,'info');
+    }
+  });
+  muRenderFeed();
+};
+
+// Patch muStartPolling ONCE — add SOS Firebase listener
+const _origStartPolling = muStartPolling;
+muStartPolling = function(){
+  _origStartPolling();
+  const sk=muSK();
+  dbListen(`${sk}:sos`,data=>{
+    if(!data||data.role===muRole) return;
+    if(data.ts>(window._muLastSOS||0)){
+      window._muLastSOS=data.ts;
+      muPlaySound(); setTimeout(muPlaySound,300);
+      showToast(`🆘 SOS from ${data.name}! Check group chat.`,8000);
+      muAddFeed('🆘',`${data.name} sent SOS!`,'sos');
+    }
+  });
+};
+
+/* ═══════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════ */
+let dashTrips = JSON.parse(localStorage.getItem('clgh_dash_trips')||'[]');
+let dashSessions = parseInt(localStorage.getItem('clgh_dash_sessions')||'0');
+
+function dashRecordTrip(dest, distKm, durMins, mode){
+  const today=new Date().toDateString();
+  // distKm arrives as string "21.4" from addToHistory
+  dashTrips.unshift({dest, distKm:parseFloat(distKm)||0, durMins:parseFloat(durMins)||0, mode:mode||'driving', ts:Date.now(), date:today});
+  if(dashTrips.length>100) dashTrips.pop();
+  localStorage.setItem('clgh_dash_trips',JSON.stringify(dashTrips));
+  dashUpdateStreak();
+}
+
+function dashRecordSession(){
+  dashSessions++;
+  localStorage.setItem('clgh_dash_sessions',String(dashSessions));
+}
+
+function dashUpdateStreak(){
+  const days=[...new Set(dashTrips.map(t=>t.date))];
+  const today=new Date();
+  let streak=0;
+  for(let i=0;i<90;i++){
+    const d=new Date(today); d.setDate(d.getDate()-i);
+    if(days.includes(d.toDateString())) streak++;
+    else break;
+  }
+  const best=Math.max(streak, parseInt(localStorage.getItem('clgh_best_streak')||'0'));
+  localStorage.setItem('clgh_streak',String(streak));
+  localStorage.setItem('clgh_best_streak',String(best));
+}
+
+function dashClearHistory(){
+  if(!confirm('Clear all trip history?')) return;
+  dashTrips=[]; localStorage.removeItem('clgh_dash_trips');
+  localStorage.removeItem('clgh_streak');
+  dashRender(); showToast('Trip history cleared');
+}
+
+function dashRender(){
+  const panel=document.getElementById('panel-dashboard'); if(!panel) return;
+
+  const streak=parseInt(localStorage.getItem('clgh_streak')||'0');
+  const best=parseInt(localStorage.getItem('clgh_best_streak')||'0');
+  const sv=document.getElementById('dash-streak-val');
+  const sb=document.getElementById('dash-streak-best');
+  const tt=document.getElementById('dash-total-trips');
+  if(sv) sv.textContent=`${streak} day${streak!==1?'s':''}`;
+  if(sb) sb.textContent=`Best: ${best} day${best!==1?'s':''}`;
+  if(tt) tt.textContent=String(dashTrips.length);
+
+  const totalDist=dashTrips.reduce((s,t)=>s+(t.distKm||0),0);
+  const totalMins=dashTrips.reduce((s,t)=>s+(t.durMins||0),0);
+  const td=document.getElementById('dash-total-dist');
+  const th=document.getElementById('dash-total-time');
+  const ts=document.getElementById('dash-total-sessions');
+  if(td) td.textContent=totalDist>0?totalDist.toFixed(0):'0';
+  if(th) th.textContent=totalMins>0?(totalMins/60).toFixed(1):'0';
+  if(ts) ts.textContent=String(dashSessions);
+
+  // Weekly bar chart
+  const weekEl=document.getElementById('dash-week-chart');
+  if(weekEl){
+    weekEl.innerHTML='';
+    const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const today=new Date();
+    const counts=[];
+    for(let i=6;i>=0;i--){
+      const d=new Date(today); d.setDate(d.getDate()-i);
+      counts.push(dashTrips.filter(t=>t.date===d.toDateString()).length);
+    }
+    const maxC=Math.max(1,...counts);
+    for(let i=6;i>=0;i--){
+      const d=new Date(today); d.setDate(d.getDate()-i);
+      const count=counts[6-i];
+      const h=count>0?Math.max(8,Math.round((count/maxC)*55)):3;
+      const isToday=i===0;
+      weekEl.innerHTML+=`<div class="wc-bar-wrap"><div class="wc-bar${isToday?' today':''}" style="height:${h}px" title="${count} trip${count!==1?'s':''} on ${d.toDateString()}"></div><div class="wc-day">${dayNames[d.getDay()]}</div></div>`;
+    }
+  }
+
+  dashRenderHeatmap();
+  dashRenderModeBars();
+  dashRenderTripCards();
+}
+
+function dashRenderHeatmap(){
+  const gridEl=document.getElementById('hm-grid'); if(!gridEl) return;
+  const lblEl=document.getElementById('hm-day-labels');
+  gridEl.innerHTML=''; if(lblEl) lblEl.innerHTML='';
+  const levels=['#e8f5ee','#86efac','#4ade80','#16a34a','#14532d'];
+  const WEEKS=12;
+  const today=new Date();
+  // Build count map
+  const countMap={};
+  dashTrips.forEach(t=>{ countMap[t.date]=(countMap[t.date]||0)+1; });
+  const maxCount=Math.max(1,...Object.values(countMap));
+  // Start date: go back WEEKS*7 days, then snap to Sunday
+  const startDate=new Date(today);
+  startDate.setDate(startDate.getDate()-(WEEKS*7-1));
+  startDate.setDate(startDate.getDate()-startDate.getDay());
+  // Row labels (Mon, Wed, Fri) — positioned by CSS row
+  if(lblEl){
+    ['S','M','T','W','T','F','S'].forEach(d=>{
+      lblEl.innerHTML+=`<div class="hm-day-label">${d}</div>`;
+    });
+  }
+  for(let w=0;w<WEEKS;w++){
+    const colDiv=document.createElement('div'); colDiv.className='hm-col';
+    for(let d=0;d<7;d++){
+      const date=new Date(startDate); date.setDate(date.getDate()+w*7+d);
+      if(date>today){ const empty=document.createElement('div'); empty.className='hm-cell'; empty.style.background='transparent'; colDiv.appendChild(empty); continue; }
+      const ds=date.toDateString();
+      const count=countMap[ds]||0;
+      const lvl=count===0?0:Math.min(4,Math.ceil((count/maxCount)*4));
+      const cell=document.createElement('div'); cell.className='hm-cell';
+      cell.style.background=levels[lvl];
+      cell.title=`${ds}: ${count} trip${count!==1?'s':''}`;
+      colDiv.appendChild(cell);
+    }
+    gridEl.appendChild(colDiv);
+  }
+}
+
+function dashRenderModeBars(){
+  const barsEl=document.getElementById('dash-mode-bars'); if(!barsEl) return;
+  const modeData={driving:{icon:'🚗',color:'#1A6B3C',label:'Drive'},walking:{icon:'🚶',color:'#2563EB',label:'Walk'},cycling:{icon:'🚲',color:'#D4A017',label:'Cycle'},transit:{icon:'🚌',color:'#7C3AED',label:'Trotro'}};
+  const modeCount={driving:0,walking:0,cycling:0,transit:0};
+  dashTrips.forEach(t=>{ if(t.mode&&modeCount[t.mode]!==undefined) modeCount[t.mode]++; });
+  const modeMax=Math.max(1,...Object.values(modeCount));
+  barsEl.innerHTML='';
+  Object.entries(modeData).forEach(([mode,info])=>{
+    const pct=Math.round((modeCount[mode]/modeMax)*100);
+    barsEl.innerHTML+=`<div class="mode-bar-row"><div class="mode-bar-label">${info.icon} <span>${info.label}</span></div><div class="mode-bar-track"><div class="mode-bar-fill" style="width:${pct}%;background:${info.color}"></div></div><div class="mode-bar-val">${modeCount[mode]}</div></div>`;
+  });
+}
+
+function dashRenderTripCards(){
+  const cardsEl=document.getElementById('dash-trip-cards'); if(!cardsEl) return;
+  if(!dashTrips.length){
+    cardsEl.innerHTML=`<div class="dash-empty"><div class="dash-empty-icon">🗺️</div><div class="dash-empty-text">No trips yet</div><div class="dash-empty-sub">Head to Directions to get started</div></div>`;
+    return;
+  }
+  const modeIcons={driving:'🚗',walking:'🚶',cycling:'🚲',transit:'🚌'};
+  cardsEl.innerHTML=dashTrips.slice(0,10).map(t=>{
+    const ago=Math.round((Date.now()-t.ts)/60000);
+    const agoStr=ago<1?'just now':ago<60?`${ago}m ago`:ago<1440?`${Math.floor(ago/60)}h ago`:`${Math.floor(ago/1440)}d ago`;
+    const mode=t.mode||'driving';
+    const distStr=t.distKm>0?`${t.distKm} km`:'—';
+    return `<div class="trip-card"><div class="trip-mode-icon ${mode}">${modeIcons[mode]||'🚗'}</div><div class="trip-info"><div class="trip-dest">${t.dest}</div><div class="trip-meta">${fmtDur(t.durMins)} · ${agoStr}</div></div><div class="trip-dist">${distStr}</div></div>`;
+  }).join('');
+}
+
+// Patch addToHistory to also record in dashboard (single patch)
+const _origAddToHistory = addToHistory;
+addToHistory = function(dest, distKm, durMins){
+  _origAddToHistory(dest, distKm, durMins);
+  dashRecordTrip(dest, distKm, durMins, dTravelMode);
+};
+
+// Patch switchTab to render dashboard when switched to (safe null-check)
+const _origSwitchTab = switchTab;
+switchTab = function(tab){
+  _origSwitchTab(tab);
+  if(tab==='dashboard') setTimeout(dashRender, 50);
+};
+
+// Initial dashboard render
+dashRender();
 </script>
 </body>
 </html>

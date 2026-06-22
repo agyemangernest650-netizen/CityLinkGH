@@ -340,31 +340,39 @@ const ADZUNA_APP_KEY = "60badb7be80904ab3db66e892629e2dd";
 // merged alongside Firebase-posted jobs in fetchJobs()
 // ─────────────────────────────────────────────
 async function fetchAdzunaJobs(){
-  if(!ADZUNA_APP_ID||ADZUNA_APP_ID==='YOUR_APP_ID')return[];
-  try{
-    const url=`https://api.adzuna.com/v1/api/jobs/gh/search/1?app_id=${ADZUNA_APP_ID}&app_key=${ADZUNA_APP_KEY}&results_per_page=50&content-type=application/json`;
-    const res=await fetch(url);
-    const data=await res.json();
-    if(!data.results)return[];
-    return data.results.map(j=>({
-      id:"adzuna_"+j.id,
-      jobTitle:j.title||"Job Opening",
-      company:j.company?.display_name||"Company",
-      city:j.location?.display_name?.split(",")[0]||"Ghana",
-      jobType:j.contract_time==="full_time"?"Full Time":j.contract_time==="part_time"?"Part Time":"Full Time",
-      industry:j.category?.label||"",
-      salary:j.salary_min?`GHS ${Math.round(j.salary_min).toLocaleString()}${j.salary_max?` – ${Math.round(j.salary_max).toLocaleString()}`:""}`:"",
-      desc:j.description||"",
-      requirements:"",
-      howToApply:`Apply via Adzuna: ${j.redirect_url}`,
-      tags:j.category?.label||"",
-      phone:"",whatsapp:"",email:"",logoUrl:"",
-      plan:"free",views:0,deadline:null,expiresAt:null,
-      createdAt:new Date(j.created),
-      source:"adzuna",
-      applyUrl:j.redirect_url
-    }));
-  }catch(e){console.warn("Adzuna fetch failed:",e.message);return[];}
+  const endpoints=[
+    // Try Ghana directly
+    `https://corsproxy.io/?https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=${ADZUNA_APP_ID}&app_key=${ADZUNA_APP_KEY}&results_per_page=50&what=ghana&content-type=application/json`,
+    // Fallback: UK jobs tagged Ghana/Africa (remote friendly)
+    `https://corsproxy.io/?https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=${ADZUNA_APP_ID}&app_key=${ADZUNA_APP_KEY}&results_per_page=50&what=remote&content-type=application/json`
+  ];
+  for(const url of endpoints){
+    try{
+      const res=await fetch(url);
+      const data=await res.json();
+      if(data.results&&data.results.length>0){
+        return data.results.map(j=>({
+          id:"adzuna_"+j.id,
+          jobTitle:j.title||"Job Opening",
+          company:j.company?.display_name||"Company",
+          city:j.location?.display_name?.split(",")[0]||"Ghana",
+          jobType:j.contract_time==="full_time"?"Full Time":j.contract_time==="part_time"?"Part Time":"Full Time",
+          industry:j.category?.label||"",
+          salary:j.salary_min?`GHS ${Math.round(j.salary_min).toLocaleString()}${j.salary_max?` – ${Math.round(j.salary_max).toLocaleString()}`:""}`:"",
+          desc:j.description||"",
+          requirements:"",
+          howToApply:`Apply via Adzuna: ${j.redirect_url}`,
+          tags:j.category?.label||"",
+          phone:"",whatsapp:"",email:"",logoUrl:"",
+          plan:"free",views:0,deadline:null,expiresAt:null,
+          createdAt:new Date(j.created),
+          source:"adzuna",
+          applyUrl:j.redirect_url
+        }));
+      }
+    }catch(e){console.warn("Adzuna endpoint failed:",e.message);}
+  }
+  return[];
 }
 
 async function fetchJobs(){try{

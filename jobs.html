@@ -351,7 +351,9 @@ async function fetchJoobleJobs(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({keywords:'',location:'Ghana',ResultOnPage:50})
     });
+    console.log("Status:", res.status)
     const data=await res.json();
+    console.log("Jooble response:, data")
     if(!data.jobs)return[];
     return data.jobs.map(j=>({
       id:"jooble_"+j.id,

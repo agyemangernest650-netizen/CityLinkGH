@@ -36,11 +36,12 @@
     <button class="drawer-close" onclick="toggleDrawer()">✕</button>
     <div class="drawer-brand">CityLink<span>GH</span></div>
     <div class="drawer-section">Explore</div>
-    <a href="index.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
+    <a href="home.html" class="drawer-link"><span class="di">🏪</span> Businesses</a>
     <a href="jobs.html" class="drawer-link"><span class="di">💼</span> Jobs</a>
     <a href="room.html" class="drawer-link"><span class="di">🏠</span> Rooms</a>
     <a href="buy.html" class="drawer-link"><span class="di">🛍️</span> Store</a>
-     <a href="news.html" class="drawer-link"><span class="di">📰</span> News &amp; Guides</a>
+    <a href="directions.html" class="drawer-link"><span class="di">🗺️</span>Navigation</a>
+    <a href="news.html" class="drawer-link"><span class="di">📰</span> News &amp; Guides</a>
     <div class="drawer-section">List Something</div>
     <a href="submit.html" class="drawer-link drawer-cta"><span class="di">＋</span> List a Business</a>
     <div class="drawer-link" onclick="openPostModal();toggleDrawer()" style="cursor:pointer;"><span class="di">💼</span> Post a Job</div>
@@ -84,7 +85,7 @@
     <div class="hero-quick-links">
       <a href="room.html" class="hql">🏠 Rooms</a>
       <a href="buy.html" class="hql">🛍️ Shop Local</a>
-      <a href="index.html" class="hql">🏪 Businesses</a>
+      <a href="home.html" class="hql">🏪 Businesses</a>
       <a href="directions.html" class="hql">🗺️ Navigation</a>
       <button class="hql hql-accent" onclick="openPostModal()">＋ Post Job</button>
     </div>
@@ -209,7 +210,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand"><div class="footer-logo">CityLink<span>GH</span></div><p>Ghana's most trusted job board. Find full time, part time, remote and internship opportunities.</p></div>
-    <div class="footer-col"><h4>Directory</h4><ul><li><a href="index.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Shop Local</a></li></ul></div>
+    <div class="footer-col"><h4>Directory</h4><ul><li><a href="home.html">Businesses</a></li><li><a href="room.html">Rooms</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="buy.html">Shop Local</a></li></ul></div>
     <div class="footer-col"><h4>List With Us</h4><ul><li><a href="submit.html">List a Business</a></li><li><a href="jobs.html">Post a Job</a></li><li><a href="room.html">Post a Room</a></li></ul></div>
     <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:agyemangernest650@gmail.com">Contact</a></li></ul></div>
   </div>
@@ -217,11 +218,11 @@
 </footer>
 
 <nav class="bottom-nav">
-  <a href="index.html" class="bn-item"><span class="bn-ico">🏪</span><span class="bn-lbl">Home</span></a>
+  <a href="home.html" class="bn-item"><span class="bn-ico">🏪</span><span class="bn-lbl">Home</span></a>
   <a href="jobs.html" class="bn-item active"><span class="bn-ico">💼</span><span class="bn-lbl">Jobs</span></a>
   <button class="bn-item bn-center" onclick="openPostModal()"><span class="bn-plus">＋</span></button>
   <a href="room.html" class="bn-item"><span class="bn-ico">🏠</span><span class="bn-lbl">Rooms</span></a>
-  <a href="directions.html" class="bn-item"><span class="bn-ico">🗺️</span><span class="bn-lbl">Navigation</span></a>
+  <a href="profile.html" class="bn-item" style="position:relative;"><span class="bn-ico">👤</span><span class="bn-lbl">Profile</span><span id="savedNavBadge" style="display:none;position:absolute;top:-2px;right:2px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"></span></a>
 </nav>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
@@ -329,50 +330,48 @@ const savedTheme=localStorage.getItem('clTheme');if(savedTheme){document.documen
 
 // FETCH
 // ─────────────────────────────────────────────
-// ADZUNA CONFIG — replace with your real keys
-// Sign up at https://developer.adzuna.com to get these
 // ─────────────────────────────────────────────
-const ADZUNA_APP_ID  = "0f143fb6";
-const ADZUNA_APP_KEY = "60badb7be80904ab3db66e892629e2dd";
+// JOOBLE CONFIG — replace with your real key
+// Sign up at https://jooble.org/api/about to get one
+// ─────────────────────────────────────────────
+const JOOBLE_API_KEY = "ef55a7e5-a45b-49f7-9fa9-3128aecdbca5";
 
 // ─────────────────────────────────────────────
-// FETCH ADZUNA JOBS (Ghana) — external job listings
+// FETCH JOOBLE JOBS (Ghana) — external job listings
 // merged alongside Firebase-posted jobs in fetchJobs()
+// Jooble's API is POST with a JSON body, single key
+// in the URL path (not query params like some others).
 // ─────────────────────────────────────────────
-async function fetchAdzunaJobs(){
-  const endpoints=[
-    // Try Ghana directly
-    `https://corsproxy.io/?https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=${ADZUNA_APP_ID}&app_key=${ADZUNA_APP_KEY}&results_per_page=50&what=ghana&content-type=application/json`,
-    // Fallback: UK jobs tagged Ghana/Africa (remote friendly)
-    `https://corsproxy.io/?https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=${ADZUNA_APP_ID}&app_key=${ADZUNA_APP_KEY}&results_per_page=50&what=remote&content-type=application/json`
-  ];
-  for(const url of endpoints){
-    try{
-      const res=await fetch(url);
-      const data=await res.json();
-      if(data.results&&data.results.length>0){
-        return data.results.map(j=>({
-          id:"adzuna_"+j.id,
-          jobTitle:j.title||"Job Opening",
-          company:j.company?.display_name||"Company",
-          city:j.location?.display_name?.split(",")[0]||"Ghana",
-          jobType:j.contract_time==="full_time"?"Full Time":j.contract_time==="part_time"?"Part Time":"Full Time",
-          industry:j.category?.label||"",
-          salary:j.salary_min?`GHS ${Math.round(j.salary_min).toLocaleString()}${j.salary_max?` – ${Math.round(j.salary_max).toLocaleString()}`:""}`:"",
-          desc:j.description||"",
-          requirements:"",
-          howToApply:`Apply via Adzuna: ${j.redirect_url}`,
-          tags:j.category?.label||"",
-          phone:"",whatsapp:"",email:"",logoUrl:"",
-          plan:"free",views:0,deadline:null,expiresAt:null,
-          createdAt:new Date(j.created),
-          source:"adzuna",
-          applyUrl:j.redirect_url
-        }));
-      }
-    }catch(e){console.warn("Adzuna endpoint failed:",e.message);}
-  }
-  return[];
+async function fetchJoobleJobs(){
+  if(!JOOBLE_API_KEY||JOOBLE_API_KEY==='YOUR_API_KEY')return[];
+  try{
+    const url=`https://jooble.org/api/${JOOBLE_API_KEY}`;
+    const res=await fetch(url,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({keywords:'',location:'Ghana',ResultOnPage:50})
+    });
+    const data=await res.json();
+    if(!data.jobs)return[];
+    return data.jobs.map(j=>({
+      id:"jooble_"+j.id,
+      jobTitle:j.title||"Job Opening",
+      company:j.company||"Company",
+      city:(j.location||"Ghana").split(",")[0],
+      jobType:j.type||"Full Time",
+      industry:"",
+      salary:j.salary||"",
+      desc:j.snippet||"",
+      requirements:"",
+      howToApply:`Apply via Jooble: ${j.link}`,
+      tags:"",
+      phone:"",whatsapp:"",email:"",logoUrl:"",
+      plan:"free",views:0,deadline:null,expiresAt:null,
+      createdAt:j.updated?new Date(j.updated):new Date(),
+      source:"jooble",
+      applyUrl:j.link
+    }));
+  }catch(e){console.warn("Jooble fetch failed:",e.message);return[];}
 }
 
 async function fetchJobs(){try{
@@ -382,9 +381,9 @@ async function fetchJobs(){try{
   let firebaseJobs=snap.docs.map(d=>({id:d.id,...d.data()}));
   firebaseJobs=firebaseJobs.filter(j=>{if(!j.expiresAt)return true;const exp=j.expiresAt?.toDate?j.expiresAt.toDate().getTime():new Date(j.expiresAt).getTime();return exp>now;});
 
-  // 2. Adzuna jobs (external API) — user-posted jobs always take priority
-  const adzunaJobs=await fetchAdzunaJobs();
-  allJobs=[...firebaseJobs,...adzunaJobs];
+  // 2. Jooble jobs (external API) — user-posted jobs always take priority
+  const joobleJobs=await fetchJoobleJobs();
+  allJobs=[...firebaseJobs,...joobleJobs];
 
   // 3. Stats
   const week=now-7*24*60*60*1000;const newCount=allJobs.filter(j=>j.createdAt&&new Date(j.createdAt?.toDate?.()??j.createdAt).getTime()>week).length;document.getElementById('statTotal').textContent=allJobs.length;document.getElementById('statFull').textContent=allJobs.filter(j=>j.jobType==='Full Time').length;document.getElementById('statRemote').textContent=allJobs.filter(j=>j.jobType==='Remote'||j.city==='Remote').length;document.getElementById('statNew').textContent=newCount;document.getElementById('hotCount').textContent=newCount;if(newCount>0)document.getElementById('hotBanner').style.display='flex';renderNewThisWeek();renderSalarySpotlight();renderRemoteJobs();updateSavedBadge();applyFilters();
@@ -442,7 +441,7 @@ return `<div class="job-card ${planClass}" onclick="viewJob('${j.id}')">
     <span class="cf-meta">${timeAgo} · 👁 ${j.views||0}</span>
   </div>
   <div class="card-actions">
-    ${j.source==='adzuna'
+    ${j.source==='jooble'
       ?`<a class="ca-btn ca-wa" href="${esc(j.applyUrl)}" target="_blank" onclick="event.stopPropagation()">🔗 Apply Now</a>`
       :`${j.phone?`<a class="ca-btn ca-call" href="tel:${esc(j.phone)}" onclick="event.stopPropagation()">📞 Call</a>`:''}
        ${waNum?`<a class="ca-btn ca-wa" href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' on CityLinkGH.')}" target="_blank" onclick="event.stopPropagation()">💬 Apply</a>`:''}`
@@ -452,7 +451,7 @@ return `<div class="job-card ${planClass}" onclick="viewJob('${j.id}')">
 </div>`;}
 
 // VIEW JOB DETAIL
-window.viewJob=async id=>{const j=allJobs.find(x=>x.id===id);if(!j)return;if(j.source!=='adzuna'){try{await updateDoc(doc(db,'jobs',id),{views:increment(1)});}catch(_){}}const rawWa=(j.whatsapp||j.phone||'').replace(/\D/g,'');const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;const dl=j.deadline?new Date(j.deadline):null;const daysLeft=dl?Math.ceil((dl-new Date())/86400000):null;const isSaved=isJobSaved(j.id);document.getElementById('detailContent').innerHTML=`<div style="padding:18px 18px 24px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);">Job Details</div><button onclick="closeDetailModal()" style="background:var(--mist);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--gray);display:flex;align-items:center;justify-content:center;">✕</button></div><div style="display:flex;align-items:center;gap:13px;margin-bottom:14px;"><div style="width:56px;height:56px;border-radius:12px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;">${j.logoUrl?`<img src="${esc(j.logoUrl)}" style="width:100%;height:100%;object-fit:cover;">`:'🏢'}</div><div><div style="font-size:12px;font-weight:700;color:var(--gray);">${esc(j.company||'')}</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text);">${esc(j.jobTitle)}</div></div></div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">${j.jobType?`<span class="jbadge jb-type">${esc(j.jobType)}</span>`:''}${j.industry?`<span class="jbadge jb-exp">${esc(j.industry)}</span>`:''}${j.experience?`<span class="jbadge jb-exp">🎓 ${esc(j.experience)}</span>`:''}${j.filled?`<span class="jbadge jb-filled">🔴 Position Filled</span>`:'<span class="jbadge jb-new">✅ Open</span>'}</div>${j.salary?`<div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--green);margin-bottom:8px;">${esc(j.salary)}</div>`:''}<div style="font-size:13px;color:var(--gray);margin-bottom:12px;">📍 ${esc(j.city||'Ghana')} ${daysLeft!==null?`· ⏰ ${daysLeft<=0?'<span style="color:var(--red);font-weight:800;">Deadline passed</span>':`${daysLeft} days left`}`:''}</div>${j.desc?`<div style="margin-bottom:12px;"><div class="detail-section-label">About the Role</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.desc)}</div></div>`:''}${j.requirements?`<div style="margin-bottom:12px;"><div class="detail-section-label">Requirements</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.requirements)}</div></div>`:''}${j.howToApply?`<div style="margin-bottom:12px;"><div class="detail-section-label">How to Apply</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.howToApply)}</div></div>`:''}${j.tags?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">${(j.tags||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="job-tag">${esc(t)}</span>`).join('')}</div>`:''}<div class="detail-ctas">${j.source==='adzuna'?`<a href="${esc(j.applyUrl)}" target="_blank" class="detail-cta-btn cta-wa">🔗 Apply on Adzuna</a>`:`${j.phone?`<a href="tel:${esc(j.phone)}" class="detail-cta-btn cta-call">📞 Call to Apply</a>`:''}${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' on CityLinkGH.')}" target="_blank" class="detail-cta-btn cta-wa">💬 WhatsApp to Apply</a>`:''}${j.email?`<a href="mailto:${esc(j.email)}?subject=Application for ${encodeURIComponent(j.jobTitle)}" class="detail-cta-btn cta-email">✉️ Email Application</a>`:''}`}</div><div class="detail-actions"><button onclick="shareJob('${j.id}','${esc(j.jobTitle)}','${esc(j.company||'')}','${esc(j.city||'')}')" class="detail-act-btn">📤 Share</button><button onclick="saveJobFromDetail('${j.id}')" id="saveDetailBtn_${j.id}" class="detail-act-btn${isSaved?' detail-act-saved':''}">${isSaved?'✅ Saved':'🔖 Save'}</button><button onclick="reportJob('${j.id}','${esc(j.jobTitle)}')" class="detail-act-btn detail-act-report">🚩 Report</button></div><div style="margin-top:18px;"><div class="detail-section-label" style="margin-bottom:10px;">Similar Jobs</div><div id="similarJobs"></div></div></div>`;document.getElementById('detailModal').classList.add('show');setTimeout(()=>{const sim=allJobs.filter(x=>x.id!==j.id&&(x.industry===j.industry||x.city===j.city)&&!x.filled).slice(0,3);const simEl=document.getElementById('similarJobs');if(!simEl)return;if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar jobs found.</div>';return;}simEl.innerHTML=sim.map(s=>`<div onclick="closeDetailModal();setTimeout(()=>viewJob('${s.id}'),200)" class="similar-item"><div class="sim-thumb">${s.logoUrl?`<img src="${esc(s.logoUrl)}" alt="">`:'💼'}</div><div style="flex:1;min-width:0;"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.jobTitle)}</div><div style="font-size:11px;color:var(--gray);">${esc(s.company||'')} · ${esc(s.city||'')}</div></div><span style="color:var(--gray);font-size:12px;">›</span></div>`).join('');},100);};
+window.viewJob=async id=>{const j=allJobs.find(x=>x.id===id);if(!j)return;if(j.source!=='jooble'){try{await updateDoc(doc(db,'jobs',id),{views:increment(1)});}catch(_){}}const rawWa=(j.whatsapp||j.phone||'').replace(/\D/g,'');const waNum=rawWa.startsWith('233')?rawWa.slice(3):rawWa.startsWith('0')?rawWa.slice(1):rawWa;const dl=j.deadline?new Date(j.deadline):null;const daysLeft=dl?Math.ceil((dl-new Date())/86400000):null;const isSaved=isJobSaved(j.id);document.getElementById('detailContent').innerHTML=`<div style="padding:18px 18px 24px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);">Job Details</div><button onclick="closeDetailModal()" style="background:var(--mist);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--gray);display:flex;align-items:center;justify-content:center;">✕</button></div><div style="display:flex;align-items:center;gap:13px;margin-bottom:14px;"><div style="width:56px;height:56px;border-radius:12px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;">${j.logoUrl?`<img src="${esc(j.logoUrl)}" style="width:100%;height:100%;object-fit:cover;">`:'🏢'}</div><div><div style="font-size:12px;font-weight:700;color:var(--gray);">${esc(j.company||'')}</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text);">${esc(j.jobTitle)}</div></div></div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">${j.jobType?`<span class="jbadge jb-type">${esc(j.jobType)}</span>`:''}${j.industry?`<span class="jbadge jb-exp">${esc(j.industry)}</span>`:''}${j.experience?`<span class="jbadge jb-exp">🎓 ${esc(j.experience)}</span>`:''}${j.filled?`<span class="jbadge jb-filled">🔴 Position Filled</span>`:'<span class="jbadge jb-new">✅ Open</span>'}</div>${j.salary?`<div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--green);margin-bottom:8px;">${esc(j.salary)}</div>`:''}<div style="font-size:13px;color:var(--gray);margin-bottom:12px;">📍 ${esc(j.city||'Ghana')} ${daysLeft!==null?`· ⏰ ${daysLeft<=0?'<span style="color:var(--red);font-weight:800;">Deadline passed</span>':`${daysLeft} days left`}`:''}</div>${j.desc?`<div style="margin-bottom:12px;"><div class="detail-section-label">About the Role</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.desc)}</div></div>`:''}${j.requirements?`<div style="margin-bottom:12px;"><div class="detail-section-label">Requirements</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.requirements)}</div></div>`:''}${j.howToApply?`<div style="margin-bottom:12px;"><div class="detail-section-label">How to Apply</div><div style="font-size:14px;color:var(--gray);line-height:1.75;">${esc(j.howToApply)}</div></div>`:''}${j.tags?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">${(j.tags||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="job-tag">${esc(t)}</span>`).join('')}</div>`:''}<div class="detail-ctas">${j.source==='jooble'?`<a href="${esc(j.applyUrl)}" target="_blank" class="detail-cta-btn cta-wa">🔗 Apply on Jooble</a>`:`${j.phone?`<a href="tel:${esc(j.phone)}" class="detail-cta-btn cta-call">📞 Call to Apply</a>`:''}${waNum?`<a href="https://wa.me/233${waNum}?text=${encodeURIComponent('Hello, I am interested in the '+j.jobTitle+' position at '+j.company+' on CityLinkGH.')}" target="_blank" class="detail-cta-btn cta-wa">💬 WhatsApp to Apply</a>`:''}${j.email?`<a href="mailto:${esc(j.email)}?subject=Application for ${encodeURIComponent(j.jobTitle)}" class="detail-cta-btn cta-email">✉️ Email Application</a>`:''}`}</div><div class="detail-actions"><button onclick="shareJob('${j.id}','${esc(j.jobTitle)}','${esc(j.company||'')}','${esc(j.city||'')}')" class="detail-act-btn">📤 Share</button><button onclick="saveJobFromDetail('${j.id}')" id="saveDetailBtn_${j.id}" class="detail-act-btn${isSaved?' detail-act-saved':''}">${isSaved?'✅ Saved':'🔖 Save'}</button><button onclick="reportJob('${j.id}','${esc(j.jobTitle)}')" class="detail-act-btn detail-act-report">🚩 Report</button></div><div style="margin-top:18px;"><div class="detail-section-label" style="margin-bottom:10px;">Similar Jobs</div><div id="similarJobs"></div></div></div>`;document.getElementById('detailModal').classList.add('show');setTimeout(()=>{const sim=allJobs.filter(x=>x.id!==j.id&&(x.industry===j.industry||x.city===j.city)&&!x.filled).slice(0,3);const simEl=document.getElementById('similarJobs');if(!simEl)return;if(!sim.length){simEl.innerHTML='<div style="font-size:12px;color:var(--gray);">No similar jobs found.</div>';return;}simEl.innerHTML=sim.map(s=>`<div onclick="closeDetailModal();setTimeout(()=>viewJob('${s.id}'),200)" class="similar-item"><div class="sim-thumb">${s.logoUrl?`<img src="${esc(s.logoUrl)}" alt="">`:'💼'}</div><div style="flex:1;min-width:0;"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.jobTitle)}</div><div style="font-size:11px;color:var(--gray);">${esc(s.company||'')} · ${esc(s.city||'')}</div></div><span style="color:var(--gray);font-size:12px;">›</span></div>`).join('');},100);};
 
 window.shareJob=(id,title,company,city)=>{const url=window.location.origin+'/jobs.html';const text=`💼 ${title} at ${company}\n📍 ${city}\n\nApply on CityLinkGH: ${url}`;if(navigator.share)navigator.share({title,text,url});else window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');};
 window.saveJobFromDetail=id=>{let saved=getSaved();const btn=document.getElementById('saveDetailBtn_'+id);const cardBtn=document.querySelector(`.job-bm-btn[data-id="${id}"]`);if(saved.includes(id)){saved=saved.filter(s=>s!==id);if(btn){btn.textContent='🔖 Save';btn.classList.remove('detail-act-saved');}if(cardBtn){cardBtn.textContent='🔖';cardBtn.classList.remove('saved');}showToast('Removed from saved');}else{saved.push(id);if(btn){btn.textContent='✅ Saved';btn.classList.add('detail-act-saved');}if(cardBtn){cardBtn.textContent='🏷️';cardBtn.classList.add('saved');}showToast('✅ Job saved!');}localStorage.setItem('clSavedJobs',JSON.stringify(saved));updateSavedBadge();};
